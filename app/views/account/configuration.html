@@ -1,0 +1,77 @@
+<ul class="breadcrumb boxnav">
+    <li class="active"><a href="#/account/configuration">Configuration</a></li>
+    <li><a href="#/account/preferences">Preferences</a></li>
+    <li><a href="#/account/profile">Profile</a></li>
+    <li><a href="#/account/billing">Billing</a></li>
+</ul>
+<div class="container">
+    <div class="col-md-6">
+        <div class="panel panel-default ">
+            <div class="panel-body">
+                <h4 class="text-center">Workspace Configuration</h4>
+                <div class="form-group">
+                    <label for="workspaceid">Workspace:</label>
+                    <select id="workspaceid" class="form-control">
+                        <option>Steven Le meur</option>
+                        <option>tjwell</option>
+                        <option>CodeEnvy</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">Project Limit : <span class="label label-default">Unlimited</span></div>
+                    <div class="col-md-7">Private Project Limit: <span class="label label-default">Unlimited</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">Storage Limit: <span class="label label-default">Unlimited</span></div>
+                    <div class="col-md-7">Developer Limit: <span class="label label-default">Unlimited</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">Runner/Builder Storage Limit: <strong>1 GB</strong></div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <h4 class="text-center">Builder</h4>
+                <div class="row">
+                    <div class="col-md-12">Builder Queue Type: <strong>Dedicated</strong></div>
+                    <div class="col-md-12">Builder Time Threshold: <strong>600 secs</strong></div>
+                    <div class="col-md-12">Builder RAM Allocations: <strong>1024 MB</strong></div>
+                    <div class="col-md-12">Builder Result Hold Time: <strong>3600 secs</strong></div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <h4 class="text-center">Runner</h4>
+                <div class="row">
+                    <div class="col-md-12">Runner Queue Type: <strong>Dedicated</strong></div>
+                    <div class="col-md-12">Runner Time Threshold: <strong>3600 secs</strong></div>
+                    <div class="col-md-12">Runner RAM Allocations: <strong>1024 MB</strong></div>
+                    <div class="col-md-12">Run Image Teardown Time: <strong>3600 secs</strong></div>
+                    <div class="col-md-12">Run Image Storage Time: <strong>365 Days</strong></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <br/>
+                        Persistent Runner URL Name: <strong><a href="http://codeenvy.com/runner/Yjrndi83NDLN">http://codeenvy.com/runner/Yjrndi83NDLN</a></strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="panel panel-default ">
+            <div class="panel-body">
+                <h4 class="text-center"><img height="22" src="./images/user.png"/> You are a premium user</h4>
+            </div>
+        </div>  
+        <div class="panel panel-default ">
+            <div class="panel-body">
+                <h4 class="text-center">Workspaces you have access</h4>
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="active"><a href="#/account/configuration"><span class="badge pull-right"><span class="glyphicon glyphicon-remove"></span></span>Steven Le Meur</a></li>
+                    <li><a href="#/account/configuration"><span class="badge pull-right" ng-click=""><span class="glyphicon glyphicon-remove"></span></span>tjwell</a></li>
+                    <li><a href="#/account/configuration"><span class="badge pull-right" ng-click=""><span class="glyphicon glyphicon-remove"></span></span>Codeenvy</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
