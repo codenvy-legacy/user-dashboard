@@ -12,7 +12,7 @@
         <a href="" ng-click="box = 0" ng-class="{true:'disabled', false:''}[box == 0]"> <i class="fa fa-list" rel="tooltip" title="List View"></i></a>
         <a href="" ng-click="box = 1" ng-class="{true:'disabled', false:''}[box == 1]"> <i class="fa fa-th" rel="tooltip" title="Grid View"></i></a>
     </li>
-    <div class="pull-right" style="margin-top:-5px;max-width:40px;">
+    <div class="pull-right" style="margin-top:3px;max-width:40px;">
         <div class="input-group">
             <input type="text" class="form-control" style="width:0;padding:0;" placeholder="Search ... ">
             <span class="input-group-addon">
@@ -36,33 +36,23 @@
     </div>
 
 </ul>
-<!--
-<div class="content">
-<div class="row">
-  <div ng-repeat="thing in awesomeThings">
-      <h4>{{thing.name}}</h4>
-      <p>{{thing.info}}</p>
-  </div>
-  </div>
-</div>
--->
-<div class="col-md-3" style="width:200px;">
-    <div class="panel panel-default" style="color:#dedede;">
-        <div class="panel-body">
-            <span class="glyphicon white glyphicon-plus" style="padding:30px; font-size:75px; color:#dedede;  text-shadow: 1px 4px 6px #fff, 0 0 0 #000;"></span><br/>
-            <span><strong>Create New Project</strong></span>
+<div class="col-md-2">
+    <div class="panel panel-default" style="width:200px;">
+        <div class="panel-body text-center">
+            <span class="glyphicon white glyphicon-plus" style="font-size:75px; color:#dedede;  text-shadow: 1px 4px 6px #fff, 0 0 0 #000;"></span><br/>
+            <div class="text-center" style="color:#919191"><strong>Create New Project</strong></div>
         </div>
     </div>
-</div>	
-<div class="col-md-9">
+</div>
+<div class="col-md-10">
     <div class="row">
-        <div ng-repeat="project in projects| filter: filter | orderBy:'modified':reverse" ng-class="{true:'col-md-4', false:'col-md-9'}[box == 1]">
+        <div ng-repeat="project in projects| filter: filter | orderBy:'modified':reverse" ng-class="{true:'col-md-3', false:'col-md-9'}[box == 1]">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-4"><a href="#"><img ng-src="{{project.icon}}" alt=""></a></div>
                         <div class="col-md-8">
-                            <p><strong>{{project.name}}</strong></p>
+                            <h3 class="panel-title"><strong>{{project.name}}</strong></h3>
                             <span>{{project.owner}}</span>
                         </div>
                     </div>
@@ -72,9 +62,9 @@
                         <div class="col-md-4"><i class="fa fa-unlock"></i><small> {{project.visibility}}</small></div>
                         <div class="col-md-4"><i class="fa fa-users"></i><small> Share</small></div>
                         <div class="col-md-4"><i class="fa fa-cog"></i></div>
-                    </div></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
