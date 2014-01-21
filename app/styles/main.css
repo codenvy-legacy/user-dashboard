@@ -7,8 +7,15 @@ body {
     font-weight: 300;
 }
 
+.navbar-inverse .navbar-nav > li > a {
+    padding:5px;
+    margin:7px;
+}
+
 .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus, .navbar-inverse .navbar-nav li:hover > a {
     border-bottom:2px solid #54aee0;
+    padding:5px;
+    margin:7px;
 }
 
 .breadcrumb {

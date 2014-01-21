@@ -25,12 +25,9 @@ angular.module('odeskApp')
         });*/
         $scope.box = 1;
         $scope.search = 0;
-        $scope.awesomeThings = [
-            {
-                'name': 'projects',
-                'info': 'info'
-            }
-        ];
+        setTimeout(function(){
+            $("[rel=tooltip]").tooltip({ placement: 'bottom'});
+        },50);
         
         $scope.projects = [
             {
