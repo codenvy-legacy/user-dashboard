@@ -4,11 +4,13 @@ html, body {
 
 body {
     padding-top: 49px;
+    font-size: 11pt;
 }
 
 .navbar-inverse .navbar-nav > li > a {
     padding:3px;
     margin:10px;
+    font-size:14px;
 }
 
 .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus, .navbar-inverse .navbar-hover li:hover > a {
@@ -19,7 +21,6 @@ body {
 
 .breadcrumb {
     height:44px;
-    font-size:13px;
     border-bottom:1px solid #dcdcdc;
 }
 
@@ -36,6 +37,7 @@ body {
 
 .projectnav > li {
     padding: 12px 25px;
+    font-size: 11pt;
 }
 
 .projectnav > li {
@@ -65,6 +67,10 @@ body {
     color:#ddd;
 }
 
+.garrow {
+    color: #bebebe;
+}
+
 .dropdown-menu {
     border: 1px solid #DCDCDC;
     border-radius: 0 px;
@@ -85,16 +91,34 @@ body {
 }
 
 .panel-heading {
-    color:#787878;
+    color:#3c3c3c;
+    background:#ebebeb;
 }
 
+.panel-title {
+    font-size:12pt;
+}
+
+.panel-heading img {
+    border:1px solid #bcbcbc;
+}
+
+.panel-footer {
+    background: #fafafa;
+    padding-top:0px;
+    padding-bottom:0px;
+    height:24px;
+    font-size:12px;
+}
 .panel-footer .row > div {
+    padding-top: 3px;
+    padding-bottom: 3px;
     text-align:center;
     color:#363636;
 }
 
 .panel-footer > .row > div:not(:last-child) {
-    border-right: 1px solid #ddd;
+    border-right: 1px solid #dbdbdb;
 }
 
 .panel:hover {
