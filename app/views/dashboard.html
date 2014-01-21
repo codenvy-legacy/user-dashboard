@@ -1,42 +1,38 @@
-<ul class="breadcrumb projectnav"  ng-hide="search">
+<ul class="breadcrumb projectnav" ng-hide="search">
     <li> You have access to 4 projects in 2 workspaces</li>
-    <li class="dropdown user-dropdown"> Sort By:
+    <li class="dropdown user-dropdown"> SORT BY:
         <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-up"></i> Name</a>
         <ul class="dropdown-menu">
-            <li><a href="" ng-click="reverse = true; param= 'name'"><i class="fa fa-caret-up"></i> Name</a></li>
-            <li><a href="" ng-click="reverse = false; param= 'name'"><i class="fa fa-caret-down"></i> Name</a></li>
-            <li><a href="" ng-click="reverse = true; param= 'modified'"><i class="fa fa-caret-up"></i> Date Created</a></li>
-            <li><a href="" ng-click="reverse = false; param= 'modified'"><i class="fa fa-caret-down"></i> Date Created</a></li>
+            <li><a href="" ng-click="reverse = true; param = 'name'"><i class="fa fa-caret-up"></i> Name</a></li>
+            <li><a href="" ng-click="reverse = false; param = 'name'"><i class="fa fa-caret-down"></i> Name</a></li>
+            <li><a href="" ng-click="reverse = true; param = 'modified'"><i class="fa fa-caret-up"></i> Date Created</a></li>
+            <li><a href="" ng-click="reverse = false; param = 'modified'"><i class="fa fa-caret-down"></i> Date Created</a></li>
         </ul>
     </li>
-    <li> Workspace: <a href=""> <i class="fa fa-caret-up"></i> All</a></li>
-    <li> View As:
-        <a href="" ng-click="box = 0" ng-class="{true:'disabled', false:''}[box == 0]"> <i class="fa fa-list" rel="tooltip" title="List View"></i></a>
-        <a href="" ng-click="box = 1" ng-class="{true:'disabled', false:''}[box == 1]"> <i class="fa fa-th" rel="tooltip" title="Grid View"></i></a>
+    <li> WORKSPACE: <a href=""> <i class="fa fa-caret-up"></i> All</a></li>
+    <li> VIEW AS:
+        <a href="" ng-click="box = 0" ng-class="{true:'disabled', false:''}[box == 0]"> <i class="fa fa-bars" rel="tooltip" title="List View"></i></a>
+        &nbsp;<a href="" ng-click="box = 1" ng-class="{true:'disabled', false:''}[box == 1]"> <i class="fa fa-th-large" rel="tooltip" title="Grid View"></i></a>
     </li>
-    <div class="pull-right" style="margin-top:3px;max-width:40px;">
-        <div class="input-group">
+
+    <div class="pull-right" style="margin-top:5px;max-width:40px;">
+        <div class="input-group" ng-click="search = 1">
             <input type="text" class="form-control" style="width:0;padding:0;" placeholder="Search ... ">
-            <span class="input-group-addon">
-                <a href="" ng-click="search = 1"><span class="glyphicon glyphicon-search"></span></a> 
-
-            </span>
-        </div>
-    </div>   
-</ul>
-
-<ul class="breadcrumb"  ng-show="search">
-    <div class="pull-right col-md-12" style="margin-top:-5px;padding:0px;">
-        <div class="input-group">
-            <input ng-model="filter.name" type="text" class="form-control" placeholder="Search ... ">
-            <span class="input-group-addon">
-                <a href="" ng-click="search = 0; filter = '';"><span class="glyphicon glyphicon-remove"></span></a> | 
-                <a href="" ng-click="search = 1"><span class="glyphicon glyphicon-search"></span></a> 
-
-            </span>
+            <div class="input-group-btn" ng-if="!search">
+                <button class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
         </div>
     </div>
-
+</ul>
+<ul class="breadcrumb"  ng-show="search">
+    <div class="pull-right col-md-12" style="margin-top:-3px;padding:0px;">
+        <div class="input-group">
+            <input ng-model="filter.name" type="text" class="form-control" placeholder="Search ... ">
+            <div class="input-group-btn">
+                <button class="btn btn-default" ng-click="search = 0"><i class="glyphicon glyphicon-remove"></i></button> 
+            </div>
+        </div>
+    </div>
 </ul>
 <div class="col-md-2" style="width:200px;">
     <div class="panel panel-default" >
@@ -47,7 +43,7 @@
     </div>
 </div>
 <div class="col-md-10">
-    <div class="row">
+    <div class="row" ng-if="box">
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3" style="width:263px"><!--ng-class="{true:'col-md-3', false:'col-md-9'}[box == 1]">-->
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -65,6 +61,31 @@
                         <div class="col-md-4"><div class="row"><i class="fa fa-users"></i><small> Share</small></div></div>
                         <div class="col-md-4"><div class="row"><i class="fa fa-cog"></i></div></div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="!box">
+        <div class="panel panel-default" ng-repeat="project in projects| filter: filter | orderBy:param:reverse">
+            <div class="panel-body">
+                <div class="col-xs-2 col-md-1"><a href="#"><img ng-src="{{project.icon}}" alt=""></a></div>
+                <div class="col-xs-10 col-md-11">
+                    <div><strong>{{project.name}}</strong>
+                        <div class="mic-info">
+                            {{project.owner}}
+                        </div>
+                    </div>
+                    <div class="comment-text">
+                        {{project.description}}
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-4"><div class="row"><i class="fa fa-unlock"></i><small> {{project.visibility}}</small></div></div>
+                    <div class="col-md-4"><div class="row"><i class="fa fa-users"></i><small> Share</small></div></div>
+                    <div class="col-md-4"><div class="row"><i class="fa fa-cog"></i></div></div>
                 </div>
             </div>
         </div>

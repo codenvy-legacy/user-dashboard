@@ -10,14 +10,14 @@
             <a class="navbar-brand" href="#"><img height="20" src="./images/logo2.png"/></a>
         </div>
         <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav navbar-hover">
                 <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
                     <a ng-href="{{item.link}}">{{item.title}}</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><img height="24" style="margin:11px;padding:0px;" src="./images/user.png"/></li>
-                <li><a href=""> Stevan Le Meur</a></li>
+                <li><a href="">Stevan Le Meur</a></li>
                 <li><a href=""><i class="fa fa-power-off"></i></a> </li>
                 <li class="col-md-1"> </li>
             </ul>
