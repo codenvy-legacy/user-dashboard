@@ -23,10 +23,6 @@ angular.module('odeskApp', [
     'ngRoute'
 ]).config(function ($routeProvider, $locationProvider) {
     $routeProvider
-        .when('/', {
-            templateUrl: 'views/dashboard.html',
-            controller: 'DashboardCtrl'
-        })
 	    .when('/dashboard', {
             templateUrl: 'views/dashboard.html',
             controller: 'DashboardCtrl'
