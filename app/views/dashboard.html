@@ -1,13 +1,15 @@
 <ul class="breadcrumb projectnav"  ng-hide="search">
     <li> You have access to 4 projects in 2 workspaces</li>
     <li class="dropdown user-dropdown"> Sort By:
-        <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-up"></i> Recent</a>
+        <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-up"></i> Name</a>
         <ul class="dropdown-menu">
-            <li><a href="" ng-click='reverse = true'><i class="fa fa-caret-up"></i> Recent</a></li>
-            <li><a href="" ng-click='reverse = false'><i class="fa fa-caret-down"></i> Recent</a></li>
+            <li><a href="" ng-click="reverse = true; param= 'name'"><i class="fa fa-caret-up"></i> Name</a></li>
+            <li><a href="" ng-click="reverse = false; param= 'name'"><i class="fa fa-caret-down"></i> Name</a></li>
+            <li><a href="" ng-click="reverse = true; param= 'modified'"><i class="fa fa-caret-up"></i> Date Created</a></li>
+            <li><a href="" ng-click="reverse = false; param= 'modified'"><i class="fa fa-caret-down"></i> Date Created</a></li>
         </ul>
     </li>
-    <li> Workspace: <a href="#"> <i class="fa fa-caret-up"></i> All</a></li>
+    <li> Workspace: <a href=""> <i class="fa fa-caret-up"></i> All</a></li>
     <li> View As:
         <a href="" ng-click="box = 0" ng-class="{true:'disabled', false:''}[box == 0]"> <i class="fa fa-list" rel="tooltip" title="List View"></i></a>
         <a href="" ng-click="box = 1" ng-class="{true:'disabled', false:''}[box == 1]"> <i class="fa fa-th" rel="tooltip" title="Grid View"></i></a>
@@ -36,8 +38,8 @@
     </div>
 
 </ul>
-<div class="col-md-2">
-    <div class="panel panel-default" style="width:200px;">
+<div class="col-md-2" style="width:200px;">
+    <div class="panel panel-default" >
         <div class="panel-body text-center">
             <span class="glyphicon white glyphicon-plus" style="font-size:75px; color:#dedede;  text-shadow: 1px 4px 6px #fff, 0 0 0 #000;"></span><br/>
             <div class="text-center" style="color:#919191"><strong>Create New Project</strong></div>
@@ -46,7 +48,7 @@
 </div>
 <div class="col-md-10">
     <div class="row">
-        <div ng-repeat="project in projects| filter: filter | orderBy:'modified':reverse" class="col-md-3" style="width:244px"><!--ng-class="{true:'col-md-3', false:'col-md-9'}[box == 1]">-->
+        <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3" style="width:250px"><!--ng-class="{true:'col-md-3', false:'col-md-9'}[box == 1]">-->
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
