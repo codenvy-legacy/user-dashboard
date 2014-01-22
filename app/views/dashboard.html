@@ -10,11 +10,11 @@
         </ul>
     </li>
     <li class="dropdown user-dropdown"> WORKSPACE:
-        <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-up garrow"></i> All</a>
+        <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-up garrow"></i> {{filter.owner||'All'}}</a>
         <ul class="dropdown-menu">
-            <li><a href="" ng-click="filter.owner=''"><i class="fa fa-caret-up garrow"></i> All</a></li>
-            <li><a href="" ng-click="filter.owner='Stevan.lemur'"><i class="fa fa-caret-up garrow"></i> Stevan.lemur</a></li>
-            <li><a href="" ng-click="filter.owner='tjwell'"><i class="fa fa-caret-down garrow"></i> tjwell</a></li>
+            <li><a href="" ng-click="filter.owner=''">All</a></li>
+            <li><a href="" ng-click="filter.owner='Stevan.lemur'">Stevan.lemur</a></li>
+            <li><a href="" ng-click="filter.owner='tjwell'">tjwell</a></li>
         </ul>
     </li>
     <li> VIEW AS:
