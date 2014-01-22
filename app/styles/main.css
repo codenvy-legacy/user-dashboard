@@ -93,6 +93,8 @@ body {
 .panel-heading {
     color:#3c3c3c;
     background:#ebebeb;
+    height:54px;
+    padding:5px;
 }
 
 .panel-title {
@@ -115,6 +117,10 @@ body {
     padding-bottom: 3px;
     text-align:center;
     color:#363636;
+    cursor: pointer;
+}
+.panel-footer .row > div:hover {
+    background:#eaeaea;
 }
 
 .panel-footer > .row > div:not(:last-child) {
