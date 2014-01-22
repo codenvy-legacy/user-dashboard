@@ -41,7 +41,7 @@ angular.module('odeskApp')
             {
                 'icon': 'images/icon-angular.png',
                 'name': 'AngularDemo',
-                'owner': 'Stevan.lemur',
+                'owner': 'tjwell',
                 'description': 'This project is demoing a Java application built with Spring. Displaying data in a page, submitting data and authentication sample',
                 'visibility' : 'Private',
                 'modified': 2
@@ -65,7 +65,7 @@ angular.module('odeskApp')
             {
                 'icon': 'images/icon-spring.png',
                 'name': 'SpringDemo',
-                'owner': 'Stevan.lemur',
+                'owner': 'tjwell',
                 'description': 'This project is demoing a Java application built with Spring. Displaying data in a page, submitting data and authentication sample',
                 'visibility' : 'Public',
                 'modified': 1

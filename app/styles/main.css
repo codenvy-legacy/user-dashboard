@@ -75,6 +75,7 @@ body {
     border: 1px solid #DCDCDC;
     border-radius: 0 px;
     margin: 0;
+    margin-top:-2px;
     border-top:none;
     box-shadow:none;
 }
@@ -112,6 +113,7 @@ body {
     height:24px;
     font-size:12px;
 }
+
 .panel-footer .row > div {
     padding-top: 3px;
     padding-bottom: 3px;

@@ -9,7 +9,14 @@
             <li><a href="" ng-click="reverse = false; param = 'modified'"><i class="fa fa-caret-down garrow"></i> Date Created</a></li>
         </ul>
     </li>
-    <li> WORKSPACE: <a href=""> <i class="fa fa-caret-up garrow"></i> All</a></li>
+    <li class="dropdown user-dropdown"> WORKSPACE:
+        <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-up garrow"></i> All</a>
+        <ul class="dropdown-menu">
+            <li><a href="" ng-click="filter.owner=''"><i class="fa fa-caret-up garrow"></i> All</a></li>
+            <li><a href="" ng-click="filter.owner='Stevan.lemur'"><i class="fa fa-caret-up garrow"></i> Stevan.lemur</a></li>
+            <li><a href="" ng-click="filter.owner='tjwell'"><i class="fa fa-caret-down garrow"></i> tjwell</a></li>
+        </ul>
+    </li>
     <li> VIEW AS:
         <a href="" ng-click="box = 0" > <i style="font-size:16px;" ng-class="{'garrow':box == 0}" class="fa fa-bars" rel="tooltip" title="List View"></i></a>
         &nbsp;<a href="" ng-click="box = 1"> <i style="font-size:16px;" ng-class="{'garrow':box == 1}" class="fa fa-th-large" rel="tooltip" title="Grid View"></i></a>
@@ -44,7 +51,7 @@
 </div>
 <div class="col-md-10">
     <div class="row" ng-if="box">
-        <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3" style="width:263px"><!--ng-class="{true:'col-md-3', false:'col-md-9'}[box == 1]">-->
+        <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3" style="width:244px"><!--ng-class="{true:'col-md-3', false:'col-md-9'}[box == 1]">-->
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
