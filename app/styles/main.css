@@ -4,19 +4,19 @@ html, body {
 
 body {
     padding-top: 49px;
-    font-size: 11pt;
+    font-size: 13px;
 }
 
 .navbar-inverse .navbar-nav > li > a {
     padding:3px;
-    margin:10px;
+    margin:10px 15px;
     font-size:14px;
 }
 
 .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus, .navbar-inverse .navbar-hover li:hover > a {
     border-bottom:2px solid #54aee0;
     padding:2px 3px;
-    margin:10px;
+    /*margin:10px;*/
 }
 
 .breadcrumb {
@@ -37,7 +37,7 @@ body {
 
 .projectnav > li {
     padding: 12px 10px;
-    font-size: 11pt;
+    font-size: 14px;
 }
 
 .projectnav > li {
@@ -97,11 +97,11 @@ body {
     background:#ebebeb;
     height:54px;
     padding:5px;
-    font-size: 11pt;
+    font-size: 13px;
 }
 
 .panel-title {
-    font-size:12pt;
+    font-size:15px;
     color:#3c3c3c;
     margin-bottom:5px;
 }
