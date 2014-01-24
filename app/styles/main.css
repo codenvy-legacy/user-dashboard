@@ -3,8 +3,8 @@ html, body {
 }
 
 body {
-    padding-top: 49px;
-    font-size: 13px;
+    padding-top: 45px;
+    font-size: 11px;
 }
 
 .navbar-inverse .navbar-nav > li > a {
@@ -36,8 +36,7 @@ body {
 }
 
 .projectnav > li {
-    padding: 12px 10px;
-    font-size: 14px;
+    padding: 13px 10px;
 }
 
 .projectnav > li {
@@ -63,8 +62,8 @@ body {
     border:solid 1px #ccc;
 }
 
-.disabled {
-    color:#ddd;
+.panel-footer i {
+    color:#8f8f8f;
 }
 
 .garrow {
@@ -97,11 +96,11 @@ body {
     background:#ebebeb;
     height:54px;
     padding:5px;
-    font-size: 13px;
+    font-size: 11px;
 }
 
 .panel-title {
-    font-size:15px;
+    font-size:12px;
     color:#3c3c3c;
     margin-bottom:5px;
 }
@@ -116,7 +115,6 @@ body {
     padding-top:0px;
     padding-bottom:0px;
     height:24px;
-    font-size:12px;
 }
 
 .panel-footer .row > div {

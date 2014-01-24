@@ -18,8 +18,8 @@
         </ul>
     </li>
     <li> VIEW AS:
-        <a href="" ng-click="box = 0" > <i style="font-size:16px;" ng-class="{'garrow':box == 0}" class="fa fa-bars" rel="tooltip" title="List View"></i></a>
-        &nbsp;<a href="" ng-click="box = 1"> <i style="font-size:16px;" ng-class="{'garrow':box == 1}" class="fa fa-th-large" rel="tooltip" title="Grid View"></i></a>
+        <a href="" ng-click="box = 0" > <i style="font-size:16px;" ng-class="{'garrow':box == 1}" class="fa fa-bars" rel="tooltip" title="List View"></i></a>
+        &nbsp;<a href="" ng-click="box = 1"> <i style="font-size:16px;" ng-class="{'garrow':box == 0}" class="fa fa-th-large" rel="tooltip" title="Grid View"></i></a>
     </li>
 
     <div class="pull-right" style="margin-top:5px;max-width:40px;">
@@ -64,7 +64,7 @@
                 </div>
                 <div class="panel-body">{{project.description}}</div>
                 <div class="panel-footer"><div class="row">
-                        <div class="col-md-4"><div class="row"><i class="fa fa-unlock"></i><small> {{project.visibility}}</small></div></div>
+                        <div class="col-md-4"><div class="row"><i class="fa" ng-class="{'fa-lock':project.visibility == 'Private', 'fa-unlock':project.visibility == 'Public'}"></i><small> {{project.visibility}}</small></div></div>
                         <div class="col-md-4"><div class="row"><i class="fa fa-users"></i><small> Share</small></div></div>
                         <div class="col-md-4"><div class="row"><i class="fa fa-cog"></i></div></div>
                     </div>
