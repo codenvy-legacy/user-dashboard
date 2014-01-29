@@ -21,10 +21,4 @@ angular.module('odeskApp')
         /*$http.get('/api/awesomeThings').success(function(awesomeThings) {
             $scope.awesomeThings = awesomeThings;
         });*/
-        $scope.awesomeThings = [
-            {
-                'name': 'Factories',
-                'info': 'info'
-            }
-        ];
     });

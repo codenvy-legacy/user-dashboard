@@ -36,8 +36,8 @@ angular.module('odeskApp', [
             controller: 'StatsCtrl'
         })
         .when('/account', {
-            templateUrl: 'views/account/configuration.html',
-            controller: 'AccountConfigCtrl'
+            templateUrl: 'views/account/profile.html',
+            controller: 'DashboardCtrl'
         })
         .when('/account/configuration', {
             templateUrl: 'views/account/configuration.html',

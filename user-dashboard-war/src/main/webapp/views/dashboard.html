@@ -51,7 +51,7 @@
 </div>
 <div class="col-md-10">
     <div class="row" ng-if="box">
-        <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3" style="width:300px"><!--ng-class="{true:'col-md-3', false:'col-md-9'}[box == 1]">-->
+        <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3 projectbox" style="width:300px"><!--ng-class="{true:'col-md-3', false:'col-md-9'}[box == 1]">-->
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
@@ -72,7 +72,7 @@
             </div>
         </div>
     </div>
-    <div class="row" ng-if="!box">
+    <div class="row projectbox" ng-if="!box">
         <div class="panel panel-default" ng-repeat="project in projects| filter: filter | orderBy:param:reverse">
             <div class="panel-body">
                 <div class="col-xs-2 col-md-1"><a href="#"><img height="44" width="44" ng-src="{{project.icon}}" alt=""></a></div>
