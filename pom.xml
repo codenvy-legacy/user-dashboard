@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>maven-parent-pom</artifactId>
+        <groupId>com.codenvy</groupId>
+        <version>3.1.1-SNAPSHOT</version>
+    </parent>
+    <groupId>com.codenvy.dashboard</groupId>
+    <artifactId>user-dashboard-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>user-dashboard-war</module>
+        <module>user-dashboard-tomcat-demo</module>
+    </modules>
+    <properties>
+        <ch.qos.logback.version>1.0.13</ch.qos.logback.version>
+        <javax.mail.version>1.4.2</javax.mail.version>
+        <org.slf4j.version>1.7.5</org.slf4j.version>
+        <tomcat.version>7.0.42</tomcat.version>
+    </properties>
+</project>
