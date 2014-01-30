@@ -31,12 +31,13 @@ body {
 .breadcrumb li a {
     color: #177eb7;
 }
+
 .projectnav {
-    padding:0 15px;
+    padding:0;
 }
 
 .projectnav > li {
-    padding: 10px;
+    padding: 10px 20px;
 }
 
 .projectnav > li {
@@ -44,7 +45,7 @@ body {
 }
 
 .boxnav {
-    padding: 7px 15px;
+    padding: 7px 0;
 }
 
 .boxnav > li {
@@ -77,13 +78,16 @@ body {
 .dropdown-menu {
     border: 1px solid #DCDCDC;
     margin: 0;
-    margin-top:-2px;
+    left:auto;
+    right:0;
+    margin:-2px -1px 0 0;
     border-top:none;
     box-shadow:none;
 }
 
 .dropdown-menu li a {
     color: #177eb7;
+    text-align:right;
 }
 
 #wrap {
@@ -136,7 +140,7 @@ input[type="checkbox"].regular-checkbox {
     background:#000;
 }
 
-.btn {
+.btn:not(.simple) {
     text-transform:uppercase;
 }
 
