@@ -20,7 +20,7 @@ body {
 }
 
 .breadcrumb {
-    height:44px;
+    height:36px;
     border-bottom:1px solid #dcdcdc;
 }
 
@@ -36,7 +36,7 @@ body {
 }
 
 .projectnav > li {
-    padding: 13px 10px;
+    padding: 10px;
 }
 
 .projectnav > li {
@@ -44,7 +44,7 @@ body {
 }
 
 .boxnav {
-    padding: 11px 15px;
+    padding: 7px 15px;
 }
 
 .boxnav > li {
@@ -104,7 +104,7 @@ body {
 .panel-title {
     font-size:12px;
     color:#3c3c3c;
-    margin-bottom:5px;
+    margin:5px 0px;
 }
 
 .panel-heading img {
