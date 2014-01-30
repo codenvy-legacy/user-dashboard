@@ -33,7 +33,7 @@ body {
 }
 
 .projectnav {
-    padding:0;
+    padding:0 1px;
 }
 
 .projectnav > li {
