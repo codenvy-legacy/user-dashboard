@@ -13,16 +13,35 @@
         <div class="panel-body">
             <h4 class="text-center">Your Statics</h4>
             <div class="row">
-                <div class="col-md-9"><div class="well">chart</div></div>
-                <div class="col-md-3"><div class="well">165 Sessions <br/>6780 Cumulative Minutes</div></div>
+                <div class="col-md-9"><div class="well" id="graph-area-line" style="height:300px;"></div></div>
+                <div class="col-md-3"><div class="well"><h1>165</h1><h3>SESSIONS</h3> <h1>6780</h1><h3>CUMULATIVE MINUTES</h3></div></div>
             </div>
             <div class="row">
-                <div class="col-md-2"><div class="well">12 Project Updated</div></div>
-                <div class="col-md-2"><div class="well">84 Builds</div></div>
-                <div class="col-md-2"><div class="well">57 Runs</div></div>
-                <div class="col-md-2"><div class="well">5 Debugs</div></div>
-                <div class="col-md-2"><div class="well">5 Deploys</div></div>
-                <div class="col-md-2"><div class="well">5 Factories</div></div>
+                <div class="col-md-2">
+                    <div class="well well-sm"><h1>12</h1> PROJECT UPDATED <br/>
+                        <span sparkbarwidth="5" sparkheight="45" sparkwidth="100" sparkbarcolor="#2293d5" sparktype="bar" class="sparkline">5,4,3,2,4,5,6,7,8,6,4,5</span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="well well-sm"><h1>84</h1> BUILDS <br/>
+                        <span sparkbarwidth="5" sparkheight="45" sparkwidth="100" sparkbarcolor="#7cc687" sparktype="bar" class="sparkline">5,4,3,2,4,5,6,7,8,6,4,5</span>
+                    </div></div>
+                <div class="col-md-2">
+                    <div class="well well-sm"><h1>57</h1> RUNS <br/>
+                        <span sparkbarwidth="5" sparkheight="45" sparkwidth="100" sparkbarcolor="#7cc687" sparktype="bar" class="sparkline">5,4,3,2,4,5,6,7,8,6,4,5</span>
+                    </div></div>
+                <div class="col-md-2">
+                    <div class="well well-sm"><h1>5</h1> DEBUGS <br/>
+                        <span sparkbarwidth="5" sparkheight="45" sparkwidth="100" sparkbarcolor="#7cc687" sparktype="bar" class="sparkline">5,4,3,2,4,5,6,7,8,6,4,5</span>
+                    </div></div>
+                <div class="col-md-2">
+                    <div class="well well-sm"><h1>5</h1> DEPLOYS <br/>
+                        <span sparkbarwidth="5" sparkheight="45" sparkwidth="100" sparkbarcolor="#2293d5" sparktype="bar" class="sparkline">5,4,3,2,4,5,6,7,8,6,4,5</span>
+                    </div></div>
+                <div class="col-md-2">
+                    <div class="well well-sm"><h1>5</h1> FACTORIES <br/>
+                        <span sparkbarwidth="5" sparkheight="45" sparkwidth="100" sparkbarcolor="#bd8fc0" sparktype="bar" class="sparkline">5,4,3,2,4,5,6,7,8,6,4,5</span>
+                    </div></div>
             </div>
         </div>
     </div>
@@ -34,7 +53,26 @@
             <div class="panel panel-default ">
                 <div class="panel-body">
                     <h4 class="text-center">Build Statics</h4>
-                    <div class="well">Div1</div>
+                    <div class="row">
+                        <div class="col-md-3 no-margin text-right"><h1>13.54</h1></div>
+                        <div class="col-md-9">
+                            TIME SPENT IN BUILD WAIT QUEUE<br/>
+                            Upgrade (soon) to get a dedicated queue.
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 no-margin text-right"><h1  class="garrow">3.54</h1></div>
+                        <div class="col-md-9">
+                            TIME SPENT BUILDING PROJECTS
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 no-margin text-right"><h1>13</h1></div>
+                        <div class="col-md-9">
+                            BUILD TERMINATIONS DUE TO THRESHOLD TIMEOUT<br/>
+                            Upgrade (soon) to increase build timeout threshold
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -42,7 +80,26 @@
             <div class="panel panel-default ">
                 <div class="panel-body">
                     <h4 class="text-center">Run Statics</h4>
-                    <div class="well">Div2</div>
+                    <div class="row">
+                        <div class="col-md-3 no-margin text-right"><h1>13.54</h1></div>
+                        <div class="col-md-9">
+                            TIME SPENT IN RUNNER WAIT QUEUE<br/>
+                            Upgrade (soon) to get a dedicated queue.
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 no-margin text-right"><h1  class="garrow">1.54</h1></div>
+                        <div class="col-md-9">
+                            TIME SPENT RUNNING PROJECTS
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 no-margin text-right"><h1>23</h1></div>
+                        <div class="col-md-9">
+                            RUN TERMINATIONS DUE TO THRESHOLD TIMEOUT<br/>
+                            Upgrade (soon) to increase run timeout threshold
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -50,7 +107,13 @@
             <div class="panel panel-default ">
                 <div class="panel-body">
                     <h4 class="text-center">Image Statics</h4>
-                    <div class="well">Div3</div>
+                    <div class="row">
+                        <div class="col-md-3 no-margin text-right"><h1>73.54</h1></div>
+                        <div class="col-md-9">
+                            TIME SPENT CONFIGURING DOCKER IMAGES<br/>
+                            Upgrade (soon) to increase time before image tear down
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

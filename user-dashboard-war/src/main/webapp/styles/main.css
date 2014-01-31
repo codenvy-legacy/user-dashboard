@@ -177,3 +177,28 @@ input[type="checkbox"].regular-checkbox {
 #footer {
     height: 60px;
 }
+
+.sparkline {
+    display: inline-block;
+    position: relative;
+}
+
+.jqstooltip {
+    border: 0 none !important;
+    display: block !important;
+    padding: 0 !important;
+}
+.jqsfield {
+    display: inline-block;
+    line-height: 13px;
+    padding: 4px 5px 5px;
+}
+
+.well h1, .well h2, .well h3, .well h4, .well h5 {
+    margin:5px 0;
+}
+
+.no-margin h1 {
+    margin-top:2px;
+    margin-bottom:2px;
+}
