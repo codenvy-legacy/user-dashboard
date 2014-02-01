@@ -29,23 +29,23 @@
     </li>
         </ul>
 
-        <table class="table table-striped" style="background:#ffffff;">
+        <table class="table table-striped table-condensed-" style="background:#ffffff;">
             <thead>
-                <tr style="background:#dbdbdb;">
+                <tr style="background:#dbdbdb;/*border-top:1px solid #bebebe;border-bottom:1px solid #bebebe;*/">
                     <th></th>
-                    <th>Project</th>
-                    <th>Description</th>
-                    <th>Created</th>
-                    <th>Views</th>
-                    <th>Builds</th>
-                    <th>Runs</th>
-                    <th>Copies</th>
+                    <th class="text-center">Project</th>
+                    <th class="text-center">Description</th>
+                    <th class="text-center">Created</th>
+                    <th class="text-center">Views</th>
+                    <th class="text-center">Builds</th>
+                    <th class="text-center">Runs</th>
+                    <th class="text-center">Copies</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="project in projects| filter: filter | orderBy:param:reverse">
-                    <td><img ng-src="{{project.icon}}"/></td>
+                    <td><img height="44" width="44" ng-src="{{project.icon}}"/></td>
                     <td>
                         <p><strong>{{project.name}}</strong></p>
                         <span>{{project.owner}}</span>
