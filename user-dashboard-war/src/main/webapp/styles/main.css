@@ -115,11 +115,15 @@ body {
     border:1px solid #bcbcbc;
 }
 
-.panel-body h4 {
+.panel-body h4, .table > thead > tr > th h4 {
     color: #363636;
     font-size: 10px;
     font-weight: bold;
     text-transform: uppercase;
+}
+
+.table > thead > tr > th {
+    padding:0px;
 }
 
 label {
