@@ -122,8 +122,15 @@ body {
     text-transform: uppercase;
 }
 
+.table > thead > tr > th h4 {
+    font-weight:normal;
+}
+
 .table > thead > tr > th {
     padding:0px;
+    background:#dbdbdb;
+    border-top:1px solid #bebebe;
+    border-bottom:1px solid #bebebe;
 }
 
 label {
