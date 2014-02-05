@@ -111,7 +111,7 @@ body {
     margin:5px 0px;
 }
 
-.panel-heading img {
+.panel-heading img, .table > tbody > tr > td img{
     border:1px solid #bcbcbc;
 }
 
