@@ -122,12 +122,17 @@ body {
     text-transform: uppercase;
 }
 
+.panel-body .row {
+    margin-top:15px;
+    margin-bottom:15px;
+}
+
 .table > thead > tr > th h4 {
     font-weight:normal;
 }
 
 .table > thead > tr > th {
-    padding:0px;
+    padding:0px 5px;
     background:#dbdbdb;
     border-top:1px solid #bebebe;
     border-bottom:1px solid #bebebe;
@@ -145,6 +150,36 @@ label.checkbox {
     color: #a3a3a3;
     font-size: 11px;
     text-transform: none;
+}
+
+.cerow {
+    margin-bottom:5px;
+}
+
+.cetag {
+    border-radius:0px;
+    color:#54aee0;
+    padding:5px 10px;
+    font-weight:bold;
+    background:#fafafa;
+}
+
+.celist .label {
+    font-weight:normal;
+    display:table;
+    margin-bottom:10px;
+    border-radius:0px;
+    color:#a3a3a3;
+    padding:5px 10px;
+    background:#fafafa;
+}
+
+.celist .label > span {
+    background:#a8a8a8;
+    color:#ffffff;
+    border-radius:10px;
+    margin-left:15px;
+    padding:3px;
 }
 
 input[type="checkbox"].regular-checkbox {
