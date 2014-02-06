@@ -12,22 +12,24 @@
  * Controller for dashboard/projects
  */
 
-/*global angular*/
+/*global angular, $*/
 
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, demoService) {
+    .controller('DashboardCtrl', function ($scope, demoService, $http) {
         
         //an example showing simple rest consumption
-        /*$http.get('/api/awesomeThings').success(function(awesomeThings) {
+        delete $http.defaults.headers.common['X-Requested-With'];
+        $http.get('http://a4.codenvy-dev.com/api/project/abcdefg/list').success(function (awesomeThings) {
             $scope.awesomeThings = awesomeThings;
-        });*/
+            console.log(awesomeThings);
+        });
         $scope.box = 1;
         $scope.search = 0;
-        setTimeout(function(){
+        setTimeout(function () {
             $("[rel=tooltip]").tooltip({ placement: 'bottom'});
-        },50);
+        }, 50);
         
         $scope.projects = demoService;
     });
