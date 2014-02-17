@@ -10,11 +10,10 @@
         </ul>
     </li>
     <li class="dropdown user-dropdown"> WORKSPACE:
-        <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down garrow"></i> {{filter.owner||'All'}}</a>
+        <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down garrow"></i> {{filter.workspace||'All'}}</a>
         <ul class="dropdown-menu">
-            <li><a href="" ng-click="filter.owner=''">All</a></li>
-            <li><a href="" ng-click="filter.owner='Stevan.lemur'">Stevan.lemur</a></li>
-            <li><a href="" ng-click="filter.owner='tjwell'">tjwell</a></li>
+            <li><a href="" ng-click="filter.workspace=''">All</a></li>
+            <li ng-repeat="project in projects" ng-click="filter.workspace=project.workspace"><a href="">{{project.workspace}}</a></li>
         </ul>
     </li>
     <li> VIEW AS:
@@ -51,20 +50,20 @@
 </div>
 <div class="col-md-10">
     <div class="row" ng-if="box">
-        <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3 projectbox" style="width:300px"><!--ng-class="{true:'col-md-3', false:'col-md-9'}[box == 1]">-->
+        <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3 projectbox" style="width:300px">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-md-3"><a href="#"><img height="44" width="44" ng-src="{{project.icon}}" alt=""></a></div>
+                        <div class="col-md-3"><a href="{{project.url}}"><img height="44" width="44" ng-src="/images/{{project.projectTypeName}}.png" alt=""></a></div>
                         <div class="col-md-9">
-                            <h3 class="panel-title"><strong>{{project.name}}</strong></h3>
-                            <span>{{project.owner}}</span>
+                            <h3 class="panel-title"><a href="{{project.url}}"><strong>{{project.name}}</strong></a></h3>
+                            <span>{{project.workspace}}</span>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">{{project.description}}</div>
                 <div class="panel-footer"><div class="row">
-                        <div class="col-md-4"><div class="row"><i class="fa" ng-class="{'fa-lock':project.visibility == 'Private', 'fa-unlock':project.visibility == 'Public'}"></i><small> {{project.visibility}}</small></div></div>
+                        <div class="col-md-4"><div class="row"><i class="fa" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
                         <div class="col-md-4"><div class="row"><i class="fa fa-users"></i><small> Share</small></div></div>
                         <div class="col-md-4"><div class="row"><i class="fa fa-cog"></i></div></div>
                     </div>
@@ -75,12 +74,12 @@
     <div class="row projectbox" ng-if="!box">
         <div class="panel panel-default" ng-repeat="project in projects| filter: filter | orderBy:param:reverse">
             <div class="panel-body">
-                <div class="col-xs-2 col-md-1"><a href="#"><img height="44" width="44" ng-src="{{project.icon}}" alt=""></a></div>
+                <div class="col-xs-2 col-md-1"><a href="{{project.url}}"><img height="44" width="44" ng-src="/images/{{project.projectTypeName}}.png" alt=""></a></div>
                 <div class="col-xs-10 col-md-11">
                     <div class="row">
-                        <div><strong>{{project.name}}</strong>
+                        <div><a href="{{project.url}}"><strong>{{project.name}}</strong></a>
                             <div class="mic-info">
-                                {{project.owner}}
+                                {{project.workspace}}
                             </div>
                         </div>
                         <div class="comment-text">{{project.description}}</div>

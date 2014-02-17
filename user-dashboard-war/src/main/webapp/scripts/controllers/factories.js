@@ -17,9 +17,10 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('FactoriesCtrl', function ($scope, demoService) {
-        $scope.projects = demoService;
-        setTimeout(function () {
+    .controller('FactoriesCtrl', function ($scope, $timeout, projectList) {
+        $scope.projects = projectList.query();
+        $scope.filter = {};
+        $timeout(function () {
             Morris.Area({element: 'graph-area-line',
                          behaveLikeLine: false,
                          data: [{x: '2011 Q1', y: 3, z: 3},
@@ -32,5 +33,5 @@ angular.module('odeskApp')
                          labels: ['Z'],
                          lineColors: ['#79D1CF', '#E67A77']});
 
-        }, 50);
+        });
     });

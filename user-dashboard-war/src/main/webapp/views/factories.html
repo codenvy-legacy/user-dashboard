@@ -20,11 +20,10 @@
                 </ul>
             </li>
             <li class="dropdown user-dropdown"> WORKSPACE:
-        <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down garrow"></i> {{filter.owner||'All'}}</a>
+        <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down garrow"></i> {{filter.workspace||'All'}}</a>
         <ul class="dropdown-menu">
-            <li><a href="" ng-click="filter.owner=''">All</a></li>
-            <li><a href="" ng-click="filter.owner='Stevan.lemur'">Stevan.lemur</a></li>
-            <li><a href="" ng-click="filter.owner='tjwell'">tjwell</a></li>
+            <li><a href="" ng-click="filter.workspace=''">All</a></li>
+             <li ng-repeat="project in projects"><a href="" ng-click="filter.workspace=project.workspace">{{project.workspace}}</a></li>
         </ul>
     </li>
         <div class="pull-right" style="margin-top:1px;max-width:40px;">
@@ -63,10 +62,10 @@
             </thead>
             <tbody>
                 <tr ng-repeat="project in projects| filter: filter | orderBy:param:reverse">
-                    <td><img height="44" width="44" ng-src="{{project.icon}}"/></td>
+                    <td><img height="44" width="44" ng-src="/images/{{project.projectTypeName}}.png"/></td>
                     <td>
                         <p><strong>{{project.name}}</strong></p>
-                        <span>{{project.owner}}</span>
+                        <span>{{project.workspace}}</span>
                     </td>
                     <td>{{project.description}}</td>
                     <td class="text-center">Dec 12, 2013</td>

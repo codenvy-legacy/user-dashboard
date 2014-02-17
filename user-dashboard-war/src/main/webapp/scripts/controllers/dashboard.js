@@ -17,19 +17,14 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, demoService, $http) {
+    .controller('DashboardCtrl', function ($scope, $timeout, projectList) {
         
-        //an example showing simple rest consumption
-        delete $http.defaults.headers.common['X-Requested-With'];
-        $http.get('http://a4.codenvy-dev.com/api/project/abcdefg/list').success(function (awesomeThings) {
-            $scope.awesomeThings = awesomeThings;
-            console.log(awesomeThings);
-        });
         $scope.box = 1;
         $scope.search = 0;
-        setTimeout(function () {
+        $scope.projects = projectList.query();
+        $scope.filter = {};
+        $timeout(function () {
             $("[rel=tooltip]").tooltip({ placement: 'bottom'});
-        }, 50);
+        });
         
-        $scope.projects = demoService;
     });
