@@ -62,7 +62,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="project in projects| filter: filter | orderBy:param:reverse">
-                    <td><img height="44" width="44" ng-src="/images/{{project.projectTypeName}}.png"/></td>
+                    <td><img height="44" width="44" ng-src="./images/{{project.projectTypeName}}.png"/></td>
                     <td>
                         <p><strong>{{project.name}}</strong></p>
                         <span>{{project.workspace}}</span>
