@@ -262,6 +262,23 @@ input[type="checkbox"].regular-checkbox {
     color:#2293d5;
 }
 
+/*grey blue*/
 .gb {
     color:#8fa5c0;
+}
+
+/* you can use natural CSS transitions just
+   as you would without using ngAnimate */
+.search {
+  width:100%;
+}
+
+.search.ng-hide {
+  width:0%;
+}
+
+.search.ng-hide-remove {
+  -webkit-transition:0.3s ease-in all;
+  transition:0.3s ease-in all;
+  display:block!important;
 }

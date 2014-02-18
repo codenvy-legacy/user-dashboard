@@ -1,4 +1,4 @@
-<ul class="breadcrumb projectnav" ng-hide="search">
+<ul class="breadcrumb projectnav breadcrumb" ng-hide="search">
     <li> You have access to 4 projects in 2 workspaces</li>
     <li class="dropdown user-dropdown"> SORT BY:
         <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-up garrow"></i> Name</a>
@@ -30,7 +30,7 @@
         </div>
     </div>
 </ul>
-<ul class="breadcrumb projectnav"  ng-show="search">
+<ul class="breadcrumb projectnav search pull-right"  ng-show="search">
     <div class="pull-right col-md-12" style="margin-top:2px;padding:0px;">
         <div class="input-group">
             <input ng-model="filter.name" type="text" class="form-control" placeholder="Search ... ">
@@ -40,6 +40,7 @@
         </div>
     </div>
 </ul>
+<div class="row"></div>
 <div class="col-md-2" style="width:200px;">
     <div class="panel panel-default" >
         <div class="panel-body text-center">
