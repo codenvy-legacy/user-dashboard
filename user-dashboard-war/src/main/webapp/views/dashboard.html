@@ -41,14 +41,28 @@
     </div>
 </ul>
 <div class="row"></div>
-<div class="col-md-2" style="width:200px;">
+<!-- work in progress ... code may contain inline css-->
+<div class="col-md-2" class="dropdown" style="width:200px; cursor:pointer;">
     <div class="panel panel-default" >
-        <div class="panel-body text-center">
+        <div class="panel-body text-center" class="dropdown-toggle" data-toggle="dropdown">
             <span class="glyphicon white glyphicon-plus" style="font-size:75px; color:#dedede;  text-shadow: 1px 4px 6px #fff, 0 0 0 #000;"></span><br/>
             <div class="text-center" style="color:#919191"><strong>Create New Project</strong></div>
         </div>
+        <div class="dropdown-menu" style="padding:0 15px;background:#404040;left:15px;min-width:285px;max-width:700px;">
+            <img style="margin-left: 50px; margin-top: -42px;" src="./images/up-arrow.png"/>
+            <div >
+                <div class="btn simple btn-default col-md-12" style="margin-bottom:15px;" ng-click="projectselect=1">Create using our wizard</div>
+                <div class="btn simple btn-default col-md-12" style="margin-bottom:15px;" stop-event='click' ng-click="test()">Create from factories</div>
+                <div class="btn simple btn-default col-md-12" style="margin-bottom:15px;" stop-event='click' ng-click="test()">Import from git repository</div> 
+            </div>
+        </div>
     </div>
 </div>
+<div class="col-md-12" style="background:#404040;z-index:1;position: absolute;color:#ffffff;top:245px;" ng-show="projectselect">
+    <img style="margin-left: 68px; margin-top: -37px;" src="./images/up-arrow.png"/>
+    <h3 ng-click="projectselect=0" class="pull-right"><a href="">x</a></h3>
+    <div ng-include="'views/factory-carousal.html'"></div>
+      </div>
 <div class="col-md-10">
     <div class="row" ng-if="box">
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3 projectbox" style="width:300px">
