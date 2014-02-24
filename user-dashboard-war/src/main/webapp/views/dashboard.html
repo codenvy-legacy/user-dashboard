@@ -62,7 +62,7 @@
     <img style="margin-left: 68px; margin-top: -37px;" src="./images/up-arrow.png"/>
     <h3 ng-click="projectselect=0" class="pull-right"><a href="">x</a></h3>
     <div ng-include="'views/factory-carousal.html'"></div>
-      </div>
+</div>
 <div class="col-md-10">
     <div class="row" ng-if="box">
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3 projectbox" style="width:300px">
@@ -85,11 +85,32 @@
                 </div>
             </div>
         </div>
+        <div style="width:300px" class="col-md-3 projectbox" data-toggle="modal" data-target="#myModal">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="panel-title white"><strong>WIN 6 MONTHS PREMIUM SERVICES</strong></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-unstyled">
+                        <li>1 Organize a User Group and we will be there,</li>
+                        <li>2 Organize a User Presentation and we will be there,</li>
+                        <li>3 Organize a User Classroom and we will be there,</li>
+                    </ul></div>
+                <div class="panel-footer"><div class="row">
+                        <div class="col-md-12 text-center">Contact US</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row projectbox" ng-if="!box">
         <div class="panel panel-default" ng-repeat="project in projects| filter: filter | orderBy:param:reverse">
             <div class="panel-body">
-                <div class="col-xs-2 col-md-1"><a href="{{project.url}}"><img height="44" width="44" ng-src="/images/{{project.projectTypeName}}.png" alt=""></a></div>
+                <div class="col-xs-2 col-md-1"><a href="{{project.url}}"><img height="44" width="44" ng-src="./images/{{project.projectTypeName}}.png" alt=""></a></div>
                 <div class="col-xs-10 col-md-11">
                     <div class="row">
                         <div><a href="{{project.url}}"><strong>{{project.name}}</strong></a>

@@ -111,8 +111,12 @@ body {
     margin:5px 0px;
 }
 
-.panel-heading img, .table > tbody > tr > td img{
+.projectbox img,.table > tbody > tr > td img{
     border:1px solid #bcbcbc;
+}
+
+.projectbox .panel:hover {
+    box-shadow: 0px 7px 5px 0px rgba(0, 0, 0, 0.2);
 }
 
 .panel-body h4, .table > thead > tr > th h4 {
@@ -214,11 +218,6 @@ input[type="checkbox"].regular-checkbox {
     border-right: 1px solid #dbdbdb;
 }
 
-.projectbox .panel:hover {
-    box-shadow: 0px 7px 5px 0px rgba(0, 0, 0, 0.2);
-}
-
-
 
 #footer {
     height: 60px;
@@ -260,6 +259,10 @@ input[type="checkbox"].regular-checkbox {
 
 .blue {
     color:#2293d5;
+}
+
+.white {
+    color:#ffffff;
 }
 
 /*grey blue*/
