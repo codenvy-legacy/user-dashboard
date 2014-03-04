@@ -1,2 +1,12 @@
-.morris-hover{position:absolute;z-index:1000;}.morris-hover.morris-default-style{border-radius:10px;padding:6px;color:#666;background:rgba(255, 255, 255, 0.8);border:solid 2px rgba(230, 230, 230, 0.8);font-family:sans-serif;font-size:12px;text-align:center;}.morris-hover.morris-default-style .morris-hover-row-label{font-weight:bold;margin:0.25em 0;}
-.morris-hover.morris-default-style .morris-hover-point{white-space:nowrap;margin:0.1em 0;}
+.morris-hover { position: absolute; z-index: 1000; }
+.morris-hover.morris-default-style { border-radius: 10px; padding: 6px; color: #666; background: rgba(255, 255, 255, 0.8); border: solid 2px rgba(230, 230, 230, 0.8); font-family: sans-serif; font-size: 12px; text-align: center; }
+.morris-hover.morris-default-style .morris-hover-row-label { font-weight: bold; margin: 0.25em 0; }
+.morris-hover.morris-default-style .morris-hover-point { white-space: nowrap; margin: 0.1em 0; }
+
+/*changes for charts */
+.morris-hover.morris-default-style { background: #909090; border-radius: 4px; color: #FFFFFF; font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif; font-size: 10px; padding: 0; text-align: center; border: none; }
+.morris-hover.morris-default-style .morris-hover-row-label { display: inline-block; font-weight: normal; margin: 0; padding: 4px 0 0 6px ; }
+.morris-hover.morris-default-style .morris-hover-point { background: none repeat scroll 0 0 #B3B3B3; border-radius: 0 3px 3px 0; color: #FFFFFF !important; display: inline-block; margin: 0; padding: 4px; white-space: nowrap; }
+.morris-hover.morris-default-style .morris-hover-point:after { border-bottom: 10px solid rgba(0, 0, 0, 0); border-left: 6px solid #B3B3B3; content: ""; display: block; height: 0; margin-left: -4px; position: relative; top: 14px; width: 0; }
+.morris-hover.morris-default-style .morris-hover-row-label:after { border-bottom: 10px solid rgba(0, 0, 0, 0); border-right: 6px solid #8F8F8F; content: ""; display: block; height: 0; margin-left: 40px; position: relative; top: 14px; width: 0; }
+#graph-area-line circle { fill: #FFFFFF; fill-opacity: 1; stroke: #80B1D2;}

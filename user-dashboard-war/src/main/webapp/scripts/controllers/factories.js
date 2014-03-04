@@ -9,7 +9,7 @@
 /**
  * @auth Gaurav Meena
  * @date 01/16/2014
- * Controller for factories
+ * Controller for factories 
  */
 
 /*global angular, Morris*/
@@ -31,7 +31,15 @@ angular.module('odeskApp')
                          xkey: 'x',
                          ykeys: ['z'],
                          labels: ['Z'],
-                         lineColors: ['#79D1CF', '#E67A77']});
+						 fillOpacity : 0,
+						 grid : false,
+						 goals : [0.0],
+						//axes : true,
+						 //barColors : "#000",
+						// pointFillColors : "#fff" ,
+						// pointSize : 4,
+						goalLineColors : ["#E2E2E2", "#E2E2E2"],
+                         lineColors: ["#E2E2E2", "#E2E2E2"]});
 
         });
     });

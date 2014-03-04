@@ -279,7 +279,7 @@
                 zeroColor: undefined,
                 nullColor: undefined,
                 zeroAxis: true,
-                barWidth: 4,
+                barWidth: 2,
                 barSpacing: 1,
                 chartRangeMax: undefined,
                 chartRangeMin: undefined,

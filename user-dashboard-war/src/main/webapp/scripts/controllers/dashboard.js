@@ -26,20 +26,5 @@ angular.module('odeskApp')
         $timeout(function () {
             $("[rel=tooltip]").tooltip({ placement: 'bottom'});
         });
-        $scope.test = function () {
-            console.log(this);
-        };
         
-    });
-
-angular.module('odeskApp')
-    .directive('stopEvent', function () {
-        return {
-            restrict: 'A',
-            link: function (scope, element, attr) {
-                element.bind(attr.stopEvent, function (e) {
-                    e.stopPropagation();
-                });
-            }
-        };
     });

@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                             Can our sales teams contact you to discuss our offerings? 
-                            <input type="checkbox" name="remember" value="1"> Yes
+                            <input type="checkbox" class="inputcheckbox" name="remember" value="1"> Yes
                             <div class="row">
                                 <div class="col-md-2 col-md-offset-10">
                                     <button class="btn btn-primary btn-block signup-btn" type="submit">Save</button>
@@ -169,24 +169,24 @@
                                 <div class="control-group">
                                     <div class="controls col-md-5 col-md-offset-1">
                                         <label class="checkbox">
-                                            <input type="checkbox"> Personal
+                                            <input type="checkbox" class="inputcheckbox"> Personal
                                         </label>
                                         <label class="checkbox">
-                                            <input type="checkbox"> Opensource
+                                            <input type="checkbox" class="inputcheckbox"> Opensource
                                         </label>
                                         <label class="checkbox">
-                                            <input type="checkbox"> Corporate
+                                            <input type="checkbox" class="inputcheckbox"> Corporate
                                         </label>
                                     </div>
                                     <div class="controls col-md-5 col-md-offset-1">
                                         <label class="checkbox">
-                                            <input type="checkbox"> Hackathon
+                                            <input type="checkbox" class="inputcheckbox"> Hackathon
                                         </label>
                                         <label class="checkbox">
-                                            <input type="checkbox"> Classroom
+                                            <input type="checkbox" class="inputcheckbox"> Classroom
                                         </label>
                                         <label class="checkbox">
-                                            <input type="checkbox"> Others
+                                            <input type="checkbox" class="inputcheckbox"> Others
                                         </label>
                                     </div>
                                 </div>
@@ -196,18 +196,18 @@
                                 <div class="control-group">
                                     <div class="controls col-md-5 col-md-offset-1">
                                         <label class="checkbox">
-                                            <input type="checkbox"> Mobile
+                                            <input type="checkbox" class="inputcheckbox"> Mobile
                                         </label>
                                         <label class="checkbox">
-                                            <input type="checkbox"> APIs
+                                            <input type="checkbox" class="inputcheckbox"> APIs
                                         </label>
                                     </div>
                                     <div class="controls col-md-5 col-md-offset-1">
                                         <label class="checkbox">
-                                            <input type="checkbox"> WebApps
+                                            <input type="checkbox" class="inputcheckbox"> WebApps
                                         </label>
                                         <label class="checkbox">
-                                            <input type="checkbox"> Others
+                                            <input type="checkbox" class="inputcheckbox"> Others
                                         </label>
                                     </div>
                                 </div>
@@ -227,3 +227,7 @@
         </div>
     </div>
 </div>
+<script src="bower_components/jquery/bootstrap-checkbox.js"></script>
+        <script type="text/javascript"> 
+			$('.inputcheckbox').checkbox();  
+	    </script>
