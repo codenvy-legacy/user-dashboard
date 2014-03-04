@@ -16,12 +16,12 @@
             <li ng-repeat="project in projects" ng-click="filter.workspace=project.workspace"><a href="">{{project.workspace}}</a></li>
         </ul>
     </li>
-    <li class="viewas"><span>VIEW AS:</span>
+    <li> VIEW AS:
         <a href="" ng-click="box = 0" > <i style="font-size:16px;" ng-class="{'garrow':box == 1}" class="fa fa-bars" rel="tooltip" title="List View"></i></a>
         &nbsp;<a href="" ng-click="box = 1"> <i style="font-size:16px;" ng-class="{'garrow':box == 0}" class="fa fa-th-large" rel="tooltip" title="Grid View"></i></a>
     </li>
 
-    <div class="pull-right" style="max-width:40px;">
+    <div class="pull-right" style="margin-top:2px;max-width:40px;">
         <div class="input-group" ng-click="search = 1">
             <input type="text" class="form-control" style="width:0;padding:0;" placeholder="Search ... ">
             <div class="input-group-btn" ng-if="!search">
@@ -31,7 +31,7 @@
     </div>
 </ul>
 <ul class="breadcrumb projectnav search pull-right"  ng-show="search">
-    <div class="pull-right col-md-12" style="padding:0px;">
+    <div class="pull-right col-md-12" style="margin-top:2px;padding:0px;">
         <div class="input-group">
             <input ng-model="filter.name" type="text" class="form-control" placeholder="Search ... ">
             <div class="input-group-btn">
@@ -49,7 +49,7 @@
             <div class="text-center" style="color:#919191"><strong>Create New Project</strong></div>
         </div>
         <div class="dropdown-menu createprjbox">
-            <img style="margin-left: 50px; margin-top: -42px;" src="../images/up-arrow.png"/>
+            <img style="margin-left: 50px; margin-top: -42px;" src="./images/up-arrow.png"/>
             <div >
                 <div class="btn simple btn-default col-md-12" style="margin-bottom:15px;" ng-click="projectselect=1">Create using our wizard</div>
                 <div class="btn simple btn-default col-md-12" style="margin-bottom:15px;" stop-event='click' ng-click="test()">Create from factories</div>
@@ -129,7 +129,6 @@
                     <div class="col-md-4"><div class="row"><i class="fa fa-unlock"></i><small> {{project.visibility}}</small></div></div>
                     <div class="col-md-4"><div class="row"><i class="fa fa-users"></i><small> Share</small></div></div>
                     <div class="col-md-4"><div class="row"><i class="fa fa-cog"></i></div></div>
-
                 </div>
             </div>
         </div>
