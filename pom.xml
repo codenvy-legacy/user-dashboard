@@ -4,7 +4,7 @@
     <parent>
         <artifactId>maven-parent-pom</artifactId>
         <groupId>com.codenvy</groupId>
-        <version>3.1.1-SNAPSHOT</version>
+        <version>3.1.1</version>
     </parent>
     <groupId>com.codenvy.dashboard</groupId>
     <artifactId>user-dashboard-parent</artifactId>
@@ -17,9 +17,9 @@
     <properties>
         <ch.qos.logback.version>1.0.13</ch.qos.logback.version>
         <javax.mail.version>1.4.2</javax.mail.version>
-        <org.slf4j.version>1.7.5</org.slf4j.version>
-        <tomcat.version>7.0.50</tomcat.version>
         <maven.releases.repo.url>https://maven.codenvycorp.com/content/repositories/codenvy-private-releases/</maven.releases.repo.url>
         <maven.snapshots.repo.url>https://maven.codenvycorp.com/content/repositories/codenvy-private-snapshots/</maven.snapshots.repo.url>
+        <org.slf4j.version>1.7.5</org.slf4j.version>
+        <tomcat.version>7.0.50</tomcat.version>
     </properties>
 </project>
