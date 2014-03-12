@@ -19,5 +19,7 @@
         <javax.mail.version>1.4.2</javax.mail.version>
         <org.slf4j.version>1.7.5</org.slf4j.version>
         <tomcat.version>7.0.50</tomcat.version>
+        <maven.releases.repo.url>https://maven.codenvycorp.com/content/repositories/codenvy-private-releases/</maven.releases.repo.url>
+        <maven.snapshots.repo.url>https://maven.codenvycorp.com/content/repositories/codenvy-private-snapshots/</maven.snapshots.repo.url>
     </properties>
 </project>
