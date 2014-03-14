@@ -4,8 +4,8 @@
  */
 
 var express = require('express'),
-  routes = require('./routes'),
-  api = require('./routes/api'),
+  //routes = require('./routes'),
+  //api = require('./routes/api'),
   http = require('http'),
   path = require('path');
 
@@ -39,11 +39,11 @@ if (app.get('env') === 'production') {
 
 
 // Routes
-app.get('/', routes.index);
-app.get('/partial/:name', routes.partial);
+//app.get('/', routes.index);
+//app.get('/partial/:name', routes.partial);
 
 // JSON API
-app.get('/api/name', api.name);
+//app.get('/api/name', api.name);
 
 /**
 * Start Server
