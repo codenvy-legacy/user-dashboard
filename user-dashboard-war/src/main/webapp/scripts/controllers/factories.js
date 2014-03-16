@@ -41,6 +41,10 @@ angular.module('odeskApp')
                          pointSize:5,
                          pointFillColors:['#ffffff'],
                          pointStrokeColors:['#90c6ec'],
+                         hoverCallback: function(index, options, content) {
+                            var row = options.data[index];
+                            return "<div class='morris-hover-row-label'>"+row.z+" Sessions</div><div class='morris-hover-point'>235 Minutes</div>";
+                        },
                          lineColors: ['#e5e5e5']});
 
         });

@@ -47,6 +47,10 @@ angular.module('odeskApp')
                          smooth:false,
                          goals:[0],
                          xLabels:'day',
+                         hoverCallback: function(index, options, content) {
+                            var row = options.data[index];
+                            return "<div class='morris-hover-row-label'>"+row.z+" Sessions</div><div class='morris-hover-point'>235 Minutes</div>";
+                        },
                          goalLineColors:['#d9d9d9'],
                          eventLineColors:['#d9d9d9'],
                          events:[Data[0].x],
