@@ -24,6 +24,16 @@
              <li ng-repeat="project in projects"><a href="" ng-click="filter.workspace=project.workspace">{{project.workspace}}</a></li>
         </ul>
     </li>
+    <div class="search1">
+      <input type="button" class="searchfield "/>
+
+</div>
+  <!-- content title-->
+<div class="searchfull searchfullfactory clearfix" style="display:none;" >
+      <input type="button" class="closeBtn" style="display:none;" />
+      <input type="text" ng-model="filter.name" class="searchfield " placeholder="Search for project and documents"/>
+</div>
+    <!--
     <div class="pull-right" ng-class="{'col-md-12 showfactorysearch':search, 'hidefactorysearch':!search}">
         <div class="input-group">
             <input type="text" ng-show="!search" class="form-control" style="width:0;padding:0;" placeholder="Search ... ">
@@ -36,6 +46,7 @@
             </div>
         </div>
     </div>
+    -->
 </ul>
 
         <table class="table table-striped table-condensed-" style="background:#ffffff;">

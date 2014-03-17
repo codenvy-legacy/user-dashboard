@@ -96,3 +96,33 @@ th h4 { font-weight:normal; }
 .morris-hover.morris-default-style { background:transparent; padding:0; border:none; border-radius:0; color:#ffffff; min-width:125px;}
 .morris-hover.morris-default-style .morris-hover-row-label { margin:0; font-weight: normal;}
 .morris-hover.morris-default-style .morris-hover-point { margin:0; }
+
+
+.search1   {float: right; height: 35px;  }
+
+.searchfield { background: url(../images/searchIcon.png) no-repeat center center #E3E3E3;
+    border: medium none; border-left: 1px solid #ddd;
+       height: 36px;
+    padding: 0;
+    width: 42px; color: #555; }
+
+.searchfull  {position: relative; position: absolute;
+    right: 0;
+    top: 47px;}
+.searchfullfactory  {
+    top: 0px;}
+  .searchfull  .searchfield { background: url(../images/searchIcon.png) no-repeat 10px center #E3E3E3;
+    	border: medium none; border-left: 1px solid #ddd;
+       height: 36px;
+    padding: 0 10px 0 30px;
+    width: 100%; color: #555; font-style: italic;}
+
+
+    .closeBtn { background: url(../images/closeIcon.png) no-repeat center center; border:none;  height: 36px;
+    opacity: 0.4;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 43px;}
+    .closeBtn:hover , .closeBtn:focus { opacity: 1 }

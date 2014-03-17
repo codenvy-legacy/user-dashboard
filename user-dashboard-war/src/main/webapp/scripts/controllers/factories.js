@@ -47,5 +47,19 @@ angular.module('odeskApp')
                         },
                          lineColors: ['#e5e5e5']});
 
+        $(document).on( "click", ".searchfield", function() {
+            console.log('cl1');
+            $('.searchfull').show();
+            $('.detail').animate({ opacity: 0}, 400);
+            $('.searchfull').animate({width: "100%" }, 400, function(){ $(".closeBtn").show(); } );
+            
+        });
+        $(document).on( "click", ".closeBtn", function() {
+            console.log('cl2');
+            $(".closeBtn").hide();
+            $('.detail').animate({ opacity: 1}, 400);
+            $('.searchfull').animate({width: "43px" }, 400 , function(){ $('.searchfull').hide();   });
+        });
+
         });
     });
