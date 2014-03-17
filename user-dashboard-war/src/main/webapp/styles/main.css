@@ -1,7 +1,8 @@
 /* Base CSS, minimal change needed therefore removed whitespace */
 .hidesearch {margin-top:2px;max-width:40px;}
 .showsearch {margin-top:2px;padding:0px; position:absolute; top:45px;}
-.showfactorysearch {margin-top:2px;padding:0px; position:absolute; top:0px;}
+.hidefactorysearch {margin-top:0px;max-width:40px;}
+.showfactorysearch {margin-top:1px;padding:0px; position:absolute; top:0px;}
 html, 
 body  { height: 100%; }
 body  { padding-top: 45px; font-size: 11px; }

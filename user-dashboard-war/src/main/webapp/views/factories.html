@@ -24,7 +24,7 @@
              <li ng-repeat="project in projects"><a href="" ng-click="filter.workspace=project.workspace">{{project.workspace}}</a></li>
         </ul>
     </li>
-    <div class="pull-right" ng-class="{'col-md-12 showfactorysearch':search, 'hidesearch':!search}">
+    <div class="pull-right" ng-class="{'col-md-12 showfactorysearch':search, 'hidefactorysearch':!search}">
         <div class="input-group">
             <input type="text" ng-show="!search" class="form-control" style="width:0;padding:0;" placeholder="Search ... ">
             <input type="text" ng-show="search" ng-model="filter.name" class="form-control search pull-right" placeholder="Search ... ">
