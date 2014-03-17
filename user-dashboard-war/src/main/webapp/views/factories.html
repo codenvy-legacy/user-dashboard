@@ -8,7 +8,7 @@
 </div>
 <div class="col-md-12">
     <div class="row">
-        <ul class="breadcrumb projectnav" style="margin-bottom:0px;border-top:1px solid #dcdcdc; border-bottom:none;" ng-hide="search">
+<ul class="breadcrumb projectnav" style="margin-bottom:0px;border-top:1px solid #dcdcdc; border-bottom:none;">
             <li>Your most popular factories</li>
             <li class="dropdown user-dropdown"> LAST:
                 <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-up"></i> Last 30 Days</a>
@@ -24,21 +24,15 @@
              <li ng-repeat="project in projects"><a href="" ng-click="filter.workspace=project.workspace">{{project.workspace}}</a></li>
         </ul>
     </li>
-        <div class="pull-right" style="margin-top:1px;max-width:40px;">
-        <div class="input-group" ng-click="search = 1">
-            <input type="text" class="form-control" style="width:0;padding:0;" placeholder="Search ... ">
-            <div class="input-group-btn" ng-if="!search">
-                <button class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
-            </div>
-        </div>
-    </div>
-</ul>
-<ul class="breadcrumb projectnav search pull-right" style="margin-bottom:0px;border-top:1px solid #dcdcdc;border-bottom:none;" ng-show="search">
-    <div class="pull-right col-md-12" style="margin-top:1px;padding:0px;">
+    <div class="pull-right" ng-class="{'col-md-12 showfactorysearch':search, 'hidesearch':!search}">
         <div class="input-group">
-            <input ng-model="filter.name" type="text" class="form-control" placeholder="Search ... ">
-            <div class="input-group-btn">
-                <button class="btn btn-default" ng-click="search = 0"><i class="glyphicon glyphicon-remove"></i></button> 
+            <input type="text" ng-show="!search" class="form-control" style="width:0;padding:0;" placeholder="Search ... ">
+            <input type="text" ng-show="search" ng-model="filter.name" class="form-control search pull-right" placeholder="Search ... ">
+            <div class="input-group-btn" ng-show="!search">
+                <button class="btn btn-default" ng-click="search = !search"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+            <div class="input-group-btn" ng-show="search">
+                <button class="btn btn-default" ng-click="search = !search"><i class="glyphicon glyphicon-remove"></i></button> 
             </div>
         </div>
     </div>
