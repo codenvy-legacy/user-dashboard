@@ -11,6 +11,15 @@
     <packaging>war</packaging>
     <name>user-dashboard-war Maven Webapp</name>
     <build>
-        <finalName>user-dashboard-war</finalName>
-    </build>
+      <finalName>user-dashboard-war</finalName>
+        <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+        </plugins>
+      </build>
 </project>
