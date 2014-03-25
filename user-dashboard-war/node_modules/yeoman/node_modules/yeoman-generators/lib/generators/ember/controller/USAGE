@@ -1,0 +1,8 @@
+Description:
+    Creates a new Ember.js controller
+
+Example:
+    yeoman init controller Thing
+
+    This will create:
+        app/scripts/controllers/thing-controller.js
