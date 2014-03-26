@@ -1,0 +1,47 @@
+<style>
+ .no-org
+{
+background-image:url('../images/organizations.jpg');
+background-repeat:no-repeat;
+background-attachment:fixed;
+background-position:center;
+height:100%;
+min-height:500px;
+}
+</style>
+<div ng-if="!organizations" class="no-org"></div>
+
+<div ng-if="organizations" class="col-md-12" style="margin-top:20px;">
+                <div class="col-md-12" style="background:#fff;"><h4 class="text-center">Organizations</h4></div>
+		<div class="col-md-12">
+				<div style="width: 100%;" class="searchfull searchfullfactory clearfix">
+      					<input type="text" placeholder="Search..." class="searchfield  ng-pristine ng-valid" ng-model="filter.name">
+				</div>
+			<div class="row">
+			<table class="table table-condensed-" style="background:#ffffff;margin-top:36px;">
+            <thead>
+                <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
+                    <th class="col-md-2 text-center" style="padding-top:5px;padding-bottom:5px;">ORGANIZATION</th>
+                    <th class="col-md-2 text-center" style="padding-top:5px;padding-bottom:5px;">ORG ID</th>
+                    <th class="col-md-2 text-center" style="padding-top:5px;padding-bottom:5px;">OWNER</th>
+                    <th class="col-md-2 text-center" style="padding-top:5px;padding-bottom:5px;">CREATION DATE</th>
+                    <th class="col-md-1 text-center" style="padding-top:5px;padding-bottom:5px;">NUMBER OF MEMBERS</th>
+                    <th class="col-md-1 text-center" style="padding-top:5px;padding-bottom:5px;">FACTORIES</th>
+                    <th class="col-md-1 text-center" style="padding-top:5px;padding-bottom:5px;">WORKSPACES</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="project in [1,2,3,4,5]| filter: filter | orderBy:param:reverse">
+                    <td class="text-center"><a href="">Intuit</a></td>
+                    <td class="text-center"><a href="">KEK</a></td>
+                    <td class="text-center"><a href="">gaurav@dot.com</a></td>
+                    <td class="text-center">12/12/12</td>
+                    <td class="text-center">29</td>
+                    <td class="text-center">29</td>
+                    <td class="text-center">29</td>
+                </tr>
+            </tbody>
+        </table></div>
+        </div> 
+</div>
+

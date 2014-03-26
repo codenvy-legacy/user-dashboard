@@ -17,7 +17,7 @@
 
 angular.module('odeskApp')
     .factory('projectList',  ['$resource', function ($resource) {
-        return $resource('http://a4.codenvy-dev.com/api/project/ws1/list', {}, {
+        return $resource('./api/workspace/all', {}, {
             query: {method: 'GET', params: {}, isArray: true}
         });
     }]);

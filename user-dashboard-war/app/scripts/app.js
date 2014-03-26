@@ -24,6 +24,10 @@ angular.module('odeskApp', [
     'ngAnimate'
 ]).config(function ($routeProvider, $locationProvider) {
     $routeProvider
+        .when('/login', {
+            templateUrl: 'views/login.html',
+            controller: 'LoginCtrl'
+        })
 	    .when('/dashboard', {
             templateUrl: 'views/dashboard.html',
             controller: 'DashboardCtrl'
@@ -35,6 +39,14 @@ angular.module('odeskApp', [
 	    .when('/stats', {
             templateUrl: 'views/stats.html',
             controller: 'StatsCtrl'
+        })
+        .when('/admin', {
+            templateUrl: 'views/admin.html',
+            controller: 'AdminCtrl'
+        })
+	    .when('/organizations', {
+            templateUrl: 'views/organizations.html',
+            controller: 'OrganizationsCtrl'
         })
         .when('/account', {
             templateUrl: 'views/account/profile.html',
@@ -57,7 +69,7 @@ angular.module('odeskApp', [
             controller: 'DashboardCtrl'
         })
         .otherwise({
-            redirectTo: '/dashboard'
+            redirectTo: '/login'
         });
 	//while uncommenting line below fix # in navbar.js
     //$locationProvider.html5Mode(true);
