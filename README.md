@@ -41,9 +41,11 @@ It can be installed from [NodeJS downloads](http://nodejs.org/download/)
 
 Enter https://github.com/codenvy/user-dashboard and a project's name if not automatically defined.
 
-2) Once the project has been cloned, start the application by clicking on the run button
+2) Once the project has been cloned, pick-up "AngularJS project" in the list of project type when the project is loaded.
 
-3) Open the browser on the URL that has been displayed in codenvy IDE.
+3) Start the application by clicking on the run button
+
+4) Open the browser on the URL that has been displayed in codenvy IDE.
 
 
 ## Developers
