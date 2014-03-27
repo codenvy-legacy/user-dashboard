@@ -7,19 +7,42 @@
         <version>3.1.1</version>
     </parent>
     <groupId>com.codenvy.dashboard</groupId>
-    <artifactId>user-dashboard-parent</artifactId>
+    <artifactId>user-dashboard-war</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <modules>
-        <module>user-dashboard-war</module>
-        <module>user-dashboard-tomcat-demo</module>
-    </modules>
+    <packaging>war</packaging>
+    <name>User Dashboard :: Web App</name>
     <properties>
-        <ch.qos.logback.version>1.0.13</ch.qos.logback.version>
-        <javax.mail.version>1.4.2</javax.mail.version>
         <maven.releases.repo.url>https://maven.codenvycorp.com/content/repositories/codenvy-private-releases/</maven.releases.repo.url>
         <maven.snapshots.repo.url>https://maven.codenvycorp.com/content/repositories/codenvy-private-snapshots/</maven.snapshots.repo.url>
-        <org.slf4j.version>1.7.5</org.slf4j.version>
-        <tomcat.version>7.0.50</tomcat.version>
     </properties>
+    <build>
+        <finalName>user-dashboard-war</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <exec dir="${basedir}/target" executable="grunt" failonerror="true">
+                                    <arg value="build" />
+                                </exec>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
