@@ -48,6 +48,10 @@ angular.module('odeskApp', [
             templateUrl: 'views/organizations.html',
             controller: 'OrganizationsCtrl'
         })
+	    .when('/organizations/:name', {
+            templateUrl: 'views/orgdetail.html',
+            controller: 'OrgdetailCtrl'
+        })
         .when('/account', {
             templateUrl: 'views/account/profile.html',
             controller: 'DashboardCtrl'
