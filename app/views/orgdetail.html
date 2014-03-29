@@ -1,3 +1,180 @@
 <div class="container">
-    <strong>ORGANIZATION : </strong>{{name}}
+    <div class="col-md-12" style="margin-top:10px;"><strong>ORGANIZATION : </strong><span style="color:grey;">{{name}}</span></div>
+    <div class="col-md-6">
+        <div class="panel panel-default panel-ce">
+            <div class="panel-body">
+                <h4 class="text-center">ORGANIZATION INFORMATION</h4>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="r" method="post" accept-charset="utf-8" class="form" role="form">   
+                            <!--<legend class="text-center">Billing Information</legend>-->
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="workspaceid">Organization Name:</label>
+                                    <input class="form-control" id="name" name="name" placeholder="Intuit" type="text" required autofocus />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="workspaceid">Organization Owner:</label>
+                                    <input class="form-control" id="email" name="email" placeholder="Stevan" type="text" required autofocus/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="workspaceid">Organization ID:</label>
+                                    <input class="form-control" id="name" name="name" placeholder="-- -- -- --" type="text" required autofocus />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 col-md-offset-9">
+                                    <button class="btn btn-primary btn-block signup-btn" type="submit"> Update </button>
+                                </div>
+                            </div>
+                        </form>          
+                    </div>
+                </div>            
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default panel-ce">
+            <div class="panel-body">
+                <h4 class="text-center">WORKSPACES</h4>
+            <div class="row">
+                <table class="table table-condensed-">
+            <thead>
+                <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
+                    <th class="col-md-3 text-center" style="padding-top:5px;padding-bottom:5px;">WORKSPACE NAME</th>
+                    <th class="col-md-3 text-center" style="padding-top:5px;padding-bottom:5px;">OWNER</th>
+                    <th class="col-md-3 text-center" style="padding-top:5px;padding-bottom:5px;">CREATION DATE</th>
+                    <th class="col-md-3 text-center" style="padding-top:5px;padding-bottom:5px;"></th>
+                </tr>
+            </thead>
+            <tbody style="background:#ffffff;">
+                <tr ng-repeat="project in [1,2,3,4,5]| filter: filter | orderBy:param:reverse">
+                    <td class="text-center"><a href="#/organizations/intuit">Intuit</a></td>
+                    <td class="text-center"><a href="">gaurav@dot.com</a></td>
+                    <td class="text-center">12/12/12</td>
+                    <td class="text-center"><a style="color:red" href="">Remove</a></td>
+                </tr>
+            </tbody>
+        </table></div>
+            </div>
+        </div>
+         <div data-toggle="modal" data-target="#myModal2"><a href="">+ADD WORKSPACE</a></div>
+    </div>
+    
+    <div class="col-md-12">
+        <div class="panel panel-default panel-ce">
+            <div class="panel-body">
+                <h4 class="text-center">USERS</h4>
+                            <div class="row">
+                <table class="table table-condensed-">
+            <thead>
+                <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
+                    <th class="col-md-2 text-center" style="padding-top:5px;padding-bottom:5px;">ADDED DATE</th>
+                    <th class="col-md-2 text-center" style="padding-top:5px;padding-bottom:5px;">USER</th>
+                    <th class="col-md-2 text-center" style="padding-top:5px;padding-bottom:5px;">PERMISSIONS</th>
+                    <th class="col-md-2 text-center" style="padding-top:5px;padding-bottom:5px;">PLUGINS</th>
+                    <th class="col-md-1 text-center" style="padding-top:5px;padding-bottom:5px;">PROJECTS</th>
+                    <th class="col-md-1 text-center" style="padding-top:5px;padding-bottom:5px;">FACTORIES</th>
+                    <th class="col-md-1 text-center" style="padding-top:5px;padding-bottom:5px;">LAST LOGIN</th>
+                    <th class="col-md-1 text-center" style="padding-top:5px;padding-bottom:5px;"></th>
+                </tr>
+            </thead>
+            <tbody style="background:#ffffff;">
+                <tr ng-repeat="project in [1,2,3,4,5]| filter: filter | orderBy:param:reverse">
+                    <td class="text-center"><a href="#/organizations/intuit">Intuit</a></td>
+                    <td class="text-center"><a href="">KEK</a></td>
+                    <td class="text-center"><a href="">gaurav@dot.com</a></td>
+                    <td class="text-center">12/12/12</td>
+                    <td class="text-center">29</td>
+                    <td class="text-center">29</td>
+                    <td class="text-center">29</td>
+                    <td class="text-center"><a style="color:red" href="">Remove</a></td>
+                </tr>
+            </tbody>
+        </table></div>
+            </div>
+        </div>
+        <div data-toggle="modal" data-target="#myModal3"><a href="">+ADD USER</a></div>
+    </div>
+</div>
+
+<!-- Modal 2-->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="padding:10px;background:#f0f0f0;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Workspace Details</h4>
+      </div>
+      <div class="modal-body" style="padding:0px;">
+          <div class="col-md-6 form-group">
+                <label for="workspaceid">workspace Details:</label>
+                <input type="text" autofocus="" required="" placeholder="Intuit" name="name" id="name" class="form-control">
+        </div>
+      </div>
+      <div class="modal-footer" style="margin-top:0px;padding:10px; background:#f0f0f0;">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 3-->
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="padding:10px;background:#f0f0f0;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Add User</h4>
+      </div>
+      <div class="modal-body" style="padding:0px;">
+          <div class="col-md-6 form-group">
+                <label for="workspaceid">USER ID:</label>
+                <input type="text" autofocus="" required="" placeholder="--" name="name" id="name" class="form-control">
+            </div>
+          <h4 class="text-center">WORKSPACE SELECTION</h4>
+                
+                <table class="table table-condensed-">
+            <thead>
+                <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
+                    <th class="col-md-2 text-center" style="padding-top:5px;padding-bottom:5px;"></th>
+                    <th class="col-md-2 text-center" style="padding-top:5px;padding-bottom:5px;">WORKSPACE</th>
+                    <th class="col-md-2 text-center" style="padding-top:5px;padding-bottom:5px;">ROLE</th>
+                    <th class="col-md-4 text-center" style="padding-top:5px;padding-bottom:5px;">PERMISSIONS</th>
+                    <th class="col-md-2 text-center" style="padding-top:5px;padding-bottom:5px;">PLUGINS</th>
+                </tr>
+            </thead>
+            <tbody style="background:#ffffff;">
+                <tr ng-repeat="project in [1,2,3,4,5]| filter: filter | orderBy:param:reverse">
+                    <td class="text-center"><input type="checkbox"></td>
+                    <td class="text-center">sl</td>
+                    <td class="text-center">admin</td>
+                    <td class="text-center"><div class="row">
+                                <div class="control-group">
+                                    <div class="controls col-md-5 col-md-offset-1">
+                                        <label class="checkbox">
+                                            <input type="checkbox"> Read
+                                        </label>
+                                    </div>
+                                    <div class="controls col-md-5 col-md-offset-1">
+                                        <label class="checkbox">
+                                            <input type="checkbox"> Write
+                                        </label>
+                                    </div>
+                                </div>
+                            </div></td>
+                    <td class="text-center"><a href="">+add plugin</a></td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+      <div class="modal-footer" style="margin-top:0px;padding:10px; background:#f0f0f0;">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+      </div>
+    </div>
+  </div>
 </div>
