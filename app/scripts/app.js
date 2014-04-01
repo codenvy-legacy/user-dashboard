@@ -15,7 +15,7 @@
 /*global angular*/
 
 'use strict';
-
+var DEV = false;
 angular.module('odeskApp', [
     'ngCookies',
     'ngResource',
@@ -23,6 +23,14 @@ angular.module('odeskApp', [
     'ngRoute',
     'ngAnimate'
 ]).config(function ($routeProvider, $locationProvider) {
+    var DEFAULT;
+    
+    if (DEV) {
+        DEFAULT = '/login';
+    } else {
+        DEFAULT = '/dashboard';
+    }
+    
     $routeProvider
         .when('/login', {
             templateUrl: 'views/login.html',
@@ -73,7 +81,7 @@ angular.module('odeskApp', [
             controller: 'DashboardCtrl'
         })
         .otherwise({
-            redirectTo: '/dashboard'
+            redirectTo: DEFAULT
         });
 	//while uncommenting line below fix # in navbar.js
     //$locationProvider.html5Mode(true);
