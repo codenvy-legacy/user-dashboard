@@ -73,7 +73,7 @@ angular.module('odeskApp', [
             controller: 'DashboardCtrl'
         })
         .otherwise({
-            redirectTo: '/login'
+            redirectTo: '/dashboard'
         });
 	//while uncommenting line below fix # in navbar.js
     //$locationProvider.html5Mode(true);
