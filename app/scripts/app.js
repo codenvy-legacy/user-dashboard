@@ -32,10 +32,6 @@ angular.module('odeskApp', [
     }
     
     $routeProvider
-        .when('/login', {
-            templateUrl: 'views/login.html',
-            controller: 'LoginCtrl'
-        })
 	    .when('/dashboard', {
             templateUrl: 'views/dashboard.html',
             controller: 'DashboardCtrl'
@@ -80,9 +76,14 @@ angular.module('odeskApp', [
             templateUrl: 'views/account/billing.html',
             controller: 'DashboardCtrl'
         })
+        .when('/login', {
+            templateUrl: 'views/login.html',
+            controller: 'LoginCtrl'
+        })
         .otherwise({
             redirectTo: DEFAULT
         });
+    
 	//while uncommenting line below fix # in navbar.js
     //$locationProvider.html5Mode(true);
 });

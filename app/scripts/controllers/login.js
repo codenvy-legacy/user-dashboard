@@ -16,7 +16,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('LoginCtrl', function ($scope, $timeout, $http, $location) {
+    .controller('LoginCtrl', function ($scope, $timeout, $http, $location, $cookies) {
         $scope.username = 'test';
         $scope.password = 'test';
         $scope.submit = function () {
@@ -27,6 +27,7 @@ angular.module('odeskApp')
                 
             }).then(function (response) { // success
                 //window.location.href = "/#/dashboard";
+                $cookies.token = response.data.token;
                 $location.path("/dashboard");
             }, function (response) { // optional
                 alert('error');
