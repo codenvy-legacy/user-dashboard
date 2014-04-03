@@ -60,10 +60,7 @@ angular.module('odeskApp')
             $http({
                 url: "/api/auth/logout",
                 method: "POST",
-                data: { "token": $cookies.token} 
-            }).then(function (resp) {
-                $cookies.token = "";
+                data: { "token": $cookies.session-access-key} 
             });
-            $cookies.token = "";
         };
     });
