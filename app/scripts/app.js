@@ -16,6 +16,8 @@
 
 'use strict';
 var DEV = false;
+var BASE_URL = '/dashboard/';
+
 angular.module('odeskApp', [
     'ngCookies',
     'ngResource',
@@ -33,51 +35,51 @@ angular.module('odeskApp', [
     
     $routeProvider
 	    .when('/dashboard', {
-            templateUrl: 'views/dashboard.html',
+            templateUrl: BASE_URL + 'views/dashboard.html',
             controller: 'DashboardCtrl'
         })
 	    .when('/factories', {
-            templateUrl: 'views/factories.html',
+            templateUrl: BASE_URL + 'views/factories.html',
             controller: 'FactoriesCtrl'
         })
 	    .when('/stats', {
-            templateUrl: 'views/stats.html',
+            templateUrl: BASE_URL + 'views/stats.html',
             controller: 'StatsCtrl'
         })
         .when('/admin', {
-            templateUrl: 'views/admin.html',
+            templateUrl: BASE_URL + 'views/admin.html',
             controller: 'AdminCtrl'
         })
 	    .when('/organizations', {
-            templateUrl: 'views/organizations.html',
+            templateUrl: BASE_URL + 'views/organizations.html',
             controller: 'OrganizationsCtrl'
         })
 	    .when('/organizations/:name', {
-            templateUrl: 'views/orgdetail.html',
+            templateUrl: BASE_URL + 'views/orgdetail.html',
             controller: 'OrgdetailCtrl'
         })
         .when('/account', {
-            templateUrl: 'views/account/profile.html',
+            templateUrl: BASE_URL + 'views/account/profile.html',
             controller: 'AccountConfigCtrl'
         })
         .when('/account/configuration', {
-            templateUrl: 'views/account/configuration.html',
+            templateUrl: BASE_URL + 'views/account/configuration.html',
             controller: 'AccountConfigCtrl'
         })
         .when('/account/preferences', {
-            templateUrl: 'views/account/preferences.html',
+            templateUrl: BASE_URL + 'views/account/preferences.html',
             controller: 'AccountConfigCtrl'
         })
         .when('/account/profile', {
-            templateUrl: 'views/account/profile.html',
+            templateUrl: BASE_URL + 'views/account/profile.html',
             controller: 'AccountConfigCtrl'
         })
         .when('/account/billing', {
-            templateUrl: 'views/account/billing.html',
-            controller: 'AccountConfigCtrl'
+            templateUrl: BASE_URL + 'views/account/billing.html',
+            controller: 'DashboardCtrl'
         })
         .when('/login', {
-            templateUrl: 'views/login.html',
+            templateUrl: BASE_URL + 'views/login.html',
             controller: 'LoginCtrl'
         })
         .otherwise({
