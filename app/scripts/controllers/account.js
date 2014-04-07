@@ -12,14 +12,33 @@
  * This script will contain all controller related to account section
  */
 
-/*global angular*/
+/*global angular, $*/
 
 'use strict';
-
 angular.module('odeskApp')
-    .controller('AccountConfigCtrl', function ($scope, $http, userProfile) {
-        $scope.profile = {"attributes":[{"name":"firstName","value":"first","description":null},{"name":"lastName","value":"last","description":null},{"name":"email","value":"test@domain.com","description":"User email"}]};
-        userProfile.query(function(resp){
-            $scope.profile = resp;
+    .controller('AccountConfigCtrl', function ($scope, $http, userProfile, password) {
+        $scope.attributes = [
+            {"name" : "firstName", "value" : "testfirst", "description" : null},
+            {"name" : "lastName", "value" : "testlast", "description" : null},
+            {"name" : "phone", "value" : "------", "description" : null},
+            {"name" : "employer", "value" : "------", "description" : null},
+            {"name" : "jobtitle", "value" : "------", "description" : null},
+            {"name" : "email", "value" : "--@----.---", "description": "User email"}
+        ];
+        
+        userProfile.query(function (resp) {
+            $scope.attributes = resp.attributes;
         });
+        
+        $scope.updateProfile = function () {
+            userProfile.update({}, $scope.attributes);
+        };
+            
+        $scope.updatePassword = function () {
+            if ($scope.password === $scope.password_verify) {
+                password.update({}, $scope.password);
+            } else {
+                alert("password don't match");
+            }
+        };
     });

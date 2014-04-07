@@ -17,11 +17,35 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $timeout, projectList) {
+    .controller('DashboardCtrl', function ($scope, $timeout, projectList, project) {
         
         $scope.box = 1;
         $scope.search = 0;
-        $scope.projects = projectList.query();
+        $scope.projects = [
+        {
+            "url":"https://codenvy.com/api/project/workspace1q2w3e/Test-Project",
+            "visibility":"public",
+            "projectTypeId":"spring",
+            "workspace":"1q2w3e",
+            "projectTypeName":"Spring Application",
+            "name":"Test-Project",
+            "description":"This is my sample application"
+        },
+        {
+            "url":"https://codenvy.com/api/project/workspace1q2w3e/jar",
+            "visibility":"public",
+            "projectTypeId":"jar",
+            "workspace":"1q2w3e",
+            "projectTypeName":"Java Library (JAR)",
+            "name":"jar",
+            "description":"Test JAR"
+        }
+        ];
+        projectList.query(function(resp){
+            $scope.projects = resp;
+        });
+        
+        project.query({workspaceID:'Workspacexxxxxx'});
         $scope.filter = {};
         $timeout(function () {
             $("[rel=tooltip]").tooltip({ placement: 'bottom'});

@@ -1,8 +1,10 @@
 <ul class="breadcrumb boxnav">
     <li class="active"><a href="#/account/profile">Profile</a></li>
+   <!-- 
     <li><a href="#/account/configuration">Configuration</a></li>
     <li><a href="#/account/preferences">Preferences</a></li>
     <li><a href="#/account/billing">Billing</a></li>
+-->
 </ul>
 <div class="container">
     <div class="col-md-6">
@@ -11,7 +13,7 @@
                 <h4 class="text-center">Your Information</h4>
                 <div class="row">
                     <div class="col-md-12">
-                        <form action="r" method="post" accept-charset="utf-8" class="form" role="form">   
+                        <form method="post" accept-charset="utf-8" class="form" role="form" ng-submit="updateProfile()">   
                             <!--<legend class="text-center">Billing Information</legend>-->
                             <div class="row">
                                 <div class="col-md-6 form-group">
@@ -80,24 +82,23 @@
                 <h4 class="text-center">Update Your Password</h4>
                 <div class="row">
                     <div class="col-md-12">
-                        <form action="r" method="post" accept-charset="utf-8" class="form" role="form">   
-                            <!--<legend class="text-center">Billing Information</legend>-->
+                        <form method="post" accept-charset="utf-8" class="form" role="form" ng-submit="updatePassword()">
                             <div class="row">
                                 <div class="col-md-12 form-group">
-                                    <label for="workspaceid">Old Password:</label>
+                                    <label for="workspaceid">Old Pasword:</label>
                                     <input class="form-control" id="name" name="name" placeholder="" type="password" required autofocus />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label for="workspaceid">New Password:</label>
-                                    <input class="form-control" id="name" name="name" placeholder="" type="password" required autofocus />
+                                    <input class="form-control" id="password1" name="password1" placeholder="" type="password" ng-model="password" ng-required="" required autofocus />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 form-group">
-                                    <label for="workspaceid">Repeat New Pasword:</label>
-                                    <input class="form-control" id="name" name="name" placeholder="" type="password" required autofocus />
+                                    <label for="workspaceid">Repeat New Password:</label>
+                                    <input class="form-control" id="password2" name="password2" placeholder="" type="password" ng-model="password_verify" ng-required="" required autofocus />
                                 </div>
                             </div>
                             <div class="row">

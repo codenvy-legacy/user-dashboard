@@ -56,11 +56,12 @@ angular.module('odeskApp')
                 return false;
             }
         };
+        
         $scope.logout = function () {
             $http({
                 url: "/api/auth/logout",
                 method: "POST",
-                data: { "token": $cookies.session-access-key} 
+                data: { "token": $cookies['session-access-key']}
             });
         };
     });

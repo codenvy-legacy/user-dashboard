@@ -29,25 +29,6 @@
       <input type="button" class="closeBtn" style="display:none;" />
       <input type="text" ng-model="filter.name" class="searchfield " placeholder="Search for project and documents"/>
 </div>
- <!--   <div class="pull-right" ng-class="{'col-md-12 showsearch':search, 'hidesearch':!search}">
-
-<div class="input-group" ng-click="search = !search">
-  <span class="input-group-addon" ><i class="glyphicon glyphicon-search"></i></span>
-  <input type="text" class="form-control search" ng-show="search" style="background:#eeeeee;">
-  <span class="input-group-addon" ng-if="search"><i class="glyphicon glyphicon-remove"></i></span>
-</div>
-        <div class="input-group">
-            <input type="text" ng-show="!search" class="form-control" style="width:0;padding:0;" placeholder="Search ... ">
-            <input type="text" ng-show="search" ng-model="filter.name" class="form-control search pull-right" placeholder="Search ... ">
-            <div class="input-group-btn" ng-show="!search">
-                <button class="btn btn-default" style="background:#e3e3e3;" ng-click="search = !search"><i class="glyphicon glyphicon-search"></i></button>
-            </div>
-            <div class="input-group-btn" ng-show="search">
-                <button class="btn btn-default"  style="background:#e3e3e3;" ng-click="search = !search"><i class="glyphicon glyphicon-remove"></i></button> 
-            </div>
-        </div>
-    </div>
-    -->
 </ul>
 <div class="row"></div>
 <!-- work in progress ... code may contain inline css-->
@@ -78,7 +59,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-md-3"  style="width:54px"><a href="{{project.url}}"><img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeName}}.png" alt=""></a></div>
+                        <div class="col-md-3"  style="width:54px"><a href="{{project.url}}"><img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt=""></a></div>
                         <div class="col-md-9">
                             <h3 class="panel-title"><a href="{{project.url}}"><strong>{{project.name}}</strong></a></h3>
                             <span>{{project.workspace}}</span>
