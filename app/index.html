@@ -6,20 +6,20 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <!--<base href="/">-->
+        <base href="/dashboard/">
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- build:css(app) styles/vendor.css -->
         <!-- bower:css -->
-        <link rel="stylesheet" href="/dashboard/bower_components/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/dashboard/bower_components/morris.js/morris.css">
+        <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="bower_components/morris.js/morris.css">
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:css({.tmp,app}) styles/main.css -->
-        <link rel="stylesheet" href="/dashboard/styles/bootstrap.css" />
-        <link rel="stylesheet" href="/dashboard/styles/main.css">
+        <link rel="stylesheet" href="styles/bootstrap.css" />
+        <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
     </head>
     <body ng-app="odeskApp">
@@ -32,13 +32,13 @@
         <div id="wrap">
 
             <!-- Begin page content -->
-            <div ng-include="'/dashboard/views/navbar.html'"></div>
+            <div ng-include="'views/navbar.html'"></div>
             <div ng-view=""></div>
         </div>
 
         <div id="footer" class="footer">
             <div class="container">
-                <p class="text-muted text-center"><img src="/dashboard/images/footerlogo.png"/></p>
+                <p class="text-muted text-center"><img src="images/footerlogo.png"/></p>
             </div>
         </div>
 
@@ -67,33 +67,33 @@
 
         <!-- build:js(app) scripts/vendor.js -->
         <!-- bower:js -->
-        <script src="/dashboard/bower_components/jquery/jquery.js"></script>
-        <script src="/dashboard/bower_components/raphael/raphael.js"></script>
-        <script src="/dashboard/bower_components/morris.js/morris.js"></script>
-        <script src="/dashboard/bower_components/sparkline/dist/jquery.sparkline.js"></script>
-        <script src="/dashboard/bower_components/less.js/dist/less-1.6.1.js"></script>
-        <script src="/dashboard/bower_components/angular/angular.js"></script>
-        <script src="/dashboard/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="/dashboard/bower_components/angular-animate/angular-animate.js"></script>
-        <script src="/dashboard/bower_components/angular-resource/angular-resource.js"></script>
-        <script src="/dashboard/bower_components/angular-cookies/angular-cookies.js"></script>
-        <script src="/dashboard/bower_components/angular-sanitize/angular-sanitize.js"></script>
-        <script src="/dashboard/bower_components/angular-route/angular-route.js"></script>
+        <script src="bower_components/jquery/jquery.js"></script>
+        <script src="bower_components/raphael/raphael.js"></script>
+        <script src="bower_components/morris.js/morris.js"></script>
+        <script src="bower_components/sparkline/dist/jquery.sparkline.js"></script>
+        <script src="bower_components/less.js/dist/less-1.6.1.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="bower_components/angular-animate/angular-animate.js"></script>
+        <script src="bower_components/angular-resource/angular-resource.js"></script>
+        <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+        <script src="bower_components/angular-route/angular-route.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="/dashboard/scripts/app.js"></script>
-        <script src="/dashboard/scripts/controllers/login.js"></script>
-        <script src="/dashboard/scripts/controllers/navbar.js"></script>
-        <script src="/dashboard/scripts/controllers/dashboard.js"></script>
-        <script src="/dashboard/scripts/controllers/factories.js"></script>
-        <script src="/dashboard/scripts/controllers/stats.js"></script>
-        <script src="/dashboard/scripts/controllers/account.js"></script>
-        <script src="/dashboard/scripts/controllers/organizations.js"></script>
-        <script src="/dashboard/scripts/controllers/orgdetail.js"></script>
-        <script src="/dashboard/scripts/controllers/admin.js"></script>
-        <script src="/dashboard/scripts/services/services.js"></script>
+        <script src="scripts/app.js"></script>
+        <script src="scripts/controllers/login.js"></script>
+        <script src="scripts/controllers/navbar.js"></script>
+        <script src="scripts/controllers/dashboard.js"></script>
+        <script src="scripts/controllers/factories.js"></script>
+        <script src="scripts/controllers/stats.js"></script>
+        <script src="scripts/controllers/account.js"></script>
+        <script src="scripts/controllers/organizations.js"></script>
+        <script src="scripts/controllers/orgdetail.js"></script>
+        <script src="scripts/controllers/admin.js"></script>
+        <script src="scripts/services/services.js"></script>
         <!-- endbuild -->
     </body>
 </html>
