@@ -21,3 +21,10 @@ angular.module('odeskApp')
             query: {method: 'GET', params: {}, isArray: true}
         });
     }]);
+
+angular.module('odeskApp')
+    .factory('userProfile',  ['$resource', function ($resource) {
+        return $resource('/api/profile', {}, {
+            query: {method: 'GET', params: {}, isArray: true}
+        });
+    }]);

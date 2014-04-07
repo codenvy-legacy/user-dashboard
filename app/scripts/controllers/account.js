@@ -17,8 +17,9 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('AccountConfigCtrl', function ($scope, $http) {
-        /*$http.get('/api/awesomeThings').success(function(awesomeThings) {
-            $scope.awesomeThings = awesomeThings;
-        });*/
+    .controller('AccountConfigCtrl', function ($scope, $http, userProfile) {
+        $scope.profile = {"attributes":[{"name":"firstName","value":"Gaurav","description":null},{"name":"lastName","value":"Meena","description":null},{"name":"email","value":"gauravmeena0708@gmail.com","description":"User email"}]};
+        userProfile.query(function(resp){
+            $scope.profile = resp;
+        });
     });

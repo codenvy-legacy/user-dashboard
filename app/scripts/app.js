@@ -58,7 +58,7 @@ angular.module('odeskApp', [
         })
         .when('/account', {
             templateUrl: 'views/account/profile.html',
-            controller: 'DashboardCtrl'
+            controller: 'AccountConfigCtrl'
         })
         .when('/account/configuration', {
             templateUrl: 'views/account/configuration.html',
@@ -66,15 +66,15 @@ angular.module('odeskApp', [
         })
         .when('/account/preferences', {
             templateUrl: 'views/account/preferences.html',
-            controller: 'DashboardCtrl'
+            controller: 'AccountConfigCtrl'
         })
         .when('/account/profile', {
             templateUrl: 'views/account/profile.html',
-            controller: 'DashboardCtrl'
+            controller: 'AccountConfigCtrl'
         })
         .when('/account/billing', {
             templateUrl: 'views/account/billing.html',
-            controller: 'DashboardCtrl'
+            controller: 'AccountConfigCtrl'
         })
         .when('/login', {
             templateUrl: 'views/login.html',
