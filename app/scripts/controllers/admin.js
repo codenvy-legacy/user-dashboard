@@ -16,5 +16,5 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('AdminCtrl', function ($scope, $timeout, $http, projectList) {
+    .controller('AdminCtrl', function ($scope) {
     });

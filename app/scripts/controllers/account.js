@@ -16,7 +16,7 @@
 
 'use strict';
 angular.module('odeskApp')
-    .controller('AccountConfigCtrl', function ($scope, $http, userProfile, password) {
+    .controller('AccountConfigCtrl', function ($scope, Profile, Password) {
         $scope.attributes = [
             {"name" : "firstName", "value" : "testfirst", "description" : null},
             {"name" : "lastName", "value" : "testlast", "description" : null},
@@ -26,17 +26,17 @@ angular.module('odeskApp')
             {"name" : "email", "value" : "--@----.---", "description": "User email"}
         ];
         
-        userProfile.query(function (resp) {
+        Profile.query(function (resp) {
             $scope.attributes = resp.attributes;
         });
         
         $scope.updateProfile = function () {
-            userProfile.update({}, $scope.attributes);
+            Profile.update({}, $scope.attributes);
         };
             
         $scope.updatePassword = function () {
             if ($scope.password === $scope.password_verify) {
-                password.update({}, $scope.password);
+                Password.update({}, $scope.password);
             } else {
                 alert("password don't match");
             }
