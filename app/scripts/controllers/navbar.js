@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('NavbarCtrl', function ($scope, $location, $http, $cookies) {
+    .controller('NavbarCtrl', function ($scope, $location, $http, $cookies, $window) {
         $scope.menu = [
             {
                 'title': 'Admin',
@@ -62,6 +62,8 @@ angular.module('odeskApp')
                 url: "/api/auth/logout",
                 method: "POST",
                 data: { "token": $cookies['session-access-key']}
+            }).success(function (data, status) {
+                $window.location.href = '/site/login';
             });
         };
     });

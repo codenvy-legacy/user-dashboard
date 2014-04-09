@@ -21,31 +21,12 @@ angular.module('odeskApp')
         
         $scope.box = 1;
         $scope.search = 0;
-        $scope.projects = [
-            {
-                "url" : "https://codenvy.com/api/project/workspace1q2w3e/Test-Project",
-                "visibility" : "public",
-                "projectTypeId" : "spring",
-                "workspace" : "1q2w3e",
-                "projectTypeName" : "Spring Application",
-                "name" : "Test-Project",
-                "description" : "This is my sample application"
-            },
-            {
-                "url" : "https://codenvy.com/api/project/workspace1q2w3e/jar",
-                "visibility" : "public",
-                "projectTypeId" : "jar",
-                "workspace" : "1q2w3e",
-                "projectTypeName" : "Java Library (JAR)",
-                "name" : "jar",
-                "description" : "Test JAR"
-            }
-        ];
+        $scope.projects = [];
         
         
         Workspace.all(function (resp) {
             angular.forEach(resp, function (value) {
-                $http({method: 'GET', url: value.workspaceRef.href}).
+                $http({method: 'GET', url: value.workspaceRef.workspaceLink.href}).
                     success(function (data, status) {
                         $http({method: 'GET', url: data.links[0].href}).
                             success(function (data1, status1) {
@@ -70,7 +51,6 @@ angular.module('odeskApp')
                 $('.searchfull').animate({width: "43px" }, 400, function () { $('.searchfull').hide(); });
             });
         });
-        
     });
 
 angular.module('odeskApp')
