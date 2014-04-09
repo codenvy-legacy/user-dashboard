@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project) {
+    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, $http) {
         
         $scope.box = 1;
         $scope.search = 0;
@@ -41,19 +41,18 @@ angular.module('odeskApp')
                 "description" : "Test JAR"
             }
         ];
-        var values = [1, 2, 3, 4, 5],
-            log = [];
         
         
         Workspace.all(function (resp) {
-            /*angular.forEach(resp, function (value) {
-                Project.query({workspaceID : 'Workspacev1b7r2pcuajsj2tx'}, function (resp1) {
-                    this.concat(resp1);
-                });
-            }, $scope.projects);
-            */
-            console.log(resp);
-            
+            angular.forEach(resp, function (value) {
+                $http({method: 'GET', url: value.workspaceRef.href}).
+                    success(function (data, status) {
+                        $http({method: 'GET', url: data.links[0].href}).
+                            success(function (data1, status1) {
+                                $scope.projects = $scope.projects.concat(data1);
+                            });
+                    });
+            });
         });
         
         $scope.filter = {};
