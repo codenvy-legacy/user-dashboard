@@ -19,10 +19,10 @@
 angular.module('odeskApp')
     .controller('NavbarCtrl', function ($scope, $location, $http, $cookies, $window) {
         $scope.menu = [
-            {
-                'title': 'Admin',
-                'link': '#/admin'
-            },
+            /*{
+            //    'title': 'Admin',
+            //    'link': '#/admin'
+            //},*/
             {
                 'title': 'Projects',
                 'link': '#/dashboard'
@@ -38,11 +38,11 @@ angular.module('odeskApp')
             {
                 'title': 'Account',
                 'link': '#/account'
-            },
+            }/*,
             {
                 'title': 'Organizations',
                 'link': '#/organizations'
-            }
+            }*/
         ];
     
         $scope.isActive = function (route) {

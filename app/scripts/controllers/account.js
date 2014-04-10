@@ -16,16 +16,7 @@
 
 'use strict';
 angular.module('odeskApp')
-    .controller('AccountConfigCtrl', function ($scope, Profile, Password) {
-        $scope.attributes = [
-            {"name" : "firstName", "value" : "testfirst", "description" : null},
-            {"name" : "lastName", "value" : "testlast", "description" : null},
-            {"name" : "phone", "value" : "------", "description" : null},
-            {"name" : "employer", "value" : "------", "description" : null},
-            {"name" : "jobtitle", "value" : "------", "description" : null},
-            {"name" : "email", "value" : "--@----.---", "description": "User email"}
-        ];
-        
+    .controller('AccountConfigCtrl', function ($scope, Profile, Password) {        
         Profile.query(function (resp) {
             $scope.attributes = resp.attributes;
         });

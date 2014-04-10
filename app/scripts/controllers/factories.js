@@ -16,8 +16,22 @@
 
 'use strict';
 angular.module('odeskApp')
-    .controller('FactoriesCtrl', function ($scope, $timeout) {
-        $scope.projects = projectList.query();
+    .controller('FactoriesCtrl', function ($scope, $timeout, $http, Workspace) {
+        $scope.projects = [];
+        
+        
+        Workspace.all(function (resp) {
+            angular.forEach(resp, function (value) {
+                $http({method: 'GET', url: value.workspaceRef.workspaceLink.href}).
+                    success(function (data, status) {
+                        $http({method: 'GET', url: data.links[0].href}).
+                            success(function (data1, status1) {
+                                $scope.projects = $scope.projects.concat(data1);
+                            });
+                    });
+            });
+        });
+        
         $scope.filter = {};
         var Data = [{x: '2011 Q1', y: 3, z: 3},
                                 {x: '2011 Q2', y: 2, z: 1},
