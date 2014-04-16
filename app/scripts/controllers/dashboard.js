@@ -25,6 +25,7 @@ angular.module('odeskApp')
         
         
         Workspace.all(function (resp) {
+            $scope.workspace = resp;
             angular.forEach(resp, function (value) {
                 $http({method: 'GET', url: value.workspaceRef.workspaceLink.href}).
                     success(function (data, status) {
