@@ -1,5 +1,5 @@
 <ul class="breadcrumb projectnav breadcrumb">
-    <li> You have access to {{project.length}} projects in {{workspace.length}} workspaces</li>
+    <li> You have access to {{project.length}} projects in {{workspaces.length}} workspaces</li>
     <li class="dropdown user-dropdown"> SORT BY:
         <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-up garrow"></i> Name</a>
         <ul class="dropdown-menu">
@@ -13,7 +13,7 @@
         <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down garrow"></i> {{filter.workspace||'All'}}</a>
         <ul class="dropdown-menu">
             <li><a href="" ng-click="filter.workspace=''">All</a></li>
-            <li ng-repeat="project in projects" ng-click="filter.workspace=project.workspace"><a href="">{{project.workspace}}</a></li>
+            <li ng-repeat="worspace in workspaces" ng-click="filter.workspace=workspace.workspaceRef.name"><a href="">{{workspace.workspaceRef.name}}</a></li>
         </ul>
     </li>
     <li> VIEW AS:
