@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('NavbarCtrl', function ($scope, $location, $http, $cookies, $window) {
+    .controller('NavbarCtrl', function ($scope, $location, $http, $cookies, $window, Profile) {
         $scope.menu = [
             /*{
             //    'title': 'Admin',
@@ -56,6 +56,10 @@ angular.module('odeskApp')
                 return false;
             }
         };
+        
+        Profile.query(function(resp){
+            $scope.fullname = resp.attributes[0].value + " " +resp.attributes[1].value;
+        });
         
         $scope.logout = function () {
             $http({
