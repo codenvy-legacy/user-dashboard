@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, $http) {
+    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, $http, $window) {
         
         $scope.box = 1;
         $scope.search = 0;
@@ -38,6 +38,10 @@ angular.module('odeskApp')
         });
         
         $scope.filter = {};
+        
+        $scope.gotoProject = function() {
+            $window.location.href = '/ide/' + $scope.workspaces[0].workspaceRef.name+'/new_project';
+        }
         
         $timeout(function () {
             $("[rel=tooltip]").tooltip({ placement: 'bottom'});

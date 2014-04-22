@@ -52,7 +52,7 @@ th h4 { font-weight:normal; }
 .projectnav { padding:0 1px; }
 .projectnav > li { padding: 9px 20px; border-right:1px solid #dcdcdc; }
 
-.bordered { border:1px solid #bcbcbc; }
+.bordered { border:1px solid #bcbcbc; background: #FFFFFF; padding:2px}
 .projectbox .panel:hover  { box-shadow: 0px 7px 5px 0px rgba(0, 0, 0, 0.2); }
 .projectbox .panel-default > .panel-heading { color:#787878; background:#ebebeb; height:54px; padding:5px; font-size: 11px; }
 .projectbox .panel-title  { font-size:12px; color:#3c3c3c; margin:5px 0px; }
