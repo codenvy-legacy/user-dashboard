@@ -14,7 +14,8 @@
     "morris.js": "~0.4.3",
     "sparkline": "~2.1.2",
     "font-awesome": "~4.0.3",
-    "less.js": "~1.6.1"
+    "less.js": "~1.6.1",
+    "underscore": "~1.6.0"
   },
   "devDependencies": {
     "angular-mocks": "1.2.15",
