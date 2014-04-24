@@ -23,8 +23,12 @@ angular.module('odeskApp', [
     'ngResource',
     'ngSanitize',
     'ngRoute',
-    'ngAnimate'
-]).config(function ($routeProvider, $locationProvider) {
+    'ngAnimate',
+    'chieffancypants.loadingBar'
+]).config(function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeBar = false;
+  })
+  .config(function ($routeProvider, $locationProvider) {
     var DEFAULT;
     
     if (DEV) {

@@ -131,3 +131,8 @@ th h4 { font-weight:normal; }
     width: 43px;
 }
 .closeBtn:hover , .closeBtn:focus { opacity: 1; }
+
+#loading-bar-spinner {
+    top: 150px;
+    left: 400px;
+}
