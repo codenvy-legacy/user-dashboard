@@ -25,7 +25,9 @@ class Morris.Bar extends Morris.Grid
       '#edc240'
       '#cb4b4b'
       '#9440ed'
-    ]
+    ],
+    barOpacity: 1.0
+    barRadius: [0, 0, 0, 0]
     xLabelMargin: 50
 
   # Do any size-related calculations
@@ -48,7 +50,7 @@ class Morris.Bar extends Morris.Grid
   # Draws the bar chart.
   #
   draw: ->
-    @drawXAxis() if @options.axes
+    @drawXAxis() if @options.axes in [true, 'both', 'x']
     @drawSeries()
 
   # draw the x-axis labels
@@ -56,7 +58,7 @@ class Morris.Bar extends Morris.Grid
   # @private
   drawXAxis: ->
     # draw x axis labels
-    ypos = @bottom + @options.padding / 2
+    ypos = @bottom + (@options.xAxisLabelTopPadding || @options.padding / 2)
     prevLabelMargin = null
     prevAngleMargin = null
     for i in [0...@data.length]
@@ -90,7 +92,9 @@ class Morris.Bar extends Morris.Grid
     groupWidth = @width / @options.data.length
     numBars = if @options.stacked? then 1 else @options.ykeys.length
     barWidth = (groupWidth * @options.barSizeRatio - @options.barGap * (numBars - 1)) / numBars
-    leftPadding = groupWidth * (1 - @options.barSizeRatio) / 2
+    barWidth = Math.min(barWidth, @options.barSize) if @options.barSize
+    spaceLeft = groupWidth - barWidth * numBars - @options.barGap * (numBars - 1)
+    leftPadding = spaceLeft / 2
     zeroPos = if @ymin <= 0 and @ymax >= 0 then @transY(0) else null
     @bars = for row, idx in @data
       lastTop = 0
@@ -108,7 +112,8 @@ class Morris.Bar extends Morris.Grid
           size = bottom - top
 
           top -= lastTop if @options.stacked
-          @drawBar(left, top, barWidth, size, @colorFor(row, sidx, 'bar'))
+          @drawBar(left, top, barWidth, size, @colorFor(row, sidx, 'bar'),
+              @options.barOpacity, @options.barRadius)
 
           lastTop += size
         else
@@ -127,9 +132,9 @@ class Morris.Bar extends Morris.Grid
     else
       @options.barColors[sidx % @options.barColors.length]
 
-  # hit test - returns the index of the row beneath the given coordinate
+  # hit test - returns the index of the row at the given x-coordinate
   #
-  hitTest: (x, y) ->
+  hitTest: (x) ->
     return null if @data.length == 0
     x = Math.max(Math.min(x, @right), @left)
     Math.min(@data.length - 1,
@@ -139,14 +144,14 @@ class Morris.Bar extends Morris.Grid
   #
   # @private
   onGridClick: (x, y) =>
-    index = @hitTest(x, y)
-    @fire 'click', index, @options.data[index], x, y
+    index = @hitTest(x)
+    @fire 'click', index, @data[index].src, x, y
 
   # hover movement event handler
   #
   # @private
   onHoverMove: (x, y) =>
-    index = @hitTest(x, y)
+    index = @hitTest(x)
     @hover.update(@hoverContentForRow(index)...)
 
   # hover out event handler
@@ -170,7 +175,7 @@ class Morris.Bar extends Morris.Grid
         </div>
       """
     if typeof @options.hoverCallback is 'function'
-      content = @options.hoverCallback(index, @options, content)
+      content = @options.hoverCallback(index, @options, content, row.src)
     x = @left + (index + 0.5) * @width / @data.length
     [content, x]
 
@@ -181,7 +186,20 @@ class Morris.Bar extends Morris.Grid
       .attr('font-weight', @options.gridTextWeight)
       .attr('fill', @options.gridTextColor)
 
-  drawBar: (xPos, yPos, width, height, barColor) ->
-    @raphael.rect(xPos, yPos, width, height)
+  drawBar: (xPos, yPos, width, height, barColor, opacity, radiusArray) ->
+    maxRadius = Math.max(radiusArray...)
+    if maxRadius == 0 or maxRadius > height
+      path = @raphael.rect(xPos, yPos, width, height)
+    else
+      path = @raphael.path @roundedRect(xPos, yPos, width, height, radiusArray)
+    path
       .attr('fill', barColor)
-      .attr('stroke-width', 0)
+      .attr('fill-opacity', opacity)
+      .attr('stroke', 'none')
+
+  roundedRect: (x, y, w, h, r = [0,0,0,0]) ->
+    [ "M", x, r[0] + y, "Q", x, y, x + r[0], y,
+      "L", x + w - r[1], y, "Q", x + w, y, x + w, y + r[1],
+      "L", x + w, y + h - r[2], "Q", x + w, y + h, x + w - r[2], y + h,
+      "L", x + r[3], y + h, "Q", x, y + h, x, y + h - r[3], "Z" ]
+

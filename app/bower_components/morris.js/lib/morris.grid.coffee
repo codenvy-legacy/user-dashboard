@@ -29,6 +29,9 @@ class Morris.Grid extends Morris.EventEmitter
     @elementHeight = null
     @dirty = false
 
+    # range selection
+    @selectFrom = null
+
     # more stuff
     @init() if @init
 
@@ -38,9 +41,19 @@ class Morris.Grid extends Morris.EventEmitter
     # hover
     @el.bind 'mousemove', (evt) =>
       offset = @el.offset()
-      @fire 'hovermove', evt.pageX - offset.left, evt.pageY - offset.top
+      x = evt.pageX - offset.left
+      if @selectFrom
+        left = @data[@hitTest(Math.min(x, @selectFrom))]._x
+        right = @data[@hitTest(Math.max(x, @selectFrom))]._x
+        width = right - left
+        @selectionRect.attr({ x: left, width: width })
+      else
+        @fire 'hovermove', x, evt.pageY - offset.top
 
-    @el.bind 'mouseout', (evt) =>
+    @el.bind 'mouseleave', (evt) =>
+      if @selectFrom
+        @selectionRect.hide()
+        @selectFrom = null
       @fire 'hoverout'
 
     @el.bind 'touchstart touchmove touchend', (evt) =>
@@ -52,6 +65,27 @@ class Morris.Grid extends Morris.EventEmitter
     @el.bind 'click', (evt) =>
       offset = @el.offset()
       @fire 'gridclick', evt.pageX - offset.left, evt.pageY - offset.top
+
+    if @options.rangeSelect
+      @selectionRect = @raphael.rect(0, 0, 0, @el.innerHeight())
+        .attr({ fill: @options.rangeSelectColor, stroke: false })
+        .toBack()
+        .hide()
+
+      @el.bind 'mousedown', (evt) =>
+        offset = @el.offset()
+        @startRange evt.pageX - offset.left
+
+      @el.bind 'mouseup', (evt) =>
+        offset = @el.offset()
+        @endRange evt.pageX - offset.left
+        @fire 'hovermove', evt.pageX - offset.left, evt.pageY - offset.top
+
+    if @options.resize
+      $(window).bind 'resize', (evt) =>
+        if @timeoutId?
+          window.clearTimeout @timeoutId
+        @timeoutId = window.setTimeout @resizeHandler, 100
 
     @postInit() if @postInit
 
@@ -93,6 +127,9 @@ class Morris.Grid extends Morris.EventEmitter
       '#3a5f0b'
       '#005502'
     ]
+    rangeSelect: null
+    rangeSelectColor: '#eef'
+    resize: false
 
   # Update the data series and redraw the chart.
   #
@@ -109,13 +146,13 @@ class Morris.Grid extends Morris.EventEmitter
     ymin = if @cumulative then 0 else null
 
     if @options.goals.length > 0
-      minGoal = Math.min.apply(null, @options.goals)
-      maxGoal = Math.max.apply(null, @options.goals)
+      minGoal = Math.min @options.goals...
+      maxGoal = Math.max @options.goals...
       ymin = if ymin? then Math.min(ymin, minGoal) else minGoal
       ymax = if ymax? then Math.max(ymax, maxGoal) else maxGoal
 
     @data = for row, index in data
-      ret = {}
+      ret = {src: row}
 
       ret.label = row[@options.xkey]
       if @options.parseTime
@@ -156,10 +193,13 @@ class Morris.Grid extends Morris.EventEmitter
     @xmax = @data[@data.length - 1].x
 
     @events = []
-    if @options.parseTime and @options.events.length > 0
-      @events = (Morris.parseDate(e) for e in @options.events)
-      @xmax = Math.max(@xmax, Math.max.apply(null, @events))
-      @xmin = Math.min(@xmin, Math.min.apply(null, @events))
+    if @options.events.length > 0
+      if @options.parseTime
+        @events = (Morris.parseDate(e) for e in @options.events)
+      else
+        @events = @options.events
+      @xmax = Math.max(@xmax, Math.max(@events...))
+      @xmin = Math.min(@xmin, Math.min(@events...))
 
     if @xmin is @xmax
       @xmin -= 1
@@ -172,7 +212,7 @@ class Morris.Grid extends Morris.EventEmitter
       @ymin -= 1 if ymin
       @ymax += 1
 
-    if @options.axes is true or @options.grid is true
+    if @options.axes in [true, 'both', 'y'] or @options.grid is true
       if (@options.ymax == @gridDefaults.ymax and
           @options.ymin == @gridDefaults.ymin)
         # calculate 'magic' grid placement
@@ -241,10 +281,11 @@ class Morris.Grid extends Morris.EventEmitter
       @right = @elementWidth - @options.padding
       @top = @options.padding
       @bottom = @elementHeight - @options.padding
-      if @options.axes
+      if @options.axes in [true, 'both', 'y']
         yLabelWidths = for gridLine in @grid
           @measureText(@yAxisFormat(gridLine)).width
         @left += Math.max(yLabelWidths...)
+      if @options.axes in [true, 'both', 'x']
         bottomOffsets = for i in [0...@data.length]
           @measureText(@data[i].text, -@options.xLabelAngle).height
         @bottom -= Math.max(bottomOffsets...)
@@ -299,18 +340,13 @@ class Morris.Grid extends Morris.EventEmitter
     else
       "#{@options.preUnits}#{Morris.commas(label)}#{@options.postUnits}"
 
-  updateHover: (x, y) ->
-    hit = @hitTest(x, y)
-    if hit?
-      @hover.update(hit...)
-
   # draw y axis labels, horizontal lines
   #
   drawGrid: ->
-    return if @options.grid is false and @options.axes is false
+    return if @options.grid is false and @options.axes not in [true, 'both', 'y']
     for lineY in @grid
       y = @transY(lineY)
-      if @options.axes
+      if @options.axes in [true, 'both', 'y']
         @drawYAxisLabel(@left - @options.padding / 2, y, @yAxisFormat(lineY))
       if @options.grid
         @drawGridLine("M#{@left},#{y}H#{@left + @width}")
@@ -350,6 +386,27 @@ class Morris.Grid extends Morris.EventEmitter
     @raphael.path(path)
       .attr('stroke', @options.gridLineColor)
       .attr('stroke-width', @options.gridStrokeWidth)
+
+  # Range selection
+  #
+  startRange: (x) ->
+    @hover.hide()
+    @selectFrom = x
+    @selectionRect.attr({ x: x, width: 0 }).show()
+
+  endRange: (x) ->
+    if @selectFrom
+      start = Math.min(@selectFrom, x)
+      end = Math.max(@selectFrom, x)
+      @options.rangeSelect.call @el,
+        start: @data[@hitTest(start)].x
+        end: @data[@hitTest(end)].x
+      @selectFrom = null
+
+  resizeHandler: =>
+    @timeoutId = null
+    @raphael.setSize @el.width(), @el.height()
+    @redraw()
 
 # Parse a date into a javascript timestamp
 #

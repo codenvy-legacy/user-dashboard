@@ -25,19 +25,18 @@ class Morris.Donut extends Morris.EventEmitter
     backgroundColor: '#FFFFFF', 
     labelColor: '#000000',
     formatter: Morris.commas
+    resize: false
 
   # Create and render a donut chart.
   #
   constructor: (options) ->
-    if not (this instanceof Morris.Donut)
-      return new Morris.Donut(options)
+    return new Morris.Donut(options) unless (@ instanceof Morris.Donut)
+    @options = $.extend {}, @defaults, options
 
     if typeof options.element is 'string'
       @el = $ document.getElementById(options.element)
     else
       @el = $ options.element
-
-    @options = $.extend {}, @defaults, options
 
     if @el == null || @el.length == 0
       throw new Error("Graph placeholder not found.")
@@ -45,19 +44,20 @@ class Morris.Donut extends Morris.EventEmitter
     # bail if there's no data
     if options.data is undefined or options.data.length is 0
       return
-    @data = options.data
-    @values = (parseFloat(row.value) for row in @data)
-
-    @redraw()
-
-  # Clear and redraw the chart.
-  #
-  # If you need to re-size your charts, call this method after changing the
-  # size of the container element.
-  redraw: ->
-    @el.empty()
 
     @raphael = new Raphael(@el[0])
+
+    if @options.resize
+      $(window).bind 'resize', (evt) =>
+        if @timeoutId?
+          window.clearTimeout @timeoutId
+        @timeoutId = window.setTimeout @resizeHandler, 100
+
+    @setData options.data
+
+  # Clear and redraw the chart.
+  redraw: ->
+    @raphael.clear()
 
     cx = @el.width() / 2
     cy = @el.height() / 2
@@ -76,7 +76,7 @@ class Morris.Donut extends Morris.EventEmitter
       next = last + min + C * (value / total)
       seg = new Morris.DonutSegment(
         cx, cy, w*2, w, last, next,
-        @options.colors[idx % @options.colors.length],
+        @data[i].color || @options.colors[idx % @options.colors.length],
         @options.backgroundColor, idx, @raphael)
       seg.render()
       @segments.push seg
@@ -88,13 +88,18 @@ class Morris.Donut extends Morris.EventEmitter
     @text1 = @drawEmptyDonutLabel(cx, cy - 10, @options.labelColor, 15, 800)
     @text2 = @drawEmptyDonutLabel(cx, cy + 10, @options.labelColor, 14)
 
-    max_value = Math.max.apply(null, value for value in @values)
+    max_value = Math.max @values...
     idx = 0
     for value in @values
       if value == max_value
         @select idx
         break
       idx += 1
+
+  setData: (data) ->
+    @data = data
+    @values = (parseFloat(row.value) for row in @data)
+    @redraw()
 
   # @private
   click: (idx) =>
@@ -107,6 +112,8 @@ class Morris.Donut extends Morris.EventEmitter
     segment.select()
     row = @data[idx]
     @setLabels(row.label, @options.formatter(row.value, row))
+
+
 
   # @private
   setLabels: (label1, label2) ->
@@ -129,6 +136,11 @@ class Morris.Donut extends Morris.EventEmitter
       .attr('fill', color)
     text.attr('font-weight', fontWeight) if fontWeight?
     return text
+
+  resizeHandler: =>
+    @timeoutId = null
+    @raphael.setSize @el.width(), @el.height()
+    @redraw()
 
 
 # A segment within a donut chart.

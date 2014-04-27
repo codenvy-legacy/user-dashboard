@@ -7,9 +7,6 @@ class Morris.Line extends Morris.Grid
 
   init: ->
     # Some instance variables for later
-    @pointGrow = Raphael.animation r: @options.pointSize + 3, 25, 'linear'
-    @pointShrink = Raphael.animation r: @options.pointSize, 25, 'linear'
-
     if @options.hideHover isnt 'always'
       @hover = new Morris.Hover(parent: @el)
       @on('hovermove', @onHoverMove)
@@ -30,7 +27,7 @@ class Morris.Line extends Morris.Grid
       '#cb4b4b'
       '#9440ed'
     ]
-    pointWidths: [1]
+    pointStrokeWidths: [1]
     pointStrokeColors: ['#ffffff']
     pointFillColors: []
     smooth: true
@@ -55,11 +52,11 @@ class Morris.Line extends Morris.Grid
       row._x = @transX(row.x)
       row._y = for y in row.y
         if y? then @transY(y) else y
-      row._ymax = Math.min.apply(null, [@bottom].concat(y for y in row._y when y?))
+      row._ymax = Math.min [@bottom].concat(y for y in row._y when y?)...
 
-  # hit test - returns the index of the row beneath the given coordinate
+  # hit test - returns the index of the row at the given x-coordinate
   #
-  hitTest: (x, y) ->
+  hitTest: (x) ->
     return null if @data.length == 0
     # TODO better search algo
     for r, index in @data.slice(1)
@@ -70,14 +67,14 @@ class Morris.Line extends Morris.Grid
   #
   # @private
   onGridClick: (x, y) =>
-    index = @hitTest(x, y)
-    @fire 'click', index, @options.data[index], x, y
+    index = @hitTest(x)
+    @fire 'click', index, @data[index].src, x, y
 
   # hover movement event handler
   #
   # @private
   onHoverMove: (x, y) =>
-    index = @hitTest(x, y)
+    index = @hitTest(x)
     @displayHoverForRow(index)
 
   # hover out event handler
@@ -112,7 +109,7 @@ class Morris.Line extends Morris.Grid
         </div>
       """
     if typeof @options.hoverCallback is 'function'
-      content = @options.hoverCallback(index, @options, content)
+      content = @options.hoverCallback(index, @options, content, row.src)
     [content, row._x, row._ymax]
 
 
@@ -121,7 +118,7 @@ class Morris.Line extends Morris.Grid
   # @private
   generatePaths: ->
     @paths = for i in [0...@options.ykeys.length]
-      smooth = @options.smooth is true or @options.ykeys[i] in @options.smooth
+      smooth = if typeof @options.smooth is "boolean" then @options.smooth else @options.ykeys[i] in @options.smooth
       coords = ({x: r._x, y: r._y[i]} for r in @data when r._y[i] isnt undefined)
       coords = (c for c in coords when c.y isnt null) if @options.continuousLine
 
@@ -133,7 +130,7 @@ class Morris.Line extends Morris.Grid
   # Draws the line chart.
   #
   draw: ->
-    @drawXAxis() if @options.axes
+    @drawXAxis() if @options.axes in [true, 'both', 'x']
     @drawSeries()
     if @options.hideHover is false
       @displayHoverForRow(@data.length - 1)
@@ -198,13 +195,13 @@ class Morris.Line extends Morris.Grid
     for row in @data
       circle = null
       if row._y[index]?
-        circle = @drawLinePoint(row._x, row._y[index], @options.pointSize, @colorFor(row, index, 'point'), index)
+        circle = @drawLinePoint(row._x, row._y[index], @colorFor(row, index, 'point'), index)
       @seriesPoints[index].push(circle)
 
   _drawLineFor: (index) ->
     path = @paths[index]
     if path isnt null
-      @drawLinePath path, @colorFor(null, index, 'line')
+      @drawLinePath path, @colorFor(null, index, 'line'), index
 
   # create a path for a data series
   #
@@ -259,11 +256,11 @@ class Morris.Line extends Morris.Grid
     if @prevHilight isnt null and @prevHilight isnt index
       for i in [0..@seriesPoints.length-1]
         if @seriesPoints[i][@prevHilight]
-          @seriesPoints[i][@prevHilight].animate @pointShrink
+          @seriesPoints[i][@prevHilight].animate @pointShrinkSeries(i)
     if index isnt null and @prevHilight isnt index
       for i in [0..@seriesPoints.length-1]
         if @seriesPoints[i][index]
-          @seriesPoints[i][index].animate @pointGrow
+          @seriesPoints[i][index].animate @pointGrowSeries(i)
     @prevHilight = index
 
   colorFor: (row, sidx, type) ->
@@ -281,24 +278,46 @@ class Morris.Line extends Morris.Grid
       .attr('font-weight', @options.gridTextWeight)
       .attr('fill', @options.gridTextColor)
 
-  drawLinePath: (path, lineColor) ->
+  drawLinePath: (path, lineColor, lineIndex) ->
     @raphael.path(path)
       .attr('stroke', lineColor)
-      .attr('stroke-width', @options.lineWidth)
+      .attr('stroke-width', @lineWidthForSeries(lineIndex))
 
-  drawLinePoint: (xPos, yPos, size, pointColor, lineIndex) ->
-    @raphael.circle(xPos, yPos, size)
+  drawLinePoint: (xPos, yPos, pointColor, lineIndex) ->
+    @raphael.circle(xPos, yPos, @pointSizeForSeries(lineIndex))
       .attr('fill', pointColor)
-      .attr('stroke-width', @strokeWidthForSeries(lineIndex))
-      .attr('stroke', @strokeForSeries(lineIndex))
+      .attr('stroke-width', @pointStrokeWidthForSeries(lineIndex))
+      .attr('stroke', @pointStrokeColorForSeries(lineIndex))
 
   # @private
-  strokeWidthForSeries: (index) ->
-    @options.pointWidths[index % @options.pointWidths.length]
+  pointStrokeWidthForSeries: (index) ->
+    @options.pointStrokeWidths[index % @options.pointStrokeWidths.length]
 
   # @private
-  strokeForSeries: (index) ->
+  pointStrokeColorForSeries: (index) ->
     @options.pointStrokeColors[index % @options.pointStrokeColors.length]
+
+  # @private
+  lineWidthForSeries: (index) ->
+    if (@options.lineWidth instanceof Array)
+      @options.lineWidth[index % @options.lineWidth.length]
+    else
+      @options.lineWidth
+
+  # @private
+  pointSizeForSeries: (index) ->
+    if (@options.pointSize instanceof Array)
+      @options.pointSize[index % @options.pointSize.length]
+    else
+      @options.pointSize
+
+  # @private
+  pointGrowSeries: (index) ->
+    Raphael.animation r: @pointSizeForSeries(index) + 3, 25, 'linear'
+
+  # @private
+  pointShrinkSeries: (index) ->
+    Raphael.animation r: @pointSizeForSeries(index), 25, 'linear'
 
 # generate a series of label, timestamp pairs for x-axis labels
 #
@@ -359,6 +378,11 @@ Morris.LABEL_SPECS =
     start: (d) -> new Date(d.getFullYear(), d.getMonth(), 1)
     fmt: (d) -> "#{d.getFullYear()}-#{Morris.pad2(d.getMonth() + 1)}"
     incr: (d) -> d.setMonth(d.getMonth() + 1)
+  "week":
+    span: 604800000 # 7 * 24 * 60 * 60 * 1000
+    start: (d) -> new Date(d.getFullYear(), d.getMonth(), d.getDate())
+    fmt: (d) -> "#{d.getFullYear()}-#{Morris.pad2(d.getMonth() + 1)}-#{Morris.pad2(d.getDate())}"
+    incr: (d) -> d.setDate(d.getDate() + 7)
   "day":
     span: 86400000 # 24 * 60 * 60 * 1000
     start: (d) -> new Date(d.getFullYear(), d.getMonth(), d.getDate())
@@ -377,7 +401,7 @@ Morris.LABEL_SPECS =
   "second": secondsSpecHelper(1)
 
 Morris.AUTO_LABEL_ORDER = [
-  "decade", "year", "month", "day", "hour",
+  "decade", "year", "month", "week", "day", "hour",
   "30min", "15min", "10min", "5min", "minute",
   "30sec", "15sec", "10sec", "5sec", "second"
 ]

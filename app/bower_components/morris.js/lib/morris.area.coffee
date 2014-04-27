@@ -29,7 +29,7 @@ class Morris.Area extends Morris.Line
         else
           total += (y || 0)
           @transY(total)
-      row._ymax = Math.max.apply Math, row._y
+      row._ymax = Math.max row._y...
 
   # draw the data series
   #
@@ -63,4 +63,4 @@ class Morris.Area extends Morris.Line
     @raphael.path(path)
       .attr('fill', fill)
       .attr('fill-opacity', @options.fillOpacity)
-      .attr('stroke-width', 0)
+      .attr('stroke', 'none')
