@@ -68,9 +68,9 @@
                 </div>
                 <div class="panel-body">{{project.description}}</div>
                 <div class="panel-footer"><div class="row">
-                        <div class="col-md-4"><div class="row"><i class="fa" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
-                        <div class="col-md-4"><div class="row"><i class="fa fa-users"></i><small> Share</small></div></div>
-                        <div class="col-md-4"><div class="row"><i class="fa fa-cog"></i></div></div>
+                        <div class="col-md-4" data-toggle="modal" data-target="#privacyModal" ng-click="changeProjectName(project.name)"><div class="row"><i class="fa" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
+                        <div class="col-md-4" data-toggle="modal" data-target="#developersModal"><div class="row"><i class="fa fa-users"></i><small> Developers</small></div></div>
+                        <div class="col-md-4" data-toggle="modal" data-target="#projectDetailModal"><div class="row"><i class="fa fa-cog"></i></div></div>
                     </div>
                 </div>
             </div>
@@ -116,11 +116,135 @@
             </div>
             <div class="panel-footer">
                 <div class="row">
-                    <div class="col-md-4"><div class="row"><i class="fa fa-unlock"></i><small> {{project.visibility}}</small></div></div>
+                    <div class="col-md-4" data-toggle="modal" data-target="#privacyModal"><div class="row"><i class="fa fa-unlock"></i><small> {{project.visibility}}</small></div></div>
                     <div class="col-md-4"><div class="row"><i class="fa fa-users"></i><small> Share</small></div></div>
                     <div class="col-md-4"><div class="row"><i class="fa fa-cog"></i></div></div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="privacyModal" tabindex="-1" role="dialog" aria-labelledby="privacyModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="padding:10px;background:#f0f0f0;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Update Project Privacys</h4>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+              <div class="col-md-12">
+                <strong>Select the appropriate privacy for {{projectname}}</strong>
+              </div>
+          <div class="col-md-12 form-group" style="margin-bottom:10px;">
+              <table>
+                  <tbody>
+                      <tr>
+                          <td><input type="radio" ng-model="privacy" value="Public"></td>
+                          <td>
+                              <label class="checkbox">
+                                  <h4 margin="">Public</h4>
+                                Everyone can see the project, You choose who can collabrate 
+                               </label>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td><input type="radio" ng-model="privacy" value="Private"></td>
+                          
+                          <td>
+                              <label class="checkbox">
+                                  <h4 margin="">Private</h4>
+                                You choose who can see and who can collabrate
+                               </label>
+                          </td>
+                      </tr>
+</tbody>
+</table>
+          </div>
+      </div>
+          </div>
+      <div class="modal-footer" style="margin-top:10px;padding:10px; background:#f0f0f0;">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+        <button type="button" class="btn btn-primary" style="background:#898989; border:#898989" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="developersModal" tabindex="-1" role="dialog" aria-labelledby="projectDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="padding:10px;background:#f0f0f0;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Manage Project & Developers</h4>
+      </div>
+      <div class="modal-body">
+          <h4>User Permissions</h4>
+          <div class="row">
+              
+          </div>
+          <h4>Invite Other users</h4>
+           <div class="row">
+               <div class="col-md-12 form-group">
+                   </div>
+               <div class="col-md-7 form-group">
+                <input type="text" autofocus="" required="" placeholder="Intuit" name="name" id="name" class="form-control">
+                </div>
+               <div class="col-md-5 form-group">
+                   Read <input type="checkbox" style="vertical-align: middle;margin:0;"> 
+                   Write <input type="checkbox" style="vertical-align: middle;margin:0;"> 
+                   <button type="button" class="btn btn-success pull-right">Invite</button>
+                </div>
+        </div>
+          </div>
+      <div class="modal-footer" style="margin-top:10px;padding:10px; background:#f0f0f0;">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+        <button type="button" class="btn btn-primary" style="background:#898989; border:#898989" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-trash-o"></i></i> Delete Project</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="projectDetailModal" tabindex="-1" role="dialog" aria-labelledby="projectDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="padding:10px;background:#f0f0f0;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Project Detail</h4>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+              <div class="col-md-6 form-group">
+                <label>Project Name:</label>
+                <input type="text" autofocus="" required="" placeholder="Intuit" name="name" id="name" class="form-control">
+            </div>
+              <div class="col-md-6">
+                <label>Project Technology:</label>
+                <div class="row">
+                        <div style="width:54px" class="col-md-3"><img width="44" height="44" alt="" class="bordered" src="./images/AngularJS.png"></div>
+                        <div class="col-md-3">
+                            <h3 class="panel-title">AngularJS</h3>
+                        </div>
+                    </div>
+             </div>
+        </div>
+           <div class="row">
+              <div class="col-md-12 form-group">
+                <label>Project Description:</label>
+                  <textarea ng-model="" class="form-control"></textarea>
+            </div>
+        </div>
+          </div>
+      <div class="modal-footer" style="margin-top:10px;padding:10px; background:#f0f0f0;">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+        <button type="button" class="btn btn-primary" style="background:#898989; border:#898989" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-trash-o"></i></i> Delete Project</button>
+      </div>
+    </div>
+  </div>
 </div>
