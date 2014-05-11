@@ -12,7 +12,7 @@
  * Controller for dashboard/projects
  */
 
-/*global angular, $*/
+/*global angular, $, _*/
 
 'use strict';
 
@@ -25,7 +25,7 @@ angular.module('odeskApp')
         
         
         Workspace.all(function (resp) {
-            $scope.workspaces = _.filter(resp, function(workspace){ return !workspace.workspaceRef.temporary; });
+            $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceRef.temporary; });
             angular.forEach($scope.workspaces, function (value) {
                 $http({method: 'GET', url: value.workspaceRef.workspaceLink.href}).
                     success(function (data, status) {
@@ -34,14 +34,28 @@ angular.module('odeskApp')
                                 $scope.projects = $scope.projects.concat(data1);
                             });
                     });
+				
             });
         });
         
         $scope.filter = {};
         
-        $scope.gotoProject = function() {
-            $window.location.href = '/ide/' + $scope.workspaces[0].workspaceRef.name+'/new_project';
-        }
+        $scope.gotoProject = function () {
+            $window.location.href = '/ide/' + $scope.workspaces[0].workspaceRef.name + '/new_project';
+        };
+        
+        $scope.selectProject = function (project) {
+            
+            $scope.selected = project;
+            
+        };
+        
+        $scope.updateProject = function () {
+            $http({method: 'PUT', url: $scope.selected.url, data: $scope.selected}).
+                success(function (data, status) {
+                    console.log(data);
+                });
+        };
         
         $timeout(function () {
             $("[rel=tooltip]").tooltip({ placement: 'bottom'});

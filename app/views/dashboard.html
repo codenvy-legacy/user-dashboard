@@ -67,8 +67,8 @@
                     </div>
                 </div>
                 <div class="panel-body">{{project.description}}</div>
-                <div class="panel-footer"><div class="row">
-                        <div class="col-md-4" data-toggle="modal" data-target="#privacyModal" ng-click="changeProjectName(project.name)"><div class="row"><i class="fa" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
+                <div class="panel-footer"><div class="row" ng-click="selectProject(project)">
+                        <div class="col-md-4" data-toggle="modal" data-target="#privacyModal"><div class="row"><i class="fa" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
                         <div class="col-md-4" data-toggle="modal" data-target="#developersModal"><div class="row"><i class="fa fa-users"></i><small> Developers</small></div></div>
                         <div class="col-md-4" data-toggle="modal" data-target="#projectDetailModal"><div class="row"><i class="fa fa-cog"></i></div></div>
                     </div>
@@ -142,7 +142,7 @@
               <table>
                   <tbody>
                       <tr>
-                          <td><input type="radio" ng-model="privacy" value="Public"></td>
+                          <td><input type="radio" ng-model="selected.visibility" value="public"></td>
                           <td>
                               <label class="checkbox">
                                   <h4 margin="">Public</h4>
@@ -151,7 +151,7 @@
                           </td>
                       </tr>
                       <tr>
-                          <td><input type="radio" ng-model="privacy" value="Private"></td>
+                          <td><input type="radio" ng-model="selected.visibility" value="private"></td>
                           
                           <td>
                               <label class="checkbox">
@@ -166,7 +166,7 @@
       </div>
           </div>
       <div class="modal-footer" style="margin-top:10px;padding:10px; background:#f0f0f0;">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+        <button type="button" class="btn btn-primary" ng-click="updateProject()" data-dismiss="modal">Ok</button>
         <button type="button" class="btn btn-primary" style="background:#898989; border:#898989" data-dismiss="modal">Cancel</button>
       </div>
     </div>
@@ -221,7 +221,7 @@
           <div class="row">
               <div class="col-md-6 form-group">
                 <label>Project Name:</label>
-                <input type="text" autofocus="" required="" placeholder="Intuit" name="name" id="name" class="form-control">
+                <input type="text" autofocus="" required="" ng-model="selected.name" placeholder="Intuit" name="name" id="name" class="form-control">
             </div>
               <div class="col-md-6">
                 <label>Project Technology:</label>
@@ -236,12 +236,12 @@
            <div class="row">
               <div class="col-md-12 form-group">
                 <label>Project Description:</label>
-                  <textarea ng-model="" class="form-control"></textarea>
+                  <textarea ng-model="selected.description" class="form-control"></textarea>
             </div>
         </div>
           </div>
       <div class="modal-footer" style="margin-top:10px;padding:10px; background:#f0f0f0;">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+        <button type="button" class="btn btn-primary" ng-click="updateProject()" data-dismiss="modal">Ok</button>
         <button type="button" class="btn btn-primary" style="background:#898989; border:#898989" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-trash-o"></i></i> Delete Project</button>
       </div>

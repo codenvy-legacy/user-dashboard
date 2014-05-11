@@ -34,8 +34,9 @@ angular.module('odeskApp')
 angular.module('odeskApp')
     .factory('Project',  ['$resource', function ($resource) {
         return $resource('/api/project/:workspaceID', {}, {
-            create: {method: 'POST', params:{}, isArray: false},
-            query: {method: 'GET', params: {}, isArray: true}
+            create: {method: 'POST', params: {}, isArray: false},
+            query: {method: 'GET', params: {}, isArray: true},
+            put: {method: 'PUT', params: {workspaceID: 'workspaceimb0rqn76p2euvn4'}, isArray: false}
         });
     }]);
 
