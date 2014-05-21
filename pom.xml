@@ -25,6 +25,22 @@
         <finalName>user-dashboard-war</finalName>
         <plugins>
             <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${basedir}/app/bower_components</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/node_modules</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>                        
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
@@ -34,6 +50,12 @@
                         </goals>
                         <configuration>
                             <target>
+                                <exec dir="${basedir}" executable="npm" failonerror="false">
+                                    <arg value="install" />
+                                </exec> 
+                                <exec dir="${basedir}" executable="bower" failonerror="true">
+                                    <arg value="install" />
+                                </exec>
                                 <exec dir="${basedir}/target" executable="grunt" failonerror="true">
                                     <arg value="build" />
                                 </exec>
