@@ -50,7 +50,7 @@
                         </goals>
                         <configuration>
                             <target>
-                                <exec dir="${basedir}" executable="npm" failonerror="false">
+                                <exec dir="${basedir}" executable="npm" failonerror="true">
                                     <arg value="install" />
                                 </exec> 
                                 <exec dir="${basedir}" executable="bower" failonerror="true">
