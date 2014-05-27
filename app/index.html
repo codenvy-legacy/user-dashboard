@@ -1,101 +1,98 @@
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <base href="/dashboard/">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-        <!-- build:css(app) styles/vendor.css -->
-        <!-- bower:css -->
-        <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="bower_components/morris.js/morris.css">
-        <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.min.css">
-        <!-- endbower -->
-        <!-- endbuild -->
-        <!-- build:css({.tmp,app}) styles/main.css -->
-        <link rel="stylesheet" href="styles/bootstrap.css" />
-        <link rel="stylesheet" href="styles/main.css">
-        <!-- endbuild -->
-    </head>
-    <body ng-app="odeskApp">
-        <!--[if lt IE 7]>
-          <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        <!-- Add your site or application content here -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <base href="/dashboard/">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(app) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="bower_components/morris.js/morris.css">
+  <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.min.css">
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css({.tmp,app}) styles/main.css -->
+  <link rel="stylesheet" href="styles/bootstrap.css" />
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
+</head>
+<body ng-app="odeskApp">
+  <!--[if lt IE 7]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+  <!-- Add your site or application content here -->
+  <!-- Wrap all page content here -->
+  <div id="wrap">
+    <!-- Begin page content -->
+    <div ng-include="'views/navbar.html'"></div>
+    <div ng-view=""></div>
+  </div>
 
-        <!-- Wrap all page content here -->
-        <div id="wrap">
+  <div id="footer" class="footer">
+    <div class="container">
+      <p class="text-muted text-center"><img src="images/footerlogo.png" alt="Codenvy | Footer logo"/></p>
+    </div>
+  </div>
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID
+<script>
+    (function(i,s,o,g,r,a,m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        },i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-            <!-- Begin page content -->
-            <div ng-include="'views/navbar.html'"></div>
-            <div ng-view=""></div>
-        </div>
+    ga('create','UA-XXXXX-X');
+    ga('send','pageview');
+</script>
+ -->
+<!--[if lt IE 9]>
+<script src="bower_components/es5-shim/es5-shim.js"></script>
+<script src="bower_components/json3/lib/json3.min.js"></script>
+<![endif]-->
 
-        <div id="footer" class="footer">
-            <div class="container">
-                <p class="text-muted text-center"><img src="images/footerlogo.png"/></p>
-            </div>
-        </div>
+<!-- build:js(app) scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/jquery/jquery.js"></script>
+<script src="bower_components/underscore/underscore.js"></script>
+<script src="bower_components/raphael/raphael.js"></script>
+<script src="bower_components/morris.js/morris.js"></script>
+<script src="bower_components/sparkline/dist/jquery.sparkline.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID
-        <script>
-            (function(i,s,o,g,r,a,m) {
-                i['GoogleAnalyticsObject'] = r;
-                i[r] = i[r] || function() {
-                    (i[r].q = i[r].q || []).push(arguments)
-                },i[r].l = 1 * new Date();
-                a = s.createElement(o),
-                        m = s.getElementsByTagName(o)[0];
-                a.async = 1;
-                a.src = g;
-                m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-            ga('create','UA-XXXXX-X');
-            ga('send','pageview');
-        </script>
-         -->
-        <!--[if lt IE 9]>
-        <script src="bower_components/es5-shim/es5-shim.js"></script>
-        <script src="bower_components/json3/lib/json3.min.js"></script>
-        <![endif]-->
-
-        <!-- build:js(app) scripts/vendor.js -->
-        <!-- bower:js -->
-        <script src="bower_components/jquery/jquery.js"></script>
-        <script src="bower_components/underscore/underscore.js"></script>
-        <script src="bower_components/raphael/raphael.js"></script>
-        <script src="bower_components/morris.js/morris.js"></script>
-        <script src="bower_components/sparkline/dist/jquery.sparkline.js"></script>
-        <script src="bower_components/angular/angular.js"></script>
-        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="bower_components/angular-animate/angular-animate.js"></script>
-        <script src="bower_components/angular-resource/angular-resource.js"></script>
-        <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-        <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-        <script src="bower_components/angular-route/angular-route.js"></script>
-        <script src="bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
-        <!-- endbower -->
-        <!-- endbuild -->
-
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/login.js"></script>
-        <script src="scripts/controllers/navbar.js"></script>
-        <script src="scripts/controllers/dashboard.js"></script>
-        <script src="scripts/controllers/factories.js"></script>
-        <script src="scripts/controllers/stats.js"></script>
-        <script src="scripts/controllers/account.js"></script>
-        <script src="scripts/controllers/organizations.js"></script>
-        <script src="scripts/controllers/orgdetail.js"></script>
-        <script src="scripts/controllers/admin.js"></script>
-        <script src="scripts/services/services.js"></script>
-        <!-- endbuild -->
-    </body>
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="scripts/app.js"></script>
+<script src="scripts/controllers/login.js"></script>
+<script src="scripts/controllers/navbar.js"></script>
+<script src="scripts/controllers/dashboard.js"></script>
+<script src="scripts/controllers/factories.js"></script>
+<script src="scripts/controllers/stats.js"></script>
+<script src="scripts/controllers/account.js"></script>
+<script src="scripts/controllers/organizations.js"></script>
+<script src="scripts/controllers/orgdetail.js"></script>
+<script src="scripts/controllers/admin.js"></script>
+<script src="scripts/services/services.js"></script>
+    <!-- endbuild -->
+</body>
 </html>
