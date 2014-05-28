@@ -196,10 +196,16 @@ th h4 { font-weight:normal; }
 .panel .panel-footer .fa-fw {
     width: 20px;
 }
+
+/* Reset Default buttons
+----------------------------------------------*/
 .btn-default {
   background-color: #898989;
   border-color: #898989;
 }
+
+/* Privacy Modal related.
+----------------------------------------------*/
 .modal-header button.close {
   line-height: 12px;
 }
