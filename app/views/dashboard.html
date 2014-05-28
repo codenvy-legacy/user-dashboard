@@ -69,9 +69,9 @@
                 </div>
                 <div class="panel-body">{{project.description}}</div>
                 <div class="panel-footer"><div class="row" ng-click="selectProject(project)">
-                        <div class="col-md-4" data-toggle="modal" data-target="#privacyModal"><div class="row"><i class="fa" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
-                        <div class="col-md-4" data-toggle="modal" data-target="#developersModal"><div class="row"><i class="fa fa-users"></i><small> Developers</small></div></div>
-                        <div class="col-md-4" data-toggle="modal" data-target="#projectDetailModal"><div class="row"><i class="fa fa-cog"></i></div></div>
+                        <div class="col-md-4" data-toggle="modal" data-target="#privacyModal"><div class="row"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
+                        <div class="col-md-4" data-toggle="modal" data-target="#developersModal"><div class="row"><i class="fa fa-fw fa-users"></i><small> Developers</small></div></div>
+                        <div class="col-md-4" data-toggle="modal" data-target="#projectDetailModal"><div class="row"><i class="fa fa-fw fa-cog"></i></div></div>
                     </div>
                 </div>
             </div>

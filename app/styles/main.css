@@ -194,3 +194,6 @@ th h4 { font-weight:normal; }
   transition: transform 0.1s ease-out;
 }
 
+.panel .panel-footer .fa-fw {
+    width: 20px;
+}
