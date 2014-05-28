@@ -50,7 +50,7 @@ angular.module('odeskApp')
 angular.module('odeskApp')	
 	.factory('Password', function ($http, $q) {
     return {
-        update: function (pwd) {alert(pwd);
+        update: function (pwd) {
             var deferred = $q.defer();
 			var con = {
                 headers: {
