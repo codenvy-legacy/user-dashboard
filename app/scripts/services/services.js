@@ -40,9 +40,32 @@ angular.module('odeskApp')
         });
     }]);
 
-angular.module('odeskApp')
+/*angular.module('odeskApp')
     .factory('Password',  ['$resource', function ($resource) {
         return $resource('/api/user/password', {}, {
             update: {method: 'POST', params: {}, isArray: false, headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
         });
-    }]);
+    }]);*/
+	
+angular.module('odeskApp')	
+	.factory('Password', function ($http, $q) {
+    return {
+        update: function (pwd) {alert(pwd);
+            var deferred = $q.defer();
+			var con = {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+				params: {
+					'password': pwd
+				}
+            }
+            $http.post('/api/user/password', con)
+                .success(function (data) {
+                    deferred.resolve(data); //resolve data
+               })
+                .error(function (err) { deferred.reject(); });
+            return deferred.promise; 
+        }
+    };
+});
