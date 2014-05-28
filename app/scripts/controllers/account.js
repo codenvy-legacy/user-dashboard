@@ -27,7 +27,7 @@ angular.module('odeskApp')
             
         $scope.updatePassword = function () {
             if ($scope.password === $scope.password_verify) {
-                Password.update({}, $scope.password);
+                Password.update($scope.password);
             } else {
                 alert("password don't match");
             }
