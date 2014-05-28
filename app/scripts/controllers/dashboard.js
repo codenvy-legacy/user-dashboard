@@ -22,7 +22,6 @@ angular.module('odeskApp')
         $scope.box = 1;
         $scope.search = 0;
         $scope.projects = [];
-        $scope.projectLength = '-';
         
         Workspace.all(function (resp) {
             $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceRef.temporary; });
@@ -37,9 +36,6 @@ angular.module('odeskApp')
 				
             });
         });
-        if($scope.projects.lenght == 0){
-          $scope.projectLength = $scope.projects.length;
-        }
         
         $scope.filter = {};
         
