@@ -44,9 +44,7 @@ angular.module('odeskApp')
         };
         
         $scope.selectProject = function (project) {
-            
-            $scope.selected = project;
-            
+          $scope.selected = project;
         };
         
         $scope.updateProject = function () {
@@ -54,6 +52,10 @@ angular.module('odeskApp')
                 success(function (data, status) {
                     console.log(data);
                 });
+        };
+        
+        $scope.cancelProject = function () {
+          $scope.selected.description = $scope.project.description;
         };
         
         $timeout(function () {
