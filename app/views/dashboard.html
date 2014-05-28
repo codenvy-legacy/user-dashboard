@@ -135,40 +135,19 @@
         <h4 class="modal-title" id="myModalLabel">Update Project Privacys</h4>
       </div>
       <div class="modal-body">
-          <div class="row">
-              <div class="col-md-12">
-                <strong>Select the appropriate privacy for {{projectname}}</strong>
-              </div>
-          <div class="col-md-12 form-group" style="margin-bottom:10px;">
-              <table>
-                  <tbody>
-                      <tr>
-                          <td><input type="radio" ng-model="selected.visibility" value="public"></td>
-                          <td>
-                              <label class="checkbox">
-                                  <h4 margin="">Public</h4>
-                                Everyone can see the project, You choose who can collabrate 
-                               </label>
-                          </td>
-                      </tr>
-                      <tr>
-                          <td><input type="radio" ng-model="selected.visibility" value="private"></td>
-                          
-                          <td>
-                              <label class="checkbox">
-                                  <h4 margin="">Private</h4>
-                                You choose who can see and who can collabrate
-                               </label>
-                          </td>
-                      </tr>
-</tbody>
-</table>
-          </div>
-      </div>
-          </div>
+        <h4>Select the appropriate privacy for {{projectname}}</h4>
+        <div class="form-group">
+          <label><input type="radio" ng-model="selected.visibility" value="public"> Public</label>
+          <p class="help-block">Everyone can see the project, You choose who can collabrate</p>
+        </div>
+        <div class="form-group">
+          <label><input type="radio" ng-model="selected.visibility" value="private"> Private</label>
+          <p class="help-block">You choose who can see and who can collabrate</p>
+        </div>
+      </div><!-- .modal-body -->
       <div class="modal-footer" style="margin-top:10px;padding:10px; background:#f0f0f0;">
         <button type="button" class="btn btn-primary" ng-click="updateProject()" data-dismiss="modal">Ok</button>
-        <button type="button" class="btn btn-primary" style="background:#898989; border:#898989" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
@@ -203,7 +182,7 @@
           </div>
       <div class="modal-footer" style="margin-top:10px;padding:10px; background:#f0f0f0;">
         <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-        <button type="button" class="btn btn-primary" style="background:#898989; border:#898989" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-trash-o"></i></i> Delete Project</button>
       </div>
     </div>
@@ -243,7 +222,7 @@
           </div>
       <div class="modal-footer" style="margin-top:10px;padding:10px; background:#f0f0f0;">
         <button type="button" class="btn btn-primary" ng-click="updateProject()" data-dismiss="modal">Ok</button>
-        <button type="button" class="btn btn-primary" style="background:#898989; border:#898989" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-trash-o"></i></i> Delete Project</button>
       </div>
     </div>
