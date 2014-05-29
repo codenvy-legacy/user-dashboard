@@ -198,7 +198,11 @@ th h4 { font-weight:normal; }
 
 /* Reset Default buttons
 ----------------------------------------------*/
-.btn-default {
+.btn-default,
+.btn-default:hover,
+.btn-default:focus,
+.btn-default:active {
+  color: #fff;
   background-color: #898989;
   border-color: #898989;
 }
@@ -214,6 +218,7 @@ th h4 { font-weight:normal; }
 #privacyModal input {
     vertical-align:bottom;
     margin-top: 2px;
+    margin-right: 4px;
 }
 #privacyModal label{
     display: block;
@@ -224,6 +229,6 @@ th h4 { font-weight:normal; }
     text-transform: uppercase;
 }
 #privacyModal .help-block {
-    margin:0 0 0 15px;
+    margin:0 0 0 18px;
     color: #a3a3a3;
 }
