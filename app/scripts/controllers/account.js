@@ -17,12 +17,107 @@
 'use strict';
 angular.module('odeskApp')
     .controller('AccountConfigCtrl', function ($scope, Profile, Password) {        
-        Profile.query(function (resp) {
+        /*Profile.query(function (resp) {
             $scope.attributes = resp.attributes;
+        });*/
+		
+		Profile.query().then(function (resp) {
+			var firstNameDescription = "";
+			var lastNameDescription = "";
+			var emailDescription = "";
+			var phoneDescription = "";
+			var countryDescription = "";
+			var companyNameDescription = "";
+			var departmentNameDescription = "";
+			var jobTitleDescription = "";
+			resp.attributes.forEach(function(as){
+				if(as.name=='firstname')
+				{
+					$scope.firstName = as.value;
+					firstNameDescription = as.description;
+				}
+				if(as.name=='lastname')
+				{
+					$scope.lastName = as.value;
+					lastNameDescription = as.description;
+				}
+				if(as.name=='email')
+				{
+					$scope.email = as.value;
+					emailDescription = as.description;
+				}
+				if(as.name=='phone')
+				{
+					$scope.phone = as.value;
+					phoneDescription = as.description;
+				}
+				if(as.name=='country')
+				{
+					$scope.country = as.value;
+					countryDescription = as.description;
+				}
+				if(as.name=='companyname')
+				{
+					$scope.companyName = as.value;
+					companyNameDescription = as.description;
+				}
+				if(as.name=='departmentname')
+				{
+					$scope.departmentName = as.value;
+					departmentNameDescription = as.description;
+				}
+				if(as.name=='jobtitle')
+				{
+					$scope.jobTitle = as.value;
+					jobTitleDescription = as.description;
+				}
+			});
         });
         
         $scope.updateProfile = function () {
-            Profile.update({}, $scope.attributes);
+			appValue = [
+				{
+					"name": "firstname",
+					"value": $scope.firstName,
+					"description": firstNameDescription
+				},
+				{
+					"name": "lastname",
+					"value": $scope.lastName,
+					"description": lastNameDescription
+				},
+				{
+					"name": "email",
+					"value": $scope.email,
+					"description": emailDescription
+				},
+				{
+					"name": "phone",
+					"value": $scope.phone,
+					"description": phoneDescription
+				},
+				{
+					"name": "country",
+					"value": $scope.country,
+					"description": countryDescription
+				},
+				{
+					"name": "companyname",
+					"value": $scope.companyName,
+					"description": companyNameDescription
+				},
+				{
+					"name": "departmentname",
+					"value": $scope.departmentName,
+					"description": departmentNameDescription
+				},
+				{
+					"name": "jobtitle",
+					"value": $scope.jobTitle,
+					"description": jobTitleDescription
+				}
+			];
+            Profile.update(appValue);
         };
             
         $scope.updatePassword = function () {
