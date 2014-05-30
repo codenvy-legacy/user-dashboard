@@ -23,13 +23,43 @@ angular.module('odeskApp')
         });
     }]);
 
-angular.module('odeskApp')
+/*angular.module('odeskApp')
     .factory('Profile',  ['$resource', function ($resource) {
         return $resource('/api/profile', {}, {
             query: {method: 'GET', params: {}, isArray: false},
             update: {method: 'POST', params: {}, isArray: false}
         });
-    }]);
+    }]);*/
+	
+angular.module('odeskApp')	
+	.factory('Profile', function ($http, $q) {
+    return {
+		query: function () {
+            var deferred = $q.defer();
+            $http.get('/api/profile')
+                .success(function (data) {
+                    deferred.resolve(data); //resolve data
+               })
+                .error(function (err) { deferred.reject(); });
+            return deferred.promise; 
+        },
+        update: function (appValue) {
+            var deferred = $q.defer();
+            $http.post('/api/profile', appValue)
+                .success(function (data) {
+					$('#upadateProfileAlert').html('<div class="alert alert-success"><b>Successfully Done!</b> Update profile information process completed.</div>');
+					$('#upadateProfileAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
+                    deferred.resolve(data); //resolve data
+               })
+                .error(function (err) {
+					$('#upadateProfileAlert').html('<div class="alert alert-danger"><b>Failed!</b> Update profile information process failed.</div>');
+					$('#upadateProfileAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
+					deferred.reject();
+				});
+            return deferred.promise; 
+        }
+    };
+});
 
 angular.module('odeskApp')
     .factory('Project',  ['$resource', function ($resource) {
@@ -42,11 +72,11 @@ angular.module('odeskApp')
 
 /*angular.module('odeskApp')
     .factory('Password',  ['$resource', function ($resource) {
-        return $resource('/api/user/password', {}, {
-            update: {method: 'POST', params: {}, isArray: false, headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+        return $resource('https://codenvy.com/api/user/password/:password', {}, {
+            update: {method: 'POST', params: {password: 'aa'}, isArray: false, headers: {'Content-Type': 'application/x-www-form-urlencoded'}}
         });
     }]);*/
-	
+
 angular.module('odeskApp')	
 	.factory('Password', function ($http, $q) {
     return {
@@ -62,9 +92,15 @@ angular.module('odeskApp')
             }
             $http.post('/api/user/password', con)
                 .success(function (data) {
+					$('#changePasswordAlert').html('<div class="alert alert-success"><b>Successfully Done!</b> Change password process completed.</div>');
+					$('#changePasswordAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
                     deferred.resolve(data); //resolve data
                })
-                .error(function (err) { deferred.reject(); });
+                .error(function (err) {
+					$('#changePasswordAlert').html('<div class="alert alert-danger"><b>Failed!</b> Change password process failed.</div>');
+					deferred.reject();
+					$('#changePasswordAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
+				});
             return deferred.promise; 
         }
     };
