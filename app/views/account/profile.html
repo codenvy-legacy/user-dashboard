@@ -18,29 +18,29 @@
                             <div class="row">
                                 <div class="col-md-6 form-group">
                                     <label for="workspaceid">First Name:</label>
-                                    <input class="form-control" id="name" name="name" placeholder="steven" ng-model="attributes[0].value" type="text" required autofocus />
+                                    <input class="form-control" id="name" name="name" placeholder="steven" ng-model="firstName" type="text" required autofocus />
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="workspaceid">Last Name:</label>
-                                    <input class="form-control" id="email" name="email" placeholder="le meur" ng-model="attributes[1].value" type="text" required autofocus/>
+                                    <input class="form-control" id="email" name="email" placeholder="le meur" ng-model="lastName" type="text" required autofocus/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label for="workspaceid">Email:</label>
-                                    <input class="form-control" id="name" name="name" placeholder="stevan@codeenvy.com" ng-model="attributes[2].value" type="email" required autofocus />
+                                    <input class="form-control" id="name" name="name" placeholder="stevan@codeenvy.com" ng-model="email" type="email" required autofocus />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label for="workspaceid">Phone:</label>
-                                    <input class="form-control" id="name" name="name" ng-model="attributes[3].value" placeholder="-- -- -- --" type="text" required autofocus />
+                                    <input class="form-control" id="name" name="name" ng-model="phone" placeholder="-- -- -- --" type="text" required autofocus />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label for="workspaceid">Country:</label>
-                                    <select id="workspaceid" class="form-control">
+                                    <select id="workspaceid" ng-model="country" class="form-control">
                                         <option selected>USA</option>
                                         <option>UK</option>
                                         <option>India</option>
@@ -50,28 +50,29 @@
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label for="workspaceid">Company Name:</label>
-                                    <input class="form-control" id="name" name="name" ng-model="attributes[4].value" placeholder="Codeenvy" type="text" required autofocus />
+                                    <input class="form-control" id="name" name="name" ng-model="companyName" placeholder="Codeenvy" type="text" required autofocus />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label for="workspaceid">Department Name:</label>
-                                    <input class="form-control" id="name" name="name" placeholder="Product" type="text" required autofocus />
+                                    <input class="form-control" id="name" name="name" placeholder="Product" ng-model="departmentName" type="text" required autofocus />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label for="workspaceid">Job Title:</label>
-                                    <input class="form-control" id="name" name="name" ng-model="attributes[5].value" placeholder="Product Manager" type="text" required autofocus />
+                                    <input class="form-control" id="name" name="name" ng-model="jobTitle" placeholder="Product Manager" type="text" required autofocus />
                                 </div>
                             </div>
                             Can our sales teams contact you to discuss our offerings? 
-                            <input type="checkbox" name="remember" value="1"> Yes
+                            <input type="checkbox" name="remember" ng-model="check" value="1"> Yes
                             <div class="row">
                                 <div class="col-md-2 col-md-offset-10">
                                     <button class="btn btn-primary btn-block signup-btn" type="submit">Save</button>
                                 </div>
                             </div>
+							<div id="upadateProfileAlert"></div>
                         </form>          
                     </div>
                 </div>            
@@ -106,6 +107,7 @@
                                     <button class="btn btn-primary btn-block signup-btn" type="submit">Save</button>
                                 </div>
                             </div>
+							<div id="changePasswordAlert"></div>
                         </form>          
                     </div>
                 </div>            
