@@ -14,6 +14,15 @@
 
 /*global angular, $*/
 
+var firstNameDescription = "";
+var lastNameDescription = "";
+var emailDescription = "";
+var phoneDescription = "";
+var countryDescription = "";
+var companyNameDescription = "";
+var departmentNameDescription = "";
+var jobTitleDescription = "";
+
 'use strict';
 angular.module('odeskApp')
     .controller('AccountConfigCtrl', function ($scope, Profile, Password) {        
@@ -22,14 +31,7 @@ angular.module('odeskApp')
         });*/
 		
 		Profile.query().then(function (resp) {
-			var firstNameDescription = "";
-			var lastNameDescription = "";
-			var emailDescription = "";
-			var phoneDescription = "";
-			var countryDescription = "";
-			var companyNameDescription = "";
-			var departmentNameDescription = "";
-			var jobTitleDescription = "";
+			
 			resp.attributes.forEach(function(as){
 				if(as.name=='firstname')
 				{
