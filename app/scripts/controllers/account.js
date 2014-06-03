@@ -33,12 +33,12 @@ angular.module('odeskApp')
 		Profile.query().then(function (resp) {
 			
 			resp.attributes.forEach(function(as){
-				if(as.name=='firstname')
+				if(as.name=='firstName')
 				{
 					$scope.firstName = as.value;
 					firstNameDescription = as.description;
 				}
-				if(as.name=='lastname')
+				if(as.name=='lastName')
 				{
 					$scope.lastName = as.value;
 					lastNameDescription = as.description;
@@ -58,7 +58,7 @@ angular.module('odeskApp')
 					$scope.country = as.value;
 					countryDescription = as.description;
 				}
-				if(as.name=='companyname')
+				if(as.name=='employer')
 				{
 					$scope.companyName = as.value;
 					companyNameDescription = as.description;
