@@ -36,7 +36,7 @@ angular.module('odeskApp')
     return {
 		query: function () {
             var deferred = $q.defer();
-            $http.get('/api/profile')
+            $http.get('https://codenvy.com/api/profile')
                 .success(function (data) {
                     deferred.resolve(data); //resolve data
                })
@@ -45,7 +45,12 @@ angular.module('odeskApp')
         },
         update: function (appValue) {
             var deferred = $q.defer();
-            $http.post('/api/profile', appValue)
+			var con = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+            $http.post('https://codenvy.com/api/profile', con, appValue)
                 .success(function (data) {
 					$('#upadateProfileAlert').html('<div class="alert alert-success"><b>Successfully Done!</b> Update profile information process completed.</div>');
 					$('#upadateProfileAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
@@ -84,13 +89,13 @@ angular.module('odeskApp')
             var deferred = $q.defer();
 			var con = {
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'application/json'
                 },
 				params: {
 					'password': pwd
 				}
             }
-            $http.post('/api/user/password', con)
+            $http.post('https://codenvy.com/api/user/password', con)
                 .success(function (data) {
 					$('#changePasswordAlert').html('<div class="alert alert-success"><b>Successfully Done!</b> Change password process completed.</div>');
 					$('#changePasswordAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
