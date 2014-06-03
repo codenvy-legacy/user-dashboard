@@ -72,8 +72,26 @@ angular.module('odeskApp')
 					jobTitleDescription = as.description;
 				}
 			});
-			$scope.salesContactOptions = resp.salescontact;
-			$scope.userSkills = resp.skills;
+			
+			var salesContactArray = [];
+			var userSkillsArray = [];
+			
+			$.each(resp.preferences, function (key, dat) {
+				if(/contact_/i.test(key))
+				{
+					salesContactArray.push(dat);
+				}
+			});
+			
+			$.each(resp.preferences, function (key, dat) {
+				if(/skill_/i.test(key))
+				{
+					userSkillsArray.push(dat);
+				}
+			});
+			
+				$scope.salesContactOptions = salesContactArray;
+				$scope.userSkills = userSkillsArray;
         });
         
         $scope.updateProfile = function () {
