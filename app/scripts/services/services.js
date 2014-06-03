@@ -22,21 +22,19 @@ angular.module('odeskApp')
             query: {method: 'GET', params: {}, isArray: false}
         });
     }]);
-
-/*angular.module('odeskApp')
-    .factory('Profile',  ['$resource', function ($resource) {
-        return $resource('/api/profile', {}, {
-            query: {method: 'GET', params: {}, isArray: false},
-            update: {method: 'POST', params: {}, isArray: false}
-        });
-    }]);*/
 	
 angular.module('odeskApp')	
 	.factory('Profile', function ($http, $q) {
     return {
 		query: function () {
             var deferred = $q.defer();
-            $http.get('https://codenvy.com/api/profile')
+			var con = {
+                headers: {
+                    'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*'
+                }
+            }
+            $http.get('/api/profile', con)
                 .success(function (data) {
                     deferred.resolve(data); //resolve data
                })
@@ -47,10 +45,11 @@ angular.module('odeskApp')
             var deferred = $q.defer();
 			var con = {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*'
                 }
             }
-            $http.post('https://codenvy.com/api/profile', con, appValue)
+            $http.post('/api/profile', con, appValue)
                 .success(function (data) {
 					$('#upadateProfileAlert').html('<div class="alert alert-success"><b>Successfully Done!</b> Update profile information process completed.</div>');
 					$('#upadateProfileAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
@@ -75,12 +74,6 @@ angular.module('odeskApp')
         });
     }]);
 
-/*angular.module('odeskApp')
-    .factory('Password',  ['$resource', function ($resource) {
-        return $resource('https://codenvy.com/api/user/password/:password', {}, {
-            update: {method: 'POST', params: {password: 'aa'}, isArray: false, headers: {'Content-Type': 'application/x-www-form-urlencoded'}}
-        });
-    }]);*/
 
 angular.module('odeskApp')	
 	.factory('Password', function ($http, $q) {
@@ -95,7 +88,8 @@ angular.module('odeskApp')
 					password: pwd 
 				},
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*'
                     }
             })
                 .success(function (data) {
