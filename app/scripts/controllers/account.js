@@ -99,12 +99,12 @@ angular.module('odeskApp')
         $scope.updateProfile = function () {
 			appValue = [
 				{
-					"name": "firstname",
+					"name": "firstName",
 					"value": $scope.firstName,
 					"description": firstNameDescription
 				},
 				{
-					"name": "lastname",
+					"name": "lastName",
 					"value": $scope.lastName,
 					"description": lastNameDescription
 				},
@@ -124,7 +124,7 @@ angular.module('odeskApp')
 					"description": countryDescription
 				},
 				{
-					"name": "companyname",
+					"name": "employer",
 					"value": $scope.companyName,
 					"description": companyNameDescription
 				},
