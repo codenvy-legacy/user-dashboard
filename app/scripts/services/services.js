@@ -30,11 +30,10 @@ angular.module('odeskApp')
             var deferred = $q.defer();
 			var con = {
                 headers: {
-                    'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': '*'
+                    'Content-Type': 'application/json'
                 }
             }
-            $http.get('/api/profile', con)
+            $http.get('http://codenvy-dev.com/api/profile', con)
                 .success(function (data) {
                     deferred.resolve(data); //resolve data
                })
@@ -45,11 +44,10 @@ angular.module('odeskApp')
             var deferred = $q.defer();
 			var con = {
                 headers: {
-                    'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': '*'
+                    'Content-Type': 'application/json'
                 }
             }
-            $http.post('/api/profile', con, appValue)
+            $http.post('http://codenvy-dev.com/api/profile', con, appValue)
                 .success(function (data) {
 					$('#upadateProfileAlert').html('<div class="alert alert-success"><b>Successfully Done!</b> Update profile information process completed.</div>');
 					$('#upadateProfileAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
@@ -82,14 +80,13 @@ angular.module('odeskApp')
             var deferred = $q.defer();
 			
             $http({
-                url: '/api/user/password',
+                url: 'http://codenvy-dev.com/api/user/password',
                 method: 'POST',
                 params: { 
 					password: pwd 
 				},
                 headers: {
-                    'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': '*'
+                    'Content-Type': 'application/json'
                     }
             })
                 .success(function (data) {
