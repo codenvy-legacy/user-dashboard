@@ -87,21 +87,23 @@ angular.module('odeskApp')
     return {
         update: function (pwd) {
             var deferred = $q.defer();
-			var con = {
+			
+            $http({
+                url: '/api/user/password',
+                method: 'POST',
+                params: { 
+					password: pwd 
+				},
                 headers: {
                     'Content-Type': 'application/json'
-                },
-				params: {
-					'password': pwd
-				}
-            }
-            $http.post('https://codenvy.com/api/user/password', con)
+                    }
+            })
                 .success(function (data) {
-					$('#changePasswordAlert').html('<div class="alert alert-success"><b>Successfully Done!</b> Change password process completed.</div>');
+                    $('#changePasswordAlert').html('<div class="alert alert-success"><b>Successfully Done!</b> Change password process completed.</div>');
 					$('#changePasswordAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
                     deferred.resolve(data); //resolve data
                })
-                .error(function (err) {
+                .error(function (err) { 
 					$('#changePasswordAlert').html('<div class="alert alert-danger"><b>Failed!</b> Change password process failed.</div>');
 					deferred.reject();
 					$('#changePasswordAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
