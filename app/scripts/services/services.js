@@ -30,7 +30,8 @@ angular.module('odeskApp')
             var deferred = $q.defer();
 			var con = {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Accept': 'application/json',
+					'X-Requested-With': 'XMLHttpRequest'
                 }
             }
             $http.get('http://codenvy-dev.com/api/profile', con)
@@ -44,7 +45,8 @@ angular.module('odeskApp')
             var deferred = $q.defer();
 			var con = {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json; charset=UTF-8',
+					'X-Requested-With': 'XMLHttpRequest'
                 }
             }
             $http.post('http://codenvy-dev.com/api/profile', con, appValue)
@@ -86,7 +88,8 @@ angular.module('odeskApp')
 					password: pwd 
 				},
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+					'X-Requested-With': 'XMLHttpRequest'
                     }
             })
                 .success(function (data) {
