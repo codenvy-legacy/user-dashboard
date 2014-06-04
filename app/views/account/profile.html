@@ -83,7 +83,7 @@
                 <h4 class="text-center">Update Your Password</h4>
                 <div class="row">
                     <div class="col-md-12">
-                        <form method="post" accept-charset="utf-8" class="form" role="form" ng-submit="updatePassword()">
+                        <form method="post" accept-charset="utf-8" class="form" role="form" >
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label for="workspaceid">Old Pasword:</label>
@@ -104,7 +104,13 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-2 col-md-offset-10">
-                                    <button class="btn btn-primary btn-block signup-btn" type="submit">Save</button>
+                                    <button class="btn btn-primary btn-block signup-btn" type="submit" ng-click="updatePassword()">Save 1</button>
+                                </div>
+								<div class="col-md-2 col-md-offset-10">
+                                    <button class="btn btn-primary btn-block signup-btn" type="submit" ng-click="updatePassword2()">Save 2</button>
+                                </div>
+								<div class="col-md-2 col-md-offset-10">
+                                    <button class="btn btn-primary btn-block signup-btn" type="submit" ng-click="updatePassword3()">Save 3</button>
                                 </div>
                             </div>
 							<div id="changePasswordAlert"></div>
