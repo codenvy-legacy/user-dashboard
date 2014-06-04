@@ -25,7 +25,7 @@ var jobTitleDescription = "";
 
 'use strict';
 angular.module('odeskApp')
-    .controller('AccountConfigCtrl', function ($scope, Profile, Password) {        
+    .controller('AccountConfigCtrl', function ($scope, Profile, Password, Password2, Password3) {        
         /*Profile.query(function (resp) {
             $scope.attributes = resp.attributes;
         });*/
@@ -97,7 +97,7 @@ angular.module('odeskApp')
         });
         
         $scope.updateProfile = function () {
-			appValue = [
+			var appValue = [
 				{
 					"name": "firstName",
 					"value": $scope.firstName,
@@ -145,6 +145,20 @@ angular.module('odeskApp')
         $scope.updatePassword = function () {
             if ($scope.password === $scope.password_verify) {
                 Password.update($scope.password);
+            } else {
+                alert("password don't match");
+            }
+        };
+		$scope.updatePassword2 = function () {
+            if ($scope.password === $scope.password_verify) {
+                Password2.update($scope.password);
+            } else {
+                alert("password don't match");
+            }
+        };
+		$scope.updatePassword3 = function () {
+            if ($scope.password === $scope.password_verify) {
+                Password3.update($scope.password);
             } else {
                 alert("password don't match");
             }
