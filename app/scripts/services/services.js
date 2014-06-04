@@ -34,7 +34,7 @@ angular.module('odeskApp')
 					'X-Requested-With': 'XMLHttpRequest'
                 }
             }
-            $http.get('http://codenvy-dev.com/api/profile', con)
+            $http.get('http://a3.codenvy-dev.com/api/profile', con)
                 .success(function (data) {
                     deferred.resolve(data); //resolve data
                })
@@ -49,7 +49,7 @@ angular.module('odeskApp')
 					'X-Requested-With': 'XMLHttpRequest'
                 }
             }
-            $http.post('http://codenvy-dev.com/api/profile', con, appValue)
+            $http.post('http://a3.codenvy-dev.com/api/profile', con, appValue)
                 .success(function (data) {
 					$('#upadateProfileAlert').html('<div class="alert alert-success"><b>Successfully Done!</b> Update profile information process completed.</div>');
 					$('#upadateProfileAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
@@ -82,7 +82,7 @@ angular.module('odeskApp')
             var deferred = $q.defer();
 			
             $http({
-                url: 'http://codenvy-dev.com/api/user/password',
+                url: 'http://a3.codenvy-dev.com/api/user/password',
                 method: 'POST',
                 params: { 
 					password: pwd 
