@@ -48,8 +48,9 @@ angular.module('odeskApp')
                     'Content-Type': 'application/json; charset=UTF-8',
 					'X-Requested-With': 'XMLHttpRequest'
                 }
-            }
-            $http.post('http://a3.codenvy-dev.com/api/profile', con, appValue)
+            };
+			
+             $http.post('http://a3.codenvy-dev.com/api/profile', appValue, con)
                 .success(function (data) {
 					$('#upadateProfileAlert').html('<div class="alert alert-success"><b>Successfully Done!</b> Update profile information process completed.</div>');
 					$('#upadateProfileAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
@@ -80,19 +81,45 @@ angular.module('odeskApp')
     return {
         update: function (pwd) {
             var deferred = $q.defer();
-			
-            $http({
-                url: 'http://a3.codenvy-dev.com/api/user/password',
-                method: 'POST',
-                params: { 
-					password: pwd 
-				},
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-					'X-Requested-With': 'XMLHttpRequest'
+			$http.post('http://a3.codenvy-dev.com/api/user/password', { 'password': pwd }, {
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+				transformRequest: function(data) { // If this is not an object, defer to native stringification.
+                    if ( ! angular.isObject( data ) ) {
+ 
+                        return( ( data == null ) ? "" : data.toString() );
+ 
                     }
-            })
-                .success(function (data) {
+ 
+                    var buffer = [];
+ 
+                    // Serialize each key in the object.
+                    for ( var name in data ) {
+ 
+                        if ( ! data.hasOwnProperty( name ) ) {
+ 
+                            continue;
+ 
+                        }
+ 
+                        var value = data[ name ];
+ 
+                        buffer.push(
+                            encodeURIComponent( name ) +
+                            "=" +
+                            encodeURIComponent( ( value == null ) ? "" : value )
+                        );
+ 
+                    }
+ 
+                    // Serialize the buffer and clean it up for transportation.
+                    var source = buffer
+                        .join( "&" )
+                        .replace( /%20/g, "+" )
+                    ;
+ 
+                    return( source ); }
+		})
+                .success(function (data) {alert("success");
                     $('#changePasswordAlert').html('<div class="alert alert-success"><b>Successfully Done!</b> Change password process completed.</div>');
 					$('#changePasswordAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
                     deferred.resolve(data); //resolve data
