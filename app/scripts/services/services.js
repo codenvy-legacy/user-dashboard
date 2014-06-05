@@ -33,7 +33,7 @@ angular.module('odeskApp')
                     'Accept': 'application/json',
 					'X-Requested-With': 'XMLHttpRequest'
                 }
-            }
+            };
             $http.get('http://a3.codenvy-dev.com/api/profile', con)
                 .success(function (data) {
                     deferred.resolve(data); //resolve data
