@@ -34,7 +34,7 @@ angular.module('odeskApp')
 					'X-Requested-With': 'XMLHttpRequest'
                 }
             };
-            $http.get('http://a3.codenvy-dev.com/api/profile', con)
+            $http.get('/api/profile', con)
                 .success(function (data) {
                     deferred.resolve(data); //resolve data
                })
@@ -50,7 +50,7 @@ angular.module('odeskApp')
                 }
             };
 			
-             $http.post('http://a3.codenvy-dev.com/api/profile', appValue, con)
+             $http.post('/api/profile', appValue, con)
                 .success(function (data) {
 					$('#upadateProfileAlert').html('<div class="alert alert-success"><b>Successfully Done!</b> Update profile information process completed.</div>');
 					$('#upadateProfileAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
@@ -81,7 +81,7 @@ angular.module('odeskApp')
     return {
         update: function (pwd) {
             var deferred = $q.defer();
-			$http.post('http://a3.codenvy-dev.com/api/user/password', { 'password': pwd }, {
+			$http.post('/api/user/password', { 'password': pwd }, {
 				headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
 				transformRequest: function(data) { // If this is not an object, defer to native stringification.
                     if ( ! angular.isObject( data ) ) {
@@ -133,3 +133,4 @@ angular.module('odeskApp')
         }
     };
 });
+            
