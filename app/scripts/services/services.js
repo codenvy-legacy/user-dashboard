@@ -52,12 +52,14 @@ angular.module('odeskApp')
 			
              $http.post('/api/profile', appValue, con)
                 .success(function (data) {
-					$('#upadateProfileAlert').html('<div class="alert alert-success"><b>Successfully Done!</b> Update profile information process completed.</div>');
+					$('#upadateProfileAlert .alert-success').show();
+					$('#upadateProfileAlert .alert-danger').hide();
 					$('#upadateProfileAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
                     deferred.resolve(data); //resolve data
                })
                 .error(function (err) {
-					$('#upadateProfileAlert').html('<div class="alert alert-danger"><b>Failed!</b> Update profile information process failed.</div>');
+					$('#upadateProfileAlert .alert-danger').show();
+					$('#upadateProfileAlert .alert-success').hide();
 					$('#upadateProfileAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
 					deferred.reject();
 				});
@@ -120,17 +122,18 @@ angular.module('odeskApp')
                     return( source ); }
 		})
                 .success(function (data) {alert("success");
-                    $('#changePasswordAlert').html('<div class="alert alert-success"><b>Successfully Done!</b> Change password process completed.</div>');
+                    $('#changePasswordAlert .alert-success').show();
+					$('#changePasswordAlert .alert-danger').hide();
 					$('#changePasswordAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
                     deferred.resolve(data); //resolve data
                })
                 .error(function (err) { 
-					$('#changePasswordAlert').html('<div class="alert alert-danger"><b>Failed!</b> Change password process failed.</div>');
+					$('#changePasswordAlert .alert-danger').show();
+					$('#changePasswordAlert .alert-success').hide();
 					deferred.reject();
 					$('#changePasswordAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
 				});
             return deferred.promise; 
         }
     };
-});
-            
+});        
