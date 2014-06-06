@@ -121,7 +121,7 @@ angular.module('odeskApp')
  
                     return( source ); }
 		})
-                .success(function (data) {alert("success");
+                .success(function (data) {
                     $('#changePasswordAlert .alert-success').show();
 					$('#changePasswordAlert .alert-danger').hide();
 					$('#changePasswordAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
