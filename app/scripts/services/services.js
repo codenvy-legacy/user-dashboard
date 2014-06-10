@@ -68,6 +68,66 @@ angular.module('odeskApp')
     };
 });
 
+angular.module('odeskApp')	
+	.factory('addSkill', function ($http, $q) {
+    return {
+        query: function (appValue) {
+            var deferred = $q.defer();
+			var con = {
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
+					'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+			
+             $http.post('/api/profile/prefs', appValue, con)
+                .success(function (data) {
+					$('#addSkillsAlert .alert-success').show();
+					$('#addSkillsAlert .alert-danger').hide();
+					$('#addSkillsAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
+                    deferred.resolve(data); //resolve data
+               })
+                .error(function (err) {
+					$('#addSkillsAlert .alert-danger').show();
+					$('#addSkillsAlert .alert-success').hide();
+					$('#addSkillsAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
+					deferred.reject();
+				});
+            return deferred.promise; 
+        }
+    };
+});
+
+angular.module('odeskApp')	
+	.factory('removeSkills', function ($http, $q) {
+    return {
+        update: function (appValue) {
+            var deferred = $q.defer();
+			var con = {
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
+					'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+			
+             $http.post('/api/profile/prefs', appValue, con)
+                .success(function (data) {
+					$('#removeSkillsAlert .alert-success').show();
+					$('#removeSkillsAlert .alert-danger').hide();
+					$('#removeSkillsAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
+                    deferred.resolve(data); //resolve data
+               })
+                .error(function (err) {
+					$('#removeSkillsAlert .alert-danger').show();
+					$('#removeSkillsAlert .alert-success').hide();
+					$('#removeSkillsAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
+					deferred.reject();
+				});
+            return deferred.promise; 
+        }
+    };
+});
+
 angular.module('odeskApp')
     .factory('Project',  ['$resource', function ($resource) {
         return $resource('/api/project/:workspaceID', {}, {
@@ -83,44 +143,53 @@ angular.module('odeskApp')
     return {
         update: function (pwd) {
             var deferred = $q.defer();
-			$http.post('/api/user/password', { 'password': pwd }, {
-				headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
-				transformRequest: function(data) { // If this is not an object, defer to native stringification.
-                    if ( ! angular.isObject( data ) ) {
+			$http.post('/api/user/password',
+				{
+					'password': pwd
+				},
+				{
+					headers: {
+						'Accept': '*/*',
+						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+						'X-Requested-With': 'XMLHttpRequest'
+					},
+					transformRequest: function(data) { // If this is not an object, defer to native stringification.
+						 
+						if ( ! angular.isObject( data ) ) {
+	
+							return( ( data == null ) ? "" : data.toString() );
  
-                        return( ( data == null ) ? "" : data.toString() );
+						}
+	
+						var buffer = [];
+	
+						// Serialize each key in the object.
+						for ( var name in data ) {
  
-                    }
+							if ( ! data.hasOwnProperty( name ) ) {
  
-                    var buffer = [];
+								continue;
  
-                    // Serialize each key in the object.
-                    for ( var name in data ) {
+							}
  
-                        if ( ! data.hasOwnProperty( name ) ) {
+							var value = data[ name ];
  
-                            continue;
+							buffer.push(
+								encodeURIComponent( name ) +
+								"=" +
+								encodeURIComponent( ( value == null ) ? "" : value )
+							);
+		
+						}
  
-                        }
+						// Serialize the buffer and clean it up for transportation.
+						var source = buffer
+							.join( "&" )
+							.replace( /%20/g, "+" )
+						;
  
-                        var value = data[ name ];
- 
-                        buffer.push(
-                            encodeURIComponent( name ) +
-                            "=" +
-                            encodeURIComponent( ( value == null ) ? "" : value )
-                        );
- 
-                    }
- 
-                    // Serialize the buffer and clean it up for transportation.
-                    var source = buffer
-                        .join( "&" )
-                        .replace( /%20/g, "+" )
-                    ;
- 
-                    return( source ); }
-		})
+						return( source ); }
+			})
                 .success(function (data) {
                     $('#changePasswordAlert .alert-success').show();
 					$('#changePasswordAlert .alert-danger').hide();
