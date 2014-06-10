@@ -8,232 +8,278 @@
 
 /**
  * @auth Gaurav Meena
- * @date 01/30/2014
- * service 
+ * @date 01/16/2014
+ * This script will contain all controller related to account section
  */
 
-/*global angular*/
+/*global angular, $*/
+
+var firstNameDescription = "";
+var lastNameDescription = "";
+var emailDescription = "";
+var phoneDescription = "";
+var countryDescription = "";
+var companyNameDescription = "";
+var departmentNameDescription = "";
+var jobTitleDescription = "";
+
+var skillNo = 0;
+var dataPreferences;
+
 'use strict';
-
 angular.module('odeskApp')
-    .factory('Workspace',  ['$resource', function ($resource) {
-        return $resource('/api/workspace/:workspaceID', {}, {
-            all: {method: 'GET', params: {workspaceID: 'all'}, isArray: true},
-            query: {method: 'GET', params: {}, isArray: false}
-        });
-    }]);
-	
-angular.module('odeskApp')	
-	.factory('Profile', function ($http, $q) {
-    return {
-		query: function () {
-            var deferred = $q.defer();
-			var con = {
-                headers: {
-                    'Accept': 'application/json',
-					'X-Requested-With': 'XMLHttpRequest'
-                }
-            };
-            $http.get('/api/profile', con)
-                .success(function (data) {
-                    deferred.resolve(data); //resolve data
-               })
-                .error(function (err) { deferred.reject(); });
-            return deferred.promise; 
-        },
-        update: function (appValue) {
-            var deferred = $q.defer();
-			var con = {
-                headers: {
-                    'Content-Type': 'application/json; charset=UTF-8',
-					'X-Requested-With': 'XMLHttpRequest'
-                }
-            };
+    .controller('AccountConfigCtrl', function ($scope, Profile, Password, addSkill, removeSkills, addUsage) {        
+        /*Profile.query(function (resp) {
+            $scope.attributes = resp.attributes;
+        });*/
+		
+		Profile.query().then(function (resp) {
+		
+			dataPreferences = resp.preferences;
 			
-             $http.post('/api/profile', appValue, con)
-                .success(function (data) {
-					$('#upadateProfileAlert .alert-success').show();
-					$('#upadateProfileAlert .alert-danger').hide();
-					$('#upadateProfileAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
-                    deferred.resolve(data); //resolve data
-               })
-                .error(function (err) {
-					$('#upadateProfileAlert .alert-danger').show();
-					$('#upadateProfileAlert .alert-success').hide();
-					$('#upadateProfileAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
-					deferred.reject();
-				});
-            return deferred.promise; 
-        }
-    };
-});
-
-angular.module('odeskApp')	
-	.factory('addSkill', function ($http, $q) {
-    return {
-        query: function (appValue) {
-            var deferred = $q.defer();
-			var con = {
-                headers: {
-                    'Content-Type': 'application/json; charset=UTF-8',
-					'X-Requested-With': 'XMLHttpRequest'
-                }
-            };
-			
-             $http.post('/api/profile/prefs', appValue, con)
-                .success(function (data) {
-					$('#addSkillsAlert .alert-success').show();
-					$('#addSkillsAlert .alert-danger').hide();
-					$('#addSkillsAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
-                    deferred.resolve(data); //resolve data
-               })
-                .error(function (err) {
-					$('#addSkillsAlert .alert-danger').show();
-					$('#addSkillsAlert .alert-success').hide();
-					$('#addSkillsAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
-					deferred.reject();
-				});
-            return deferred.promise; 
-        }
-    };
-});
-
-angular.module('odeskApp')	
-	.factory('removeSkills', function ($http, $q) {
-    return {
-        update: function (appValue) {
-            var deferred = $q.defer();
-			var con = {
-                headers: {
-                    'Content-Type': 'application/json; charset=UTF-8',
-					'X-Requested-With': 'XMLHttpRequest'
-                }
-            };
-			
-             $http.post('/api/profile/prefs', appValue, con)
-                .success(function (data) {
-					$('#removeSkillsAlert .alert-success').show();
-					$('#removeSkillsAlert .alert-danger').hide();
-					$('#removeSkillsAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
-                    deferred.resolve(data); //resolve data
-               })
-                .error(function (err) {
-					$('#removeSkillsAlert .alert-danger').show();
-					$('#removeSkillsAlert .alert-success').hide();
-					$('#removeSkillsAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
-					deferred.reject();
-				});
-            return deferred.promise; 
-        }
-    };
-});
-
-
-angular.module('odeskApp')	
-	.factory('addUsage', function ($http, $q) {
-    return {
-        update: function (appValue) {
-            var deferred = $q.defer();
-			var con = {
-                headers: {
-                    'Content-Type': 'application/json; charset=UTF-8',
-					'X-Requested-With': 'XMLHttpRequest'
-                }
-            };
-			
-             $http.post('/api/profile/prefs', appValue, con)
-                .success(function (data) {
-					$('#usageAlert .alert-success').show();
-					$('#usageAlert .alert-danger').hide();
-					$('#usageAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
-                    deferred.resolve(data); //resolve data
-               })
-                .error(function (err) {
-					$('#usageAlert .alert-danger').show();
-					$('#usageAlert .alert-success').hide();
-					$('#usageAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
-					deferred.reject();
-				});
-            return deferred.promise; 
-        }
-    };
-});
-
-angular.module('odeskApp')
-    .factory('Project',  ['$resource', function ($resource) {
-        return $resource('/api/project/:workspaceID', {}, {
-            create: {method: 'POST', params: {}, isArray: false},
-            query: {method: 'GET', params: {}, isArray: true},
-            put: {method: 'PUT', params: {workspaceID: 'workspaceimb0rqn76p2euvn4'}, isArray: false}
-        });
-    }]);
-
-
-angular.module('odeskApp')	
-	.factory('Password', function ($http, $q) {
-    return {
-        update: function (pwd) {
-            var deferred = $q.defer();
-			$http.post('/api/user/password',
+			resp.attributes.forEach(function(as){
+				if(as.name=='firstName')
 				{
-					'password': pwd
+					$scope.firstName = as.value;
+					firstNameDescription = as.description;
+				}
+				if(as.name=='lastName')
+				{
+					$scope.lastName = as.value;
+					lastNameDescription = as.description;
+				}
+				if(as.name=='email')
+				{
+					$scope.email = as.value;
+					emailDescription = as.description;
+				}
+				if(as.name=='phone')
+				{
+					$scope.phone = as.value;
+					phoneDescription = as.description;
+				}
+				if(as.name=='country')
+				{
+					$scope.country = as.value;
+					countryDescription = as.description;
+				}
+				if(as.name=='employer')
+				{
+					$scope.companyName = as.value;
+					companyNameDescription = as.description;
+				}
+				if(as.name=='departmentname')
+				{
+					$scope.departmentName = as.value;
+					departmentNameDescription = as.description;
+				}
+				if(as.name=='jobtitle')
+				{
+					$scope.jobTitle = as.value;
+					jobTitleDescription = as.description;
+				}
+				if(as.name=='sales_can_contact')
+				{
+					if(as.value=="true") {
+						$scope.check = true;
+					}
+					else {
+						$scope.check = false;
+					}
+				}
+			});
+			
+			var salesContactArray = [];
+			var userSkillsArray = [];
+			
+			
+			$.each(resp.preferences, function (key, dat) {
+				if(/skill_/i.test(key))
+				{
+					userSkillsArray.push(dat);
+					skill_part = key.split('_');
+					skillNo = skill_part[1];
+					$scope.skillId = parseInt(skillNo) + 1;
+				}
+			});
+			
+			$.each(resp.preferences, function (key, dat) {
+				if(/usage_/i.test(key))
+				{
+					if(key=='usage_1') {
+						if(dat=="true") {
+							$scope.usage_1 = true;
+						} else {
+							$scope.usage_1 = false;
+						}
+					}
+					if(key=='usage_2') {
+						if(dat=="true") {
+							$scope.usage_2 = true;
+						} else {
+							$scope.usage_2 = false;
+						}
+					}
+					if(key=='usage_3') {
+						if(dat=="true") {
+							$scope.usage_3 = true;
+						} else {
+							$scope.usage_3 = false;
+						}
+					}
+					if(key=='usage_4') {
+						if(dat=="true") {
+							$scope.usage_4 = true;
+						} else {
+							$scope.usage_4 = false;
+						}
+					}
+					if(key=='usage_5') {
+						if(dat=="true") {
+							$scope.usage_5 = true;
+						} else {
+							$scope.usage_5 = false;
+						}
+					}
+					if(key=='usage_6') {
+						if(dat=="true") {
+							$scope.usage_6 = true;
+						} else {
+							$scope.usage_6 = false;
+						}
+					}
+				}
+			});
+			
+			$.each(resp.preferences, function (key, dat) {
+				if(/project_/i.test(key))
+				{
+					if(key=='project_1') {
+						if(dat=="true") {
+							$scope.project_1 = true;
+						} else {
+							$scope.project_1 = false;
+						}
+					}
+					if(key=='project_2') {
+						if(dat=="true") {
+							$scope.project_2 = true;
+						} else {
+							$scope.project_2 = false;
+						}
+					}
+					if(key=='project_3') {
+						if(dat=="true") {
+							$scope.project_3 = true;
+						} else {
+							$scope.project_3 = false;
+						}
+					}
+					if(key=='project_4') {
+						if(dat=="true") {
+							$scope.project_4 = true;
+						} else {
+							$scope.project_4 = false;
+						}
+					}
+				}
+			});
+			
+			
+				$scope.salesContactOptions = salesContactArray;
+				$scope.userSkills = userSkillsArray;
+        });
+        
+        $scope.updateProfile = function () {
+			var appValue = [
+				{
+					"name": "firstName",
+					"value": $scope.firstName,
+					"description": firstNameDescription
 				},
 				{
-					headers: {
-						'Accept': '*/*',
-						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-						'X-Requested-With': 'XMLHttpRequest'
-					},
-					transformRequest: function(data) { // If this is not an object, defer to native stringification.
-						 
-						if ( ! angular.isObject( data ) ) {
-	
-							return( ( data == null ) ? "" : data.toString() );
- 
-						}
-	
-						var buffer = [];
-	
-						// Serialize each key in the object.
-						for ( var name in data ) {
- 
-							if ( ! data.hasOwnProperty( name ) ) {
- 
-								continue;
- 
-							}
- 
-							var value = data[ name ];
- 
-							buffer.push(
-								encodeURIComponent( name ) +
-								"=" +
-								encodeURIComponent( ( value == null ) ? "" : value )
-							);
+					"name": "lastName",
+					"value": $scope.lastName,
+					"description": lastNameDescription
+				},
+				{
+					"name": "email",
+					"value": $scope.email,
+					"description": emailDescription
+				},
+				{
+					"name": "phone",
+					"value": $scope.phone,
+					"description": phoneDescription
+				},
+				{
+					"name": "country",
+					"value": $scope.country,
+					"description": countryDescription
+				},
+				{
+					"name": "employer",
+					"value": $scope.companyName,
+					"description": companyNameDescription
+				},
+				{
+					"name": "departmentname",
+					"value": $scope.departmentName,
+					"description": departmentNameDescription
+				},
+				{
+					"name": "jobtitle",
+					"value": $scope.jobTitle,
+					"description": jobTitleDescription
+				},
+				{
+					"name": "sales_can_contact",
+					"value": $scope.check,
+					"description": "Sales are able to contact this user"
+				}
+			];
+            Profile.update(appValue);
+        };
+            
+        $scope.updatePassword = function () {
+            if ($scope.password === $scope.password_verify) {
+                Password.update($scope.password);
+            } else {
+                alert("password don't match");
+            }
+        };
 		
-						}
- 
-						// Serialize the buffer and clean it up for transportation.
-						var source = buffer
-							.join( "&" )
-							.replace( /%20/g, "+" )
-						;
- 
-						return( source ); }
-			})
-                .success(function (data) {
-                    $('#changePasswordAlert .alert-success').show();
-					$('#changePasswordAlert .alert-danger').hide();
-					$('#changePasswordAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
-                    deferred.resolve(data); //resolve data
-               })
-                .error(function (err) { 
-					$('#changePasswordAlert .alert-danger').show();
-					$('#changePasswordAlert .alert-success').hide();
-					deferred.reject();
-					$('#changePasswordAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
-				});
-            return deferred.promise; 
-        }
-    };
-});        
+		$scope.addSkill = function () {
+			var skillNow = parseInt(skillNo) + 1;
+			var skillData = {};
+			skillData["skill_"+skillNow] = $scope.addSkillModel;
+			addSkill.query(skillData).then();
+		};
+		
+		$scope.removeSkill = function (skill) {
+			$.each(dataPreferences, function(key, val) {
+				if(val==skill)
+				{
+					delete dataPreferences[key];
+				}
+			});
+			
+			removeSkills.update(dataPreferences);
+		};
+		
+		$scope.addUsage = function () {
+			var usageData = {
+				"usage_1": $scope.usage_1,
+				"usage_2": $scope.usage_2,
+				"usage_3": $scope.usage_3,
+				"usage_4": $scope.usage_4,
+				"usage_5": $scope.usage_5,
+				"usage_6": $scope.usage_6,
+				"project_1": $scope.project_1,
+				"project_2": $scope.project_2,
+				"project_3": $scope.project_3,
+				"project_4": $scope.project_4
+			};
+			addUsage.update(usageData);
+		};
+    });
