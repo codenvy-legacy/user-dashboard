@@ -28,7 +28,7 @@ var dataPreferences;
 
 'use strict';
 angular.module('odeskApp')
-    .controller('AccountConfigCtrl', function ($scope, Profile, Password, addSkill, removeSkills) {        
+    .controller('AccountConfigCtrl', function ($scope, Profile, Password, addSkill, removeSkills, addUsage) {        
         /*Profile.query(function (resp) {
             $scope.attributes = resp.attributes;
         });*/
@@ -92,12 +92,6 @@ angular.module('odeskApp')
 			var salesContactArray = [];
 			var userSkillsArray = [];
 			
-			/*$.each(resp.preferences, function (key, dat) {
-				if(/contact_/i.test(key))
-				{
-					salesContactArray.push(dat);
-				}
-			});*/
 			
 			$.each(resp.preferences, function (key, dat) {
 				if(/skill_/i.test(key))
@@ -108,6 +102,89 @@ angular.module('odeskApp')
 					$scope.skillId = parseInt(skillNo) + 1;
 				}
 			});
+			
+			$.each(resp.preferences, function (key, dat) {
+				if(/usage_/i.test(key))
+				{
+					if(key=='usage_1') {
+						if(dat=="true") {
+							$scope.usage_1 = true;
+						} else {
+							$scope.usage_1 = false;
+						}
+					}
+					if(key=='usage_2') {
+						if(dat=="true") {
+							$scope.usage_2 = true;
+						} else {
+							$scope.usage_2 = false;
+						}
+					}
+					if(key=='usage_3') {
+						if(dat=="true") {
+							$scope.usage_3 = true;
+						} else {
+							$scope.usage_3 = false;
+						}
+					}
+					if(key=='usage_4') {
+						if(dat=="true") {
+							$scope.usage_4 = true;
+						} else {
+							$scope.usage_4 = false;
+						}
+					}
+					if(key=='usage_5') {
+						if(dat=="true") {
+							$scope.usage_5 = true;
+						} else {
+							$scope.usage_5 = false;
+						}
+					}
+					if(key=='usage_6') {
+						if(dat=="true") {
+							$scope.usage_6 = true;
+						} else {
+							$scope.usage_6 = false;
+						}
+					}
+				}
+			});
+			
+			$.each(resp.preferences, function (key, dat) {
+				if(/project_/i.test(key))
+				{
+					if(key=='project_1') {
+						if(dat=="true") {
+							$scope.project_1 = true;
+						} else {
+							$scope.project_1 = false;
+						}
+					}
+					if(key=='project_2') {
+						if(dat=="true") {
+							$scope.project_2 = true;
+						} else {
+							$scope.project_2 = false;
+						}
+					}
+					if(key=='project_3') {
+						if(dat=="true") {
+							$scope.project_3 = true;
+						} else {
+							$scope.project_3 = false;
+						}
+					}
+					if(key=='project_4') {
+						if(dat=="true") {
+							$scope.project_4 = true;
+						} else {
+							$scope.project_4 = false;
+						}
+					}
+				}
+			});
+			
 			
 				$scope.salesContactOptions = salesContactArray;
 				$scope.userSkills = userSkillsArray;
@@ -188,5 +265,21 @@ angular.module('odeskApp')
 			});
 			
 			removeSkills.update(dataPreferences);
+		};
+		
+		$scope.addUsage = function () {
+			var usageData = {
+				"usage_1": $scope.usage_1,
+				"usage_2": $scope.usage_2,
+				"usage_3": $scope.usage_3,
+				"usage_4": $scope.usage_4,
+				"usage_5": $scope.usage_5,
+				"usage_6": $scope.usage_6,
+				"project_1": $scope.project_1,
+				"project_2": $scope.project_2,
+				"project_3": $scope.project_3,
+				"project_4": $scope.project_4
+			};
+			addUsage.update(usageData);
 		};
     });
