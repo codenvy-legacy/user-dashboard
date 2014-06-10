@@ -128,6 +128,37 @@ angular.module('odeskApp')
     };
 });
 
+
+angular.module('odeskApp')	
+	.factory('addUsage', function ($http, $q) {
+    return {
+        update: function (appValue) {
+            var deferred = $q.defer();
+			var con = {
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
+					'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+			
+             $http.post('/api/profile/prefs', appValue, con)
+                .success(function (data) {
+					$('#usageAlert .alert-success').show();
+					$('#usageAlert .alert-danger').hide();
+					$('#usageAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
+                    deferred.resolve(data); //resolve data
+               })
+                .error(function (err) {
+					$('#usageAlert .alert-danger').show();
+					$('#usageAlert .alert-success').hide();
+					$('#usageAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
+					deferred.reject();
+				});
+            return deferred.promise; 
+        }
+    };
+});
+
 angular.module('odeskApp')
     .factory('Project',  ['$resource', function ($resource) {
         return $resource('/api/project/:workspaceID', {}, {
