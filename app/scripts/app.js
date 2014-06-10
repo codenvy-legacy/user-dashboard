@@ -15,8 +15,7 @@
 /*global angular*/
 
 'use strict';
-var DEV = false;
-var BASE_URL = '/dashboard/';
+var DEV = true;
 
 angular.module('odeskApp', [
     'ngCookies',
@@ -27,16 +26,48 @@ angular.module('odeskApp', [
     'chieffancypants.loadingBar'
 ]).config(function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeBar = false;
-  })
-  .config(function ($routeProvider, $locationProvider) {
+}).factory('AuthInterceptor', function ($window, $cookies, $q) {
+    return {
+        request: function(config) {
+          //remove prefix url
+          if (config.url.indexOf("http://a3.codenvy-dev.com/api") == 0) {
+            config.url = config.url.substring("http://a3.codenvy-dev.com".length);
+          }
+
+            //Do not add token on auth login
+            if (config.url.indexOf("/api/auth/login") == -1 && $cookies.token) {
+              console.log("updating header.....");
+              config.params = config.params || {};
+              angular.extend(config.params, {token: $cookies.token});
+
+            }
+            console.log("new params are " + config.params);
+          console.log(config.headers);
+
+            return config || $q.when(config);
+        },
+        response: function(response) {
+            if (response.status === 401) {
+                // TODO: Redirect user to login page.
+            }
+            return response || $q.when(response);
+        }
+    };
+}).config(function ($routeProvider, $locationProvider, $httpProvider) {
     var DEFAULT;
-    
+    var BASE_URL;
+
     if (DEV) {
         DEFAULT = '/login';
+        BASE_URL = '/';
     } else {
         DEFAULT = '/dashboard';
+        BASE_URL = '/dashboard/';
     }
-    
+
+   if (DEV) {
+      $httpProvider.interceptors.push('AuthInterceptor');
+    }
     $routeProvider
 	    .when('/dashboard', {
             templateUrl: BASE_URL + 'views/dashboard.html',
@@ -89,7 +120,7 @@ angular.module('odeskApp', [
         .otherwise({
             redirectTo: DEFAULT
         });
-    
+
 	//while uncommenting line below fix # in navbar.js
     //$locationProvider.html5Mode(true);
 });
