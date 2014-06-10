@@ -23,14 +23,19 @@ var companyNameDescription = "";
 var departmentNameDescription = "";
 var jobTitleDescription = "";
 
+var skillNo = 0;
+var dataPreferences;
+
 'use strict';
 angular.module('odeskApp')
-    .controller('AccountConfigCtrl', function ($scope, Profile, Password) {        
+    .controller('AccountConfigCtrl', function ($scope, Profile, Password, addSkill, removeSkills) {        
         /*Profile.query(function (resp) {
             $scope.attributes = resp.attributes;
         });*/
 		
 		Profile.query().then(function (resp) {
+		
+			dataPreferences = resp.preferences;
 			
 			resp.attributes.forEach(function(as){
 				if(as.name=='firstName')
@@ -73,22 +78,34 @@ angular.module('odeskApp')
 					$scope.jobTitle = as.value;
 					jobTitleDescription = as.description;
 				}
+				if(as.name=='sales_can_contact')
+				{
+					if(as.value=="true") {
+						$scope.check = true;
+					}
+					else {
+						$scope.check = false;
+					}
+				}
 			});
 			
 			var salesContactArray = [];
 			var userSkillsArray = [];
 			
-			$.each(resp.preferences, function (key, dat) {
+			/*$.each(resp.preferences, function (key, dat) {
 				if(/contact_/i.test(key))
 				{
 					salesContactArray.push(dat);
 				}
-			});
+			});*/
 			
 			$.each(resp.preferences, function (key, dat) {
 				if(/skill_/i.test(key))
 				{
 					userSkillsArray.push(dat);
+					skill_part = key.split('_');
+					skillNo = skill_part[1];
+					$scope.skillId = parseInt(skillNo) + 1;
 				}
 			});
 			
@@ -137,6 +154,11 @@ angular.module('odeskApp')
 					"name": "jobtitle",
 					"value": $scope.jobTitle,
 					"description": jobTitleDescription
+				},
+				{
+					"name": "sales_can_contact",
+					"value": $scope.check,
+					"description": "Sales are able to contact this user"
 				}
 			];
             Profile.update(appValue);
@@ -149,4 +171,22 @@ angular.module('odeskApp')
                 alert("password don't match");
             }
         };
+		
+		$scope.addSkill = function () {
+			var skillNow = parseInt(skillNo) + 1;
+			var skillData = {};
+			skillData["skill_"+skillNow] = $scope.addSkillModel;
+			addSkill.query(skillData).then();
+		};
+		
+		$scope.removeSkill = function (skill) {
+			$.each(dataPreferences, function(key, val) {
+				if(val==skill)
+				{
+					delete dataPreferences[key];
+				}
+			});
+			
+			removeSkills.update(dataPreferences);
+		};
     });
