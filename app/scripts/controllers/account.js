@@ -97,7 +97,7 @@ angular.module('odeskApp')
 				if(/skill_/i.test(key))
 				{
 					userSkillsArray.push(dat);
-					skill_part = key.split('_');
+					var skill_part = key.split('_');
 					skillNo = skill_part[1];
 					$scope.skillId = parseInt(skillNo) + 1;
 				}
