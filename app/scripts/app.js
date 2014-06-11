@@ -27,32 +27,28 @@ angular.module('odeskApp', [
 ]).config(function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeBar = false;
 }).factory('AuthInterceptor', function ($window, $cookies, $q) {
-    return {
-        request: function(config) {
-          //remove prefix url
-          if (config.url.indexOf("http://a3.codenvy-dev.com/api") == 0) {
-            config.url = config.url.substring("http://a3.codenvy-dev.com".length);
-          }
+  return {
+    request: function(config) {
+      //remove prefix url
+      if (config.url.indexOf("http://a3.codenvy-dev.com/api") == 0) {
+        config.url = config.url.substring("http://a3.codenvy-dev.com".length);
+      }
 
-            //Do not add token on auth login
-            if (config.url.indexOf("/api/auth/login") == -1 && $cookies.token) {
-              console.log("updating header.....");
-              config.params = config.params || {};
-              angular.extend(config.params, {token: $cookies.token});
+      //Do not add token on auth login
+      if (config.url.indexOf("/api/auth/login") == -1 && $cookies.token) {
+        config.params = config.params || {};
+        angular.extend(config.params, {token: $cookies.token});
 
-            }
-            console.log("new params are " + config.params);
-          console.log(config.headers);
-
-            return config || $q.when(config);
-        },
-        response: function(response) {
-            if (response.status === 401) {
-                // TODO: Redirect user to login page.
-            }
-            return response || $q.when(response);
-        }
-    };
+      }
+      return config || $q.when(config);
+    },
+    response: function(response) {
+      if (response.status === 401) {
+        // TODO: Redirect user to login page.
+      }
+      return response || $q.when(response);
+    }
+  };
 }).config(function ($routeProvider, $locationProvider, $httpProvider) {
     var DEFAULT;
     var BASE_URL;
