@@ -25,6 +25,7 @@ var jobTitleDescription = "";
 
 var skillNo = 0;
 var dataPreferences;
+var allSkillIds = [];
 
 'use strict';
 angular.module('odeskApp')
@@ -97,9 +98,10 @@ angular.module('odeskApp')
 				if(/skill_/i.test(key))
 				{
 					userSkillsArray.push(dat);
-					var skill_part = key.split('_');
-					skillNo = skill_part[1];
-					$scope.skillId = parseInt(skillNo) + 1;
+					var skill_part = [];
+					skill_part = key.split('_');
+					allSkillIds.push(skill_part[1]);
+					skillNo = Math.max.apply(Math, allSkillIds);
 				}
 			});
 			
@@ -266,6 +268,8 @@ angular.module('odeskApp')
 			
 			removeSkills.update(dataPreferences);
 		};
+		
+		
 		
 		$scope.addUsage = function () {
 			var usageData = {
