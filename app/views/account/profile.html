@@ -22,54 +22,66 @@
                             <div class="row">
                                 <div class="col-md-6 form-group">
                                     <label for="workspaceid">First Name:</label>
-                                    <input class="form-control" id="name" name="name" placeholder="steven" ng-model="firstName" type="text" required autofocus />
+                                    <input class="form-control" id="name" name="name" placeholder="Your First Name" ng-model="firstName" type="text" required autofocus />
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="workspaceid">Last Name:</label>
-                                    <input class="form-control" id="email" name="email" placeholder="le meur" ng-model="lastName" type="text" required autofocus/>
+                                    <input class="form-control" id="email" name="email" placeholder="Your Last Name" ng-model="lastName" type="text" required autofocus/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label for="workspaceid">Email:</label>
-                                    <input class="form-control" id="name" name="name" placeholder="stevan@codeenvy.com" ng-model="email" type="email" required autofocus />
+                                    <input class="form-control" id="name" name="name" placeholder="Your Email Address" ng-model="email" type="email" required autofocus />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label for="workspaceid">Phone:</label>
-                                    <input class="form-control" id="name" name="name" ng-model="phone" placeholder="-- -- -- --" type="text" required autofocus />
+                                    <input class="form-control" pattern="[0-9]*" id="name" name="name" ng-model="phone" placeholder="Your Phone Number" type="text" autofocus />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label for="workspaceid">Country:</label>
-                                    <select id="workspaceid" ng-model="country" class="form-control">
-                                        <option selected>USA</option>
+                                    <select id="workspaceid" ng-model="country" class="form-control" required>
+                                        <!--<option selected>USA</option>
                                         <option>UK</option>
-                                        <option>India</option>
+                                        <option>India</option>-->
+										<option value="">Select Your Country</option>
+										<option ng-repeat="cntry in countries">{{cntry.name}}</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label for="workspaceid">Company Name:</label>
-                                    <input class="form-control" id="name" name="name" ng-model="companyName" placeholder="Codeenvy" type="text" required autofocus />
+                                    <input class="form-control" id="name" name="name" ng-model="companyName" placeholder="Your Company Name" type="text" autofocus />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label for="workspaceid">Department Name:</label>
-                                    <input class="form-control" id="name" name="name" placeholder="Product" ng-model="departmentName" type="text" required autofocus />
+                                    <input class="form-control" id="name" name="name" placeholder="Your Department Name" ng-model="departmentName" type="text" autofocus />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label for="workspaceid">Job Title:</label>
-                                    <input class="form-control" id="name" name="name" ng-model="jobTitle" placeholder="Product Manager" type="text" required autofocus />
+                                    <!--<input class="form-control" id="name" name="name" ng-model="jobTitle" placeholder="Product Manager" type="text" required autofocus />-->
+									<select ng-model="jobTitle" class="form-control" autofocus>
+									<option value="">Please select role...</option>
+									<option value="Developer">Developer</option>
+									<option value="Architect">Architect</option>
+									<option value="PM">Product Manager</option>
+									<option value="Project">Project Manager</option>
+									<option value="CEO/CTO">CEO/CTO</option>
+									<option value="Student">Student</option>
+									<option value="Other">Other</option>
+									</select>
                                 </div>
                             </div>
-                            Can our sales teams contact you to discuss our offerings? 
+                            Can our sales teams contact you to discuss our offerings? &nbsp;&nbsp;
                             <input type="checkbox" name="remember" ng-model="check" value="1"> Yes
                             <div class="row">
                                 <div class="col-md-2 col-md-offset-10">
@@ -89,6 +101,7 @@
 								<div class="alert alert-success" style="display: none;"><b>Successfully Done!</b> Change password process completed.</div>
 								<div class="alert alert-danger" style="display: none;"><b>Failed!</b> Change password process failed.</div>
 							</div>
+							<div class="alert alert-danger" id="doesNotMatch" style="display: none;"><b>Failed!</b> New Password and Repeat New Password do not match.</div>
                 <div class="row">
                     <div class="col-md-12">
                         <form method="post" accept-charset="utf-8" class="form" role="form" ng-submit="updatePassword()">
@@ -101,13 +114,13 @@
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label for="workspaceid">New Password:</label>
-                                    <input class="form-control" id="password1" name="password1" placeholder="" type="password" ng-model="password" ng-required="" required autofocus />
+                                    <input class="form-control" id="password1" name="password1" placeholder="" type="password" ng-model="password" required autofocus />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label for="workspaceid">Repeat New Password:</label>
-                                    <input class="form-control" id="password2" name="password2" placeholder="" type="password" ng-model="password_verify" ng-required="" required autofocus />
+                                    <input class="form-control" id="password2" name="password2" placeholder="" type="password" ng-model="password_verify" required autofocus />
                                 </div>
                             </div>
                             <div class="row">
@@ -144,7 +157,7 @@
                         <li>3 Organize a User Classroom and we will be there,</li>
                     </ul></div>
                 <div class="panel-footer"><div class="row">
-                        <div class="col-md-12 text-center">Contact US</div>
+                        <div class="col-md-12 text-center"><a href="mailto:support@codenvy.com" style="color: #363636;">Contact US</a></div>
                     </div>
                 </div>
             </div>
@@ -160,7 +173,7 @@
 								<div class="alert alert-danger" style="display: none;"><b>Failed!</b> Remove Skill process failed.</div>
 							</div>
                 <div class="celist">
-                    <div class="label label-default" ng-repeat="skill in userSkills">{{skill}} <span ng-click="removeSkill(skill)" class="glyphicon glyphicon-remove"></span></div>
+                    <div class="label label-default" ng-repeat="skill in userSkills" id="skill_{{$index}}">{{skill}} <span ng-click="removeSkill(skill, 'skill_'+$index)" class="glyphicon glyphicon-remove"></span></div>
                     <!--<div class="label label-default">Java Development <span class="glyphicon glyphicon-remove"></span></div>
                     <div class="label label-default">IOS Application <span class="glyphicon glyphicon-remove"></span></div>
                     <div class="label label-default">Cobol <span class="glyphicon glyphicon-remove"></span></div>-->
@@ -170,7 +183,7 @@
                         <form accept-charset="utf-8" class="form" role="form">  
                             <div class="row">
                                 <div class="col-md-10 form-group">
-                                    <input class="form-control" id="name" name="name" placeholder="steven" ng-model="addSkillModel" type="text" required autofocus />
+                                    <input class="form-control" id="name" name="name" ng-model="addSkillModel" type="text" required autofocus />
                                 </div>
                                 <div class="col-md-2"><button class="btn btn-primary btn-block signup-btn" ng-click="addSkill()">Add</button></div>
                             </div>
