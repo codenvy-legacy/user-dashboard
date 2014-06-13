@@ -56,7 +56,7 @@
   <div ng-include="'views/factory-carousal.html'"></div>
 </div>
 <div class="col-md-10">
-  <div class="row" ng-if="box">
+  <div class="row" ng-if="!box">
       <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3 projectbox" style="width:300px">
           <div class="panel panel-default">
               <div class="panel-heading">
@@ -106,17 +106,17 @@
       </div><!-- projectbox -->
   </div><!-- Grid .row -->
   
-  <table class="table table-hover projectlist" ng-if="!box">
+  <table class="table table-hover projectlist" ng-if="box">
     <tr ng-repeat="project in projects| filter: filter | orderBy:param:reverse">
-      <td class="col-md-1"><a href="{{project.url}}" target="_blank"><img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt=""></a></td>
-      <td class="col-md-2">
-        <a href="{{project.url}}" target="_blank"><strong>{{project.name}}</strong></a>
+      <td class="col-md-1 image"><a href="{{project.ideUrl}}" target="_blank"><img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt=""></a></td>
+      <td class="col-md-1">
+        <a href="{{project.ideUrl}}" target="_blank"><strong>{{project.name}}</strong></a>
         <div class="mic-info">{{project.workspaceName}}</div>
       </td>
       <td class="col-md-6"><div class="comment-text">{{project.description}}</div></td>
-      <td class="col-md-1 text-center" data-toggle="modal" data-target="#privacyModal"><div class="row"><i class="fa fa-unlock"></i><small> {{project.visibility}}</small></div></td>
-      <td class="col-md-1 text-center"><div class="row"><i class="fa fa-users"></i><small> Share</small></div></td>
-      <td class="col-md-1 text-center"><div class="row"><i class="fa fa-cog"></i></div></td>
+      <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#privacyModal"><div class="button"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></td>
+      <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#developersModal"><div class="button"><i class="fa fa-users"></i><small> Share</small></div></td>
+      <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><div class="button"><i class="fa fa-cog"></i></div></td>
     </tr><!-- panel-default -->
   </table><!-- row -->
   

@@ -60,7 +60,43 @@ th h4 { font-weight:normal; }
 .projectbox .panel-footer .row > div:hover { background:#eaeaea; }
 .projectbox .panel-footer > .row > div:not(:last-child) { border-right: 1px solid #dbdbdb; }
 .projectbox .panel-footer i { color:#8f8f8f; }
-
+.projectbox .panel-body {
+  height: 75px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  overflow: hidden;
+}
+.projectlist .col-md-2 a{
+  color: #3c3c3c;
+}
+.projectlist .col-md-1.image {
+  width: 2.33333%;
+}
+.projectlist .mic-info {
+  margin-top: 4px;
+  color: #787878;
+}
+.projectlist .comment-text{
+  color: #3c3c3c;
+}
+.projectlist .col-md-1 .button {
+  margin-top:7px;
+  min-height: 28px;
+  padding-top: 6px;
+  color: #8f8f8f;
+  background-color: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+  cursor: pointer;
+}
+.projectlist .col-md-1 .button:hover {
+  background-color: #e6e6e6;
+}
+.projectlist .col-md-1 .button small{
+  color: #363636;
+}
+.projectlist.table-hover > tbody > tr:hover > td{
+  background-color: #e6e6e6;
+}
 img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .createprjbox { padding:0 15px;background:#404040;left:15px;min-width:285px;max-width:700px; }
 .factorylistbox { background:#404040;z-index:1;position: absolute;top:245px; }
@@ -220,22 +256,23 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   line-height: 16px;
 }
 #privacyModal .modal-body .form-group {
-    margin-bottom: 25px;
+  margin-bottom: 25px;
 }
 #privacyModal input {
-    vertical-align:bottom;
-    margin-top: 2px;
-    margin-right: 4px;
+  vertical-align:bottom;
+  margin-top: 2px;
+  margin-right: 4px;
 }
 #privacyModal label{
-    display: block;
-    color: #363636;
-    font-size: 10px;
-    font-weight: 700;
-    line-height: 1.25;
-    text-transform: uppercase;
+  display: block;
+  color: #363636;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-transform: uppercase;
+  cursor: pointer;
 }
 #privacyModal .help-block {
-    margin:0 0 0 18px;
-    color: #a3a3a3;
+  margin:0 0 0 18px;
+  color: #a3a3a3;
 }
