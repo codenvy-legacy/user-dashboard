@@ -31,111 +31,105 @@
       <input type="text" ng-model="filter.name" class="searchfield " placeholder="Search for Projects"/>
 </div>
 </ul>
-<div class="row"></div>
-<!-- work in progress ... code may contain inline css-->
+<div class="row"></div><!-- work in progress ... code may contain inline css-->
+
 <div class="col-md-2" class="dropdown" style="width:200px; cursor:pointer;">
-    <div class="panel panel-default" >
-        <div class="panel-body text-center" ng-click="gotoProject()"> <!--class="dropdown-toggle" data-toggle="dropdown" ng-click="projectselect=0">-->
-            <span class="glyphicon white glyphicon-plus" style="font-size:75px; color:#dedede;  text-shadow: 1px 4px 6px #fff, 0 0 0 #000;"></span><br/>
-            <div class="text-center" style="color:#919191"><strong>Create New Project</strong></div>
-        </div>
-        <div class="dropdown-menu createprjbox">
-            <img style="margin-left: 50px; margin-top: -42px;" src="./images/up-arrow.png"/>
-            <div >
-                <div class="btn simple btn-default col-md-12" style="margin-bottom:15px;" ng-click="projectselect=1">Create using our wizard</div>
-                <div class="btn simple btn-default col-md-12" style="margin-bottom:15px;" stop-event='click' ng-click="test()">Create from factories</div>
-                <div class="btn simple btn-default col-md-12" style="margin-bottom:15px;" stop-event='click' ng-click="test()">Import from git repository</div> 
-            </div>
-        </div>
+  <div class="panel panel-default" >
+    <div class="panel-body text-center" ng-click="gotoProject()"> <!--class="dropdown-toggle" data-toggle="dropdown" ng-click="projectselect=0">-->
+      <span class="glyphicon white glyphicon-plus" style="font-size:75px; color:#dedede;  text-shadow: 1px 4px 6px #fff, 0 0 0 #000;"></span><br/>
+      <div class="text-center" style="color:#919191"><strong>Create New Project</strong></div>
     </div>
-</div>
+    <div class="dropdown-menu createprjbox">
+      <img style="margin-left: 50px; margin-top: -42px;" src="./images/up-arrow.png"/>
+      <div>
+        <div class="btn simple btn-default col-md-12" style="margin-bottom:15px;" ng-click="projectselect=1">Create using our wizard</div>
+        <div class="btn simple btn-default col-md-12" style="margin-bottom:15px;" stop-event='click' ng-click="test()">Create from factories</div>
+        <div class="btn simple btn-default col-md-12" style="margin-bottom:15px;" stop-event='click' ng-click="test()">Import from git repository</div> 
+      </div>
+    </div><!-- dropdown-menu -->
+  </div><!-- panel-default -->
+</div><!-- dropdown -->
+
 <div class="col-md-12 factorylistbox" ng-show="projectselect">
-    <img style="margin-left: 68px; margin-top: -37px;" src="./images/up-arrow.png"/>
-    <h3 ng-click="projectselect=0" class="pull-right"><a href="">x</a></h3>
-    <div ng-include="'views/factory-carousal.html'"></div>
+  <img style="margin-left: 68px; margin-top: -37px;" src="./images/up-arrow.png"/>
+  <h3 ng-click="projectselect=0" class="pull-right"><a href="">x</a></h3>
+  <div ng-include="'views/factory-carousal.html'"></div>
 </div>
 <div class="col-md-10">
-    <div class="row" ng-if="box">
-        <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3 projectbox" style="width:300px">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-md-3"  style="width:54px"><a href="{{project.ideUrl}}"><img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt=""></a></div>
-                        <div class="col-md-9">
-                            <h3 class="panel-title"><a href="{{project.ideUrl}}"><strong>{{project.name}}</strong></a></h3>
-                            <span>{{project.workspaceName}}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-body">{{project.description}}</div>
-                <div class="panel-footer"><div class="row" ng-click="selectProject(project)">
-                        <div class="col-md-4" data-toggle="modal" data-target="#privacyModal"><div class="row"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
-                        <div class="col-md-4" data-toggle="modal" data-target="#developersModal"><div class="row"><i class="fa fa-fw fa-users"></i><small> Developers</small></div></div>
-                        <div class="col-md-4" data-toggle="modal" data-target="#projectDetailModal"><div class="row"><i class="fa fa-fw fa-cog"></i></div></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div ng-if="notification" style="width:300px" class="col-md-3 projectbox" data-toggle="modal" data-target="#myModal">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3 class="panel-title white"><strong>WIN 6 MONTHS PREMIUM SERVICES</strong></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <ul class="list-unstyled">
-                        <li>1 Organize a User Group and we will be there,</li>
-                        <li>2 Organize a User Presentation and we will be there,</li>
-                        <li>3 Organize a User Classroom and we will be there,</li>
-                    </ul></div>
-                <div class="panel-footer"><div class="row">
-                        <div class="col-md-12 text-center">Contact US</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row projectbox" ng-if="!box">
-        <div class="panel panel-default" ng-repeat="project in projects| filter: filter | orderBy:param:reverse">
-            <div class="panel-body">
-                <div class="col-xs-2 col-md-1">
-                    <a href="{{project.url}}"><img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeName}}.png" alt=""></a>
-                </div>
-                <div class="col-xs-10 col-md-11">
-                    <div class="row">
-                        <div><a href="{{project.url}}"><strong>{{project.name}}</strong></a>
-                            <div class="mic-info">
-                                {{project.workspace}}
-                            </div>
-                        </div>
-                        <div class="comment-text">{{project.description}}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-footer">
+  <div class="row" ng-if="box">
+      <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3 projectbox" style="width:300px">
+          <div class="panel panel-default">
+              <div class="panel-heading">
                 <div class="row">
-                    <div class="col-md-4" data-toggle="modal" data-target="#privacyModal"><div class="row"><i class="fa fa-unlock"></i><small> {{project.visibility}}</small></div></div>
-                    <div class="col-md-4"><div class="row"><i class="fa fa-users"></i><small> Share</small></div></div>
-                    <div class="col-md-4"><div class="row"><i class="fa fa-cog"></i></div></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal -->
+                  <div class="col-md-3"  style="width:54px"><a href="{{project.ideUrl}}" target="_blank">
+                    <img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt=""></a>
+                  </div>
+                  <div class="col-md-9">
+                    <h3 class="panel-title"><a href="{{project.ideUrl}}" target="_blank"><strong>{{project.name}}</strong></a></h3>
+                    <span>{{project.workspaceName}}</span>
+                  </div>
+                </div><!-- .row -->
+              </div><!-- panel-heading -->
+              <div class="panel-body">{{project.description}}</div>
+              <div class="panel-footer">
+                <div class="row" ng-click="selectProject(project)">
+                  <div class="col-md-4" data-toggle="modal" data-target="#privacyModal"><div class="row"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
+                  <div class="col-md-4" data-toggle="modal" data-target="#developersModal"><div class="row"><i class="fa fa-fw fa-users"></i><small> Developers</small></div></div>
+                  <div class="col-md-4" data-toggle="modal" data-target="#projectDetailModal"><div class="row"><i class="fa fa-fw fa-cog"></i></div></div>
+                </div><!-- .row -->
+              </div><!-- panel-footer -->
+          </div><!-- panel-default -->
+      </div><!-- projectbox -->
+      
+      <div ng-if="notification" style="width:300px" class="col-md-3 projectbox" data-toggle="modal" data-target="#myModal">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="panel-title white"><strong>WIN 6 MONTHS PREMIUM SERVICES</strong></h3>
+              </div>
+            </div><!-- .row -->
+          </div><!-- panel-header -->
+          <div class="panel-body">
+            <ul class="list-unstyled">
+              <li>1 Organize a User Group and we will be there,</li>
+              <li>2 Organize a User Presentation and we will be there,</li>
+              <li>3 Organize a User Classroom and we will be there,</li>
+            </ul>
+          </div><!-- panel-body -->
+          <div class="panel-footer">
+            <div class="row">
+              <div class="col-md-12 text-center">Contact US</div>
+            </div><!-- .row -->
+          </div><!-- panel-footer -->
+        </div><!-- panel-primary -->
+      </div><!-- projectbox -->
+  </div><!-- Grid .row -->
+  
+  <table class="table table-hover projectlist" ng-if="!box">
+    <tr ng-repeat="project in projects| filter: filter | orderBy:param:reverse">
+      <td class="col-md-1"><a href="{{project.url}}" target="_blank"><img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt=""></a></td>
+      <td class="col-md-2">
+        <a href="{{project.url}}" target="_blank"><strong>{{project.name}}</strong></a>
+        <div class="mic-info">{{project.workspaceName}}</div>
+      </td>
+      <td class="col-md-6"><div class="comment-text">{{project.description}}</div></td>
+      <td class="col-md-1 text-center" data-toggle="modal" data-target="#privacyModal"><div class="row"><i class="fa fa-unlock"></i><small> {{project.visibility}}</small></div></td>
+      <td class="col-md-1 text-center"><div class="row"><i class="fa fa-users"></i><small> Share</small></div></td>
+      <td class="col-md-1 text-center"><div class="row"><i class="fa fa-cog"></i></div></td>
+    </tr><!-- panel-default -->
+  </table><!-- row -->
+  
+</div><!-- Modal -->
 <div class="modal fade" id="privacyModal" tabindex="-1" role="dialog" aria-labelledby="privacyModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header" style="padding:10px;background:#f0f0f0;">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Update Project Privacys</h4>
+        <h4 class="modal-title" id="privacyModalLabel">Update Project Privacy</h4>
       </div>
       <div class="modal-body">
-        <h4>Select the appropriate privacy for {{project.name}}</h4>
+        <h4>Select the appropriate privacy for {{selected.name}}</h4>
         <div class="form-group">
           <label><input type="radio" ng-model="selected.visibility" value="public"> Public</label>
           <p class="help-block">Everyone can see the project, You choose who can collabrate</p>
@@ -154,12 +148,12 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="developersModal" tabindex="-1" role="dialog" aria-labelledby="projectDetailModalLabel" aria-hidden="true">
+<div class="modal fade" id="developersModal" tabindex="-1" role="dialog" aria-labelledby="developersModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header" style="padding:10px;background:#f0f0f0;">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Manage Project &amp; Developers</h4>
+        <h4 class="modal-title" id="developersModalLabel">Manage Project &amp; Developers</h4>
       </div>
       <div class="modal-body">
           <h4>User Permissions</h4>
@@ -194,7 +188,7 @@
     <div class="modal-content">
       <div class="modal-header" style="padding:10px;background:#f0f0f0;">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Project Detail</h4>
+        <h4 class="modal-title" id="projectDetailModalLabel">Project Detail</h4>
       </div>
       <div class="modal-body">
           <div class="row">
@@ -205,9 +199,9 @@
               <div class="col-md-6">
                 <label>Project Technology:</label>
                 <div class="row">
-                        <div style="width:54px" class="col-md-3"><img width="44" height="44" alt="" class="bordered" ng-src="./images/{{project.projectTypeName}}.png"></div>
+                        <div style="width:54px" class="col-md-3"><img width="44" height="44" alt="" class="bordered" ng-src="./images/{{selected.projectTypeId}}.png"></div>
                         <div class="col-md-3">
-                            <h3 class="panel-title">AngularJS</h3>
+                            <h3 class="panel-title">{{selected.name}}</h3>
                         </div>
                     </div>
              </div>

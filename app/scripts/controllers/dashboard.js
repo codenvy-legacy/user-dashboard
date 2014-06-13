@@ -50,12 +50,12 @@ angular.module('odeskApp')
         $scope.updateProject = function () {
             $http({method: 'PUT', url: $scope.selected.url, data: $scope.selected}).
                 success(function (data, status) {
-                    console.log(data);
-                });
+                console.log(data);
+           });
         };
         
         $scope.cancelProject = function () {
-          $scope.selected.description = $scope.project.description;
+          //$scope.selected.description = selected.description;
         };
         
         $timeout(function () {
