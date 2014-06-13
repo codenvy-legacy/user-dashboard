@@ -440,6 +440,8 @@ angular.module('odeskApp')
         });
         
         $scope.updateProfile = function () {
+        		$('#btn-preloader1').addClass('preloader');
+			$('#btn1').addClass('btn-disabled');
 			var appValue = [
 				{
 					"name": "firstName",
@@ -492,6 +494,8 @@ angular.module('odeskApp')
             
         $scope.updatePassword = function () {
             if ($scope.password === $scope.password_verify) {
+            			$('#btn-preloader2').addClass('preloader');
+				$('#btn2').addClass('btn-disabled');
 				$('#doesNotMatch').hide();
 				$('#password1').css('border', '1px solid #e5e5e5');
 				$('#password2').css('border', '1px solid #e5e5e5');
@@ -505,6 +509,9 @@ angular.module('odeskApp')
         };
 		
 		$scope.addSkill = function () {
+		    if($scope.addSkillModel!=''){
+			$('#btn-preloader3').addClass('preloader');
+			$('#btn3').addClass('btn-disabled');
 			var skillNow = parseInt(skillNo) + 1;
 			var skillData = {};
 			skillData["skill_"+skillNow] = $scope.addSkillModel;
@@ -512,6 +519,7 @@ angular.module('odeskApp')
 				$scope.addSkillModel = "";
 				setTimeout(function(){ window.location = "#account" }, 3000);
 			});
+		    }
 		};
 		
 		$scope.removeSkill = function (skill, tohide) {
@@ -529,6 +537,8 @@ angular.module('odeskApp')
 		
 		
 		$scope.addUsage = function () {
+			$('#btn-preloader4').addClass('preloader');
+			$('#btn4').addClass('btn-disabled');
 			var usageData = {
 				"usage_1": $scope.usage_1,
 				"usage_2": $scope.usage_2,
