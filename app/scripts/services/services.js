@@ -52,12 +52,16 @@ angular.module('odeskApp')
 			
              $http.post('/api/profile', appValue, con)
                 .success(function (data) {
+                			$('#btn-preloader1').removeClass('preloader');
+					$('#btn1').removeClass('btn-disabled');
 					$('#upadateProfileAlert .alert-success').show();
 					$('#upadateProfileAlert .alert-danger').hide();
 					$('#upadateProfileAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
                     deferred.resolve(data); //resolve data
                })
                 .error(function (err) {
+                			$('#btn-preloader1').removeClass('preloader');
+					$('#btn1').removeClass('btn-disabled');
 					$('#upadateProfileAlert .alert-danger').show();
 					$('#upadateProfileAlert .alert-success').hide();
 					$('#upadateProfileAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
@@ -82,12 +86,16 @@ angular.module('odeskApp')
 			
              $http.post('/api/profile/prefs', appValue, con)
                 .success(function (data) {
+                			$('#btn-preloader3').removeClass('preloader');
+					$('#btn3').removeClass('btn-disabled');
 					$('#addSkillsAlert .alert-success').show();
 					$('#addSkillsAlert .alert-danger').hide();
 					$('#addSkillsAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
                     deferred.resolve(data); //resolve data
                })
                 .error(function (err) {
+                			$('#btn-preloader3').removeClass('preloader');
+					$('#btn3').removeClass('btn-disabled');
 					$('#addSkillsAlert .alert-danger').show();
 					$('#addSkillsAlert .alert-success').hide();
 					$('#addSkillsAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
@@ -143,12 +151,16 @@ angular.module('odeskApp')
 			
              $http.post('/api/profile/prefs', appValue, con)
                 .success(function (data) {
+                			$('#btn-preloader4').removeClass('preloader');
+					$('#btn4').removeClass('btn-disabled');
 					$('#usageAlert .alert-success').show();
 					$('#usageAlert .alert-danger').hide();
 					$('#usageAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
                     deferred.resolve(data); //resolve data
                })
                 .error(function (err) {
+                			$('#btn-preloader4').removeClass('preloader');
+					$('#btn4').removeClass('btn-disabled');
 					$('#usageAlert .alert-danger').show();
 					$('#usageAlert .alert-success').hide();
 					$('#usageAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
@@ -222,12 +234,16 @@ angular.module('odeskApp')
 						return( source ); }
 			})
                 .success(function (data) {
-                    $('#changePasswordAlert .alert-success').show();
+                			$('#btn-preloader2').removeClass('preloader');
+					$('#btn2').removeClass('btn-disabled');
+                    			$('#changePasswordAlert .alert-success').show();
 					$('#changePasswordAlert .alert-danger').hide();
 					$('#changePasswordAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
                     deferred.resolve(data); //resolve data
                })
                 .error(function (err) { 
+                			$('#btn-preloader2').removeClass('preloader');
+					$('#btn2').removeClass('btn-disabled');
 					$('#changePasswordAlert .alert-danger').show();
 					$('#changePasswordAlert .alert-success').hide();
 					deferred.reject();
