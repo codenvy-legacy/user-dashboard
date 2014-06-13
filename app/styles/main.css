@@ -77,7 +77,7 @@ th h4 { font-weight:normal; }
 /* Special classes for accounts page*/
 .cerow { margin-bottom:5px; }
 .cetag { border-radius:0px; color:#54aee0; padding:5px 10px; font-weight:bold; background:#fafafa; }
-.celist .label { font-weight:normal; display:table; margin-bottom:10px; border-radius:0px; color:#a3a3a3; padding:5px 10px; background:#fafafa; }
+.celist .label { font-weight:normal; display:table; margin-bottom:10px; border-radius:0px; color:#a3a3a3; padding:5px 10px; background:#F0F0F0; }
 .celist .label > span { background:#a8a8a8; color:#ffffff; border-radius:10px; margin-left:15px; padding:3px; }
 
 /* Stats page and general colors */
@@ -150,10 +150,139 @@ th h4 { font-weight:normal; }
 /* Spinner Alignment
 ----------------------------------------------*/
 #loading-bar-spinner .spinner-icon {
+  display: none;
   position: fixed;
   top: 50%;
   left: 50%;
 }
+
+
+/*-------------- loader css--------------*/
+
+.btn-disabled{
+	background: #3F8CB8 !important;
+	text-indent: -9999px;	
+	color: #EEEEEE;
+}
+
+.preloader{
+	display: block !important;
+    left: 42%;
+	position: absolute;
+	top: 8px;
+}
+
+.preloader img{
+	width: 18px;
+}
+
+#bowlG {
+	position: relative;
+	width: 20px;
+	height: 20px;
+}
+
+#bowl_ringG {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	border: 2px solid #fff;
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	-ms-border-radius: 20px;
+	-o-border-radius: 20px;
+	border-radius: 20px;
+}
+
+.ball_holderG {
+	position: absolute;
+	width: 5px;
+	height: 20px;
+	left: 7px;
+	top: 0px;
+	-moz-animation-name: ball_moveG;
+	-moz-animation-duration: 0.8s;
+	-moz-animation-iteration-count: infinite;
+	-moz-animation-timing-function: linear;
+	-webkit-animation-name: ball_moveG;
+	-webkit-animation-duration: 0.8s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+	-ms-animation-name: ball_moveG;
+	-ms-animation-duration: 0.8s;
+	-ms-animation-iteration-count: infinite;
+	-ms-animation-timing-function: linear;
+	-o-animation-name: ball_moveG;
+	-o-animation-duration: 0.8s;
+	-o-animation-iteration-count: infinite;
+	-o-animation-timing-function: linear;
+	animation-name: ball_moveG;
+	animation-duration: 0.8s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
+.ballG {
+	position: absolute;
+	left: 0px;
+	top: -5px;
+	width: 10px;
+	height: 10px;
+	background: #3F8CB8;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	-ms-border-radius: 7px;
+	-o-border-radius: 7px;
+	border-radius: 7px;
+}
+ @-moz-keyframes 
+ball_moveG {
+0% {
+-moz-transform:rotate(0deg)
+}
+ 100% {
+-moz-transform:rotate(360deg)
+}
+}
+ @-webkit-keyframes 
+ball_moveG {
+0% {
+-webkit-transform:rotate(0deg)
+}
+ 100% {
+-webkit-transform:rotate(360deg)
+}
+}
+ @-ms-keyframes 
+ball_moveG {
+0% {
+-ms-transform:rotate(0deg)
+}
+ 100% {
+-ms-transform:rotate(360deg)
+}
+}
+ @-o-keyframes 
+ball_moveG {
+0% {
+-o-transform:rotate(0deg)
+}
+ 100% {
+-o-transform:rotate(360deg)
+}
+}
+ @keyframes 
+ball_moveG {
+0% {
+transform:rotate(0deg)
+}
+ 100% {
+transform:rotate(360deg)
+}
+}
+
+/*--------------loader css end -------------*/
+
 
 /* Breadcrumb Icons Vertical Aligned
 ----------------------------------------------*/
