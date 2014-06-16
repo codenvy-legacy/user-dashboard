@@ -79,6 +79,10 @@
                                 <exec dir="${basedir}/target" executable="grunt" failonerror="true">
                                     <arg value="build" />
                                 </exec>
+                                <replace file="${basedir}/target/user-dashboard-war/index.html">
+                                    <replacetoken><![CDATA[<base href="/">]]></replacetoken>
+                                    <replacevalue><![CDATA[<base href="/dashboard/">]]></replacevalue>
+                                </replace>
                             </target>
                         </configuration>
                     </execution>
