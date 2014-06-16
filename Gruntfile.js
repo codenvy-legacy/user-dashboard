@@ -30,7 +30,7 @@ module.exports = function (grunt) {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
         tasks: ['newer:jshint:all'],
         options: {
-          livereload: true
+          livereload: false
         }
       },
       jsTest: {
@@ -46,7 +46,7 @@ module.exports = function (grunt) {
       },
       livereload: {
         options: {
-          livereload: '<%= connect.options.livereload %>'
+          livereload: false
         },
         files: [
           '<%= yeoman.app %>/{,*/}*.html',
@@ -61,12 +61,12 @@ module.exports = function (grunt) {
       options: {
         port: 9000,
         // Change this to '0.0.0.0' to access the server from outside.
-        hostname: 'localhost',
-        livereload: 35729
+        hostname: '0.0.0.0',
+        livereload: false
       },
      proxies: [{
        context: '/api', // the context of the data service
-       host: 'codenvy-dev.com', // wherever the data service is running
+       host: 'a3.codenvy-dev.com', // wherever the data service is running
        port: 80, // the port that the data service is running on
        changeOrigin: true,
        xforward: false
