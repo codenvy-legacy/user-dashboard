@@ -1,0 +1,6 @@
+{
+  "directory": "app/bower_components",
+  "scripts": {
+    "postinstall": "make -C app/bower_components/sparkline/ jqs"
+  }
+}

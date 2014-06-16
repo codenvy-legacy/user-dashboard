@@ -57,3 +57,8 @@ Thumbs.db
 */overlays
 *~
 .tmp
+
+# Dependencies #
+######################
+node_modules/
+app/bower_components/

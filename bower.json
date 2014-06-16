@@ -5,7 +5,7 @@
     "angular": "1.2.16",
     "json3": "~3.x.0",
     "es5-shim": "~2.x.0",
-    "jquery": "~1.10.2",
+    "jquery": "1.10.2",
     "bootstrap": "~3.1.x",
     "angular-resource": "1.2.16",
     "angular-cookies": "1.2.16",
@@ -22,5 +22,8 @@
     "angular-mocks": "1.2.16",
     "angular-scenario": "1.2.16",
     "angular-animate": "1.2.16"
+  },
+  "resolutions": {
+    "jquery": "1.10.2"
   }
 }
