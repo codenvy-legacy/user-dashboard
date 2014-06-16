@@ -167,7 +167,7 @@ th h4 { font-weight:normal; }
 
 .preloader{
 	display: block !important;
-    left: 42%;
+    	left: 39%;
 	position: absolute;
 	top: 8px;
 }
@@ -178,15 +178,16 @@ th h4 { font-weight:normal; }
 
 #bowlG {
 	position: relative;
-	width: 20px;
-	height: 20px;
+	width: 18px;
+	height: 18px;
+	top: -1px;
 }
 
 #bowl_ringG {
 	position: absolute;
 	width: 20px;
 	height: 20px;
-	border: 2px solid #fff;
+	border: 3px solid #fff;
 	-moz-border-radius: 20px;
 	-webkit-border-radius: 20px;
 	-ms-border-radius: 20px;
@@ -197,7 +198,7 @@ th h4 { font-weight:normal; }
 .ball_holderG {
 	position: absolute;
 	width: 5px;
-	height: 20px;
+	height: 15px;
 	left: 7px;
 	top: 0px;
 	-moz-animation-name: ball_moveG;
@@ -226,14 +227,9 @@ th h4 { font-weight:normal; }
 	position: absolute;
 	left: 0px;
 	top: -5px;
-	width: 10px;
-	height: 10px;
+	width: 8px;
+	height: 8px;
 	background: #3F8CB8;
-	-moz-border-radius: 7px;
-	-webkit-border-radius: 7px;
-	-ms-border-radius: 7px;
-	-o-border-radius: 7px;
-	border-radius: 7px;
 }
  @-moz-keyframes 
 ball_moveG {
