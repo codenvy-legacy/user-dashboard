@@ -56,7 +56,7 @@
                         <fileset>
                             <directory>${basedir}/node_modules</directory>
                             <followSymlinks>false</followSymlinks>
-                        </fileset>                        
+                        </fileset>
                     </filesets>
                 </configuration>
             </plugin>
@@ -70,18 +70,32 @@
                         </goals>
                         <configuration>
                             <target>
+                                <!-- Download NPM dependencies -->
                                 <exec dir="${basedir}" executable="npm" failonerror="true">
                                     <arg value="install" />
-                                </exec> 
+                                </exec>
+                                <!-- Download Bower dependencies -->
                                 <exec dir="${basedir}" executable="bower" failonerror="true">
                                     <arg value="install" />
                                 </exec>
+                                <!-- Disable development mode -->
+                                <replace file="${basedir}/app/scripts/app.js">
+                                    <replacetoken><![CDATA[var DEV = true;]]></replacetoken>
+                                    <replacevalue><![CDATA[var DEV = false;]]></replacevalue>
+                                </replace>
+                                <!-- Build the application -->
                                 <exec dir="${basedir}/target" executable="grunt" failonerror="true">
                                     <arg value="build" />
                                 </exec>
+                                <!-- Change base HREF of the application that will be hosted on /dashboard -->
                                 <replace file="${basedir}/target/user-dashboard-war/index.html">
                                     <replacetoken><![CDATA[<base href="/">]]></replacetoken>
                                     <replacevalue><![CDATA[<base href="/dashboard/">]]></replacevalue>
+                                </replace>
+                                <!-- Enable back development mode -->
+                                <replace file="${basedir}/app/scripts/app.js">
+                                    <replacetoken><![CDATA[var DEV = false;]]></replacetoken>
+                                    <replacevalue><![CDATA[var DEV = true;]]></replacevalue>
                                 </replace>
                             </target>
                         </configuration>
