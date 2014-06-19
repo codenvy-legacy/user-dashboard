@@ -40,7 +40,8 @@ angular.module('odeskApp')
         $scope.filter = {};
         
         $scope.gotoProject = function () {
-            $window.open('/ide/' + $scope.workspaces[0].workspaceRef.name + '/new_project', '_blank');
+            //$window.open('/ide/' + $scope.workspaces[0].workspaceRef.name + '/new_project', '_blank');
+            $window.open('/ide?action=newProject', '_blank');
         };
         
         $scope.selectProject = function (project) {
