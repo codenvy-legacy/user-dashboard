@@ -280,6 +280,7 @@ angular.module('odeskApp')
       { name: 'Zimbabwe', code: 'ZW' }
         ];
 		$scope.country = 'United States';
+		$scope.jobTitle = '';
 		
 		Profile.query().then(function (resp) {
 		
