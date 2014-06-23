@@ -299,6 +299,23 @@ angular.module('odeskApp')
 		$scope.country = 'United States';
 		$scope.jobTitle = '';
 		
+		Users.query().then(function(data){
+			Account.query(data[0].id).then(function(datab){
+				if(datab==''){
+					$('#free').show();
+					$('#premium').hide();
+				}
+				var serviceId = datab[0].serviceId;
+				if(serviceId=='PremiumWorkspace' || serviceId=='TrackedFactory'){
+					$('#premium').show();
+					$('#free').hide();
+				} else {
+					$('#free').show();
+					$('#premium').hide();
+				}
+			});
+		});
+		
 		Profile.query().then(function (resp) {
 		
 			dataPreferences = resp.preferences;
