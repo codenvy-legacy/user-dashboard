@@ -73,6 +73,48 @@ angular.module('odeskApp')
 });
 
 angular.module('odeskApp')	
+	.factory('Users', function ($http, $q) {
+	return {
+		query: function () {
+            var deferred = $q.defer();
+			var con = {
+                headers: {
+                    'Accept': 'application/json',
+					'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+            $http.get('/api/account', con)
+                .success(function (data) {
+                    deferred.resolve(data); //resolve data
+               })
+                .error(function (err) { deferred.reject(); });
+            return deferred.promise; 
+        }
+	};
+});
+
+angular.module('odeskApp')	
+	.factory('Account', function ($http, $q) {
+	return {
+		query: function (orgId) {
+            var deferred = $q.defer();
+			var con = {
+                headers: {
+                    'Accept': 'application/json',
+					'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+            $http.get('/api/account/'+orgId+'/subscriptions', con)
+                .success(function (data) {
+                    deferred.resolve(data); //resolve data
+               })
+                .error(function (err) { deferred.reject(); });
+            return deferred.promise; 
+        }
+	};
+});
+
+angular.module('odeskApp')	
 	.factory('addSkill', function ($http, $q) {
     return {
         query: function (appValue) {
