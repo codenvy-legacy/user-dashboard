@@ -15,13 +15,30 @@
 /*global angular, $*/
 
 var firstNameDescription = "";
+var firstNameValue = "";
+
 var lastNameDescription = "";
+var lastNameValue = "";
+
 var emailDescription = "";
+var emailValue = "";
+
 var phoneDescription = "";
+var phoneValue = "";
+
 var countryDescription = "";
+var countryValue = "";
+
 var companyNameDescription = "";
+var companyNameValue = "";
+
 var departmentNameDescription = "";
+var departmentNameValue = "";
+
 var jobTitleDescription = "";
+var jobTitleValue = "";
+
+var checkValue = "";
 
 var skillNo = 0;
 var dataPreferences;
@@ -290,50 +307,60 @@ angular.module('odeskApp')
 				if(as.name=='firstName')
 				{
 					$scope.firstName = as.value;
+					firstNameValue = as.value;
 					firstNameDescription = as.description;
 				}
 				if(as.name=='lastName')
 				{
 					$scope.lastName = as.value;
+					lastNameValue = as.value;
 					lastNameDescription = as.description;
 				}
 				if(as.name=='email')
 				{
 					$scope.email = as.value;
+					emailValue = as.value;
 					emailDescription = as.description;
 				}
 				if(as.name=='phone')
 				{
 					$scope.phone = as.value;
+					phoneValue = as.value;
 					phoneDescription = as.description;
 				}
 				if(as.name=='country')
 				{
 					$scope.country = as.value;
+					countryValue = as.value;
 					countryDescription = as.description;
 				}
 				if(as.name=='employer')
 				{
 					$scope.companyName = as.value;
+					companyNameValue = as.value;
 					companyNameDescription = as.description;
 				}
 				if(as.name=='departmentname')
 				{
 					$scope.departmentName = as.value;
+					departmentNameValue = as.value;
 					departmentNameDescription = as.description;
 				}
 				if(as.name=='jobtitle')
 				{
 					$scope.jobTitle = as.value;
+					jobTitleValue = as.value;
 					jobTitleDescription = as.description;
 				}
 				if(as.name=='sales_can_contact')
 				{
 					if(as.value=="true") {
 						$scope.check = true;
+						checkValue = true;
 					}
 					else {
 						$scope.check = false;
+						checkValue = false;
 					}
 				}
 			});
@@ -441,56 +468,60 @@ angular.module('odeskApp')
         });
         
         $scope.updateProfile = function () {
-        		$('#btn-preloader1').addClass('preloader');
-			$('#btn1').addClass('btn-disabled');
-			var appValue = [
-				{
-					"name": "firstName",
-					"value": $scope.firstName,
-					"description": firstNameDescription
-				},
-				{
-					"name": "lastName",
-					"value": $scope.lastName,
-					"description": lastNameDescription
-				},
-				{
-					"name": "email",
-					"value": $scope.email,
-					"description": emailDescription
-				},
-				{
-					"name": "phone",
-					"value": $scope.phone,
-					"description": phoneDescription
-				},
-				{
-					"name": "country",
-					"value": $scope.country,
-					"description": countryDescription
-				},
-				{
-					"name": "employer",
-					"value": $scope.companyName,
-					"description": companyNameDescription
-				},
-				{
-					"name": "departmentname",
-					"value": $scope.departmentName,
-					"description": departmentNameDescription
-				},
-				{
-					"name": "jobtitle",
-					"value": $scope.jobTitle,
-					"description": jobTitleDescription
-				},
-				{
-					"name": "sales_can_contact",
-					"value": $scope.check,
-					"description": "Sales are able to contact this user"
-				}
-			];
-            Profile.update(appValue);
+			if($scope.firstName!=firstNameValue || $scope.lastName!=lastNameValue || $scope.email!=emailValue || $scope.phone!=phoneValue || $scope.country!=countryValue || $scope.companyName!=companyNameValue || $scope.departmentName!=departmentNameValue || $scope.jobTitle!=jobTitleValue || $scope.check!=checkValue)
+			{
+				firstNameValue=$scope.firstName; lastNameValue=$scope.lastName; emailValue=$scope.email; phoneValue=$scope.phone; countryValue=$scope.country; companyNameValue=$scope.companyName; departmentNameValue=$scope.departmentName; jobTitleValue=$scope.jobTitle; checkValue=$scope.check;
+				$('#btn-preloader1').addClass('preloader');
+				$('#btn1').addClass('btn-disabled');
+				var appValue = [
+					{
+						"name": "firstName",
+						"value": $scope.firstName,
+						"description": firstNameDescription
+					},
+					{
+						"name": "lastName",
+						"value": $scope.lastName,
+						"description": lastNameDescription
+					},
+					{
+						"name": "email",
+						"value": $scope.email,
+						"description": emailDescription
+					},
+					{
+						"name": "phone",
+						"value": $scope.phone,
+						"description": phoneDescription
+					},
+					{
+						"name": "country",
+						"value": $scope.country,
+						"description": countryDescription
+					},
+					{
+						"name": "employer",
+						"value": $scope.companyName,
+						"description": companyNameDescription
+					},
+					{
+						"name": "departmentname",
+						"value": $scope.departmentName,
+						"description": departmentNameDescription
+					},
+					{
+						"name": "jobtitle",
+						"value": $scope.jobTitle,
+						"description": jobTitleDescription
+					},
+					{
+						"name": "sales_can_contact",
+						"value": $scope.check,
+						"description": "Sales are able to contact this user"
+					}
+				];
+				Profile.update(appValue);
+			}
         };
             
         $scope.updatePassword = function () {
