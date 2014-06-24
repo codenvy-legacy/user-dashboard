@@ -45,12 +45,23 @@ th h4 { font-weight:normal; }
 .no-shadow { box-shadow: none;}
 .well-ce{ background:#ebebeb; color:#8c8c8c; box-shadow: none; border-radius: 0; border:none; font-size:10px;}
 .stat { font-size:24px;}
+.new-project {
+  width: 200px;
+  cursor: pointer;
+}
 
 
 /* Dashboard breadcrumb */
 .projectnav { padding:0 1px; }
-.projectnav > li { padding: 9px 20px; border-right:1px solid #dcdcdc; }
-
+.projectnav > li { 
+  padding: 0 20px;
+  border-right:1px solid #dcdcdc;
+  height: 36px;
+  line-height: 37px;
+}
+.breadcrumb > li.search1{
+  padding: 0;
+}
 .bordered { border:1px solid #bcbcbc; background: #FFFFFF; padding:2px}
 .projectbox .panel:hover  { box-shadow: 0px 7px 5px 0px rgba(0, 0, 0, 0.2); }
 .projectbox .panel-default > .panel-heading { color:#787878; background:#ebebeb; height:54px; padding:5px; font-size: 11px; }
@@ -94,8 +105,28 @@ th h4 { font-weight:normal; }
 .projectlist .col-md-1 .button small{
   color: #363636;
 }
-.projectlist.table-hover > tbody > tr:hover > td{
+.projectlist .table-hover > tbody > tr:hover > td{
   background-color: #e6e6e6;
+}
+.projectlist .new-project {
+  margin: 0 auto;
+}
+.projectlist .new-project .panel-body {
+  padding: 10px 15px 13px 15px;
+}
+.projectlist .new-project .glyphicon{
+  top: 0;
+  float:left;
+  margin-right: 17px;
+  font-size: 28px;
+  color: #d4d4d4;
+  vertical-align: middle;
+}
+.projectlist .new-project .panel-body strong{
+  float: left;
+  width: 120px;
+  padding-top: 7px;
+  color: #8d8d8d;
 }
 img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .createprjbox { padding:0 15px;background:#404040;left:15px;min-width:285px;max-width:700px; }
@@ -165,7 +196,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   background: url('../images/searchIcon.png') no-repeat 10px center #f0f0f0; 
   border: medium none; 
   border-left: 1px solid #ddd; 
-  height: 36px; 
+  height: 33px; 
   padding: 0 10px 0 30px;
   width: 100%;
   color: #555; 
@@ -382,11 +413,12 @@ transform:rotate(360deg)
 }
 #privacyModal .modal-body .form-group {
   margin-bottom: 25px;
+  margin-left: 20px;
 }
 #privacyModal input {
   vertical-align:bottom;
   margin-top: 2px;
-  margin-right: 4px;
+  margin-right: 10px;
 }
 #privacyModal label{
   display: block;
@@ -398,6 +430,25 @@ transform:rotate(360deg)
   cursor: pointer;
 }
 #privacyModal .help-block {
-  margin:0 0 0 18px;
+  margin:0 0 0 25px;
   color: #a3a3a3;
+}
+#privacyModal .modal-header .close{
+  margin: 0;
+  position: absolute;
+  top: 3px;
+  right: 12px;
+  height: 20px;
+  width: 10px;
+  line-height:1;
+}
+/* PROJECTBOX
+-----------------------------*/
+.project-box > .col-md-10{
+  padding: 0;
+}
+.project-box .new-project .glyphicon {
+  font-size: 75px;
+  color: #dedede;
+  text-shadow: 1px 4px 6px #fff, 0 0 0 #000;
 }
