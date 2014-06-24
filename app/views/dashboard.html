@@ -40,22 +40,25 @@
 </div>
 
 <div class="project-box" ng-if="box">
-  <div class="new-project col-md-2 dropdown">
-    <div class="panel panel-default" >
-      <div class="panel-body text-center" ng-click="gotoProject()"> <!--class="dropdown-toggle" data-toggle="dropdown" ng-click="projectselect=0">-->
+
+  <div class="new-project col-md-2">
+
+    <div class="box box-two" ng-if="workspaces.length == 1">
+      <a href="/ide/{{workspaces[0].workspaceRef.name}}/new_project" target="_blank">
         <span class="glyphicon white glyphicon-plus"></span><br/>
         <div class="text-center" style="color:#919191"><strong>Create New Project</strong></div>
-      </div>
-      <div class="dropdown-menu createprjbox">
-        <img style="margin-left: 50px; margin-top: -42px;" src="./images/up-arrow.png"/>
-        <div>
-          <div class="btn simple btn-default col-md-12" style="margin-bottom:15px;" ng-click="projectselect=1">Create using our wizard</div>
-          <div class="btn simple btn-default col-md-12" style="margin-bottom:15px;" stop-event='click' ng-click="test()">Create from factories</div>
-          <div class="btn simple btn-default col-md-12" style="margin-bottom:15px;" stop-event='click' ng-click="test()">Import from git repository</div> 
-        </div>
-      </div><!-- dropdown-menu -->
-    </div><!-- panel-default -->
-  </div><!-- dropdown -->
+      </a>
+    </div><!-- Box -->
+    <div class="box box-one" ng-if="workspaces.length > 1">
+      <button type="button" class="dropdown-toggle" data-toggle="dropdown">
+        <span class="glyphicon white glyphicon-plus"></span> <br><strong>Create New Project <span class="caret"></span></strong>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li ng-repeat="workspace in workspaces"><a href="/ide/{{workspace.workspaceRef.name}}/new_project" target="_blank">{{workspace.workspaceRef.name}}</a></li>
+      </ul>
+    </div><!-- Box -->
+  
+  </div><!-- New Project -->
 
   <div class="col-md-10">
     <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3 projectbox" style="width:300px">
@@ -123,23 +126,27 @@
       <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><div class="button"><i class="fa fa-fw fa-cog"></i></div></td>
     </tr><!-- panel-default -->
   </table><!-- row -->
-  <div class="new-project dropdown">
-    <div class="panel panel-default" >
-      <div class="panel-body clearfix" ng-click="gotoProject()"> <!--class="dropdown-toggle" data-toggle="dropdown" ng-click="projectselect=0">-->
-        <span class="glyphicon white glyphicon-plus"></span><strong>Create New Project</strong>
-      </div>
-      <div class="dropdown-menu createprjbox">
-        <img style="margin-left: 50px; margin-top: -42px;" src="./images/up-arrow.png"/>
-        <div>
-          <div class="btn simple btn-default col-md-12" style="margin-bottom:15px;" ng-click="projectselect=1">Create using our wizard</div>
-          <div class="btn simple btn-default col-md-12" style="margin-bottom:15px;" stop-event='click' ng-click="test()">Create from factories</div>
-          <div class="btn simple btn-default col-md-12" style="margin-bottom:15px;" stop-event='click' ng-click="test()">Import from git repository</div> 
-        </div>
-      </div><!-- dropdown-menu -->
-    </div><!-- panel-default -->
-  </div><!-- dropdown -->
-</div>
 
+  <div class="new-project">
+    <div class="box box-two clearfix" ng-if="workspaces.length == 1">
+      <a href="/ide/{{workspaces[0].workspaceRef.name}}/new_project" target="_blank">
+        <span class="glyphicon white glyphicon-plus"></span>
+        <strong>Create New Project</strong>
+      </a>
+    </div><!-- Box -->
+    <div class="box box-one btn-group" ng-if="workspaces.length > 1">
+      <button type="button" class="clearfix dropdown-toggle" data-toggle="dropdown">
+        <span class="glyphicon white glyphicon-plus"></span><strong>Create New Project <span class="caret"></span></strong>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li ng-repeat="workspace in workspaces" ><a href="/ide/{{workspace.workspaceRef.name}}/new_project" target="_blank">{{workspace.workspaceRef.name}}</a></li>
+      </ul>
+    </div><!-- Box -->
+  
+  </div><!-- New Project -->
+
+  
+</div>
 <div class="modal fade" id="privacyModal" tabindex="-1" role="dialog" aria-labelledby="privacyModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

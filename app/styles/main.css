@@ -45,11 +45,6 @@ th h4 { font-weight:normal; }
 .no-shadow { box-shadow: none;}
 .well-ce{ background:#ebebeb; color:#8c8c8c; box-shadow: none; border-radius: 0; border:none; font-size:10px;}
 .stat { font-size:24px;}
-.new-project {
-  width: 200px;
-  cursor: pointer;
-}
-
 
 /* Dashboard breadcrumb */
 .projectnav { padding:0 1px; }
@@ -107,26 +102,6 @@ th h4 { font-weight:normal; }
 }
 .projectlist .table-hover > tbody > tr:hover > td{
   background-color: #e6e6e6;
-}
-.projectlist .new-project {
-  margin: 0 auto;
-}
-.projectlist .new-project .panel-body {
-  padding: 10px 15px 13px 15px;
-}
-.projectlist .new-project .glyphicon{
-  top: 0;
-  float:left;
-  margin-right: 17px;
-  font-size: 28px;
-  color: #d4d4d4;
-  vertical-align: middle;
-}
-.projectlist .new-project .panel-body strong{
-  float: left;
-  width: 120px;
-  padding-top: 7px;
-  color: #8d8d8d;
 }
 img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .createprjbox { padding:0 15px;background:#404040;left:15px;min-width:285px;max-width:700px; }
@@ -221,7 +196,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 /* Spinner Alignment
 ----------------------------------------------*/
 #loading-bar-spinner .spinner-icon {
-  display: none;
+  display: block;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -452,3 +427,83 @@ transform:rotate(360deg)
   color: #dedede;
   text-shadow: 1px 4px 6px #fff, 0 0 0 #000;
 }
+.new-project .box {
+  
+  padding: 16px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+.new-project {
+  width: 200px;
+  cursor: pointer;
+}
+.project-box .new-project{
+  width: 200px;
+  text-align: center;
+}
+.new-project a:hover{
+  text-decoration: none;
+}
+.new-project button{
+  background: none;
+  border: none;
+}
+.new-project .dropdown-menu{
+  right: 16px;
+  min-width: 170px;
+}
+.new-project .box-two .dropdown-menu{
+  min-width: 184px;
+}
+.new-project .dropdown-menu li a{
+  padding: 7px 20px;
+}
+.projectlist .new-project .box {
+  padding: 10px 13px 13px;
+}
+.projectlist .new-project .dropdown-menu {
+  right: 0;
+}
+.projectlist .btn-group.open .dropdown-toggle {
+  box-shadow: none;
+}
+.project-box .box .glyphicon{
+  text-shadow: none;
+}
+.project-box .box strong {
+  text-transform: none;
+  color: #919191;
+}
+.projectlist .new-project {
+  margin: 0 auto;
+}
+.projectlist .new-project .box {
+  padding: 10px 15px 13px 15px;
+}
+.projectlist .new-project .glyphicon{
+  top: 0;
+  float:left;
+  margin-right: 17px;
+  font-size: 28px;
+  color: #d4d4d4;
+  vertical-align: middle;
+}
+.projectlist .new-project strong{
+  float: left;
+  width: 120px;
+  padding-top: 7px;
+  color: #8d8d8d;
+}
+.projectlist .new-project .box-one .glyphicon{
+  margin-right: 3px;
+}
+.projectlist .new-project .box-one strong{
+  width: 124px;
+}
+.projectlist .new-project .box-one .dropdown-menu {
+  min-width: 199px;
+}
+
+
