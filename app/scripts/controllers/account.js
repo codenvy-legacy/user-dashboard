@@ -46,7 +46,7 @@ var allSkillIds = [];
 
 'use strict';
 angular.module('odeskApp')
-    .controller('AccountConfigCtrl', function ($scope, Profile, Password, addSkill, removeSkills, addUsage) {        
+    .controller('AccountConfigCtrl', function ($scope, Profile, Password, addSkill, removeSkills, addUsage, Users, Account) {        
         /*Profile.query(function (resp) {
             $scope.attributes = resp.attributes;
         });*/
