@@ -428,8 +428,6 @@ transform:rotate(360deg)
   text-shadow: 1px 4px 6px #fff, 0 0 0 #000;
 }
 .new-project .box {
-  
-  padding: 16px;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 0;
@@ -442,6 +440,12 @@ transform:rotate(360deg)
 .project-box .new-project{
   width: 200px;
   text-align: center;
+}
+.new-project .box button,
+.new-project .box a{
+  display: block;
+  padding: 16px;
+  width: 100%;
 }
 .new-project a:hover{
   text-decoration: none;
@@ -460,9 +464,6 @@ transform:rotate(360deg)
 .new-project .dropdown-menu li a{
   padding: 7px 20px;
 }
-.projectlist .new-project .box {
-  padding: 10px 13px 13px;
-}
 .projectlist .new-project .dropdown-menu {
   right: 0;
 }
@@ -479,9 +480,6 @@ transform:rotate(360deg)
 .projectlist .new-project {
   margin: 0 auto;
   padding-bottom: 50px;
-}
-.projectlist .new-project .box {
-  padding: 10px 15px 13px 15px;
 }
 .projectlist .new-project .glyphicon{
   top: 0;
@@ -505,7 +503,8 @@ transform:rotate(360deg)
 }
 .projectlist .new-project .box-one .dropdown-menu {
   margin-bottom: 20px;
-  min-width: 199px;
+  min-width: 189px;
+  width: 100%;
 }
 
 

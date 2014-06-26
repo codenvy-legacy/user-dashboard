@@ -44,7 +44,7 @@
   <div class="new-project col-md-2">
 
     <div class="box box-two" ng-if="workspaces.length == 1">
-      <a href="/ide/{{workspaces[0].workspaceRef.name}}/new_project" target="_blank">
+      <a class="clearfix" href="/ide/{{workspaces[0].workspaceRef.name}}/new_project" target="_blank">
         <span class="glyphicon white glyphicon-plus"></span><br/>
         <div class="text-center" style="color:#919191"><strong>Create New Project</strong></div>
       </a>
@@ -129,7 +129,7 @@
 
   <div class="new-project">
     <div class="box box-two clearfix" ng-if="workspaces.length == 1">
-      <a href="/ide/{{workspaces[0].workspaceRef.name}}/new_project" target="_blank">
+      <a class="clearfix" href="/ide/{{workspaces[0].workspaceRef.name}}/new_project" target="_blank">
         <span class="glyphicon white glyphicon-plus"></span>
         <strong>Create New Project</strong>
       </a>
