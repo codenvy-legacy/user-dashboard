@@ -63,7 +63,8 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12 form-group">
+                            
+                               <div class="col-md-12 form-group">
                                     <label for="workspaceid">Job Title:</label>
                                     <!--<input class="form-control" id="name" name="name" ng-model="jobTitle" placeholder="Product Manager" type="text" required autofocus />-->
 									<select ng-model="jobTitle" class="form-control" autofocus>
@@ -81,7 +82,13 @@
                             Can our sales teams contact you to discuss our offerings? &nbsp;&nbsp;&nbsp;&nbsp;
                             <input type="checkbox" name="remember" ng-model="check" value="1"> &nbsp;&nbsp;Yes
                             <div class="row">
-                                <div class="col-md-2 col-md-offset-10">
+                            
+                            <div id="upadateProfileAlert" class="col-md-10">
+								<div class="alert alert-success" style="display: none;"><b>Successfully Done!</b> Update profile information process completed.</div>
+								<div class="alert alert-danger" style="display: none;"><b>Failed!</b> Update profile information process failed.</div>
+							</div>
+                            
+                                <div class="col-md-2">
                                     <button class="btn btn-primary btn-block signup-btn" id="btn1" type="submit">Save</button>
                                     <div id="btn-preloader1" style="display:none">
 					<div id="bowlG">
@@ -94,10 +101,7 @@
 				    </div>
                                 </div>
                             </div>
-				<div id="upadateProfileAlert">
-								<div class="alert alert-success" style="display: none;"><b>Successfully Done!</b> Update profile information process completed.</div>
-								<div class="alert alert-danger" style="display: none;"><b>Failed!</b> Update profile information process failed.</div>
-							</div>			
+							
                         </form>          
                     </div>
                 </div>            
@@ -129,7 +133,16 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-2 col-md-offset-10">
+                            
+                            <div class="col-md-10">
+								<div id="changePasswordAlert">
+									<div class="alert alert-success" style="display: none;"><b>Successfully Done!</b> Change password process completed.</div>
+									<div class="alert alert-danger" style="display: none;"><b>Failed!</b> Change password process failed.</div>
+								</div>
+								<div class="alert alert-danger" id="doesNotMatch" style="display: none;"><b>Failed!</b> New Password and Repeat New Password do not match.</div>
+							</div>
+                            
+                                <div class="col-md-2">
                                     <button class="btn btn-primary btn-block signup-btn" id="btn2" type="submit" >Save</button>
                                     <div id="btn-preloader2" style="display:none">
 					<div id="bowlG">
@@ -142,12 +155,7 @@
 				    </div>
                                 </div>
                             </div>
-			<div id="changePasswordAlert">
-								<div class="alert alert-success" style="display: none;"><b>Successfully Done!</b> Change password process completed.</div>
-								<div class="alert alert-danger" style="display: none;"><b>Failed!</b> Change password process failed.</div>
-							</div>
-							<div class="alert alert-danger" id="doesNotMatch" style="display: none;"><b>Failed!</b> New Password and Repeat New Password do not match.</div>				
-                        </form>          
+			</form>          
                     </div>
                 </div>            
             </div>
