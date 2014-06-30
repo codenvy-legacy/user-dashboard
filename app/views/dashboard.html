@@ -1,36 +1,38 @@
-<ul class="breadcrumb projectnav breadcrumb">
-  <li> You have access to {{(projects.length == 0) ? '-' : projects.length}} projects in {{workspaces.length}} workspaces</li>
-  <li class="dropdown user-dropdown"> SORT BY:
-    <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-up garrow"></i> Name</a>
-    <ul class="dropdown-menu">
-      <li><a href="" ng-click="reverse = true; param = 'name'"><i class="fa fa-caret-up garrow"></i> Name</a></li>
-      <li><a href="" ng-click="reverse = false; param = 'name'"><i class="fa fa-caret-down garrow"></i> Name</a></li>
-      <li><a href="" ng-click="reverse = true; param = 'modificationDate'"><i class="fa fa-caret-up garrow"></i> Date Created</a></li>
-      <li><a href="" ng-click="reverse = false; param = 'modificationDate'"><i class="fa fa-caret-down garrow"></i> Date Created</a></li>
-    </ul>
-  </li>
-  <li class="dropdown user-dropdown"> WORKSPACE:
-    <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down garrow"></i> {{filter.workspace||'All'}}</a>
-    <ul class="dropdown-menu">
-      <li><a href="" ng-click="filter.workspace=''">All</a></li>
-      <li ng-repeat="workspace in workspaces" ng-click="filter.workspace=workspace.workspaceRef.name"><a href="">{{workspace.workspaceRef.name}}</a></li>
-    </ul>
-  </li>
-  <li> 
-    <span>VIEW AS:</span>
-    <a href="" ng-click="box = 0" > <i style="font-size:16px;" ng-class="{'garrow':box == 1}" class="fa fa-bars" rel="tooltip" title="List View"></i></a>
-    <a href="" ng-click="box = 1"> <i style="font-size:16px;" ng-class="{'garrow':box == 0}" class="fa fa-th-large" rel="tooltip" title="Grid View"></i></a>
-  </li>
-  <li class="search1">
-    <div>
-      <input type="button" class="searchfield "/>
-    </div><!-- content title-->
-    <div class="searchfull clearfix" style="display:none" >
-      <input type="button" class="closeBtn" style="display:none;" />
-      <input type="text" ng-model="filter.name" class="searchfield " placeholder="Search for Projects"/>
-    </div>
-  </li>
-</ul>
+<div class="breadcrumb-wrap">
+  <ul class="breadcrumb projectnav breadcrumb">
+    <li> You have access to {{(projects.length == 0) ? '-' : projects.length}} projects in {{workspaces.length}} workspaces</li>
+    <li class="dropdown user-dropdown"> SORT BY:
+      <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-up garrow"></i> Name</a>
+      <ul class="dropdown-menu">
+        <li><a href="" ng-click="reverse = true; param = 'name'"><i class="fa fa-caret-up garrow"></i> Name</a></li>
+        <li><a href="" ng-click="reverse = false; param = 'name'"><i class="fa fa-caret-down garrow"></i> Name</a></li>
+        <li><a href="" ng-click="reverse = true; param = 'modificationDate'"><i class="fa fa-caret-up garrow"></i> Date Created</a></li>
+        <li><a href="" ng-click="reverse = false; param = 'modificationDate'"><i class="fa fa-caret-down garrow"></i> Date Created</a></li>
+      </ul>
+    </li>
+    <li class="dropdown user-dropdown"> WORKSPACE:
+      <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down garrow"></i> {{filter.workspace||'All'}}</a>
+      <ul class="dropdown-menu">
+        <li><a href="" ng-click="filter.workspace=''">All</a></li>
+        <li ng-repeat="workspace in workspaces" ng-click="filter.workspace=workspace.workspaceRef.name"><a href="">{{workspace.workspaceRef.name}}</a></li>
+      </ul>
+    </li>
+    <li> 
+      <span>VIEW AS:</span>
+      <a href="" ng-click="box = 0" > <i style="font-size:16px;" ng-class="{'garrow':box == 1}" class="fa fa-bars" rel="tooltip" title="List View"></i></a>
+      <a href="" ng-click="box = 1"> <i style="font-size:16px;" ng-class="{'garrow':box == 0}" class="fa fa-th-large" rel="tooltip" title="Grid View"></i></a>
+    </li>
+    <li class="search1 clearfix">
+      <div>
+        <input type="button" class="searchfield "/>
+      </div><!-- content title-->
+      <div class="searchfull clearfix" style="display:none" >
+        <input type="button" class="closeBtn" style="display:none;" />
+        <input type="text" ng-model="filter.name" class="searchfield " placeholder="Search for Projects"/>
+      </div>
+    </li>
+  </ul>
+</div>
 <div class="row"></div><!-- work in progress ... code may contain inline css-->
 
 <div class="col-md-12 factorylistbox" ng-show="projectselect">
@@ -39,12 +41,12 @@
   <div ng-include="'views/factory-carousal.html'"></div>
 </div>
 
-<div class="project-box" ng-if="box">
+<div class="project-box clearfix" ng-if="box">
 
   <div class="new-project col-md-2">
 
     <div class="box box-two" ng-if="workspaces.length == 1">
-      <a class="clearfix" href="/ide/{{workspaces[0].workspaceRef.name}}/new_project" target="_blank">
+      <a class="clearfix" href="/ide/{{workspaces[0].workspaceRef.name}}?action=newProject" target="_blank">
         <span class="glyphicon white glyphicon-plus"></span><br/>
         <div class="text-center" style="color:#919191"><strong>Create New Project</strong></div>
       </a>
@@ -54,7 +56,7 @@
         <span class="glyphicon white glyphicon-plus"></span> <br><strong>Create New Project <span class="caret"></span></strong>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <li ng-repeat="workspace in workspaces"><a href="/ide/{{workspace.workspaceRef.name}}/new_project" target="_blank">{{workspace.workspaceRef.name}}</a></li>
+        <li ng-repeat="workspace in workspaces"><a href="/ide/{{workspace.workspaceRef.name}}?action=newProject" target="_blank">{{workspace.workspaceRef.name}}</a></li>
       </ul>
     </div><!-- Box -->
   
@@ -117,19 +119,19 @@
     <tr ng-repeat="project in projects| filter: filter | orderBy:param:reverse">
       <td class="col-md-1 image"><a href="{{project.ideUrl}}" target="_blank"><img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt=""></a></td>
       <td class="col-md-1">
-        <a href="{{project.ideUrl}}" target="_blank"><strong>{{project.name}}</strong></a>
+        <h3 class="panel-title"><a href="{{project.ideUrl}}" target="_blank"><strong>{{project.name}}</strong></a></h3>
         <div class="mic-info">{{project.workspaceName}}</div>
       </td>
       <td class="col-md-6"><div class="comment-text">{{project.description}}</div></td>
       <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#privacyModal"><div class="button"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></td>
-      <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#developersModal"><div class="button"><i class="fa fa-fw fa-users"></i><small> Share</small></div></td>
+      <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#developersModal"><div class="button"><i class="fa fa-fw fa-users"></i><small> Developers</small></div></td>
       <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><div class="button"><i class="fa fa-fw fa-cog"></i></div></td>
     </tr><!-- panel-default -->
   </table><!-- row -->
 
   <div class="new-project">
     <div class="box box-two clearfix" ng-if="workspaces.length == 1">
-      <a class="clearfix" href="/ide/{{workspaces[0].workspaceRef.name}}/new_project" target="_blank">
+      <a class="clearfix" href="/ide/{{workspaces[0].workspaceRef.name}}?action=newProject" target="_blank">
         <span class="glyphicon white glyphicon-plus"></span>
         <strong>Create New Project</strong>
       </a>
@@ -139,7 +141,7 @@
         <span class="glyphicon white glyphicon-plus"></span><strong>Create New Project <span class="caret"></span></strong>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <li ng-repeat="workspace in workspaces" ><a href="/ide/{{workspace.workspaceRef.name}}/new_project" target="_blank">{{workspace.workspaceRef.name}}</a></li>
+        <li ng-repeat="workspace in workspaces" ><a href="/ide/{{workspace.workspaceRef.name}}?action=newProject" target="_blank">{{workspace.workspaceRef.name}}</a></li>
       </ul>
     </div><!-- Box -->
   
@@ -165,7 +167,7 @@
           <p class="help-block">You choose who can see and who can collabrate</p>
         </div>
       </div><!-- .modal-body -->
-      <div class="modal-footer" style="margin-top:10px;padding:10px; background:#f0f0f0;">
+      <div class="modal-footer">
         <button type="button" class="btn btn-primary" ng-click="updateProject()" data-dismiss="modal">Ok</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
       </div>
