@@ -53,6 +53,14 @@ angular.module('odeskApp')
                 console.log(data);
            });
         };
+
+        $scope.deleteProject = function () {
+            $http({method: 'DELETE', url: $scope.selected.url, data: $scope.selected}).
+                success(function (data, status) {
+                $('#'+$scope.selected.id).remove();  
+                console.log(status);
+           });
+        };
         
         $scope.cancelProject = function () {
           //$scope.selected.description = selected.description;
