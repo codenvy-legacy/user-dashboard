@@ -77,7 +77,10 @@ angular.module('odeskApp')
             $(document).on("click", ".closeBtn", function () {
                 $(".closeBtn").hide();
                 $('.detail').animate({ opacity: 1}, 400);
-                $('.searchfull').animate({width: "43px" }, 400, function () { $('.searchfull').hide(); });
+                $('.searchfull').animate({width: "43px" }, 400, function () { 
+                  $('.searchfield').val('');
+                  $('.searchfull').hide();
+                });
             });
         });
     });
