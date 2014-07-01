@@ -27,7 +27,7 @@
         <input type="button" class="searchfield "/>
       </div><!-- content title-->
       <div class="searchfull clearfix" style="display:none" >
-        <input type="button" class="closeBtn" style="display:none;" />
+        <input type="button" class="closeBtn" style="display:none;" ng-click="filter = ''" />
         <input type="text" ng-model="filter.name" class="searchfield " placeholder="Search for Projects"/>
       </div>
     </li>
@@ -63,7 +63,7 @@
   </div><!-- New Project -->
 
   <div class="col-md-10">
-    <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3 projectbox" id = "{{project.id}}" style="width:300px">
+    <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3 projectbox" style="width:300px">
       <div class="panel panel-default">
         <div class="panel-heading">
           <div class="row">
@@ -116,7 +116,7 @@
 
 <div class="projectlist" ng-if="!box">
   <table class="table table-hover">
-    <tr ng-repeat="project in projects| filter: filter | orderBy:param:reverse" id = "{{project.id}}">
+    <tr ng-repeat="project in projects| filter: filter | orderBy:param:reverse" >
       <td class="col-md-1 image"><a href="{{project.ideUrl}}" target="_blank"><img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt=""></a></td>
       <td class="col-md-1">
         <h3 class="panel-title"><a href="{{project.ideUrl}}" target="_blank"><strong>{{project.name}}</strong></a></h3>

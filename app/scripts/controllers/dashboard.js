@@ -56,11 +56,9 @@ angular.module('odeskApp')
 
         $scope.deleteProject = function () {
             $http({method: 'DELETE', url: $scope.selected.url}).
-                success(function (status) {
-                //if( status == 204 ) {
-                $('#'+$scope.selected.id).remove();
-                //}
-           });
+              success(function (status) {
+                $scope.projects = _.without($scope.projects, _.findWhere($scope.projects,  $scope.selected));                
+              });
         };
         
         $scope.cancelProject = function () {
