@@ -55,10 +55,11 @@ angular.module('odeskApp')
         };
 
         $scope.deleteProject = function () {
-            $http({method: 'DELETE', url: $scope.selected.url, data: $scope.selected}).
-                success(function (data, status) {
-                $('#'+$scope.selected.id).remove();  
-                console.log(status);
+            $http({method: 'DELETE', url: $scope.selected.url}).
+                success(function (status) {
+                //if( status == 204 ) {
+                $('#'+$scope.selected.id).remove();
+                //}
            });
         };
         
