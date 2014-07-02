@@ -46,7 +46,7 @@
   <div class="new-project col-md-2">
 
     <div class="box box-two" ng-if="workspaces.length == 1">
-      <a class="clearfix" href="/ide/{{workspaces[0].workspaceRef.name}}/newproject?action=newProject" target="_blank">
+      <a class="clearfix" href="/ide/{{workspaces[0].workspaceRef.name}}?action=newProject" target="_blank">
         <span class="glyphicon white glyphicon-plus"></span><br/>
         <div class="text-center" style="color:#919191"><strong>Create New Project</strong></div>
       </a>
@@ -56,7 +56,7 @@
         <span class="glyphicon white glyphicon-plus"></span> <br><strong>Create New Project <span class="caret"></span></strong>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <li ng-repeat="workspace in workspaces"><a href="/ide/{{workspace.workspaceRef.name}}/newproject?action=newProject" target="_blank">{{workspace.workspaceRef.name}}</a></li>
+        <li ng-repeat="workspace in workspaces"><a href="/ide/{{workspace.workspaceRef.name}}?action=newProject" target="_blank">{{workspace.workspaceRef.name}}</a></li>
       </ul>
     </div><!-- Box -->
   
@@ -131,7 +131,7 @@
 
   <div class="new-project">
     <div class="box box-two clearfix" ng-if="workspaces.length == 1">
-      <a class="clearfix" href="/ide/{{workspaces[0].workspaceRef.name}}/newproject?action=newProject" target="_blank">
+      <a class="clearfix" href="/ide/{{workspaces[0].workspaceRef.name}}?action=newProject" target="_blank">
         <span class="glyphicon white glyphicon-plus"></span>
         <strong>Create New Project</strong>
       </a>
@@ -141,7 +141,7 @@
         <span class="glyphicon white glyphicon-plus"></span><strong>Create New Project <span class="caret"></span></strong>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <li ng-repeat="workspace in workspaces" ><a href="/ide/{{workspace.workspaceRef.name}}/newproject?action=newProject" target="_blank">{{workspace.workspaceRef.name}}</a></li>
+        <li ng-repeat="workspace in workspaces" ><a href="/ide/{{workspace.workspaceRef.name}}?action=newProject" target="_blank">{{workspace.workspaceRef.name}}</a></li>
       </ul>
     </div><!-- Box -->
   
