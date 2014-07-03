@@ -485,12 +485,12 @@ angular.module('odeskApp')
         });
         
         $scope.updateProfile = function () {
-			if($scope.firstName!=firstNameValue || $scope.lastName!=lastNameValue || $scope.email!=emailValue || $scope.phone!=phoneValue || $scope.country!=countryValue || $scope.companyName!=companyNameValue || $scope.departmentName!=departmentNameValue || $scope.jobTitle!=jobTitleValue || $scope.check!=checkValue)
+			if($scope.firstName!=firstNameValue || $scope.lastName!=lastNameValue || $scope.email!=emailValue || $scope.phone!=phoneValue || $scope.country!=countryValue || $scope.companyName!=companyNameValue || $scope.jobTitle!=jobTitleValue || $scope.check!=checkValue)
 			{
 				var filter = /^[0-9-+]+$/;
 				if (filter.test($scope.phone) && $scope.phone.length>=10 && $scope.phone.length<=20) {
 					$('#phone').css('border', '1px solid #e5e5e5');
-					firstNameValue=$scope.firstName; lastNameValue=$scope.lastName; emailValue=$scope.email; phoneValue=$scope.phone; countryValue=$scope.country; companyNameValue=$scope.companyName; departmentNameValue=$scope.departmentName; jobTitleValue=$scope.jobTitle; checkValue=$scope.check;
+					firstNameValue=$scope.firstName; lastNameValue=$scope.lastName; emailValue=$scope.email; phoneValue=$scope.phone; countryValue=$scope.country; companyNameValue=$scope.companyName; jobTitleValue=$scope.jobTitle; checkValue=$scope.check;
 				$('#btn-preloader1').addClass('preloader');
 				$('#btn1').addClass('btn-disabled');
 				var appValue = [
@@ -523,11 +523,6 @@ angular.module('odeskApp')
 						"name": "employer",
 						"value": $scope.companyName,
 						"description": companyNameDescription
-					},
-					{
-						"name": "departmentname",
-						"value": $scope.departmentName,
-						"description": departmentNameDescription
 					},
 					{
 						"name": "jobtitle",
