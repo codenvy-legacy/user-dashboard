@@ -50,7 +50,7 @@ angular.module('odeskApp')
         /*Profile.query(function (resp) {
             $scope.attributes = resp.attributes;
         });*/
-		
+    $scope.userSkills = [];
 		$scope.countries = [
       { name: 'Afghanistan', code: 'AF' },
       { name: 'Åland Islands', code: 'AX' },
@@ -299,7 +299,7 @@ angular.module('odeskApp')
 		$scope.country = 'United States';
 		$scope.jobTitle = '';
 		
-		Users.query().then(function(data){
+/*		Users.query().then(function(data){
 			Account.query(data[0].id).then(function(datab){
 				if(datab==''){
 					$('#free').show();
@@ -315,7 +315,7 @@ angular.module('odeskApp')
 				}
 			});
 		});
-		
+*/		
 		Profile.query().then(function (resp) {
 		
 			dataPreferences = resp.preferences;
@@ -383,17 +383,11 @@ angular.module('odeskApp')
 			});
 			
 			var salesContactArray = [];
-			var userSkillsArray = [];
 			
-			
-			$.each(resp.preferences, function (key, dat) {
+			$.each(resp.preferences, function (key, skill) {
 				if(/skill_/i.test(key))
 				{
-					userSkillsArray.push(dat);
-					var skill_part = [];
-					skill_part = key.split('_');
-					allSkillIds.push(skill_part[1]);
-					skillNo = Math.max.apply(Math, allSkillIds);
+					$scope.userSkills.push({'key':key, 'name': skill});
 				}
 			});
 			
@@ -481,7 +475,6 @@ angular.module('odeskApp')
 			
 			
 				$scope.salesContactOptions = salesContactArray;
-				$scope.userSkills = userSkillsArray;
         });
         
         $scope.updateProfile = function () {
@@ -562,28 +555,22 @@ angular.module('odeskApp')
         };
 		
 		$scope.addSkill = function () {
-		    if($scope.addSkillModel!=''){
-			$('#btn-preloader3').addClass('preloader');
-			$('#btn3').addClass('btn-disabled');
-			var skillNow = parseInt(skillNo) + 1;
-			var skillData = {};
-			skillData["skill_"+skillNow] = $scope.addSkillModel;
-			addSkill.query(skillData).then( function(){
-				$scope.addSkillModel = "";
-				setTimeout(function(){ window.location = "#account" }, 3000);
-			});
-		    }
+      if($scope.addSkillModel!=''){
+        $('#btn-preloader3').addClass('preloader');
+        $('#btn3').addClass('btn-disabled');
+        var skillNow = parseInt(skillNo) + 1;
+        var skillData = {};
+        skillData["skill_"+skillNow] = $scope.addSkillModel;
+        addSkill.query(skillData).then( function(){
+          $scope.addSkillModel = "";
+          setTimeout(function(){ window.location = "#account" }, 3000);
+        });
+	    }
 		};
 		
-		$scope.removeSkill = function (skill, tohide) {
-			$('#'+tohide).hide();
-			$.each(dataPreferences, function(key, val) {
-				if(val==skill)
-				{
-					delete dataPreferences[key];
-				}
-			});
-			
+		$scope.removeSkill = function (skill) {
+      $scope.userSkills = _.without($scope.userSkills, _.findWhere($scope.userSkills,  skill));
+      delete dataPreferences[skill.key];
 			removeSkills.update(dataPreferences);
 		};
 		

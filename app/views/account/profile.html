@@ -1,308 +1,298 @@
 <ul class="breadcrumb boxnav">
-    <li class="active"><a href="#/account/profile">Profile</a></li>
-   <!-- 
+  <li class="active"><a href="#/account/profile">Profile</a></li>
+  <!-- 
     <li><a href="#/account/configuration">Configuration</a></li>
     <li><a href="#/account/preferences">Preferences</a></li>
     <li><a href="#/account/billing">Billing</a></li>
 -->
 </ul>
 <div class="container mainDivContainer">
-    <div class="col-md-6">
-        <div class="panel panel-default panel-ce">
-            <div class="panel-body">
-                <h4 class="text-center">Your Information</h4>
-				
-                <div class="row">
-                    <div class="col-md-12">
-                        <form method="post" accept-charset="utf-8" class="form" role="form" ng-submit="updateProfile()">   
-                            <!--<legend class="text-center">Billing Information</legend>-->
-                            <div class="row">
-                                <div class="col-md-6 form-group">
-                                    <label for="workspaceid">First Name:</label>
-                                    <input class="form-control" id="name" name="name" placeholder="Your First Name" ng-model="firstName" type="text" required autofocus />
-                                </div>
-                                <div class="col-md-6 form-group">
-                                    <label for="workspaceid">Last Name:</label>
-                                    <input class="form-control" id="email" name="email" placeholder="Your Last Name" ng-model="lastName" type="text" required autofocus/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 form-group">
-                                    <label for="workspaceid">Email:</label>
-                                    <input class="form-control" id="name" name="name" placeholder="Your Email Address" ng-model="email" type="email" required autofocus />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 form-group">
-                                    <label for="workspaceid">Phone:</label>
-                                    <input class="form-control" id="phone" name="name" ng-model="phone" placeholder="Your Phone Number" type="tel" pattern="(^[0-9-+]+$)" maxlength=15 autofocus />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 form-group">
-                                    <label for="workspaceid">Country:</label>
-                                    <select id="workspaceid" ng-model="country" class="form-control" required>
-                                        <!--<option selected>USA</option>
+  <div class="col-md-6">
+    <div class="panel panel-default panel-ce">
+      <div class="panel-body">
+        <h4 class="text-center">Your Information</h4>
+        <div class="row">
+          <div class="col-md-12">
+            <form method="post" accept-charset="utf-8" class="form" role="form" ng-submit="updateProfile()">
+              <!--<legend class="text-center">Billing Information</legend>-->
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <label for="workspaceid">First Name:</label>
+                  <input class="form-control" id="name" name="name" placeholder="Your First Name" ng-model="firstName" type="text" required autofocus />
+                </div>
+                <div class="col-md-6 form-group">
+                  <label for="workspaceid">Last Name:</label>
+                  <input class="form-control" id="email" name="email" placeholder="Your Last Name" ng-model="lastName" type="text" required autofocus/>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 form-group">
+                  <label for="workspaceid">Email:</label>
+                  <input class="form-control" id="name" name="name" placeholder="Your Email Address" ng-model="email" type="email" required autofocus />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 form-group">
+                  <label for="workspaceid">Phone:</label>
+                  <input class="form-control" id="phone" name="name" ng-model="phone" placeholder="Your Phone Number" type="tel" pattern="(^[0-9-+]+$)" maxlength=15 autofocus />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 form-group">
+                  <label for="workspaceid">Country:</label>
+                  <select id="workspaceid" ng-model="country" class="form-control" required>
+                    <!--<option selected>USA</option>
                                         <option>UK</option>
                                         <option>India</option>-->
-										<option value="">Select Your Country</option>
-										<option ng-repeat="cntry in countries">{{cntry.name}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 form-group">
-                                    <label for="workspaceid">Company Name:</label>
-                                    <input class="form-control" id="name" name="name" ng-model="companyName" placeholder="Your Company Name" type="text" autofocus />
-                                </div>
-                            </div>
-                            <div class="row">
-                            
-                               <div class="col-md-12 form-group">
-                                    <label for="workspaceid">Job Title:</label>
-                                    <!--<input class="form-control" id="name" name="name" ng-model="jobTitle" placeholder="Product Manager" type="text" required autofocus />-->
-									<select ng-model="jobTitle" class="form-control" autofocus>
-									<option value="">Please select role...</option>
-									<option value="Developer">Developer</option>
-									<option value="Architect">Architect</option>
-									<option value="PM">Product Manager</option>
-									<option value="Project">Project Manager</option>
-									<option value="CEO/CTO">CEO/CTO</option>
-									<option value="Student">Student</option>
-									<option value="Other">Other</option>
-									</select>
-                                </div>
-                            </div>
-                            Can our sales teams contact you to discuss our offerings? &nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" name="remember" ng-model="check" value="1"> &nbsp;&nbsp;Yes
-                            <div class="row">
-                            
-                            <div id="upadateProfileAlert" class="col-md-10">
-								<div class="alert alert-success" style="display: none;"><b>Successfully Done!</b> Update profile information process completed.</div>
-								<div class="alert alert-danger" style="display: none;"><b>Failed!</b> Update profile information process failed.</div>
-							</div>
-                            
-                                <div class="col-md-2">
-                                    <button class="btn btn-primary btn-block signup-btn" id="btn1" type="submit">Save</button>
-                                    <div id="btn-preloader1" style="display:none">
-					<div id="bowlG">
-						<div id="bowl_ringG">
-							<div class="ball_holderG">
-								<div class="ballG"> </div>
-							</div>
-						</div>
-					</div>
-				    </div>
-                                </div>
-                            </div>
-							
-                        </form>          
-                    </div>
-                </div>            
-            </div>
-        </div>
-        <div class="panel panel-default panel-ce">
-            <div class="panel-body">
-                <h4 class="text-center">Update Your Password</h4>
-				
-                <div class="row">
-                    <div class="col-md-12">
-                        <form method="post" accept-charset="utf-8" class="form" role="form" ng-submit="updatePassword()">
-                            <div class="row">
-                                <div class="col-md-12 form-group">
-                                    <label for="workspaceid">Old Pasword:</label>
-                                    <input class="form-control" id="name" name="name" placeholder="" type="password" required autofocus />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 form-group">
-                                    <label for="workspaceid">New Password:</label>
-                                    <input class="form-control" id="password1" name="password1" placeholder="" type="password" ng-model="password" required autofocus />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 form-group">
-                                    <label for="workspaceid">Repeat New Password:</label>
-                                    <input class="form-control" id="password2" name="password2" placeholder="" type="password" ng-model="password_verify" required autofocus />
-                                </div>
-                            </div>
-                            <div class="row">
-                            
-                            <div class="col-md-10">
-								<div id="changePasswordAlert">
-									<div class="alert alert-success" style="display: none;"><b>Successfully Done!</b> Change password process completed.</div>
-									<div class="alert alert-danger" style="display: none;"><b>Failed!</b> Change password process failed.</div>
-								</div>
-								<div class="alert alert-danger" id="doesNotMatch" style="display: none;"><b>Failed!</b> New Password and Repeat New Password do not match.</div>
-							</div>
-                            
-                                <div class="col-md-2">
-                                    <button class="btn btn-primary btn-block signup-btn" id="btn2" type="submit" >Save</button>
-                                    <div id="btn-preloader2" style="display:none">
-					<div id="bowlG">
-						<div id="bowl_ringG">
-							<div class="ball_holderG">
-								<div class="ballG"> </div>
-							</div>
-						</div>
-					</div>
-				    </div>
-                                </div>
-                            </div>
-			</form>          
-                    </div>
-                </div>            
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="panel panel-default panel-ce">
-            <div class="panel-body">
-                <h4 class="text-center" id="premium" style="display: none;"><img height="22" src="./images/user.png"/> You are a SAAS Premium user</h4>
-                <h4 class="text-center" id="free" style="display: none;">You are a SAAS Community user</h4>
-            </div>
-        </div>
-        
-            <div class="panel panel-primary" data-toggle="modal" data-target="#myModal">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3 class="panel-title white"><strong>WIN 6 MONTHS PREMIUM SERVICES</strong></h3>
+                    <option value="">Select Your Country</option>
+                    <option ng-repeat="cntry in countries">{{cntry.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 form-group">
+                  <label for="workspaceid">Company Name:</label>
+                  <input class="form-control" id="name" name="name" ng-model="companyName" placeholder="Your Company Name" type="text" autofocus />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 form-group">
+                  <label for="workspaceid">Job Title:</label>
+                  <!--<input class="form-control" id="name" name="name" ng-model="jobTitle" placeholder="Product Manager" type="text" required autofocus />-->
+                  <select ng-model="jobTitle" class="form-control" autofocus>
+                    <option value="">Please select role...</option>
+                    <option value="Developer">Developer</option>
+                    <option value="Architect">Architect</option>
+                    <option value="PM">Product Manager</option>
+                    <option value="Project">Project Manager</option>
+                    <option value="CEO/CTO">CEO/CTO</option>
+                    <option value="Student">Student</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+              Can our sales teams contact you to discuss our offerings? &nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="checkbox" name="remember" ng-model="check" value="1">
+              &nbsp;&nbsp;Yes
+              <div class="row">
+                <div id="upadateProfileAlert" class="col-md-10">
+                  <div class="alert alert-success" style="display: none;"><b>Successfully Done!</b> Update profile information process completed.</div>
+                  <div class="alert alert-danger" style="display: none;"><b>Failed!</b> Update profile information process failed.</div>
+                </div>
+                <div class="col-md-2">
+                  <button class="btn btn-primary btn-block signup-btn" id="btn1" type="submit">Save</button>
+                  <div id="btn-preloader1" style="display:none">
+                    <div id="bowlG">
+                      <div id="bowl_ringG">
+                        <div class="ball_holderG">
+                          <div class="ballG"> </div>
                         </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
-                <div class="panel-body">
-                    <ul class="list-unstyled">
-                        <li><b>1-</b> Organize a User Group/Presentation/Classroom and we will be there,</li>
-                        <li><b>2-</b> You will be get 6 months premium service for free, and</li>
-                        <li><b>3-</b> One add person who attends will also get it as well.</li>
-                    </ul></div>
-                <div class="panel-footer"><div class="row">
-                        <div class="col-md-12 text-center"><a href="mailto:support@codenvy.com" style="color: #363636;">Contact US</a></div>
-                    </div>
-                </div>
-            </div>
-        <div class="panel panel-default panel-ce">
-            <div class="panel-body">
-                <h4 class="text-center">Your Skills</h4>
-				
-                <div class="celist">
-                    <div class="label label-default" ng-repeat="skill in userSkills" id="skill_{{$index}}">{{skill}} <span ng-click="removeSkill(skill, 'skill_'+$index)" class="glyphicon glyphicon-remove"></span></div>
-                    <!--<div class="label label-default">Java Development <span class="glyphicon glyphicon-remove"></span></div>
-                    <div class="label label-default">IOS Application <span class="glyphicon glyphicon-remove"></span></div>
-                    <div class="label label-default">Cobol <span class="glyphicon glyphicon-remove"></span></div>-->
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <form accept-charset="utf-8" class="form" role="form">  
-                            <div class="row">
-                                <div class="col-md-10 form-group">
-                                    <input class="form-control" id="name" name="name" ng-model="addSkillModel" type="text" required autofocus />
-                                </div>
-                                <div class="col-md-2"><button class="btn btn-primary btn-block signup-btn" id="btn3" ng-click="addSkill()">Add</button>
-                                	<div id="btn-preloader3" style="display:none">
-						<div id="bowlG">
-							<div id="bowl_ringG">
-								<div class="ball_holderG">
-									<div class="ballG"> </div>
-								</div>
-							</div>
-						</div>
-					</div>
-                                </div>
-                            </div>
-                            <div id="addSkillsAlert">
-								<div class="alert alert-success" style="display: none;"><b>Successfully Done!</b> Add Skill process completed.</div>
-								<div class="alert alert-danger" style="display: none;"><b>Failed!</b> Add Skill process failed.</div>
-							</div>
-							<div id="removeSkillsAlert">
-								<div class="alert alert-success" style="display: none;"><b>Successfully Done!</b> Remove Skill process completed.</div>
-								<div class="alert alert-danger" style="display: none;"><b>Failed!</b> Remove Skill process failed.</div>
-							</div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+              </div>
+            </form>
+          </div>
         </div>
-        <div class="panel panel-default panel-ce">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">                        
-                        <form method="post" accept-charset="utf-8" class="form" role="form">   
-                            <h4 class="text-center">Your Usage</h4>
-							
-                            <div class="row">
-                                <div class="control-group">
-                                    <div class="controls col-md-5 col-md-offset-1">
-                                        <label class="checkbox">
-                                            <input type="checkbox" ng-model="usage_1"> Personal
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" ng-model="usage_2"> Opensource
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" ng-model="usage_3"> Corporate
-                                        </label>
-                                    </div>
-                                    <div class="controls col-md-5 col-md-offset-1">
-                                        <label class="checkbox">
-                                            <input type="checkbox" ng-model="usage_4"> Hackathon
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" ng-model="usage_5"> Classroom
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" ng-model="usage_6"> Others
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <h4 class="text-center">Your Projects</h4>
-                            <div class="row">
-                                <div class="control-group">
-                                    <div class="controls col-md-5 col-md-offset-1">
-                                        <label class="checkbox">
-                                            <input type="checkbox" ng-model="project_1"> Mobile
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" ng-model="project_2"> APIs
-                                        </label>
-                                    </div>
-                                    <div class="controls col-md-5 col-md-offset-1">
-                                        <label class="checkbox">
-                                            <input type="checkbox" ng-model="project_3"> Web Apps
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" ng-model="project_4"> Others
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-10 text-right">
-                                    <div class="garrow" style="padding:9px 0px;">Check multiple values</div>
-                                </div>
-                                <div class="col-md-2">
-                                    <button class="btn btn-primary btn-block signup-btn" id="btn4" ng-click="addUsage()">Save</button>
-                                    <div id="btn-preloader4" style="display:none">
-					<div id="bowlG">
-						<div id="bowl_ringG">
-							<div class="ball_holderG">
-								<div class="ballG"> </div>
-							</div>
-						</div>
-					</div>
-				    </div>
-                                </div>
-                            </div>
-                            <div id="usageAlert">
-								<div class="alert alert-success" style="display: none;"><b>Successfully Done!</b> Save Usage &amp; Projects process completed.</div>
-								<div class="alert alert-danger" style="display: none;"><b>Failed!</b> Save Usage &amp; Projects process failed.</div>
-							</div>
-                        </form>          
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+    <div class="panel panel-default panel-ce">
+      <div class="panel-body">
+        <h4 class="text-center">Update Your Password</h4>
+        <div class="row">
+          <div class="col-md-12">
+            <form method="post" accept-charset="utf-8" class="form" role="form" ng-submit="updatePassword()">
+              <div class="row">
+                <div class="col-md-12 form-group">
+                  <label for="workspaceid">Old Pasword:</label>
+                  <input class="form-control" id="name" name="name" placeholder="" type="password" required autofocus />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 form-group">
+                  <label for="workspaceid">New Password:</label>
+                  <input class="form-control" id="password1" name="password1" placeholder="" type="password" ng-model="password" required autofocus />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 form-group">
+                  <label for="workspaceid">Repeat New Password:</label>
+                  <input class="form-control" id="password2" name="password2" placeholder="" type="password" ng-model="password_verify" required autofocus />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-10">
+                  <div id="changePasswordAlert">
+                    <div class="alert alert-success" style="display: none;"><b>Successfully Done!</b> Change password process completed.</div>
+                    <div class="alert alert-danger" style="display: none;"><b>Failed!</b> Change password process failed.</div>
+                  </div>
+                  <div class="alert alert-danger" id="doesNotMatch" style="display: none;"><b>Failed!</b> New Password and Repeat New Password do not match.</div>
+                </div>
+                <div class="col-md-2">
+                  <button class="btn btn-primary btn-block signup-btn" id="btn2" type="submit" >Save</button>
+                  <div id="btn-preloader2" style="display:none">
+                    <div id="bowlG">
+                      <div id="bowl_ringG">
+                        <div class="ball_holderG">
+                          <div class="ballG"> </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default panel-ce">
+      <div class="panel-body">
+        <h4 class="text-center" id="premium" style="display: none;"><img height="22" src="./images/user.png"/> You are a SAAS Premium user</h4>
+        <h4 class="text-center" id="free" style="display: none;">You are a SAAS Community user</h4>
+      </div>
+    </div>
+    <div class="panel panel-primary" data-toggle="modal" data-target="#myModal">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-md-12">
+            <h3 class="panel-title white"><strong>WIN 6 MONTHS PREMIUM SERVICES</strong></h3>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <ul class="list-unstyled">
+          <li><b>1-</b> Organize a User Group/Presentation/Classroom and we will be there,</li>
+          <li><b>2-</b> You will be get 6 months premium service for free, and</li>
+          <li><b>3-</b> One add person who attends will also get it as well.</li>
+        </ul>
+      </div>
+      <div class="panel-footer">
+        <div class="row">
+          <div class="col-md-12 text-center"><a href="mailto:support@codenvy.com" style="color: #363636;">Contact US</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default panel-ce">
+      <div class="panel-body">
+        <h4 class="text-center">Your Skills</h4>
+        <div class="celist clearfix">
+          <div class="label label-default clearfix" ng-repeat="skill in userSkills" ><span class = "skill">{{skill.name}}</span> <span ng-click="removeSkill(skill)" class="glyphicon glyphicon-remove"></span></div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <form accept-charset="utf-8" class="form" role="form">
+              <div class="row">
+                <div class="col-md-10 form-group">
+                  <input class="form-control" id="name" name="name" ng-model="addSkillModel" type="text" required autofocus />
+                </div>
+                <div class="col-md-2">
+                  <button class="btn btn-primary btn-block signup-btn" id="btn3" ng-click="addSkill()">Add</button>
+                  <div id="btn-preloader3" style="display:none">
+                    <div id="bowlG">
+                      <div id="bowl_ringG">
+                        <div class="ball_holderG">
+                          <div class="ballG"> </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="addSkillsAlert">
+                <div class="alert alert-success" style="display: none;"><b>Successfully Done!</b> Add Skill process completed.</div>
+                <div class="alert alert-danger" style="display: none;"><b>Failed!</b> Add Skill process failed.</div>
+              </div>
+              <div id="removeSkillsAlert">
+                <div class="alert alert-success" style="display: none;"><b>Successfully Done!</b> Remove Skill process completed.</div>
+                <div class="alert alert-danger" style="display: none;"><b>Failed!</b> Remove Skill process failed.</div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default panel-ce">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <form method="post" accept-charset="utf-8" class="form" role="form">
+              <h4 class="text-center">Your Usage</h4>
+              <div class="row">
+                <div class="control-group">
+                  <div class="controls col-md-5 col-md-offset-1">
+                    <label class="checkbox">
+                      <input type="checkbox" ng-model="usage_1">
+                      Personal </label>
+                    <label class="checkbox">
+                      <input type="checkbox" ng-model="usage_2">
+                      Opensource </label>
+                    <label class="checkbox">
+                      <input type="checkbox" ng-model="usage_3">
+                      Corporate </label>
+                  </div>
+                  <div class="controls col-md-5 col-md-offset-1">
+                    <label class="checkbox">
+                      <input type="checkbox" ng-model="usage_4">
+                      Hackathon </label>
+                    <label class="checkbox">
+                      <input type="checkbox" ng-model="usage_5">
+                      Classroom </label>
+                    <label class="checkbox">
+                      <input type="checkbox" ng-model="usage_6">
+                      Others </label>
+                  </div>
+                </div>
+              </div>
+              <h4 class="text-center">Your Projects</h4>
+              <div class="row">
+                <div class="control-group">
+                  <div class="controls col-md-5 col-md-offset-1">
+                    <label class="checkbox">
+                      <input type="checkbox" ng-model="project_1">
+                      Mobile </label>
+                    <label class="checkbox">
+                      <input type="checkbox" ng-model="project_2">
+                      APIs </label>
+                  </div>
+                  <div class="controls col-md-5 col-md-offset-1">
+                    <label class="checkbox">
+                      <input type="checkbox" ng-model="project_3">
+                      Web Apps </label>
+                    <label class="checkbox">
+                      <input type="checkbox" ng-model="project_4">
+                      Others </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-10 text-right">
+                  <div class="garrow" style="padding:9px 0px;">Check multiple values</div>
+                </div>
+                <div class="col-md-2">
+                  <button class="btn btn-primary btn-block signup-btn" id="btn4" ng-click="addUsage()">Save</button>
+                  <div id="btn-preloader4" style="display:none">
+                    <div id="bowlG">
+                      <div id="bowl_ringG">
+                        <div class="ball_holderG">
+                          <div class="ballG"> </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="usageAlert">
+                <div class="alert alert-success" style="display: none;"><b>Successfully Done!</b> Save Usage &amp; Projects process completed.</div>
+                <div class="alert alert-danger" style="display: none;"><b>Failed!</b> Save Usage &amp; Projects process failed.</div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
