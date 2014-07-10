@@ -572,7 +572,7 @@ angular.module('odeskApp')
 		$scope.removeSkill = function (skill) {
       $scope.userSkills = _.without($scope.userSkills, _.findWhere($scope.userSkills,  skill));
       delete dataPreferences[skill.key];
-			removeSkills.update(dataPreferences);
+			removeSkills.update(skill.key);
 		};
 		
 		
