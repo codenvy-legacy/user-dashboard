@@ -558,12 +558,13 @@ angular.module('odeskApp')
       if($scope.addSkillModel!=''){
         $('#btn-preloader3').addClass('preloader');
         $('#btn3').addClass('btn-disabled');
-        var skillNow = parseInt(skillNo) + 1;
         var skillData = {};
-        skillData["skill_"+skillNow] = $scope.addSkillModel;
+        var next_key = $scope.userSkills.length + 1;
+        skillData = {'key': "skill_"+next_key, 'name': $scope.addSkillModel};
         addSkill.query(skillData).then( function(){
           $scope.addSkillModel = "";
-          setTimeout(function(){ window.location = "#account" }, 3000);
+					$scope.userSkills.push(skillData);
+          $('#skill-name').focus();
         });
 	    }
 		};
