@@ -563,7 +563,7 @@ angular.module('odeskApp')
         skillset[next_key] = $scope.addSkillModel;
         addSkill.query( skillset );
         $scope.userSkills.push({'key': next_key, 'name': $scope.addSkillModel});
-        //$scope.addSkillModel = "";
+        $scope.addSkillModel = "";
         $('#skill-name').focus();
 	    }
 		};
