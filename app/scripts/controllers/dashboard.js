@@ -18,7 +18,7 @@
 
 angular.module('odeskApp')
     .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, $http, $window) {
-        
+        var old_description = '';
         $scope.box = 1;
         $scope.search = 0;
         $scope.projects = [];
@@ -39,16 +39,20 @@ angular.module('odeskApp')
         
         $scope.filter = {};
         
-        $scope.gotoProject = function () {
-            $window.open('/ide/' + $scope.workspaces[0].workspaceRef.name + '/new_project', '_blank');
-        };
-        
         $scope.selectProject = function (project) {
           $scope.selected = project;
+          old_description = project.description;
         };
         
         $scope.updateProject = function () {
             $http({method: 'PUT', url: $scope.selected.url, data: $scope.selected}).
+                success(function (data, status) {
+                console.log(data);
+           });
+        };
+
+        $scope.switchVisibility = function () {
+            $http({method: 'POST', url: '/api/project/'+$scope.selected.workspaceId+'/switch_visibility/'+$scope.selected.name, data: {'visibility':$scope.selected.visibility}}).
                 success(function (data, status) {
                 console.log(data);
            });
@@ -62,7 +66,7 @@ angular.module('odeskApp')
         };
         
         $scope.cancelProject = function () {
-          //$scope.selected.description = selected.description;
+          $scope.selected.description = old_description;
         };
         
         $timeout(function () {
