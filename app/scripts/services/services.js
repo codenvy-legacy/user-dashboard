@@ -117,34 +117,26 @@ angular.module('odeskApp')
 angular.module('odeskApp')	
 	.factory('addSkill', function ($http, $q) {
     return {
-        query: function (appValue) {
-            var deferred = $q.defer();
-			var con = {
-                headers: {
-                    'Content-Type': 'application/json; charset=UTF-8',
-					'X-Requested-With': 'XMLHttpRequest'
-                }
-            };
-			
-             $http.post('/api/profile/prefs', appValue, con)
-                .success(function (data) {
-                			$('#btn-preloader3').removeClass('preloader');
-					$('#btn3').removeClass('btn-disabled');
-					$('#addSkillsAlert .alert-success').show();
-					$('#addSkillsAlert .alert-danger').hide();
-					$('#addSkillsAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
-                    deferred.resolve(data); //resolve data
-               })
-                .error(function (err) {
-                			$('#btn-preloader3').removeClass('preloader');
-					$('#btn3').removeClass('btn-disabled');
-					$('#addSkillsAlert .alert-danger').show();
-					$('#addSkillsAlert .alert-success').hide();
-					$('#addSkillsAlert .alert').mouseout(function(){ $(this).fadeOut('slow'); });
-					deferred.reject();
-				});
-            return deferred.promise; 
-        }
+      query: function (skillset) {
+        var config = { 
+          method:  'POST',
+          headers: {'Content-Type': 'application/json; charset=UTF-8'}, 
+          url: '/api/profile/prefs',
+          data: skillset
+        };
+        $http(config).success(function (data) {
+          $('#btn-preloader3').removeClass('preloader');
+          $('#btn3').removeClass('btn-disabled');
+          $('#addSkillsAlert .alert-success').show();
+          $('#addSkillsAlert .alert-danger').hide();
+        }).error(function (err) {
+          $('#btn-preloader3').removeClass('preloader');
+          $('#btn3').removeClass('btn-disabled');
+          $('#addSkillsAlert .alert-danger').show();
+          $('#addSkillsAlert .alert-success').hide();
+        });
+        setTimeout(function () { $('#addSkillsAlert .alert').fadeOut('slow'); }, 3000);
+      }
     };
 });
 

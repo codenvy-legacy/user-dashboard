@@ -558,24 +558,20 @@ angular.module('odeskApp')
       if($scope.addSkillModel!=''){
         $('#btn-preloader3').addClass('preloader');
         $('#btn3').addClass('btn-disabled');
-        var skillData = {};
-        var next_key = $scope.userSkills.length + 1;
-        skillData = {'key': "skill_"+next_key, 'name': $scope.addSkillModel};
-        addSkill.query(skillData).then( function(){
-          $scope.addSkillModel = "";
-					$scope.userSkills.push(skillData);
-          $('#skill-name').focus();
-        });
+        var next_key = "skill_" + ($scope.userSkills.length + 1);
+        var skillset = {};
+        skillset[next_key] = $scope.addSkillModel;
+        addSkill.query( skillset );
+        $scope.userSkills.push({'key': next_key, 'name': $scope.addSkillModel});
+        //$scope.addSkillModel = "";
+        $('#skill-name').focus();
 	    }
 		};
 		
 		$scope.removeSkill = function (skill) {
       $scope.userSkills = _.without($scope.userSkills, _.findWhere($scope.userSkills,  skill));
-      delete dataPreferences[skill.key];
 			removeSkills.update(skill.key);
 		};
-		
-		
 		
 		$scope.addUsage = function () {
 			$('#btn-preloader4').addClass('preloader');
