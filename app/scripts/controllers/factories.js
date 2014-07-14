@@ -31,15 +31,6 @@ angular.module('odeskApp')
         
         Workspace.all(function (resp) {
 			$scope.workspaces = resp;
-            // angular.forEach(resp, function (value) {
-                // $http({method: 'GET', url: replaceURL(value.workspaceRef.workspaceLink.href)}).
-                    // success(function (data, status) {
-                        // $http({method: 'GET', url: replaceURL(data.links[0].href)}).
-                            // success(function (data1, status1) {
-                                // $scope.projects = $scope.projects.concat(data1);
-                            // });
-                    // });
-            // });
         });
         
 		$scope.ChangeTimeSpan = function(selection){
