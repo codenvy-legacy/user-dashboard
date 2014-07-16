@@ -52,7 +52,7 @@ angular.module('odeskApp')
         };
 
         $scope.switchVisibility = function () {
-            $http({method: 'POST', url: '/api/project/'+$scope.selected.workspaceId+'/switch_visibility/'+$scope.selected.name, data: {'visibility':$scope.selected.visibility}}).
+            $http({method: 'POST', url: '/api/project/'+$scope.selected.workspaceId+'/switch_visibility/'+$scope.selected.name+'?visibility='+$scope.selected.visibility}).
                 success(function (data, status) {
                 console.log(data);
            });
