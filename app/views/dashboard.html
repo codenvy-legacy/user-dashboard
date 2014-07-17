@@ -79,8 +79,8 @@
         <div class="panel-body">{{project.description}}</div>
         <div class="panel-footer">
           <div class="row" ng-click="selectProject(project)">
-            <div class="col-md-4" data-toggle="modal" data-target="#privacyModal"><div class="row"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div>
-            </div>
+            <div class="col-md-4" data-toggle="modal" data-target="#privacyModal" ng-if="project.workspaceName==ownerWorkspace"><div class="row" ><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
+            <div class="col-md-4" ng-if="project.workspaceName!=ownerWorkspace"><div class="row" ><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
             <div class="col-md-4" data-toggle="modal" data-target="#developersModal"><div class="row"><i class="fa fa-fw fa-users"></i><small> Developers</small></div></div>
             <div class="col-md-4" data-toggle="modal" data-target="#projectDetailModal"><div class="row"><i class="fa fa-fw fa-cog"></i></div></div>
           </div><!-- .row -->
@@ -123,9 +123,9 @@
         <div class="mic-info">{{project.workspaceName}}</div>
       </td>
       <td class="col-md-6"><div class="comment-text">{{project.description}}</div></td>
-      <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#privacyModal"><div class="button"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></td>
-      <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#developersModal"><div class="button"><i class="fa fa-fw fa-users"></i><small> Developers</small></div></td>
-      <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><div class="button"><i class="fa fa-fw fa-cog"></i></div></td>
+      <td class="col-md-1 text-center" ><div ng-click="selectProject(project)" data-toggle="modal" data-target="#privacyModal" ng-if="project.workspaceName==ownerWorkspace"><div class="button"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div></td>
+      <td class="col-md-1 text-center" ><div ng-click="selectProject(project)" data-toggle="modal" data-target="#developersModal"><div class="button"><i class="fa fa-fw fa-users"></i><small> Developers</small></div></div></td>
+      <td class="col-md-1 text-center" ><div ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><div class="button"><i class="fa fa-fw fa-cog"></i></div></div></td>
     </tr><!-- panel-default -->
   </table><!-- row -->
 

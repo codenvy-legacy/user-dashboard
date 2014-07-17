@@ -17,12 +17,12 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, $http, $window) {
+    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, $http, $window) {
         var old_description = '';
         $scope.box = 1;
         $scope.search = 0;
         $scope.projects = [];
-        
+        $scope.ownerWorkspace = '';
         Workspace.all(function (resp) {
             $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceRef.temporary; });
             angular.forEach($scope.workspaces, function (value) {
@@ -35,6 +35,10 @@ angular.module('odeskApp')
                     });
 				
             });
+        });
+        
+        Users.query().then(function (resp) {
+          $scope.ownerWorkspace = resp[0].name;
         });
         
         $scope.filter = {};
