@@ -50,7 +50,7 @@ angular.module('odeskApp')
         /*Profile.query(function (resp) {
             $scope.attributes = resp.attributes;
         });*/
-		
+    $scope.userSkills = [];
 		$scope.countries = [
       { name: 'Afghanistan', code: 'AF' },
       { name: 'Åland Islands', code: 'AX' },
@@ -299,7 +299,7 @@ angular.module('odeskApp')
 		$scope.country = 'United States';
 		$scope.jobTitle = '';
 		
-		Users.query().then(function(data){
+/*		Users.query().then(function(data){
 			Account.query(data[0].id).then(function(datab){
 				if(datab==''){
 					$('#free').show();
@@ -315,7 +315,7 @@ angular.module('odeskApp')
 				}
 			});
 		});
-		
+*/		
 		Profile.query().then(function (resp) {
 		
 			dataPreferences = resp.preferences;
@@ -383,17 +383,11 @@ angular.module('odeskApp')
 			});
 			
 			var salesContactArray = [];
-			var userSkillsArray = [];
 			
-			
-			$.each(resp.preferences, function (key, dat) {
+			$.each(resp.preferences, function (key, skill) {
 				if(/skill_/i.test(key))
 				{
-					userSkillsArray.push(dat);
-					var skill_part = [];
-					skill_part = key.split('_');
-					allSkillIds.push(skill_part[1]);
-					skillNo = Math.max.apply(Math, allSkillIds);
+					$scope.userSkills.push({'key':key, 'name': skill});
 				}
 			});
 			
@@ -481,16 +475,15 @@ angular.module('odeskApp')
 			
 			
 				$scope.salesContactOptions = salesContactArray;
-				$scope.userSkills = userSkillsArray;
         });
         
         $scope.updateProfile = function () {
-			if($scope.firstName!=firstNameValue || $scope.lastName!=lastNameValue || $scope.email!=emailValue || $scope.phone!=phoneValue || $scope.country!=countryValue || $scope.companyName!=companyNameValue || $scope.departmentName!=departmentNameValue || $scope.jobTitle!=jobTitleValue || $scope.check!=checkValue)
+			if($scope.firstName!=firstNameValue || $scope.lastName!=lastNameValue || $scope.email!=emailValue || $scope.phone!=phoneValue || $scope.country!=countryValue || $scope.companyName!=companyNameValue || $scope.jobTitle!=jobTitleValue || $scope.check!=checkValue)
 			{
 				var filter = /^[0-9-+]+$/;
 				if (filter.test($scope.phone) && $scope.phone.length>=10 && $scope.phone.length<=20) {
 					$('#phone').css('border', '1px solid #e5e5e5');
-					firstNameValue=$scope.firstName; lastNameValue=$scope.lastName; emailValue=$scope.email; phoneValue=$scope.phone; countryValue=$scope.country; companyNameValue=$scope.companyName; departmentNameValue=$scope.departmentName; jobTitleValue=$scope.jobTitle; checkValue=$scope.check;
+					firstNameValue=$scope.firstName; lastNameValue=$scope.lastName; emailValue=$scope.email; phoneValue=$scope.phone; countryValue=$scope.country; companyNameValue=$scope.companyName; jobTitleValue=$scope.jobTitle; checkValue=$scope.check;
 				$('#btn-preloader1').addClass('preloader');
 				$('#btn1').addClass('btn-disabled');
 				var appValue = [
@@ -523,11 +516,6 @@ angular.module('odeskApp')
 						"name": "employer",
 						"value": $scope.companyName,
 						"description": companyNameDescription
-					},
-					{
-						"name": "departmentname",
-						"value": $scope.departmentName,
-						"description": departmentNameDescription
 					},
 					{
 						"name": "jobtitle",
@@ -567,32 +555,23 @@ angular.module('odeskApp')
         };
 		
 		$scope.addSkill = function () {
-		    if($scope.addSkillModel!=''){
-			$('#btn-preloader3').addClass('preloader');
-			$('#btn3').addClass('btn-disabled');
-			var skillNow = parseInt(skillNo) + 1;
-			var skillData = {};
-			skillData["skill_"+skillNow] = $scope.addSkillModel;
-			addSkill.query(skillData).then( function(){
-				$scope.addSkillModel = "";
-				setTimeout(function(){ window.location = "#account" }, 3000);
-			});
-		    }
+      if($scope.addSkillModel!=''){
+        $('#btn-preloader3').addClass('preloader');
+        $('#btn3').addClass('btn-disabled');
+        var next_key = "skill_" + ($scope.userSkills.length + 1);
+        var skillset = {};
+        skillset[next_key] = $scope.addSkillModel;
+        addSkill.query( skillset );
+        $scope.userSkills.push({'key': next_key, 'name': $scope.addSkillModel});
+        $scope.addSkillModel = "";
+        $('#skill-name').focus();
+	    }
 		};
 		
-		$scope.removeSkill = function (skill, tohide) {
-			$('#'+tohide).hide();
-			$.each(dataPreferences, function(key, val) {
-				if(val==skill)
-				{
-					delete dataPreferences[key];
-				}
-			});
-			
-			removeSkills.update(dataPreferences);
+		$scope.removeSkill = function (skill) {
+      $scope.userSkills = _.without($scope.userSkills, _.findWhere($scope.userSkills,  skill));
+			removeSkills.update(skill.key);
 		};
-		
-		
 		
 		$scope.addUsage = function () {
 			$('#btn-preloader4').addClass('preloader');

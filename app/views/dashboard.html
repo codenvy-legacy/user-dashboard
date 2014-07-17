@@ -27,7 +27,7 @@
         <input type="button" class="searchfield "/>
       </div><!-- content title-->
       <div class="searchfull clearfix" style="display:none" >
-        <input type="button" class="closeBtn" style="display:none;" />
+        <input type="button" class="closeBtn" style="display:none;" ng-click="filter = ''" />
         <input type="text" ng-model="filter.name" class="searchfield " placeholder="Search for Projects"/>
       </div>
     </li>
@@ -79,8 +79,8 @@
         <div class="panel-body">{{project.description}}</div>
         <div class="panel-footer">
           <div class="row" ng-click="selectProject(project)">
-            <div class="col-md-4" data-toggle="modal" data-target="#privacyModal"><div class="row"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div>
-            </div>
+            <div class="col-md-4" data-toggle="modal" data-target="#privacyModal" ng-if="project.workspaceName==ownerWorkspace"><div class="row" ><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
+            <div class="col-md-4" ng-if="project.workspaceName!=ownerWorkspace"><div class="row" ><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
             <div class="col-md-4" data-toggle="modal" data-target="#developersModal"><div class="row"><i class="fa fa-fw fa-users"></i><small> Developers</small></div></div>
             <div class="col-md-4" data-toggle="modal" data-target="#projectDetailModal"><div class="row"><i class="fa fa-fw fa-cog"></i></div></div>
           </div><!-- .row -->
@@ -116,16 +116,16 @@
 
 <div class="projectlist" ng-if="!box">
   <table class="table table-hover">
-    <tr ng-repeat="project in projects| filter: filter | orderBy:param:reverse">
+    <tr ng-repeat="project in projects| filter: filter | orderBy:param:reverse" >
       <td class="col-md-1 image"><a href="{{project.ideUrl}}" target="_blank"><img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt=""></a></td>
       <td class="col-md-1">
         <h3 class="panel-title"><a href="{{project.ideUrl}}" target="_blank"><strong>{{project.name}}</strong></a></h3>
         <div class="mic-info">{{project.workspaceName}}</div>
       </td>
       <td class="col-md-6"><div class="comment-text">{{project.description}}</div></td>
-      <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#privacyModal"><div class="button"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></td>
-      <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#developersModal"><div class="button"><i class="fa fa-fw fa-users"></i><small> Developers</small></div></td>
-      <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><div class="button"><i class="fa fa-fw fa-cog"></i></div></td>
+      <td class="col-md-1 text-center" ><div ng-click="selectProject(project)" data-toggle="modal" data-target="#privacyModal" ng-if="project.workspaceName==ownerWorkspace"><div class="button"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div></td>
+      <td class="col-md-1 text-center" ><div ng-click="selectProject(project)" data-toggle="modal" data-target="#developersModal"><div class="button"><i class="fa fa-fw fa-users"></i><small> Developers</small></div></div></td>
+      <td class="col-md-1 text-center" ><div ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><div class="button"><i class="fa fa-fw fa-cog"></i></div></div></td>
     </tr><!-- panel-default -->
   </table><!-- row -->
 
@@ -168,7 +168,7 @@
         </div>
       </div><!-- .modal-body -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" ng-click="updateProject()" data-dismiss="modal">Ok</button>
+        <button type="button" class="btn btn-primary" ng-click="switchVisibility()" data-dismiss="modal">Ok</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
       </div>
     </div>
@@ -244,7 +244,7 @@
       <div class="modal-footer" style="margin-top:10px;padding:10px; background:#f0f0f0;">
         <button type="button" class="btn btn-primary" ng-click="updateProject()" data-dismiss="modal">Ok</button>
         <button type="button" class="btn btn-default" ng-click="cancelProject()" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-trash-o"></i></i> Delete Project</button>
+        <button type="button" class="btn btn-danger pull-left" ng-click="deleteProject()" data-dismiss="modal"><i class="fa fa-trash-o"></i></i> Delete Project</button>
       </div>
     </div>
   </div>

@@ -17,15 +17,14 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, $http, $window) {
-        
+    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, $http, $window) {
+        var old_description = '';
         $scope.box = 1;
         $scope.search = 0;
         $scope.projects = [];
-        
+        $scope.ownerWorkspace = '';
         Workspace.all(function (resp) {
             $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceRef.temporary; });
-
             angular.forEach($scope.workspaces, function (value) {
                 $http({method: 'GET', url: value.workspaceRef.workspaceLink.href}).
                     success(function (data, status) {
@@ -34,17 +33,19 @@ angular.module('odeskApp')
                                 $scope.projects = $scope.projects.concat(data1);
                             });
                     });
+				
             });
+        });
+        
+        Users.query().then(function (resp) {
+          $scope.ownerWorkspace = resp[0].name;
         });
         
         $scope.filter = {};
         
-        $scope.gotoProject = function () {
-            $window.open('/ide/' + $scope.workspaces[0].workspaceRef.name + '/new_project', '_blank');
-        };
-        
         $scope.selectProject = function (project) {
           $scope.selected = project;
+          old_description = project.description;
         };
         
         $scope.updateProject = function () {
@@ -53,9 +54,23 @@ angular.module('odeskApp')
                 console.log(data);
            });
         };
+
+        $scope.switchVisibility = function () {
+            $http({method: 'POST', url: '/api/project/'+$scope.selected.workspaceId+'/switch_visibility/'+$scope.selected.name+'?visibility='+$scope.selected.visibility}).
+                success(function (data, status) {
+                console.log(data);
+           });
+        };
+
+        $scope.deleteProject = function () {
+            $http({method: 'DELETE', url: $scope.selected.url}).
+              success(function (status) {
+                $scope.projects = _.without($scope.projects, _.findWhere($scope.projects,  $scope.selected));                
+              });
+        };
         
         $scope.cancelProject = function () {
-          //$scope.selected.description = selected.description;
+          $scope.selected.description = old_description;
         };
         
         $timeout(function () {
@@ -68,7 +83,10 @@ angular.module('odeskApp')
             $(document).on("click", ".closeBtn", function () {
                 $(".closeBtn").hide();
                 $('.detail').animate({ opacity: 1}, 400);
-                $('.searchfull').animate({width: "43px" }, 400, function () { $('.searchfull').hide(); });
+                $('.searchfull').animate({width: "43px" }, 400, function () { 
+                  $('.searchfield').val('');
+                  $('.searchfull').hide();
+                });
             });
         });
     });

@@ -128,8 +128,10 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 /* Special classes for accounts page*/
 .cerow { margin-bottom:5px; }
 .cetag { border-radius:0px; color:#54aee0; padding:5px 10px; font-weight:bold; background:#fafafa; }
-.celist .label { font-weight:normal; display:table; margin-bottom:10px; border-radius:0px; color:#a3a3a3; padding:5px 10px; background:#F0F0F0; }
-.celist .label > span { background:#a8a8a8; color:#ffffff; border-radius:10px; margin-left:15px; padding:3px; }
+.celist .label { font-weight:normal; line-height:28px; height:28px; display:block; float:left; margin-bottom:10px; margin-right:10px; color:#a3a3a3; padding:5px 5px 5px 10px ; background:#F0F0F0; }
+
+.celist .label > span.skill { float: left; line-height:1.5;}
+.celist .label > span.glyphicon-remove { float:right; background:#a8a8a8; color:#ffffff; border-radius:10px; margin-left:8px; margin-top: 0; padding:3px; cursor: pointer; }
 
 /* Stats page and general colors */
 .sparkline { display: inline-block; position: relative; }

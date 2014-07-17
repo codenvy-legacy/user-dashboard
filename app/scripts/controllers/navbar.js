@@ -27,7 +27,7 @@ angular.module('odeskApp')
                 'title': 'Projects',
                 'link': '#/dashboard'
             },
-            {
+/*            {
                 'title': 'Factories',
                 'link': '#/factories'
             },
@@ -35,7 +35,7 @@ angular.module('odeskApp')
                 'title': 'Stats',
                 'link': '#/stats'
             },
-            {
+*/            {
                 'title': 'Account',
                 'link': '#/account'
             }/*,
