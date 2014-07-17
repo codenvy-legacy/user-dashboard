@@ -25,23 +25,19 @@ angular.module('odeskApp')
 		var factoriesConcatUrl;
 		var factories;
 		
-		function replaceURL(originalURL){
-			return originalURL.replace('https://next.codenvy-stg.com', 'http://localhost:9000');
-		}
-        
+
         Workspace.all(function (resp) {
 			$scope.workspaces = resp;
         });
         
 		$scope.ChangeTimeSpan = function(selection){
 			$scope.TimeSpan = selection;
-			getFactoryStats()
+			getFactoryStats();
 		}
 		
 		function getFactoryInformation(){
 			$scope.factories.forEach(function (factory){
 				var _uri = '/api/factory/' + factory.id; 
-				
 				$http.get(_uri).success(function(data, status){
 					var _factory = _.find($scope.factories, function(fct){ if(fct.id == data.id) return fct; });
 					_factory.projectname = data.projectattributes.pname;
