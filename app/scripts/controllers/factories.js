@@ -103,6 +103,7 @@ angular.module('odeskApp')
 		function getFactories(){
 			$http.get('/api/analytics/metric/active_factories_set').success(function(data, status){
 				// Parse Comma Separated Values in data.value;
+				
 				factories = data.value.slice(1, -1).split(', ');
 
 				factoriesConcatUrl = 'factory=';
