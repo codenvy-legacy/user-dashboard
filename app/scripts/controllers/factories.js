@@ -22,7 +22,7 @@ angular.module('odeskApp')
         
         Workspace.all(function (resp) {
             angular.forEach(resp, function (value) {
-                $http({method: 'GET', url: value.workspaceRef.workspaceLink.href}).
+                $http({method: 'GET', url: value.workspaceReference.links.href}).
                     success(function (data, status) {
                         $http({method: 'GET', url: data.links[0].href}).
                             success(function (data1, status1) {
