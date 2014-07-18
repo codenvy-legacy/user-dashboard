@@ -24,7 +24,7 @@ angular.module('odeskApp')
         $scope.projects = [];
         $scope.ownerWorkspace = '';
         Workspace.all(function (resp) {
-            $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceRef.temporary; });
+            $scope.workspaces = _.filter(resp, function (workspace) {return !workspace.workspaceReference.temporary;});
             angular.forEach($scope.workspaces, function (value) {
                 $http({method: 'GET', url: value.workspaceRef.workspaceLink.href}).
                     success(function (data, status) {
