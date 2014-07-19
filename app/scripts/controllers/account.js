@@ -46,7 +46,7 @@ var allSkillIds = [];
 
 'use strict';
 angular.module('odeskApp')
-    .controller('AccountConfigCtrl', function ($scope, Profile, Password, addSkill, removeSkills, addUsage, Users, Account) {        
+    .controller('AccountConfigCtrl', function ($scope, $http, Profile, Password, addSkill, removeSkills, addUsage, Users, Account) {        
         /*Profile.query(function (resp) {
             $scope.attributes = resp.attributes;
         });*/
@@ -298,24 +298,22 @@ angular.module('odeskApp')
         ];
 		$scope.country = 'United States';
 		$scope.jobTitle = '';
-		
-/*		Users.query().then(function(data){
-			Account.query(data[0].id).then(function(datab){
-				if(datab==''){
-					$('#free').show();
-					$('#premium').hide();
-				}
-				var serviceId = datab[0].serviceId;
-				if(serviceId=='PremiumWorkspace' || serviceId=='TrackedFactory'){
-					$('#premium').show();
-					$('#free').hide();
-				} else {
-					$('#free').show();
-					$('#premium').hide();
-				}
-			});
-		});
-*/		
+
+    $http({method: 'GET', url: '/api/account'}).success(function (account, status) {
+      $http({method: 'GET', url: '/api/account/'+account[0].id+'/subscriptions'}).success(function (subscription, status) {
+        if( subscription == '' ) {
+          $scope.accountType = 'FREE';
+        } else {
+          subscriptionId = subscription[0].serviceId;
+          if( subscriptionId == 'PremiumWorkspace' || subscriptionId == 'TrackedFactory') {
+            $scope.accountType = 'PREMIUM';
+          } else {
+            $scope.accountType = 'FREE';
+          }
+        }
+      });
+   });
+
 		Profile.query().then(function (resp) {
 		
 			dataPreferences = resp.preferences;
