@@ -37,7 +37,7 @@ angular.module('odeskApp')
         Users.query().then(function (resp) {
           $scope.ownerWorkspace = resp[0].name;
         });
-        
+
         $scope.filter = {};
         
         $scope.selectProject = function (project) {
