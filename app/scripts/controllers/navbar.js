@@ -61,7 +61,7 @@ angular.module('odeskApp')
         $http({method: 'GET', url: '/api/profile'}).success(function (profile, status) {
           angular.forEach(profile.attributes, function(value, key){
             if( value.name == 'firstName' ) {
-              $scope.fullUserName = value.value;
+              $scope.fullUserName = value.value + ' ';
             }
             if( value.name == 'lastName' ) {
               $scope.fullUserName += value.value;
