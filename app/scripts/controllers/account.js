@@ -50,6 +50,7 @@ angular.module('odeskApp')
         /*Profile.query(function (resp) {
             $scope.attributes = resp.attributes;
         });*/
+
     $scope.userSkills = [];
 		$scope.countries = [
       { name: 'Afghanistan', code: 'AF' },
