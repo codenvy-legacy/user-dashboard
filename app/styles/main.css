@@ -158,7 +158,10 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .morris-hover.morris-default-style .morris-hover-row-label { margin:0; font-weight: normal;}
 .morris-hover.morris-default-style .morris-hover-point { margin:0; }
 
-
+#upadateProfileAlert .alert, 
+#changePasswordAlert .alert {
+  padding: 9px;  
+}
 /* Breadcrumb Search
 ----------------------------------------------*/
 .breadcrumb-wrap {
