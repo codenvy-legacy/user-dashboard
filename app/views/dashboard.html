@@ -56,6 +56,7 @@
         <span class="glyphicon white glyphicon-plus"></span> <br><strong>Create New Project <span class="caret"></span></strong>
       </button>
       <ul class="dropdown-menu" role="menu">
+        <li><span>Select Destination Workspace:</span></li>
         <li ng-repeat="workspace in workspaces"><a href="/ide/{{workspace.workspaceReference.name}}?action=newProject" target="_blank">{{workspace.workspaceReference.name}}</a></li>
       </ul>
     </div><!-- Box -->
@@ -63,9 +64,9 @@
   </div><!-- New Project -->
 
   <div class="col-md-10">
-    <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3 projectbox" style="width:300px">
+    <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3 projectbox">
       <div class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading" ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal">
           <div class="row">
             <div class="col-md-3"  style="width:54px"><a href="{{project.ideUrl}}" target="_blank">
               <img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt=""></a>
@@ -76,7 +77,8 @@
             </div>
           </div><!-- .row -->
         </div><!-- panel-heading -->
-        <div class="panel-body">{{project.description}}</div>
+        <div class="panel-body" ng-if="project.description != '' ">{{project.description}}</div>
+        <div class="panel-body" ng-if="project.description == '' ">Add a Description...</div>
         <div class="panel-footer">
           <div class="row" ng-click="selectProject(project)">
             <div class="col-md-4" data-toggle="modal" data-target="#privacyModal" ng-if="project.workspaceName==ownerWorkspace"><div class="row" ><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
@@ -142,6 +144,7 @@
         <span class="glyphicon white glyphicon-plus"></span><strong>Create New Project <span class="caret"></span></strong>
       </button>
       <ul class="dropdown-menu" role="menu">
+        <li><span>Select Destination Workspace:</span></li>
         <li ng-repeat="workspace in workspaces" ><a href="/ide/{{workspace.workspaceReference.name}}?action=newProject" target="_blank">{{workspace.workspaceReference.name}}</a></li>
       </ul>
     </div><!-- Box -->
@@ -238,7 +241,7 @@
            <div class="row">
               <div class="col-md-12 form-group">
                 <label>Project Description:</label>
-                  <textarea ng-model="selected.description" class="form-control"></textarea>
+                  <textarea ng-model="selected.description" class="form-control" placeholder="Add a Description..."></textarea>
             </div>
         </div>
           </div>
