@@ -66,8 +66,9 @@ module.exports = function (grunt) {
       },
      proxies: [{
        context: '/api', // the context of the data service
-       host: 'a3.codenvy-dev.com', // wherever the data service is running
-       port: 80, // the port that the data service is running on
+       host: 'codenvy-stg.com', // wherever the data service is running
+       port: 443, // the port that the data service is running on
+       https:true,
        changeOrigin: true,
        xforward: false
     }],
