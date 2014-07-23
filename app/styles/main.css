@@ -574,18 +574,6 @@ transform:rotate(360deg)
 .panel-heading {
   cursor: pointer;
 }
-/*.form-control:-moz-placeholder {
-  color: #cacaca;
-}
-.form-control::-moz-placeholder {
-  color: #cacaca;
-}
-.form-control:-ms-input-placeholder {
-  color: #cacaca;
-}
-.form-control::-webkit-input-placeholder {
-  color: #cacaca;
-}*/
 .projectbox .panel-title {
   height: 27px;
   overflow: hidden;
