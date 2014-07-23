@@ -66,19 +66,21 @@
   <div class="col-md-10">
     <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3 projectbox">
       <div class="panel panel-default">
-        <div class="panel-heading" ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal">
-          <div class="row">
-            <div class="col-md-3"  style="width:54px"><a href="{{project.ideUrl}}" target="_blank">
-              <img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt=""></a>
-            </div>
-            <div class="col-md-9">
-              <h3 class="panel-title"><a href="{{project.ideUrl}}" target="_blank"><strong>{{project.name}}</strong></a></h3>
-              <span>{{project.workspaceName}}</span>
-            </div>
-          </div><!-- .row -->
+        <div class="panel-heading">
+          <a href="{{project.ideUrl}}" target="_blank">
+            <div class="row">
+              <div class="col-md-3"  style="width:54px">
+                <img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt="">
+              </div>
+              <div class="col-md-9">
+                <h3 class="panel-title"><strong>{{project.name}}</strong></h3>
+                <span>{{project.workspaceName}}</span>
+              </div>
+            </div><!-- .row -->
+          </a>
         </div><!-- panel-heading -->
         <div class="panel-body" ng-if="project.description != '' ">{{project.description}}</div>
-        <div class="panel-body" ng-if="project.description == '' ">Add a Description...</div>
+        <div class="panel-body" ng-if="project.description == '' " ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal">Add a Description...</div>
         <div class="panel-footer">
           <div class="row" ng-click="selectProject(project)">
             <div class="col-md-4" data-toggle="modal" data-target="#privacyModal" ng-if="project.workspaceName==ownerWorkspace"><div class="row" ><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
@@ -233,7 +235,7 @@
                 <div class="row">
                         <div style="width:54px" class="col-md-3"><img width="44" height="44" alt="" class="bordered" ng-src="./images/{{selected.projectTypeId}}.png"></div>
                         <div class="col-md-3">
-                            <h3 class="panel-title">{{selected.name}}</h3>
+                            <h3 class="panel-title">{{selected.projectTypeName}}</h3>
                         </div>
                     </div>
              </div>

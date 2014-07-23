@@ -30,7 +30,6 @@ angular.module('odeskApp')
                     success(function (data, status) {
                         $scope.projects = $scope.projects.concat(data);
                     });
-				
             });
         });
         
@@ -69,6 +68,7 @@ angular.module('odeskApp')
         $scope.cancelProject = function () {
           $scope.selected.description = old_description;
         };
+        
         
         $timeout(function () {
             $("[rel=tooltip]").tooltip({ placement: 'bottom'});
