@@ -69,7 +69,6 @@ angular.module('odeskApp')
           $scope.selected.description = old_description;
         };
         
-        
         $timeout(function () {
             $("[rel=tooltip]").tooltip({ placement: 'bottom'});
             $(document).on("click", ".searchfield", function () {

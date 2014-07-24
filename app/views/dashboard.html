@@ -235,7 +235,8 @@
                 <div class="row">
                         <div style="width:54px" class="col-md-3"><img width="44" height="44" alt="" class="bordered" ng-src="./images/{{selected.projectTypeId}}.png"></div>
                         <div class="col-md-9">
-                            <h3 class="panel-title">{{selected.projectTypeName}}</h3>
+                            <h3 ng-if="selected.projectTypeName == 'nameless' " class="panel-title">Blank Project</h3>
+                            <h3 ng-if="selected.projectTypeName != 'nameless' " class="panel-title">{{selected.projectTypeName}}</h3>
                         </div>
                     </div>
              </div>
