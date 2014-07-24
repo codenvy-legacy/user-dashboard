@@ -80,7 +80,7 @@
           </a>
         </div><!-- panel-heading -->
         <div class="panel-body" ng-if="project.description != '' ">{{project.description}}</div>
-        <div class="panel-body" ng-if="project.description == '' " ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal">Add a Description...</div>
+        <div class="panel-body empty" ng-if="project.description == '' " ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><a href="">Add description...</a></div>
         <div class="panel-footer">
           <div class="row" ng-click="selectProject(project)">
             <div class="col-md-4" data-toggle="modal" data-target="#privacyModal" ng-if="project.workspaceName==ownerWorkspace"><div class="row" ><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
@@ -234,7 +234,7 @@
                 <label>Project Technology:</label>
                 <div class="row">
                         <div style="width:54px" class="col-md-3"><img width="44" height="44" alt="" class="bordered" ng-src="./images/{{selected.projectTypeId}}.png"></div>
-                        <div class="col-md-3">
+                        <div class="col-md-9">
                             <h3 class="panel-title">{{selected.projectTypeName}}</h3>
                         </div>
                     </div>

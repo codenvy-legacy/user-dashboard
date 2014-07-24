@@ -575,7 +575,7 @@ transform:rotate(360deg)
   cursor: pointer;
 }
 .projectbox .panel-title {
-  height: 27px;
+  max-height: 27px;
   overflow: hidden;
 }
 .form-control {
@@ -586,6 +586,12 @@ transform:rotate(360deg)
 }
 .project-box .projectbox {
   height: 190px;
+}
+.projectbox .empty {
+  cursor: pointer;
+}
+.projectbox .empty a{
+  color: #3c3c3c;
 }
 
 /* LOADER
