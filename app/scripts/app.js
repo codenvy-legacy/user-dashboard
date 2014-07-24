@@ -121,6 +121,10 @@ angular.module('odeskApp', [
             templateUrl: BASE_URL + 'views/subscriptions.html',
             controller: 'SubscriptionsCtrl'
         })
+        .when('/subscriptions/:id', {
+            templateUrl: BASE_URL + 'views/subscriptiondetails.html',
+            controller: 'SubscriptionDetailsCtrl'
+        })
         .otherwise({
             redirectTo: DEFAULT
         });

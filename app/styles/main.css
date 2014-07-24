@@ -55,7 +55,9 @@ th h4 { font-weight:normal; }
 .stat { font-size:24px;}
 
 /* Dashboard breadcrumb */
-.projectnav { padding:0 1px; }
+.projectnav {
+  padding: 0 0 0 1px;
+}
 .projectnav > li { 
   padding: 0 20px;
   border-right:1px solid #dcdcdc;
@@ -64,11 +66,13 @@ th h4 { font-weight:normal; }
 }
 .breadcrumb > li.search1{
   padding: 0;
+  border-right: 0;
 }
 .panel-title  { font-size:12px; color:#3c3c3c; margin:5px 0px; }
 .bordered { border:1px solid #bcbcbc; background: #FFFFFF; padding:2px}
 .projectbox .panel:hover  { box-shadow: 0px 7px 5px 0px rgba(0, 0, 0, 0.2); }
-.projectbox .panel-default > .panel-heading { color:#787878; background:#ebebeb; height:54px; padding:5px; font-size: 11px; }
+.projectbox .panel-default > .panel-heading { padding: 0; }
+.projectbox .panel-default > .panel-heading a{ color:#787878; background:#ebebeb; min-height:54px; padding:5px; font-size: 11px; display: block; padding: 5px 6px 5px 5px;}
 .projectbox .panel-footer { background: #fafafa; padding-top:0px; padding-bottom:0px; height:23px; }
 .projectbox .panel-footer .row > div { padding-top: 3px; padding-bottom: 4px; text-align:center; color:#363636; cursor: pointer; }
 .projectbox .panel-footer .row > div:hover { background:#eaeaea; }
@@ -118,6 +122,15 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .factorylist img { margin:5px 0; }
 
 /* breadcrumb for account */
+.marketing-box.panel-footer {
+  padding:0;  
+}
+.marketing-box a {
+  text-align:center;
+  padding:12px;
+  display: block;
+  color: #363636;   
+}
 .boxnav      { padding: 7px 0; }
 .boxnav > li { margin: 0 10px; padding: 2px; }
 .boxnav > li > a { color:#414141; padding: 5px; }
@@ -149,7 +162,10 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .morris-hover.morris-default-style .morris-hover-row-label { margin:0; font-weight: normal;}
 .morris-hover.morris-default-style .morris-hover-point { margin:0; }
 
-
+#upadateProfileAlert .alert, 
+#changePasswordAlert .alert {
+  padding: 9px;  
+}
 /* Breadcrumb Search
 ----------------------------------------------*/
 .breadcrumb-wrap {
@@ -466,11 +482,10 @@ transform:rotate(360deg)
 }
 .new-project {
   width: 200px;
-  cursor: pointer;
+  text-align: center;  
 }
 .project-box .new-project{
   width: 200px;
-  text-align: center;
 }
 .new-project .box button,
 .new-project .box a{
@@ -548,6 +563,29 @@ transform:rotate(360deg)
 .table > tfoot > tr > td {
   border: 0;
   border-bottom: 1px solid #dcdcdc;
+}
+.new-project .dropdown-menu li:first-child span{
+  font-size: 9px;
+  color: #9a9a9a;
+}
+.new-project .dropdown-menu a{
+  text-align: center;
+}
+.panel-heading {
+  cursor: pointer;
+}
+.projectbox .panel-title {
+  height: 27px;
+  overflow: hidden;
+}
+.form-control {
+  color: #3c3c3c;
+}
+.panel-title {
+  word-wrap: break-word;
+}
+.project-box .projectbox {
+  height: 190px;
 }
 
 /* LOADER
@@ -638,3 +676,4 @@ transform:rotate(360deg)
     -moz-transform:rotate(-360deg)
   }
 }
+

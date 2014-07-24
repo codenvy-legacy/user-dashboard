@@ -17,7 +17,8 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('NavbarCtrl', function ($scope, $location, $http, $cookies, $window, Profile) {
+    .controller('NavbarCtrl', function ($scope, $location, $http, $cookies, $window) {
+      
         $scope.menu = [
             /*{
             //    'title': 'Admin',
@@ -27,7 +28,7 @@ angular.module('odeskApp')
                 'title': 'Projects',
                 'link': '#/dashboard'
             },
-/*            {
+            {
                 'title': 'Factories',
                 'link': '#/factories'
             },
@@ -35,7 +36,7 @@ angular.module('odeskApp')
                 'title': 'Stats',
                 'link': '#/stats'
             },
-*/            {
+            {
                 'title': 'Account',
                 'link': '#/account'
             },
@@ -62,8 +63,15 @@ angular.module('odeskApp')
             }
         };
         
-        Profile.query(function(resp){
-            $scope.fullname = resp.attributes[0].value + " " +resp.attributes[1].value;
+        $http({method: 'GET', url: '/api/profile'}).success(function (profile, status) {
+          angular.forEach(profile.attributes, function(value, key){
+            if( value.name == 'firstName' ) {
+              $scope.fullUserName = value.value + ' ';
+            }
+            if( value.name == 'lastName' ) {
+              $scope.fullUserName += value.value;
+            }
+          });
         });
         
         $scope.logout = function () {
