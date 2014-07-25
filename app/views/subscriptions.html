@@ -28,7 +28,7 @@
                 <tbody>
                     <tr ng-repeat="subscription in subscriptions| filter: filter | orderBy:param:reverse">
                         <td>&nbsp;</td>
-                        <td class="text-center"><a href="#/subscriptiondetails.html">{{subscription.id}}</a></td>
+                        <td class="text-center"><a ng-href="#/subscriptions/{{subscription.id}}">{{subscription.id}}</a></td>
                         <td  class="text-center">{{subscription.startDate | date: 'dd/MM/yy'}}</td>
                         <td class="text-center">{{subscription.endDate  | date: 'dd/MM/yy'}}</td>
                         <td>&nbsp;</td>
