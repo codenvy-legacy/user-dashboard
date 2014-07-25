@@ -24,19 +24,23 @@ angular.module('odeskApp')
         $scope.projects = [];
         $scope.ownerWorkspace = '';
         Workspace.all(function (resp) {
-            $scope.workspaces = _.filter(resp, function (workspace) {return !workspace.workspaceReference.temporary;});
+            $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceRef.temporary; });
             angular.forEach($scope.workspaces, function (value) {
-                $http({method: 'GET', url: $.map(value.workspaceReference.links,function(obj){if(obj.rel=="get projects") return obj.href})[0]}).
+                $http({method: 'GET', url: value.workspaceRef.workspaceLink.href}).
                     success(function (data, status) {
-                        $scope.projects = $scope.projects.concat(data);
+                        $http({method: 'GET', url: data.links[0].href}).
+                            success(function (data1, status1) {
+                                $scope.projects = $scope.projects.concat(data1);
+                            });
                     });
+				
             });
         });
         
         Users.query().then(function (resp) {
           $scope.ownerWorkspace = resp[0].name;
         });
-
+        
         $scope.filter = {};
         
         $scope.selectProject = function (project) {
@@ -68,7 +72,6 @@ angular.module('odeskApp')
         $scope.cancelProject = function () {
           $scope.selected.description = old_description;
         };
-        
         
         $timeout(function () {
             $("[rel=tooltip]").tooltip({ placement: 'bottom'});

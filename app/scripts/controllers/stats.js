@@ -18,7 +18,6 @@
 
 angular.module('odeskApp')
     .controller('StatsCtrl', function ($scope, $http) {
-      
         var Data = [{x: '2012-11-16', y: 2, z: 6},
                                 {x: '2012-11-18', y: 2, z: 4},
                                 {x: '2012-11-20', y: 3, z: 3},

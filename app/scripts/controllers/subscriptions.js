@@ -18,10 +18,12 @@
 angular.module('odeskApp')
     .controller('SubscriptionsCtrl', function ($scope, $timeout, $http, Account,Users) {
         $scope.subscriptions = [];
+
         var accountId;
         Users.query().then(function(data){
             Account.query(data[0].id).then(function(datab){
                 accountId = datab[0].accountId;
+                console.log(accountId);
                 $http.get('/api/account/'+accountId+'/subscriptions').success(function(data, status){
                     $scope.subscriptions = $scope.subscriptions.concat(data);
                 });
