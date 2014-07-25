@@ -22,6 +22,7 @@ angular.module('odeskApp')
             query: {method: 'GET', params: {}, isArray: false}
         });
     }]);
+
 	
 angular.module('odeskApp')	
 	.factory('Profile', function ($http, $q) {

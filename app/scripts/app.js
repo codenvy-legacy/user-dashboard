@@ -31,8 +31,16 @@ angular.module('odeskApp', [
     request: function(config) {
       //remove prefix url
       if (config.url.indexOf("http://a3.codenvy-dev.com/api") == 0) {
-        config.url = config.url.substring("http://a3.codenvy-dev.com".length);
+         config.url = config.url.substring("http://a3.codenvy-dev.com".length);
       }
+      
+      //Uncomment to use accross condevy-stg (and comment before)
+      /*
+      if (config.url.indexOf("https://codenvy-stg.com/api") == 0) {
+        config.url = config.url.substring("https://codenvy-stg.com/api".length);
+      }
+      */
+
 
       //Do not add token on auth login
       if (config.url.indexOf("/api/auth/login") == -1 && $cookies.token) {
@@ -112,6 +120,14 @@ angular.module('odeskApp', [
         .when('/login', {
             templateUrl: BASE_URL + 'views/login.html',
             controller: 'LoginCtrl'
+        })
+        .when('/subscriptions', {
+            templateUrl: BASE_URL + 'views/subscriptions.html',
+            controller: 'SubscriptionsCtrl'
+        })
+        .when('/subscriptions/:id', {
+            templateUrl: BASE_URL + 'views/subscriptiondetails.html',
+            controller: 'SubscriptionDetailsCtrl'
         })
         .otherwise({
             redirectTo: DEFAULT

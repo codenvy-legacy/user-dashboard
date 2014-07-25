@@ -39,7 +39,12 @@ angular.module('odeskApp')
             {
                 'title': 'Account',
                 'link': '#/account'
-            }/*,
+            },
+            {
+                'title': 'Subscriptions',
+                'link': '#/subscriptions'
+            }
+            /*,
             {
                 'title': 'Organizations',
                 'link': '#/organizations'
