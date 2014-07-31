@@ -30,7 +30,7 @@ h4    { color: #363636; font-size: 10px; font-weight: bold; text-transform: uppe
 .search.ng-hide { width:0%; }
 .search.ng-hide-remove { -webkit-transition:0.3s ease-in all; transition:0.3s ease-in all; display:block!important; }
 
-.breadcrumb { height:36px; border-bottom:1px solid #dcdcdc;/* position: fixed;*/ width: 100%; z-index: 999; margin-bottom: 0;}
+.breadcrumb { min-height:36px; border-bottom:1px solid #dcdcdc;/* position: fixed;*/ width: 100%; z-index: 999; margin-bottom: 0;}
 .breadcrumb > li + li:before { content: none; } 
 .breadcrumb li a { color: #177eb7;}
 
@@ -114,6 +114,9 @@ th h4 { font-weight:normal; }
 }
 .projectlist .table-hover > tbody > tr:hover > td{
   background-color: #e6e6e6;
+}
+.projectlist .panel-title{
+  width: 120px;
 }
 img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .createprjbox { padding:0 15px;background:#404040;left:15px;min-width:285px;max-width:700px; }
@@ -235,32 +238,28 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 }
 
 
-/*-------------- loader css--------------*/
-
+/* LOADER CSS
+-----------------------------*/
 .btn-disabled{
 	background: #3F8CB8 !important;
 	text-indent: -9999px;	
 	color: #EEEEEE;
 }
-
 .preloader{
 	display: block !important;
     	left: 39%;
 	position: absolute;
 	top: 8px;
 }
-
 .preloader img{
 	width: 18px;
 }
-
 #bowlG {
 	position: relative;
 	width: 18px;
 	height: 18px;
 	top: -1px;
 }
-
 #bowl_ringG {
 	position: absolute;
 	width: 20px;
@@ -272,7 +271,6 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 	-o-border-radius: 20px;
 	border-radius: 20px;
 }
-
 .ball_holderG {
 	position: absolute;
 	width: 5px;
@@ -300,7 +298,6 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 	animation-iteration-count: infinite;
 	animation-timing-function: linear;
 }
-
 .ballG {
 	position: absolute;
 	left: 0px;
@@ -481,11 +478,8 @@ transform:rotate(360deg)
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 .new-project {
-  width: 200px;
-  text-align: center;  
-}
-.project-box .new-project{
-  width: 200px;
+  margin-bottom: 30px;
+  text-align: center;
 }
 .new-project .box button,
 .new-project .box a{
@@ -594,6 +588,76 @@ transform:rotate(360deg)
   color: #3c3c3c;
 }
 
+/* Developer Modal.
+----------------------------------------------*/
+#developersModal .table {
+  margin-bottom: 0;
+}
+#developersModal .table > thead > tr > th {
+  margin-bottom: 10px;
+  border: 0 none;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: #fff;
+}
+#developersModal .table > tbody > tr > td {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  border: 0 none;
+  color: #3f3f3f;
+}
+#developersModal .table > thead th p{
+  margin: 0;
+  color: #aeaeae;
+  font-weight: normal;
+}
+#developersModal .table a{
+  display: block;
+  color: #a6a6a6;
+  font-size: 18px;
+}
+#developersModal .table a:hover {
+  text-decoration: none;
+}
+#developersModal .table td.last{
+  width: 50px;
+}
+#developersModal .table a i {
+  display: none;
+}
+#developersModal .table tbody tr:hover td a i{
+  display: block;
+}
+#developersModal .table thead tr strong{
+  display: block;
+}
+#developersModal .permission {
+  margin-bottom: 10px;
+  height: 185px;
+  overflow-y: scroll;
+  border: 1px solid #e5e5e5;
+}
+#developersModal .invitation p{
+  color: #c6c6c6;
+  margin-bottom: 0;
+}
+#developersModal .invitation strong {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+#developersModal .form-group{
+  width: 100%;
+  margin-bottom: 10px;
+}
+#developersModal .form-control{
+  width: 80%;
+  margin-right:3%;
+}
+
 /* LOADER
 --------------------------------*/
 #loading-bar-spinner {
@@ -683,3 +747,12 @@ transform:rotate(360deg)
   }
 }
 
+@media screen and (max-width : 767px) {
+  .navbar {
+    min-height: 50px;
+  }
+  .project-box,
+  .projectlist {
+    padding-top: 95px;
+  }
+}

@@ -1,5 +1,5 @@
 <div class="breadcrumb-wrap">
-  <ul class="breadcrumb projectnav breadcrumb">
+  <ul class="breadcrumb projectnav breadcrumb clearfix">
     <li> You have access to {{(projects.length == 0) ? '-' : projects.length}} projects in {{workspaces.length}} workspaces</li>
     <li class="dropdown user-dropdown"> SORT BY:
       <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-up garrow"></i> Name</a>
@@ -11,7 +11,7 @@
       </ul>
     </li>
     <li class="dropdown user-dropdown"> WORKSPACE:
-      <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down garrow"></i> {{filter.workspace||'All'}}</a>
+      <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down garrow"></i> {{filter.workspaceName || 'All'}}</a>
       <ul class="dropdown-menu">
         <li><a href="" ng-click="filter.workspaceName=''">All</a></li>
         <li ng-repeat="workspace in workspaces" ng-click="filter.workspaceName=workspace.workspaceReference.name"><a href="">{{workspace.workspaceReference.name}}</a></li>
@@ -64,15 +64,15 @@
   </div><!-- New Project -->
 
   <div class="col-md-10">
-    <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-md-3 projectbox">
+    <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
       <div class="panel panel-default">
         <div class="panel-heading">
           <a href="{{project.ideUrl}}" target="_blank">
             <div class="row">
-              <div class="col-md-3"  style="width:54px">
+              <div class="col-md-3 col-sm-3 col-xs-3"  style="width:54px">
                 <img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt="">
               </div>
-              <div class="col-md-9">
+              <div class="col-md-9 col-sm-9 col-xs-9">
                 <h3 class="panel-title"><strong>{{project.name}}</strong></h3>
                 <span>{{project.workspaceName}}</span>
               </div>
@@ -83,10 +83,10 @@
         <div class="panel-body empty" ng-if="project.description == '' " ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><a href="">Add description...</a></div>
         <div class="panel-footer">
           <div class="row" ng-click="selectProject(project)">
-            <div class="col-md-4" data-toggle="modal" data-target="#privacyModal" ng-if="project.workspaceName==ownerWorkspace"><div class="row" ><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
-            <div class="col-md-4" data-toggle="modal" data-target="#privacyMessageModal" ng-if="project.workspaceName!=ownerWorkspace"><div class="row" ><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
-            <div class="col-md-4" data-toggle="modal" data-target="#developersModal"><div class="row"><i class="fa fa-fw fa-users"></i><small> Developers</small></div></div>
-            <div class="col-md-4" data-toggle="modal" data-target="#projectDetailModal"><div class="row"><i class="fa fa-fw fa-cog"></i></div></div>
+            <div class="col-md-4 col-sm-4 col-xs-4" data-toggle="modal" data-target="#privacyModal" ng-if="project.workspaceName==ownerWorkspace"><div class="row" ><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
+            <div class="col-md-4 col-sm-4 col-xs-4" data-toggle="modal" data-target="#privacyMessageModal" ng-if="project.workspaceName!=ownerWorkspace"><div class="row" ><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
+            <div class="col-md-4 col-sm-4 col-xs-4" data-toggle="modal" data-target="#developersModal"><div class="row"><i class="fa fa-fw fa-users"></i><small> Developers</small></div></div>
+            <div class="col-md-4 col-sm-4 col-xs-4" data-toggle="modal" data-target="#projectDetailModal"><div class="row"><i class="fa fa-fw fa-cog"></i></div></div>
           </div><!-- .row -->
         </div><!-- panel-footer -->
       </div><!-- panel-default -->
@@ -122,7 +122,7 @@
   <table class="table table-hover">
     <tr ng-repeat="project in projects| filter: filter | orderBy:param:reverse" >
       <td class="col-md-1 image"><a href="{{project.ideUrl}}" target="_blank"><img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt=""></a></td>
-      <td class="col-md-1">
+      <td class="col-md-1 project-name">
         <h3 class="panel-title"><a href="{{project.ideUrl}}" target="_blank"><strong>{{project.name}}</strong></a></h3>
         <div class="mic-info">{{project.workspaceName}}</div>
       </td>
@@ -190,24 +190,61 @@
         <h4 class="modal-title" id="developersModalLabel">Manage Project &amp; Developers</h4>
       </div>
       <div class="modal-body">
-          <h4>User Permissions</h4>
-          <div class="row">
-              
+        <form>
+          <div class="permission">
+            <table class="table borderless">
+              <thead>
+                <tr>
+                  <th>
+                    <strong>Developers Permissions:</strong>
+                    <p>List of Workspace's developers</p>
+                  </th>
+                  <th>Read</th>
+                  <th>Write</th>
+                  <th>&nbsp;</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>Tyler Jewel (tyler@codeenvy.com)</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td class="last"><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                </tr>
+                <tr>
+                  <td>Sergey Kabashryuk (sergey@codeenvy.com)</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td class="last"><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                </tr>
+                <tr>
+                  <td>Gebbady Azarenkov(gennady@codeenvy.com)</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td class="last"><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                </tr>
+                <tr>
+                  <td>Eric Cavazos(eric@codeenvy.com)</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td class="last"><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <h4>Invite Other users</h4>
-           <div class="row">
-               <div class="col-md-12 form-group">
-                   </div>
-               <div class="col-md-7 form-group">
-                <input type="text" autofocus required="" placeholder="Intuit" name="name" id="name" class="form-control">
-                </div>
-               <div class="col-md-5 form-group">
-                   Read <input type="checkbox" style="vertical-align: middle;margin:0;"> 
-                   Write <input type="checkbox" style="vertical-align: middle;margin:0;"> 
-                   <button type="button" class="btn btn-success pull-right">Invite</button>
-                </div>
+        </form>
+        <div class="invitation">
+          <strong>Invite other Developers</strong>
+          <form class="form-inline">
+            <div class="form-group clearfix">
+              <input type="email" class="form-control pull-left" placeholder="Type email addresses seperated by commas">
+              <input type="submit" class="btn btn-success pull-right" value="Invite">
+            </div>
+          </form>
+          <p>These developers will be added to the workspace and be granted permissions accross all projects of the workspace.</p>
         </div>
-          </div>
+      </div>
       <div class="modal-footer" style="margin-top:10px;padding:10px; background:#f0f0f0;">
         <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
