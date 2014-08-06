@@ -21,7 +21,7 @@
                         <th class="col-md-2 text-center"><h4>NAME</h4></th>
                         <th class="col-md-4 text-center"><h4>ACTIVATION DATE</h4></th>
                         <th class="col-md-1 text-center"><h4>EXPIRATION DATE</h4></th>
-                        <th class="text-center" style="width:200px"><h4>ACTIONS</h4></th>
+                        <th class="text-center" style="width:350px"><h4>ACTIONS</h4></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -31,7 +31,7 @@
                         <td class="text-center"><a ng-href="#/subscriptions/{{subscription.id}}">{{subscription.id}}</a></td>
                         <td  class="text-center">{{subscription.startDate | date: 'dd/MM/yy'}}</td>
                         <td class="text-center">{{subscription.endDate  | date: 'dd/MM/yy'}}</td>
-                        <td>&nbsp;</td>
+                        <td>&nbsp;<input type="button" class="btn btn-primary" ng-if="((subscription.endDate | date: 'dd/MM/yy').length > 0) && ((subscription.startDate | date: 'dd/MM/yy').length > 0)" value="Renew" />&nbsp;<input type="button" class="btn btn-primary" ng-if="((subscription.endDate | date: 'dd/MM/yy').length > 0) && ((subscription.startDate | date: 'dd/MM/yy').length > 0)" value="Upgrade" />&nbsp;<input type="button" class="btn btn-primary" ng-if="((subscription.endDate | date: 'dd/MM/yy').length > 0) && ((subscription.startDate | date: 'dd/MM/yy').length > 0)" value="Cancel" /></td>
                         <td>&nbsp;</td>
                     </tr>
                 </tbody>

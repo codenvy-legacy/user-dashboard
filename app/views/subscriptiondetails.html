@@ -1,0 +1,68 @@
+<div class="col-md-12">
+    <div class="row">
+<ul class="breadcrumb projectnav" style="margin-bottom:0px;border-top:1px solid #dcdcdc; border-bottom:none;">
+            <li>All Subscriptions</li>
+</ul>
+    </div>
+</div>
+<div class="container mainDivContainer">
+  <div class="col-md-6">
+    <div class="panel panel-default panel-ce">
+      <div class="panel-body">
+        <h4 class="text-center">SUBSCRIPTIONS DETAILS</h4>
+        <div class="row">
+          <div class="col-md-12">
+      	    <div class="col-md-6 form-group">
+              <label for="workspaceid">Name: </label>
+              <label for="workspaceid">{{subscription.id}}</label>
+            </div>
+      	    <div class="col-md-6 form-group">
+              <label for="workspaceid">Your subscription started on: {{subscription.startDate | date: 'MMM dd, yyyy'}}</label>
+            </div>
+      	    <div class="col-md-6 form-group">
+              <label for="workspaceid">Your subscription expired on: {{subscription.endDate | date: 'MMM dd, yyyy'}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default panel-ce">
+      <div class="panel-body">
+        <h4 class="text-center">RENEWAL INFORMATIONS</h4>
+        <div class="row">
+          <div class="col-md-12">
+          	<div class="col-md-6 form-group">
+              <label for="workspaceid">Automatic Renewal: </label>
+            </div>
+      	    <div class="col-md-6 form-group">
+              <label for="workspaceid">Subscription Renewal on: </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default panel-ce">
+      <div class="panel-body">
+        <h4 class="text-center">INVOICES</h4>
+        <div class="row">
+          <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-8">January 1, 2013</div>
+                    <div class="col-md-2"><a href="">HTML</a></div>
+                    <div class="col-md-2"><a href="">PDF</a></div>
+                </div>
+          </div>
+        </div>
+      </div>
+    </div>    
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default panel-ce">
+      <div class="panel-body">
+        <h4 class="text-center" >BILLING INFORMATIONS</h4>
+      </div>
+    </div>
+
+
+  </div>
+</div>
