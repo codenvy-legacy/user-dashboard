@@ -29,4 +29,11 @@ angular.module('odeskApp')
                 });
             });
         });
+
+        $scope.deleteSubscription = function () {
+            $http({method: 'DELETE', url: $scope.selected.url}).
+              success(function (status) {
+                $scope.subscriptions = _.without($scope.subscriptions, _.findWhere($scope.subscriptions,  $scope.selected));                
+              });
+        };
     });
