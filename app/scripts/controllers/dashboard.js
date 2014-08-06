@@ -32,11 +32,11 @@ angular.module('odeskApp')
                     });
             });
         });
-        
-        Users.query().then(function (resp) {
-          $scope.ownerWorkspace = resp[0].name;
-        });
 
+        $http({method: 'GET', url: '/api/account'}).success(function (account, status) {
+          $scope.ownerWorkspace = _.pluck(_.pluck(account, 'accountReference'), 'name');
+        });
+        
         $scope.filter = {};
         
         $scope.selectProject = function (project) {
@@ -75,6 +75,7 @@ angular.module('odeskApp')
                 $('.searchfull').show();
                 $('.detail').animate({ opacity: 0}, 400);
                 $('.searchfull').animate({width: "100%" }, 400, function () { $(".closeBtn").show(); });
+                $('.searchfield').focus();
             });
             $(document).on("click", ".closeBtn", function () {
                 $(".closeBtn").hide();
