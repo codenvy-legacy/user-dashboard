@@ -189,14 +189,28 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   background-color: #fff;
   position: relative;
 }
-.breadcrumb .new-project button {
+.breadcrumb .new-project button,
+.breadcrumb .new-project a.button {
+  color: #3B7ABA;
   padding: 0 20px;
+  display: inline-block;
 }
 .breadcrumb .new-project .dropdown-menu{
+  top: 37px;
   right: auto;
-  left: 0;
-  width:100%;
+  left: -2px;
+  width: 170px;
   background-color: #fff;
+}
+.breadcrumb .new-project button {
+  transition: all .2s ease-in-out;
+}
+.breadcrumb .new-project .open button {
+  border-radius: 0;
+  background-color: #E3E3E3;
+}
+.breadcrumb .new-project .open strong {
+  text-decoration: underline;
 }
 .breadcrumb-wrap {
   position: fixed;
