@@ -71,10 +71,12 @@ module.exports = function (grunt) {
        port: 80, // the port that the data service is running on
        //Use to test accross codenvy-stg
        
-       //host: 'codenvy-stg.com', // wherever the data service is running
-       //port: 443, // the port that the data service is running on
-       //https:true,
-       
+       /*
+       host: 'codenvy-stg.com', // wherever the data service is running
+       port: 443, // the port that the data service is running on
+       https:true,
+       */
+
        changeOrigin: true,
        xforward: false
     }],
