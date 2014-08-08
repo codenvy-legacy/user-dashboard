@@ -30,9 +30,11 @@ angular.module('odeskApp', [
   return {
     request: function(config) {
       //remove prefix url
+      
       if (config.url.indexOf("http://a3.codenvy-dev.com/api") == 0) {
          config.url = config.url.substring("http://a3.codenvy-dev.com".length);
       }
+      
       
       //Uncomment to use accross condevy-stg (and comment before)
       /*
@@ -121,12 +123,12 @@ angular.module('odeskApp', [
             templateUrl: BASE_URL + 'views/login.html',
             controller: 'LoginCtrl'
         })
-        .when('/subscriptions', {
-            templateUrl: BASE_URL + 'views/subscriptions.html',
+        .when('/account/subscriptions', {
+            templateUrl: BASE_URL + 'views/account/subscriptions.html',
             controller: 'SubscriptionsCtrl'
         })
-        .when('/subscriptions/:id', {
-            templateUrl: BASE_URL + 'views/subscriptiondetails.html',
+        .when('/account/subscriptions/:id', {
+            templateUrl: BASE_URL + 'views/account/subscriptiondetails.html',
             controller: 'SubscriptionDetailsCtrl'
         })
         .otherwise({
