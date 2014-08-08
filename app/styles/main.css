@@ -169,8 +169,35 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 #changePasswordAlert .alert {
   padding: 9px;  
 }
+.form-control::-webkit-input-placeholder {
+  color: #cecece;
+}
+.form-control:-moz-placeholder { /* Firefox 18- */
+  color: #cecece;  
+}
+.form-control::-moz-placeholder {  /* Firefox 19+ */
+  color: #cecece;  
+}
+.form-control:-ms-input-placeholder {  
+  color: #cecece;  
+}
 /* Breadcrumb Search
 ----------------------------------------------*/
+.breadcrumb .new-project {
+  padding: 0;
+  margin: 0;
+  background-color: #fff;
+  position: relative;
+}
+.breadcrumb .new-project button {
+  padding: 0 20px;
+}
+.breadcrumb .new-project .dropdown-menu{
+  right: auto;
+  left: 0;
+  width:100%;
+  background-color: #fff;
+}
 .breadcrumb-wrap {
   position: fixed;
   top: 46px;
@@ -495,8 +522,13 @@ transform:rotate(360deg)
   border: none;
 }
 .new-project .dropdown-menu{
-  right: 16px;
-  min-width: 170px;
+  min-width: 70px;
+}
+.new-project .box {
+  position: relative;
+}
+.new-project .box .dropdown-menu {
+  width: 100%;
 }
 .new-project .box-two .dropdown-menu{
   min-width: 184px;
