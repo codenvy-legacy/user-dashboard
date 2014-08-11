@@ -32,12 +32,12 @@
                 <li><a>{{fullUserName}}</a></li>
                 <li>
                   <ul class="breadcrumb projectnav" style="margin-bottom:0px;border-top:1px solid #dcdcdc; border-bottom:none;">
-            <li class="dropdown user-dropdown">
+            <li  class="dropdown user-dropdown">
               <a href="" class="dropdown-toggle" data-toggle="dropdown">Cddenvy Help</a>
-              <ul class="dropdown-menu">
-                <li><a href="" ng-click="reverse = true; param = 'name'">Forum</a></li>
-                <li><a href="" ng-click="reverse = false; param = 'endDate'">Feedback/Feature Video</a></li>
-                <li><a href="" ng-click="reverse = true; param = 'endDate'">Create Support Tickets</a></li>
+              <ul class="navbar-header dropdown-menu ">
+                <li ng-repeat="helpItem in helpMenu">
+                            <a ng-href="{{helpItem.link}}">{{helpItem.title}}</a>
+                      </li>
               </ul>
             </li>
               </ul>
