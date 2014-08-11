@@ -30,17 +30,12 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><img height="24" style="margin:11px;padding:0px;" src="./images/user.png"/></li>
                 <li><a>{{fullUserName}}</a></li>
-                <li>
-                  <ul class="breadcrumb projectnav" style="margin-bottom:0px;border-top:1px solid #dcdcdc; border-bottom:none;">
-            <li class="dropdown user-dropdown">
-              <a href="" class="dropdown-toggle" data-toggle="dropdown">Cddenvy Help</a>
-              <ul class="dropdown-menu">
-                <li><a href="" ng-click="reverse = true; param = 'name'">Forum</a></li>
-                <li><a href="" ng-click="reverse = false; param = 'endDate'">Feedback/Feature Video</a></li>
-                <li><a href="" ng-click="reverse = true; param = 'endDate'">Create Support Tickets</a></li>
-              </ul>
-            </li>
-              </ul>
+                <li><a href="" style="font-size:24px" class="dropdown-toggle glyphicon glyphicon-question-sign" data-toggle="dropdown"></a>
+                      <ul class="boxnav dropdown-menu dropdown_bg">
+                        <li ng-repeat="helpItem in helpMenu">
+                            <a ng-href="{{helpItem.link}}">{{helpItem.title}}</a>
+                        </li>
+                      </ul>
                 </li>
                 <li><a class="logout" href="" ng-click="logout()"><i class="fa fa-power-off"></i></a> </li>
                 <li class="col-md-1"> </li>
