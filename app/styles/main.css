@@ -39,6 +39,9 @@ h4    { color: #363636; font-size: 10px; font-weight: bold; text-transform: uppe
 
 .dropdown-menu { border: 1px solid #DCDCDC; left:auto; right:0; margin:-1px -1px 0 0; border-top:none; box-shadow:none; }
 .dropdown-menu li a { color: #177eb7; text-align:right; font-size:11px;}
+.dropdown_bg{background:#404040;}
+.dropdown_bg li a{color:#ffffff !important;}
+.dropdown_bg li a:hover{background: #505050;}
 
 /*Custom global styles - */
 .btn:not(.simple) { text-transform:uppercase; }
