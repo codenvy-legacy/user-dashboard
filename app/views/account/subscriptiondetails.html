@@ -1,3 +1,12 @@
+<ul class="breadcrumb boxnav">
+  <li class="active"><a href="#/account/profile">Profile</a></li>
+  <li class="active"><a href="#/account/subscriptions">Subscriptions</a></li>
+  <!-- 
+    <li><a href="#/account/configuration">Configuration</a></li>
+    <li><a href="#/account/preferences">Preferences</a></li>
+    <li><a href="#/account/billing">Billing</a></li>
+-->
+</ul>
 <div class="col-md-12">
     <div class="row">
 <ul class="breadcrumb projectnav" style="margin-bottom:0px;border-top:1px solid #dcdcdc; border-bottom:none;">
@@ -12,15 +21,15 @@
         <h4 class="text-center">SUBSCRIPTIONS DETAILS</h4>
         <div class="row">
           <div class="col-md-12">
-      	    <div class="col-md-6 form-group">
-              <label for="workspaceid">Name: </label>
-              <label for="workspaceid">{{subscription.id}}</label>
+      	    <div class="col-md-6">
+              Name: {{subscription.id}} -- {{subscription.properties.Package}} {{subscription.properties.RAM}}
             </div>
-      	    <div class="col-md-6 form-group">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="col-md-6 form-group">
               <label for="workspaceid">Your subscription started on: {{subscription.startDate | date: 'MMM dd, yyyy'}}</label>
-            </div>
-      	    <div class="col-md-6 form-group">
-              <label for="workspaceid">Your subscription expired on: {{subscription.endDate | date: 'MMM dd, yyyy'}}</label>
             </div>
           </div>
         </div>
