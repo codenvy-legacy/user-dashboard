@@ -194,12 +194,14 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   padding: 0;
   margin: 0;
   background-color: #fff;
+  width: 168px;
   position: relative;
 }
 .breadcrumb .new-project button,
 .breadcrumb .new-project a.button {
   color: #3B7ABA;
   padding: 0 20px;
+  width: 168px;
   display: inline-block;
 }
 .breadcrumb .new-project .dropdown-menu{
@@ -519,22 +521,21 @@ transform:rotate(360deg)
   color: #dedede;
   text-shadow: 1px 4px 6px #fff, 0 0 0 #000;
 }
-.new-project .box {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 0;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-}
 .new-project {
   margin-bottom: 30px;
   text-align: center;
 }
-.new-project .box button,
-.new-project .box a{
+.new-project .box > button,
+.new-project .box > a{
   display: block;
   padding: 16px;
   width: 100%;
+  border-radius: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
+
 .new-project a:hover{
   text-decoration: none;
 }
@@ -543,6 +544,7 @@ transform:rotate(360deg)
   border: none;
 }
 .new-project .dropdown-menu{
+  margin: 0;
   min-width: 70px;
 }
 .new-project .box {
