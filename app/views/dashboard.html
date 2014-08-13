@@ -208,48 +208,31 @@
       </div>
       <div class="modal-body">
         <form>
-          <div class="permission">
-            <table class="table borderless">
-              <thead>
-                <tr>
-                  <th>
-                    <strong>Developers Permissions:</strong>
-                    <p>List of Workspace's developers</p>
-                  </th>
-                  <th>Read</th>
-                  <th>Write</th>
-                  <th>&nbsp;</th>
-                </tr>
-              </thead>
+            <div class="permission">
+                {{members}}
+                <table class="table borderless">
+                    <thead>
+                        <tr>
+                            <th>
+                                <strong>Developers Permissions:</strong>
+                                <p>List of Workspace's developers</p>
+                            </th>
+                            <th>Read</th>
+                            <th>Write</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
 
-              <tbody>
-                <tr>
-                  <td>Tyler Jewel (tyler@codeenvy.com)</td>
-                  <td><input type="checkbox"></td>
-                  <td><input type="checkbox"></td>
-                  <td class="last"><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                </tr>
-                <tr>
-                  <td>Sergey Kabashryuk (sergey@codeenvy.com)</td>
-                  <td><input type="checkbox"></td>
-                  <td><input type="checkbox"></td>
-                  <td class="last"><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                </tr>
-                <tr>
-                  <td>Gebbady Azarenkov(gennady@codeenvy.com)</td>
-                  <td><input type="checkbox"></td>
-                  <td><input type="checkbox"></td>
-                  <td class="last"><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                </tr>
-                <tr>
-                  <td>Eric Cavazos(eric@codeenvy.com)</td>
-                  <td><input type="checkbox"></td>
-                  <td><input type="checkbox"></td>
-                  <td class="last"><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                    <tbody>
+                        <tr ng-repeat="member in members">
+                            <td>{{member.fullName}} ({{member.email}})</td>
+                            <td><input type="checkbox" ng-model="member.read"  ></td>
+                            <td><input type="checkbox"  ng-model="member.write"  ></td>
+                            <td class="last"><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </form>
         <div class="invitation">
           <strong>Invite other Developers</strong>
