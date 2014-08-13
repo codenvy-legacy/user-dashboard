@@ -34,13 +34,17 @@ h4    { color: #363636; font-size: 10px; font-weight: bold; text-transform: uppe
 .breadcrumb > li + li:before { content: none; } 
 .breadcrumb li a { color: #177eb7;}
 
+.action-button { min-height:36px;background-color:#1d1d1d border:none;/* position: fixed;*/ width: 100%; z-index: 999; margin-bottom: 0;}
+.action-button > li + li:before { content: none; } 
+.action-button li a { color: #177eb7;}
+
 .jqstooltip { border: 0 none !important; display: block !important; padding: 0 !important; }
 .jqsfield { display: inline-block; line-height: 13px; padding: 4px 5px 5px; }
 
 .dropdown-menu { border: 1px solid #DCDCDC; left:auto; right:0; margin:-1px -1px 0 0; border-top:none; box-shadow:none; }
 .dropdown-menu li a { color: #177eb7; text-align:right; font-size:11px;}
-.dropdown_bg{background:#404040;}
-.dropdown_bg li a{color:#ffffff !important;}
+.dropdown_bg{background:#404040;border:none;}
+.dropdown_bg li a{font-size: 12px;color:#ffffff !important;}
 .dropdown_bg li a:hover{background: #505050;}
 
 /*Custom global styles - */
@@ -131,7 +135,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .marketing-box.panel-footer {
   padding:0;  
 }
-.marketing-box a {
+.marketing-box span{
   text-align:center;
   padding:12px;
   display: block;
@@ -190,12 +194,14 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   padding: 0;
   margin: 0;
   background-color: #fff;
+  width: 168px;
   position: relative;
 }
 .breadcrumb .new-project button,
 .breadcrumb .new-project a.button {
   color: #3B7ABA;
   padding: 0 20px;
+  width: 168px;
   display: inline-block;
 }
 .breadcrumb .new-project .dropdown-menu{
@@ -515,22 +521,21 @@ transform:rotate(360deg)
   color: #dedede;
   text-shadow: 1px 4px 6px #fff, 0 0 0 #000;
 }
-.new-project .box {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 0;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-}
 .new-project {
   margin-bottom: 30px;
   text-align: center;
 }
-.new-project .box button,
-.new-project .box a{
+.new-project .box > button,
+.new-project .box > a{
   display: block;
   padding: 16px;
   width: 100%;
+  border-radius: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
+
 .new-project a:hover{
   text-decoration: none;
 }
@@ -539,6 +544,7 @@ transform:rotate(360deg)
   border: none;
 }
 .new-project .dropdown-menu{
+  margin: 0;
   min-width: 70px;
 }
 .new-project .box {
@@ -706,7 +712,14 @@ transform:rotate(360deg)
   width: 80%;
   margin-right:3%;
 }
-
+.panel-primary > a .panel-heading {
+  background-color: #54aee0;
+  border-color: #54aee0;
+  color: #ffffff;
+}
+.panel-primary > a .panel-body{
+  color: #3c3c3c;
+}
 /* LOADER
 --------------------------------*/
 #loading-bar-spinner {

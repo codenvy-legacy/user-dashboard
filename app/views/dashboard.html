@@ -150,27 +150,6 @@
       <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><div class="button"><i class="fa fa-fw fa-cog"></i></div></td>
     </tr><!-- panel-default -->
   </table><!-- row -->
-
-  <div class="new-project">
-    <div class="box box-two clearfix" ng-if="workspaces.length == 1">
-      <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=newProject" target="_blank">
-        <span class="glyphicon white glyphicon-plus"></span>
-        <strong>Create New Project</strong>
-      </a>
-    </div><!-- Box -->
-    <div class="box box-one btn-group" ng-if="workspaces.length > 1">
-      <button type="button" class="clearfix dropdown-toggle" data-toggle="dropdown">
-        <span class="glyphicon white glyphicon-plus"></span><strong>Create New Project <span class="caret"></span></strong>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><span>Select Destination Workspace:</span></li>
-        <li ng-repeat="workspace in workspaces" ><a href="/ws/{{workspace.workspaceReference.name}}?action=newProject" target="_blank">{{workspace.workspaceReference.name}}</a></li>
-      </ul>
-    </div><!-- Box -->
-  
-  </div><!-- New Project -->
-
-  
 </div>
 <div class="modal fade" id="privacyModal" tabindex="-1" role="dialog" aria-labelledby="privacyModalLabel" aria-hidden="true">
   <div class="modal-dialog">
