@@ -1,7 +1,7 @@
 <div class="breadcrumb-wrap">
   <ul class="breadcrumb projectnav breadcrumb clearfix">
 
-    <li> You have {{(projects.length == 0) ? '-' : projects.length}} runners defined in {{workspaces.length}} workspaces</li>
+    <li> You have {{(runners.length == 0) ? '0' : runners.length}} runners defined in {{workspaces.length}} workspaces</li>
 
     <li class="dropdown user-dropdown"> WORKSPACE:
       <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down garrow"></i> {{filter.workspaceName || 'All'}}</a>
@@ -21,4 +21,209 @@
       </div>
     </li>
   </ul>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="mrg-top40">
+  <div class="row">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+      <div class="row">
+        <div class=" col-lg-3 col-sm-3 col-md-3 col-xs-12">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <h4>Workspace RAM Consumption :</h4>
+              <div class="row mrg0">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">stevan.lemeur</div>
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">512 mb of 2GB</div>
+              </div>
+              <div class="row mrg0">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">stevan.lemeur</div>
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">512 mb of 2GB</div>
+              </div>
+              <div class="row mrg0">
+                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                  <br/>
+                  <p class="text-center mrg0"> <a href=""> Get More RAM </a> </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-9 col-sm-9 col-md-9 col-xs-12">
+          <div class="row">
+            <div class="col-lg-4 col-sm-6 col-md-4 col-xs-12">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <div class="row">
+                    <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12">
+                      <strong>Spring Demo</strong>
+                      <div class="help-block mrg0">stevan.lemeur</div>
+                    </div>
+                    <div class="col-lg-8 col-sm-6 col-md-6 col-xs-12">
+                      <form class="form-inline btn-rt" role="search">
+                        <button type="submit" class="btn btn-default btn-sm-text">shut down</button>
+                        <button type="submit" class="btn btn-default btn-sm-text">restart</button>
+                      </form>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="panel-body">
+                  <form class="form-horizontal" role="form">
+                    <div class="form-group mrg0">
+                      <label class="col-lg-6 col-sm-4 control-label">State :</label>
+                      <div class="col-lg-6 col-sm-8">
+                        <p class="form-control-static">Running </p>
+                      </div>
+                    </div>
+                    <div class="form-group mrg0">
+                      <label class="col-lg-6 col-sm-4 control-label">Time Running :</label>
+                      <div class="col-lg-6 col-sm-8">
+                        <p class="form-control-static">xx day </p>
+                      </div>
+                    </div>
+                    <div class="form-group mrg0">
+                      <label class=" col-lg-6 col-sm-4 control-label">URL :</label>
+                      <div class="col-lg-6 col-sm-8">
+                        <p class="form-control-static"><a href="#">https://codenvy.com/</a></p>
+                      </div>
+                    </div>
+                    <div class="form-group mrg0">
+                      <label class="col-lg-6 col-sm-4 control-label">Docker Recipe :</label>
+                      <div class="col-lg-6 col-sm-8">
+                        <p class="form-control-static"><a href="#">https://codenvy.com/</a></p>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="btn-group btn-group-justified">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-default">Open IDE</button>
+                  </div>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-default">Terminal</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-6 col-md-4 col-xs-12">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <div class="row">
+                    <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12">
+                      <strong>Spring Demo</strong>
+                      <div class="help-block mrg0">stevan.lemeur</div>
+                    </div>
+                    <div class="col-lg-8 col-sm-6 col-md-6 col-xs-12">
+                      <form class="form-inline btn-rt" role="search">
+                        <button type="submit" class="btn btn-default btn-sm-text">shut down</button>
+                        <button type="submit" class="btn btn-default btn-sm-text">restart</button>
+                      </form>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="panel-body">
+                  <form class="form-horizontal" role="form">
+                    <div class="form-group mrg0">
+                      <label class="col-lg-6 col-sm-4 control-label">State :</label>
+                      <div class="col-lg-6 col-sm-8">
+                        <p class="form-control-static">Running </p>
+                      </div>
+                    </div>
+                    <div class="form-group mrg0">
+                      <label class="col-lg-6 col-sm-4 control-label">Time Running :</label>
+                      <div class="col-lg-6 col-sm-8">
+                        <p class="form-control-static">xx day </p>
+                      </div>
+                    </div>
+                    <div class="form-group mrg0">
+                      <label class=" col-lg-6 col-sm-4 control-label">URL :</label>
+                      <div class="col-lg-6 col-sm-8">
+                        <p class="form-control-static"><a href="#">https://codenvy.com/</a></p>
+                      </div>
+                    </div>
+                    <div class="form-group mrg0">
+                      <label class="col-lg-6 col-sm-4 control-label">Docker Recipe :</label>
+                      <div class="col-lg-6 col-sm-8">
+                        <p class="form-control-static"><a href="#">https://codenvy.com/</a></p>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="btn-group btn-group-justified">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-default">Open IDE</button>
+                  </div>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-default">Terminal</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-6 col-md-4 col-xs-12">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <div class="row">
+                    <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12">
+                      <strong>Spring Demo</strong>
+                      <div class="help-block mrg0">stevan.lemeur</div>
+                    </div>
+                    <div class="col-lg-8 col-sm-6 col-md-6 col-xs-12">
+                      <form class="form-inline btn-rt" role="search">
+                        <button type="submit" class="btn btn-default btn-sm-text">shut down</button>
+                        <button type="submit" class="btn btn-default btn-sm-text">restart</button>
+                      </form>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="panel-body">
+                  <form class="form-horizontal" role="form">
+                    <div class="form-group mrg0">
+                      <label class="col-lg-6 col-sm-4 control-label">State :</label>
+                      <div class="col-lg-6 col-sm-8">
+                        <p class="form-control-static">Running </p>
+                      </div>
+                    </div>
+                    <div class="form-group mrg0">
+                      <label class="col-lg-6 col-sm-4 control-label">Time Running :</label>
+                      <div class="col-lg-6 col-sm-8">
+                        <p class="form-control-static">xx day </p>
+                      </div>
+                    </div>
+                    <div class="form-group mrg0">
+                      <label class=" col-lg-6 col-sm-4 control-label">URL :</label>
+                      <div class="col-lg-6 col-sm-8">
+                        <p class="form-control-static"><a href="#">https://codenvy.com/</a></p>
+                      </div>
+                    </div>
+                    <div class="form-group mrg0">
+                      <label class="col-lg-6 col-sm-4 control-label">Docker Recipe :</label>
+                      <div class="col-lg-6 col-sm-8">
+                        <p class="form-control-static"><a href="#">https://codenvy.com/</a></p>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="btn-group btn-group-justified">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-default">Open IDE</button>
+                  </div>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-default">Terminal</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

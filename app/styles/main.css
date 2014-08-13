@@ -801,4 +801,21 @@ transform:rotate(360deg)
   .projectlist {
     padding-top: 95px;
   }
+  .btn-rt { float: none !important;}
+  .btn-sm-text {
+    font-size: 10px !important;
+    padding: 4px;
+  }
 }
+
+@media screen and (min-width : 767px) {
+  .btn-sm-text {
+    font-size: 10px !important;
+    padding: 4px;
+  }
+}
+.mrg-top40 { margin-top: 80px !important; margin-left: 10px; margin-right: 10px;;}
+.btn-rt { float: right;}
+.btn-sm-text {}
+.mrg0 { margin: 0 !important;}
+.mrg0 { margin: 0 !important;}
