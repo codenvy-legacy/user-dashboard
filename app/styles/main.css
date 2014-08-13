@@ -135,7 +135,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .marketing-box.panel-footer {
   padding:0;  
 }
-.marketing-box a {
+.marketing-box span{
   text-align:center;
   padding:12px;
   display: block;
@@ -712,7 +712,14 @@ transform:rotate(360deg)
   width: 80%;
   margin-right:3%;
 }
-
+.panel-primary > a .panel-heading {
+  background-color: #54aee0;
+  border-color: #54aee0;
+  color: #ffffff;
+}
+.panel-primary > a .panel-body{
+  color: #3c3c3c;
+}
 /* LOADER
 --------------------------------*/
 #loading-bar-spinner {
