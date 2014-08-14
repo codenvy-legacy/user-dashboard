@@ -188,7 +188,7 @@
       <div class="modal-body">
         <form>
             <div class="permission">
-                {{members}}
+              <!--  {{activeMembers}}-->
                 <table class="table borderless">
                     <thead>
                         <tr>
@@ -203,10 +203,10 @@
                     </thead>
 
                     <tbody>
-                        <tr ng-repeat="member in members">
+                        <tr ng-repeat="member in activeMembers">
                             <td>{{member.fullName}} ({{member.email}})</td>
-                            <td><input type="checkbox" ng-model="member.read"  ></td>
-                            <td><input type="checkbox"  ng-model="member.write"  ></td>
+                            <td><input type="checkbox" ng-model="member.read" ng-change="setReadWrite(member)"  ></td>
+                            <td><input type="checkbox"  ng-model="member.write" ng-change="setReadWrite(member)" ></td>
                             <td class="last"><a href="#"><i class="fa fa-trash-o"></i></a></td>
                         </tr>
                     </tbody>
@@ -215,12 +215,13 @@
         </form>
         <div class="invitation">
           <strong>Invite other Developers</strong>
-          <form class="form-inline">
-            <div class="form-group clearfix">
-              <input type="email" class="form-control pull-left" placeholder="Type email addresses seperated by commas">
-              <input type="submit" class="btn btn-success pull-right" value="Invite">
-            </div>
-          </form>
+            <form class="form-inline">
+                <div class="form-group clearfix">
+                    <input type="text" class="form-control pull-left" ng-model="emailList" placeholder="Type email addresses seperated by commas">
+                    <input type="submit" class="btn btn-success pull-right" value="Invite" ng-click="invite()">
+                </div>
+            </form>
+            <p ng-show="showInviteError" style="background-color:#f7d6d5;color:#cc9291;font-weight: bold;  border: 1px solid #e18986;padding: 5px;margin: 5px;" >{{errors}} must be Codenvy user(s) before being added as developer(s) of your workspace.</p>
           <p>These developers will be added to the workspace and be granted permissions accross all projects of the workspace.</p>
         </div>
       </div>
