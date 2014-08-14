@@ -1,5 +1,5 @@
 <ul class="breadcrumb boxnav">
-  <li class="active"><a href="#/account/profile">Profile</a></li>
+  <li><a href="#/account/profile">Profile</a></li>
   <li class="active"><a href="#/account/subscriptions">Subscriptions</a></li>
   <!-- 
     <li><a href="#/account/configuration">Configuration</a></li>
@@ -31,16 +31,22 @@
                         <th class="col-md-4 text-center"><h4>ACTIVATION DATE</h4></th>
                         <th class="col-md-1 text-center"><h4>EXPIRATION DATE</h4></th>
                         <th class="text-center" style="width:350px"><h4>ACTIONS</h4></th>
-                        <th></th>
+                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="subscription in subscriptions| filter: filter | orderBy:param:reverse">
                         <td>&nbsp;</td>
-                        <td class="text-center"><a ng-href="#/subscriptions/{{subscription.id}}">{{subscription.id}}</a></td>
-                        <td  class="text-center">{{subscription.startDate | date: 'dd/MM/yy'}}</td>
-                        <td class="text-center">{{subscription.endDate  | date: 'dd/MM/yy'}}</td>
-                        <td>&nbsp;<li class="active" ng-if="((subscription.endDate | date: 'dd/MM/yy').length > 0) && ((subscription.startDate | date: 'dd/MM/yy').length > 0)" value="Renew" />&nbsp;<li class="active" ng-if="((subscription.endDate | date: 'dd/MM/yy').length > 0) && ((subscription.startDate | date: 'dd/MM/yy').length > 0)" value="Upgrade" />&nbsp;<li class="active" ng-if="((subscription.endDate | date: 'dd/MM/yy').length > 0) && ((subscription.startDate | date: 'dd/MM/yy').length > 0)" value="Cancel" /></td>
+                        <td class="text-center"><a ng-href="#/account/subscriptions/{{subscription.id}}">{{subscription.id}}</a></td>
+                        <td  class="text-center">{{startDate | date: 'dd/MM/yy'}}</td>
+                        <td class="text-center">{{endDate  | date: 'dd/MM/yy'}}</td>
+                        <td class="text-center">
+                            <ul class="breadcrumb action-button boxnav">
+                                <li class="active"><a href="">Renew</a></li>
+                                <li class="active"><a href="">Upgrade</a></li>
+                                <li class="active"><a href="">Cancel</a></li>
+                            </ul>
+                        </td>
                         <td>&nbsp;</td>
                     </tr>
                 </tbody>

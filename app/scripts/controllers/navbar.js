@@ -55,6 +55,25 @@ angular.module('odeskApp')
                 'link': '#/organizations'
             }*/
         ];
+
+        $scope.helpMenu= [
+            {
+                'title': 'Codenvy Help',
+                'link': 'https://docs.codenvy.com'
+            },
+            {
+                'title': 'Forum',
+                'link': 'https://helpdesk.codenvy.com/'
+            },
+            {
+                'title': 'Feedback',
+                'link': 'https://codenvy.uservoice.com/'
+            },
+            {
+                'title': 'Create Support Tickets',
+                'link': 'mailto:support@codenvy.com'
+            }
+            ];
     
         $scope.isActive = function (route) {
             //return route === '#' + $location.path(); //here # is added because of location html5 mode        

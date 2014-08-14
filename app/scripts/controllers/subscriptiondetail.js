@@ -18,8 +18,10 @@
 angular.module('odeskApp')
     .controller('SubscriptionDetailsCtrl', function ($scope, $timeout, $http, Account,Users,$route) {
     	var subscriptionId = $route.current.params.id;
-        console.log('Load details for ID: = ' + subscriptionId);
         $http.get('/api/account/subscriptions/'+subscriptionId).success(function(data, status){
             $scope.subscription = data;
+                $http.get(data.links[2].href).success(function(datab, status){
+                    $scope.billing = datab;
+                });
         });
     });

@@ -18,8 +18,12 @@
 angular.module('odeskApp')
     .controller('SubscriptionsCtrl', function ($scope, $timeout, $http, Account,Users) {
         $scope.subscriptions = [];
+        $scope.startDate = "12/10/13";
+        $scope.endDate = "12/10/14";
+        console.log('Query Users');
         Users.query().then(function(data){
             var ref = data[0].accountReference;
+            console.log(ref);
             if(ref.id!=undefined)
             {
                 $http.get('/api/account/'+ref.id+'/subscriptions').success(function(datab, status){

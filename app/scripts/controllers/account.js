@@ -301,7 +301,7 @@ angular.module('odeskApp')
 		$scope.jobTitle = '';
 
     $http({method: 'GET', url: '/api/account'}).success(function (account, status) {
-      $http({method: 'GET', url: '/api/account/'+account[0].id+'/subscriptions'}).success(function (subscription, status) {
+      $http({method: 'GET', url: '/api/account/'+account[0].accountReference.id+'/subscriptions'}).success(function (subscription, status) {
         if( subscription == '' ) {
           $scope.accountType = 'FREE';
         } else {
@@ -318,67 +318,66 @@ angular.module('odeskApp')
 		Profile.query().then(function (resp) {
 		
 			dataPreferences = resp.preferences;
-			
-			resp.attributes.forEach(function(as){
-				if(as.name=='firstName')
-				{
-					$scope.firstName = as.value;
-					firstNameValue = as.value;
-					firstNameDescription = as.description;
-				}
-				if(as.name=='lastName')
-				{
-					$scope.lastName = as.value;
-					lastNameValue = as.value;
-					lastNameDescription = as.description;
-				}
-				if(as.name=='email')
-				{
-					$scope.email = as.value;
-					emailValue = as.value;
-					emailDescription = as.description;
-				}
-				if(as.name=='phone')
-				{
-					$scope.phone = as.value;
-					phoneValue = as.value;
-					phoneDescription = as.description;
-				}
-				if(as.name=='country')
-				{
-					$scope.country = as.value;
-					countryValue = as.value;
-					countryDescription = as.description;
-				}
-				if(as.name=='employer')
-				{
-					$scope.companyName = as.value;
-					companyNameValue = as.value;
-					companyNameDescription = as.description;
-				}
-				if(as.name=='departmentname')
-				{
-					$scope.departmentName = as.value;
-					departmentNameValue = as.value;
-					departmentNameDescription = as.description;
-				}
-				if(as.name=='jobtitle')
-				{
-					$scope.jobTitle = as.value;
-					jobTitleValue = as.value;
-					jobTitleDescription = as.description;
-				}
-				if(as.name=='sales_can_contact')
-				{
-					if(as.value=="true") {
-						$scope.check = true;
-						checkValue = true;
-					}
-					else {
-						$scope.check = false;
-						checkValue = false;
-					}
-				}
+                  $.each(resp.attributes, function (as,val) {
+			   if(as=='firstName')
+                        {
+                              $scope.firstName = val;
+                              firstNameValue = val;
+                              firstNameDescription = as;
+                        }
+                        if(as=='lastName')
+                        {
+                              $scope.lastName = val;
+                              lastNameValue = val;
+                              lastNameDescription = as;
+                        }
+                        if(as=='email')
+                        {
+                              $scope.email = val;
+                              emailValue = val;
+                              emailDescription = as;
+                        }
+                        if(as=='phone')
+                        {
+                              $scope.phone = val;
+                              phoneValue = val;
+                              phoneDescription = as;
+                        }
+                        if(as=='country')
+                        {
+                              $scope.country = val;
+                              countryValue = val;
+                              countryDescription = as;
+                        }
+                        if(as=='employer')
+                        {
+                              $scope.companyName = val;
+                              companyNameValue = val;
+                              companyNameDescription = as;
+                        }
+                        if(as=='departmentname')
+                        {
+                              $scope.departmentName = val;
+                              departmentNameValue = val;
+                              departmentNameDescription = as;
+                        }
+                        if(as=='jobtitle')
+                        {
+                              $scope.jobTitle = val;
+                              jobTitleValue = val;
+                              jobTitleDescription = as;
+                        }
+                        if(as=='sales_can_contact')
+                        {
+                              if(val=="true") {
+                                    $scope.check = true;
+                                    checkValue = true;
+                              }
+                              else {
+                                    $scope.check = false;
+                                    checkValue = false;
+                              }
+                        }
 			});
 			
 			var salesContactArray = [];
