@@ -62,8 +62,8 @@
                     </div>
                     <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                       <form class="form-inline btn-rt" role="search">
-                        <button type="submit" class="btn btn-ttl btn-sm-text">Shut down</button>
-                        <button type="submit" class="btn btn-ttl btn-sm-text">Restart</button>
+                        <button type="submit" class="btn btn-ttl btn-sm-text" ng-click="shutdownRunner(runner.shutdownUrl)">Shut down</button>
+                        <button type="submit" class="btn btn-ttl btn-sm-text" ng-click="restartRunner(runner.shutdownUrl, runner.project)">Restart</button>
                       </form>
                     </div>
                   </div>

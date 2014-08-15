@@ -14,7 +14,7 @@
 
 'use strict';
 angular.module('odeskApp')
-    .controller('RunnerCtrl', function ($scope, $timeout, Workspace, Project, Users, $http) {
+    .controller('RunnerCtrl', function ($scope, $timeout, Workspace, Project, Users, $http, $q) {
 
       $scope.runners = [];
       $scope.projects = [];
@@ -43,14 +43,15 @@ angular.module('odeskApp')
                 $http({method: 'GET', url:"/api/runner/"+ value.workspaceReference.id +"/processes?project="+project.path }).
                   success(function (data, status) {
                     if(data.length > 0){
-                      if(data[0].status == "RUNNING"){
+                      var currentRunner = data[data.length-1]
+                      if(currentRunner.status == "RUNNING"){
                         var runnerDetails = {
                           project: project,
-                          startTime: data[0].startTime,
-                          shutdownUrl: $.map(data[0].links,function(obj){if(obj.rel=="stop") return obj.href})[0],
-                          url: $.map(data[0].links,function(obj){if(obj.rel=="web url") return obj.href})[0],
-                          dockerRecipe: $.map(data[0].links,function(obj){if(obj.rel=="runner recipe") return obj.href})[0],
-                          terminalUrl: $.map(data[0].links,function(obj){if(obj.rel=="shell url") return obj.href})[0]
+                          startTime: currentRunner.startTime,
+                          shutdownUrl: $.map(currentRunner.links,function(obj){if(obj.rel=="stop") return obj.href})[0],
+                          url: $.map(currentRunner.links,function(obj){if(obj.rel=="web url") return obj.href})[0],
+                          dockerRecipe: $.map(currentRunner.links,function(obj){if(obj.rel=="runner recipe") return obj.href})[0],
+                          terminalUrl: $.map(currentRunner.links,function(obj){if(obj.rel=="shell url") return obj.href})[0]
                         }
                         $scope.runners.push(runnerDetails);
                       }
@@ -61,4 +62,32 @@ angular.module('odeskApp')
 
         });
       });
+
+      $scope.shutdownRunner = function (shutdownUrl){
+
+        var deferred = $q.defer();
+
+        $http({method: 'POST', url: shutdownUrl})
+          .success(function (data) {
+            deferred.resolve(data);
+          })
+          .error(function (err) { deferred.reject(); });
+        return deferred.promise;
+      };
+
+      $scope.restartRunner = function (shutdownUrl, project){
+
+        return $q.all([
+          $scope.shutdownRunner(shutdownUrl)
+        ]).then(function (results) {
+          var deferred = $q.defer();
+
+          $http({method: 'POST', url: '/api/runner/'+project.workspaceId+'/run?project='+project.path})
+            .success(function (data) {
+              deferred.resolve(data);
+            })
+            .error(function (err) { deferred.reject(); });
+        });
+
+      };
     });
