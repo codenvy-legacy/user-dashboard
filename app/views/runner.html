@@ -1,0 +1,124 @@
+<div class="breadcrumb-wrap">
+  <ul class="breadcrumb projectnav breadcrumb clearfix">
+
+    <li> You have {{(runners.length == 0) ? '0' : runners.length}} runners defined in {{workspaces.length}} workspaces</li>
+
+    <li class="dropdown user-dropdown"> WORKSPACE:
+      <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down garrow"></i> {{filter.workspaceName || 'All'}}</a>
+      <ul class="dropdown-menu">
+        <li><a href="" ng-click="filter.workspaceName=''">All</a></li>
+        <li ng-repeat="workspace in workspaces" ng-click="filter.workspaceName=workspace.workspaceReference.name"><a href="">{{workspace.workspaceReference.name}}</a></li>
+      </ul>
+    </li>
+
+    <li class="search1 clearfix">
+      <div>
+        <input type="button" class="searchfield "/>
+      </div><!-- content title-->
+      <div class="searchfull clearfix" style="display:none" >
+        <input type="button" class="closeBtn" style="display:none;" ng-click="filter = ''" />
+        <input type="text" ng-model="filter.name" class="searchfield " placeholder="Search for Projects"/>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class="clearfix"></div>
+
+<div class=" col-lg-12 mrg-top80">
+  <div class="row">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+      <div class="row">
+        <div class=" col-lg-3 col-sm-3 col-md-3 col-xs-12">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-lg-9 col-sm-12 col-md-12 col-xs-12">
+                  <h4>Workspace RAM Consumption :</h4>
+                </div>
+                <div class="col-lg-3 col-sm-12 col-md-12 col-xs-12 pad0">
+                  <button type="button" class="btn btn-ttl btn-sm-text"><span class="glyphicon glyphicon-refresh"></span> Refresh</button>
+                </div>
+              </div>
+              <div class="row mrg0" ng-repeat="workspace in ramConsumption">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6 pad0">{{workspace.workspaceName}}</div>
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">{{workspace.usedMemory}} Mb of {{workspace.totalMemory}} Mb</div>
+              </div>
+
+              <div class="row mrg0">
+                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                  <br/>
+                  <p class="text-center mrg0"> <a href="www.codenvy.com/buy"> Get More RAM </a> </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-9 col-sm-9 col-md-9 col-xs-12">
+          <div class="row">
+
+            <!-- Start of runner box -->
+            <div class="col-lg-4 col-sm-6 col-md-4 col-xs-12" ng-repeat="runner in runners" >
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <div class="row">
+                    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                      <strong>{{runner.project.name}}</strong>
+                      <div class="help-block mrg0">{{runner.project.workspaceName}}</div>
+                    </div>
+                    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                      <form class="form-inline btn-rt" role="search">
+                        <button type="submit" class="btn btn-ttl btn-sm-text" ng-click="shutdownRunner(runner.shutdownUrl)">Shut down</button>
+                        <button type="submit" class="btn btn-ttl btn-sm-text" ng-click="restartRunner(runner.shutdownUrl, runner.project)">Restart</button>
+                      </form>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="panel-body">
+                  <form class="form-horizontal" role="form" >
+                    <div class="form-group mrg0">
+                      <label class="col-lg-4 col-sm-4 control-label font-11 pad0">State :</label>
+                      <div class="col-lg-8 col-sm-8 raw-pad">
+                        <p class="form-control-static font-11 pad0"> <span class="start-btn"></span>Running </p>
+                      </div>
+                    </div>
+                    <div class="form-group mrg0">
+                      <label class="col-lg-4 col-sm-4 control-label font-11 pad0">Time Running :</label>
+                      <div class="col-lg-8 col-sm-8 raw-pad">
+                        <p class="form-control-static font-11 pad0">{{runner.startTime | date:'medium'}} </p>
+                      </div>
+                    </div>
+                    <div class="form-group mrg0">
+                      <label class=" col-lg-4 col-sm-4 control-label font-11 pad0">URL :</label>
+                      <div class="col-lg-8 col-sm-8 raw-pad">
+                        <p class="form-control-static font-11 pad0"><a href="{{runner.url}}" target="_blank" title="{{runner.url}}" ng-if="runner.url.length > 0">{{runner.url.substr(0,30)}}<span ng-if="runner.url.length>30">...</span></a></p>
+                      </div>
+                    </div>
+                    <div class="form-group mrg0">
+                      <label class="col-lg-4 col-sm-4 control-label font-11 pad0">Docker Recipe :</label>
+                      <div class="col-lg-8 col-sm-8 raw-pad">
+                        <p class="form-control-static font-11 pad0"><a href="{{runner.dockerRecipe}}" target="_blank" title="{{runner.dockerRecipe}}" ng-if="runner.dockerRecipe.length > 0">{{runner.dockerRecipe.substr(0,30)}}<span ng-if="runner.dockerRecipe.length>30">...</span></a></p>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="btn-group btn-group-justified">
+                  <div class="btn-group">
+                    <a class="btn btn-ttl" href="{{runner.project.ideUrl}}" target="_blank">Open IDE</a>
+                  </div>
+                  <div class="btn-group">
+                    <a class="btn btn-ttl" href="{{runner.terminalUrl}}" target="_blank">Terminal</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End of runner box-->
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
