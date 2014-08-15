@@ -442,8 +442,10 @@ transform:rotate(360deg)
   -o-transition: -o-transform 0.1s ease-out;
   transition: transform 0.1s ease-out;
 }
-.panel .panel-footer .fa-fw {
-    width: 20px;
+.panel .panel-footer .fa-fw
+{
+  border: 1px solid #008000;
+  width: 20px;
 }
 
 /* Reset Default buttons

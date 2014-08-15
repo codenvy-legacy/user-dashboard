@@ -30,6 +30,7 @@ angular.module('odeskApp')
         $scope.workspaces = [];
 
         //private methods
+        // for one user set the read write properties
         var setPermissions = function (projectPermissions, member, role) {
             angular.forEach(projectPermissions, function (perm) {
                 if (perm.principal.type == "GROUP" && perm.principal.name == role) {
@@ -43,8 +44,8 @@ angular.module('odeskApp')
                         }
                     });
 
-
-                } else if (perm.principal.type == "USER" && perm.principal.name == role) {
+                } else if (perm.principal.type == "USER") {
+                    // if(&& perm.principal.name == role) {
                     console.log("to be done!");
                 }
             });
@@ -59,27 +60,43 @@ angular.module('odeskApp')
                 listPerm.push("write");
             return listPerm;
         };
+
+        var getAdmin = function (roles) {
+            if (roles.indexOf('workspace/admin') !== -1) {
+                return true;
+            } else {
+                return false;
+            }
+        };
         
-        //public methods        
+        //public methods   
+        $scope.modalManageProject = " #developersModal";
+
         $scope.selectProject = function (project) {
+            $scope.activeMembers = [];
+            
             $scope.showInviteError = false;
             var currentWorkspace = _.find($scope.workspaces, function (workspace) {
                 return workspace.workspaceReference.id == project.workspaceId;
             });
-            $scope.activeMembers = currentWorkspace.members;
+
+            $scope.isAdmin = getAdmin(currentWorkspace.roles);
+            $scope.activeMembers = angular.copy(currentWorkspace.members);
 
             Project.getPermissions(project.workspaceId, project.name).then(function (data) { // get the permissions for the current selected project
                 var projectPermissions = data;
+                var projectPermissionsArray = $.map(projectPermissions, function (value, index) { // conver to array
+                    return [value];
+                });
+                
                 angular.forEach($scope.activeMembers, function (member) {
-                    angular.forEach(member.roles, function (role) { // iterate users and their roles
-                        //example roles for current user:
-                        // 0: "workspace/admin"
-                        // 1: "workspace/developer"
-                        var projectPermissionsArray = $.map(projectPermissions, function (value, index) { // conver to array
-                            return [value];
-                        });
-                        setPermissions(projectPermissionsArray, member, role);
-                    });
+                    var isUserAdmin = getAdmin(member.roles);
+                    if (isUserAdmin) {
+                        setPermissions(projectPermissionsArray, member, "workspace/admin");
+                    } else {
+                        setPermissions(projectPermissionsArray, member, "workspace/developer");
+                    }
+
                 });
             });
 
@@ -126,13 +143,13 @@ angular.module('odeskApp')
 
         $scope.invite = function () {
             $scope.errors = "";
-           
-            angular.forEach($scope.emailList.split(";"), function(email) {
+
+            angular.forEach($scope.emailList.split(";"), function (email) {
                 Users.getUserByEmail(email).then(function (user) { // on success
                     Workspace.addMemberToWorkspace($scope.activeProject.workspaceId, user.id);
                 }, function (error) {
                     $scope.showInviteError = true;
-                    $scope.errors +=email+ " ," ;
+                    $scope.errors += email + " ,";
                 });
             });
         };
@@ -157,7 +174,7 @@ angular.module('odeskApp')
                             });
                         });
                     });
-                        
+
                     //var urlGetMembers = $.map(value.links, function (obj) { if (obj.rel == "get members") return obj.href })[0];
 
                     //$http({ method: 'GET', url: urlGetMembers }).
