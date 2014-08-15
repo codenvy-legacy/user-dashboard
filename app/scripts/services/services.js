@@ -16,11 +16,55 @@
 'use strict';
 
 angular.module('odeskApp')
-    .factory('Workspace', ['$resource', function ($resource) {
-        return $resource('/api/workspace/:workspaceID', {}, {
+    .factory('Workspace', ['$resource', '$q', '$http', function ($resource, $q, $http) {
+        var item = $resource('/api/workspace/:workspaceID', {}, {
             all: { method: 'GET', params: { workspaceID: 'all' }, isArray: true },
             query: { method: 'GET', params: {}, isArray: false }
         });
+
+        item.getMembersForWorkspace = function (workspaceId) {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+            $http.get('/api/workspace/' + workspaceId + "/members", con)
+                .success(function (data) {
+                    deferred.resolve(data); //resolve data
+                })
+                .error(function (err) { deferred.reject(); });
+            return deferred.promise;
+        };
+
+        item.addMemberToWorkspace = function (workspaceId, userId) {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+            
+            var roles = [
+                "workspace/developer"
+            ];
+
+            var data = {
+                "userId": userId,
+                "roles": roles // needs to be array
+            };
+
+            $http.post('/api/workspace/' + workspaceId + "/members",
+                data,
+                con)
+                .success(function (data) {
+                    deferred.resolve(data); //resolve data
+                })
+                .error(function (err) { deferred.reject(); });
+
+        };
+        return item;
     }]);
 
 
@@ -102,6 +146,22 @@ angular.module('odeskApp')
 	                }
 	            };
 	            $http.get('/api/account', con)
+                    .success(function (data) {
+                        deferred.resolve(data); //resolve data
+                    })
+                    .error(function (err) { deferred.reject(); });
+	            return deferred.promise;
+	        },
+
+	        getUserByEmail: function (email) {
+	            var deferred = $q.defer();
+	            var con = {
+	                headers: {
+	                    'Accept': 'application/json',
+	                    'X-Requested-With': 'XMLHttpRequest'
+	                }
+	            };
+	            $http.get('/api/user/find?email=' + email, con)
                     .success(function (data) {
                         deferred.resolve(data); //resolve data
                     })
@@ -216,14 +276,14 @@ angular.module('odeskApp')
 	});
 
 angular.module('odeskApp')
-    .factory('Project', ['$resource','$http', '$q', function ($resource, $http, $q) {
+    .factory('Project', ['$resource', '$http', '$q', function ($resource, $http, $q) {
         var item = $resource('/api/project/:workspaceID', {}, {
             create: { method: 'POST', params: {}, isArray: false },
             query: { method: 'GET', params: {}, isArray: true },
             put: { method: 'PUT', params: { workspaceID: 'workspaceimb0rqn76p2euvn4' }, isArray: false }
         });
 
-        item.getPermissions = function(workspaceId, projectName) { // custom function added to the resource object
+        item.getPermissions = function (workspaceId, projectName) { // custom function added to the resource object
             var deferred = $q.defer();
             var con = {
                 headers: {
@@ -232,10 +292,39 @@ angular.module('odeskApp')
                 }
             };
             $http.get('/api/project/' + workspaceId + "/permissions/" + projectName, con)
-                .success(function(data) {
+                .success(function (data) {
                     deferred.resolve(data); //resolve data
                 })
-                .error(function(err) { deferred.reject(); });
+                .error(function (err) { deferred.reject(); });
+            return deferred.promise;
+        };
+
+        item.setPermissions = function (workspaceId, projectName, data) {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+
+            $http.post('/api/project/' + workspaceId + "/permissions/" + projectName,
+                data,
+                con
+                //{
+                //    headers: {
+                //        'Accept': '*/*',
+                //        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                //        'X-Requested-With': 'XMLHttpRequest'
+                //    }
+                //}
+                )
+                .success(function (data) {
+                    deferred.resolve(data); //resolve data
+                })
+                .error(function (err) { deferred.reject(); });
+
+
             return deferred.promise;
         };
 

@@ -484,48 +484,17 @@ angular.module('odeskApp')
 					firstNameValue=$scope.firstName; lastNameValue=$scope.lastName; emailValue=$scope.email; phoneValue=$scope.phone; countryValue=$scope.country; companyNameValue=$scope.companyName; jobTitleValue=$scope.jobTitle; checkValue=$scope.check;
 				$('#btn-preloader1').addClass('preloader');
 				$('#btn1').addClass('btn-disabled');
-				var appValue = [
-					{
-						"name": "firstName",
-						"value": $scope.firstName,
-						"description": firstNameDescription
-					},
-					{
-						"name": "lastName",
-						"value": $scope.lastName,
-						"description": lastNameDescription
-					},
-					{
-						"name": "email",
-						"value": $scope.email,
-						"description": emailDescription
-					},
-					{
-						"name": "phone",
-						"value": $scope.phone,
-						"description": phoneDescription
-					},
-					{
-						"name": "country",
-						"value": $scope.country,
-						"description": countryDescription
-					},
-					{
-						"name": "employer",
-						"value": $scope.companyName,
-						"description": companyNameDescription
-					},
-					{
-						"name": "jobtitle",
-						"value": $scope.jobTitle,
-						"description": jobTitleDescription
-					},
-					{
-						"name": "sales_can_contact",
-						"value": $scope.check,
-						"description": "Sales are able to contact this user"
-					}
-				];
+				var appValue = {
+                                    "firstName":$scope.firstName,
+                                    "lastName":$scope.lastName,
+                                    "email":$scope.email,
+                                    "phone":$scope.phone,
+                                    "country":$scope.country,
+                                    "employer":$scope.companyName,
+                                    "jobtitle":$scope.jobtitle,
+                                    "sales_can_contact":$scope.check
+                                    }
+
 				Profile.update(appValue);
 				}
 				else {
