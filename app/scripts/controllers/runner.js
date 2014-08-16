@@ -14,7 +14,7 @@
 
 'use strict';
 angular.module('odeskApp')
-    .controller('RunnerCtrl', function ($scope, $timeout, Workspace, Project, Users, $http, $q) {
+    .controller('RunnerCtrl', function ($scope, Workspace, $http, $q) {
 
       $scope.runners = [];
       $scope.projects = [];
@@ -25,7 +25,7 @@ angular.module('odeskApp')
         angular.forEach($scope.workspaces, function (value) {
           // Get workspace related resources
           $http({method: 'GET', url:"/api/runner/"+ value.workspaceReference.id +"/resources" }).
-            success(function (data, status) {
+            success(function (data) {
 
               var workspaceResources = {
                 workspaceName: value.workspaceReference.name,
@@ -41,7 +41,7 @@ angular.module('odeskApp')
               $scope.projects = $scope.projects.concat(data);
               angular.forEach($scope.projects, function (project) {
                 $http({method: 'GET', url:"/api/runner/"+ value.workspaceReference.id +"/processes?project="+project.path }).
-                  success(function (data, status) {
+                  success(function (data) {
                     if(data.length > 0){
                       var currentRunner = data[data.length-1]
                       if(currentRunner.status == "RUNNING"){
@@ -90,4 +90,10 @@ angular.module('odeskApp')
         });
 
       };
+
+      $scope.refresh = function (){
+        location.reload();
+      };
+
+
     });

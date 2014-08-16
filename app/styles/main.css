@@ -854,3 +854,6 @@ transform:rotate(360deg)
   color: #898989;
   text-transform: none !important;
 }
+.hr-margin{ margin: 10px 0px !important;}
+.mrg-7 { margin: 7px 0px !important;}
+.mrg-top0 { margin-top: 0px;}
