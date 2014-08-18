@@ -28,25 +28,30 @@ angular.module('odeskApp')
         $scope.activeProject = null;
         $scope.activeMembers = [];
         $scope.workspaces = [];
+        $scope.currentUserId = '';
 
         //private methods
         // for one user set the read write properties
-        var setPermissions = function (projectPermissions, member, role) {
+        var setPermissions = function (projectPermissions, member) {
             angular.forEach(projectPermissions, function (perm) {
-                if (perm.principal.type == "GROUP" && perm.principal.name == role) {
-                    member.permissions = perm.permissions;
-
-                    angular.forEach(perm.permissions, function (currentPerm) {
-                        if (currentPerm == 'read') {
-                            member.read = true;
-                        } else if (currentPerm == 'write') {
-                            member.write = true;
-                        }
-                    });
-
-                } else if (perm.principal.type == "USER") {
-                    // if(&& perm.principal.name == role) {
-                    console.log("to be done!");
+                if (perm.principal.type === "USER" && perm.principal.name === member.userId) {
+                    setPermisionRules(perm, member);
+                } else if ( perm.principal.type === "GROUP" && member.roles.indexOf(perm.principal.name) !== -1 ) {
+                    setPermisionRules(perm, member);
+                }
+            });
+        };
+        
+        var setPermisionRules = function(permission, member){
+            member.read = false;
+            member.write = false;
+            member.permissions = permission.permissions;
+            
+            angular.forEach(permission.permissions, function (currentPerm) {
+                if (currentPerm == 'read') {
+                    member.read = true;
+                } else if (currentPerm == 'write') {
+                    member.write = true;
                 }
             });
         };
@@ -85,21 +90,22 @@ angular.module('odeskApp')
 
             Project.getPermissions(project.workspaceId, project.name).then(function (data) { // get the permissions for the current selected project
                 var projectPermissions = data;
-                var projectPermissionsArray = $.map(projectPermissions, function (value, index) { // conver to array
-                    return [value];
+                var usersPermissions = [];
+                var groupsPermissions = [];
+                
+                angular.forEach(projectPermissions, function(permission){
+                    if ( permission.principal.type === 'USER' ) {
+                        usersPermissions.push(permission);
+                    } else if ( permission.principal.type === 'GROUP' ) {
+                        groupsPermissions.push(permission);
+                    }
                 });
                 
                 angular.forEach($scope.activeMembers, function (member) {
-                    var isUserAdmin = getAdmin(member.roles);
-                    if (isUserAdmin) {
-                        setPermissions(projectPermissionsArray, member, "workspace/admin");
-                    } else {
-                        setPermissions(projectPermissionsArray, member, "workspace/developer");
-                    }
-
+                    setPermissions(groupsPermissions, member);
+                    setPermissions(usersPermissions, member);
                 });
             });
-
 
             $scope.activeProject = project; // used in setRead setWrite
             $scope.selected = project;
@@ -134,10 +140,26 @@ angular.module('odeskApp')
         // used to save permissions to server
         $scope.setReadWrite = function (member) {
             // update server
-            var permissions = { "permissions": getPermisions(member), "principal": { "name": member.userId, "type": "USER" } };
+            var permissions = [{ "permissions": getPermisions(member), "principal": { "name": member.userId, "type": "USER" } }];
 
             Project.setPermissions($scope.activeProject.workspaceId, $scope.activeProject.name, permissions).then(function (data) {
                 console.log("Successfully set permisions!");
+            });
+        };
+        
+        $scope.removeMember = function (member) {
+            Workspace.removeMember($scope.activeProject.workspaceId, member.userId).then(function (data) {
+                var removedMemberIndex = -1
+                angular.forEach( $scope.activeMembers, function( singleMember, index ) {
+                    if (singleMember.userId === member.userId) {
+                        removedMemberIndex = index;
+                    }
+                });
+                if (removedMemberIndex > -1) {
+                    $scope.activeMembers.splice(removedMemberIndex, 1);
+                }
+            }, function (error) {
+                console.log(error);
             });
         };
 
@@ -207,6 +229,7 @@ angular.module('odeskApp')
 
             $http({ method: 'GET', url: '/api/account' }).success(function (account, status) {
                 $scope.ownerWorkspace = _.pluck(_.pluck(account, 'accountReference'), 'name');
+                $scope.currentUserId = account[0].userId;
             });
 
             $timeout(function () {
