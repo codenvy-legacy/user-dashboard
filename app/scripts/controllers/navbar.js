@@ -29,6 +29,10 @@ angular.module('odeskApp')
                 'link': '#/dashboard'
             },
             {
+                'title': 'Runners',
+                'link': '#/runner'
+            },
+            {
                 'title': 'Factories',
                 'link': '#/factories'
             },
@@ -39,10 +43,6 @@ angular.module('odeskApp')
             {
                 'title': 'Account',
                 'link': '#/account'
-            },
-            {
-                'title': 'Runners',
-                'link': '#/runner'
             }
             /*,
             {
