@@ -444,7 +444,7 @@ transform:rotate(360deg)
 }
 .panel .panel-footer .fa-fw
 {
-  border: 1px solid #008000;
+  /*border: 1px solid #008000;*/
   width: 20px;
 }
 
