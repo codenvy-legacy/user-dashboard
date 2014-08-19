@@ -14,12 +14,11 @@
 
 'use strict';
 angular.module('odeskApp')
-    .controller('RunnerCtrl', function ($scope, Workspace, $http, $q) {
-
+    .controller('RunnerCtrl', function ($scope, Workspace, $http, $q, $cookies, $timeout) {
       $scope.runners = [];
       $scope.projects = [];
       $scope.ramConsumption = [];
-
+      $scope.refreshStatus = $cookies['refreshStatus'];
       Workspace.all(function (resp) {
         $scope.workspaces = _.filter(resp, function (workspace) {return !workspace.workspaceReference.temporary;});
         angular.forEach($scope.workspaces, function (value) {
@@ -95,5 +94,17 @@ angular.module('odeskApp')
         location.reload();
       };
 
+      $scope.refreshStatusCheck = function () {
+        if($cookies.refreshStatus == "DISABLED"){
+          $cookies.refreshStatus = "ENABLED"
+        }else{
+          $cookies.refreshStatus = "DISABLED"
+        }
+        $scope.refresh();
+      };
+
+      if($cookies.refreshStatus == "ENABLED"){
+        $timeout($scope.refresh, 30000);
+      }
 
     });
