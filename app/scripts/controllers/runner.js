@@ -62,15 +62,28 @@ angular.module('odeskApp')
         });
       });
 
-      $scope.shutdownRunner = function (shutdownUrl){
+      $scope.shutdownRunnerRefresh = function (shutdownUrl){
 
         var deferred = $q.defer();
 
         $http({method: 'POST', url: shutdownUrl})
           .success(function (data) {
             deferred.resolve(data);
+            $scope.refresh();
           })
           .error(function (err) { deferred.reject(); });
+        return deferred.promise;
+      };
+
+      $scope.shutdownRunner = function (shutdownUrl){
+
+        var deferred = $q.defer();
+
+        $http({method: 'POST', url: shutdownUrl})
+            .success(function (data) {
+              deferred.resolve(data);
+            })
+            .error(function (err) { deferred.reject(); });
         return deferred.promise;
       };
 
