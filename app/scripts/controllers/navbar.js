@@ -59,7 +59,7 @@ angular.module('odeskApp')
         $scope.helpMenu= [
             {
                 'title': 'Codenvy Help',
-                'link': 'https://docs.codenvy.com'
+                'link': 'http://docs.codenvy-next.com'
             },
             {
                 'title': 'Forum',
