@@ -71,10 +71,10 @@
                   <div class="row">
                     <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                       <strong>{{runner.project.name}}</strong>
-                      <div class="help-block mrg0">{{runner.project.workspaceName}}</div>
+                      <div class="workspace-block">{{runner.project.workspaceName}}</div>
                     </div>
                     <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
-                      <form class="form-inline btn-rt" role="search">
+                      <form class="form-inline btn-rt mrg-top10" role="search">
                         <button type="submit" class="btn btn-ttl btn-sm-text" ng-click="shutdownRunner(runner.shutdownUrl)">Shut down</button>
                         <button type="submit" class="btn btn-ttl btn-sm-text" ng-click="restartRunner(runner.shutdownUrl, runner.project)">Restart</button>
                       </form>
@@ -85,25 +85,25 @@
                 <div class="panel-body">
                   <form class="form-horizontal" role="form" >
                     <div class="form-group mrg0">
-                      <label class="col-lg-4 col-sm-4 control-label font-11 pad0">State :</label>
+                      <label class="col-lg-4 col-sm-4 control-label font-11 pad0 runner-left-text">State :</label>
                       <div class="col-lg-8 col-sm-8 raw-pad">
-                        <p class="form-control-static font-11 pad0"> <span class="start-btn"></span>Running </p>
+                        <p class="form-control-static font-11 pad0"> <span class="running-btn"></span> <span class="runner-right-text">Running</span> </p>
                       </div>
                     </div>
                     <div class="form-group mrg0">
-                      <label class="col-lg-4 col-sm-4 control-label font-11 pad0">Time Running :</label>
+                      <label class="col-lg-4 col-sm-4 control-label font-11 pad0 runner-left-text">Time Running :</label>
                       <div class="col-lg-8 col-sm-8 raw-pad">
-                        <p class="form-control-static font-11 pad0">{{runner.startTime | date:'medium'}} </p>
+                        <p class="form-control-static font-11 pad0"><span class="runner-right-text">{{runner.startTime | date:'medium'}}</span> </p>
                       </div>
                     </div>
                     <div class="form-group mrg0">
-                      <label class=" col-lg-4 col-sm-4 control-label font-11 pad0">URL :</label>
+                      <label class=" col-lg-4 col-sm-4 control-label font-11 pad0 runner-left-text">URL :</label>
                       <div class="col-lg-8 col-sm-8 raw-pad">
                         <p class="form-control-static font-11 pad0"><a href="{{runner.url}}" target="_blank" title="{{runner.url}}" ng-if="runner.url.length > 0">{{runner.url.substr(0,30)}}<span ng-if="runner.url.length>30">...</span></a></p>
                       </div>
                     </div>
                     <div class="form-group mrg0">
-                      <label class="col-lg-4 col-sm-4 control-label font-11 pad0">Docker Recipe :</label>
+                      <label class="col-lg-4 col-sm-4 control-label font-11 pad0 runner-left-text">Docker Recipe :</label>
                       <div class="col-lg-8 col-sm-8 raw-pad">
                         <p class="form-control-static font-11 pad0"><a href="{{runner.dockerRecipe}}" target="_blank" title="{{runner.dockerRecipe}}" ng-if="runner.dockerRecipe.length > 0">{{runner.dockerRecipe.substr(0,30)}}<span ng-if="runner.dockerRecipe.length>30">...</span></a></p>
                       </div>
@@ -112,10 +112,10 @@
                 </div>
                 <div class="btn-group btn-group-justified">
                   <div class="btn-group">
-                    <a class="btn btn-ttl" href="{{runner.project.ideUrl}}" target="_blank">Open IDE</a>
+                    <a class="btn btn-ttl btn-bdr-lf" href="{{runner.project.ideUrl}}" target="_blank">Open IDE</a>
                   </div>
                   <div class="btn-group">
-                    <a class="btn btn-ttl" href="{{runner.terminalUrl}}" target="_blank">Terminal</a>
+                    <a class="btn btn-ttl btn-bdr-rt " href="{{runner.terminalUrl}}" target="_blank">Terminal</a>
                   </div>
                 </div>
               </div>
