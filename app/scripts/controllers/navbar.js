@@ -39,6 +39,10 @@ angular.module('odeskApp')
             {
                 'title': 'Account',
                 'link': '#/account'
+            },
+            {
+                'title': 'Runners',
+                'link': '#/runner'
             }
             /*,
             {
@@ -55,7 +59,7 @@ angular.module('odeskApp')
         $scope.helpMenu= [
             {
                 'title': 'Codenvy Help',
-                'link': 'https://docs.codenvy.com'
+                'link': 'http://docs.codenvy-next.com'
             },
             {
                 'title': 'Forum',

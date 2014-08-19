@@ -1,294 +1,361 @@
 <div class="breadcrumb-wrap">
-  <ul class="breadcrumb projectnav breadcrumb clearfix">
-    
-    <li class="new-project" ng-if="!box">
-      <div ng-if="workspaces.length == 1">
-        <a class="clearfix button" href="/ws/{{workspaces[0].workspaceReference.name}}?action=newProject" target="_blank">
-          <span class="glyphicon glyphicon-plus"></span> <strong>Create New Project</strong>
-        </a>
-      </div>
-      <div ng-if="workspaces.length > 1">
-        <button type="button" class="dropdown-toggle button" data-toggle="dropdown">
-          <span class="glyphicon glyphicon-plus"></span> <strong>Create New Project<span class="caret"></span></strong>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          <li><span>Select Destination Workspace:</span></li>
-          <li ng-repeat="workspace in workspaces"><a href="/ws/{{workspace.workspaceReference.name}}?action=newProject" target="_blank">{{workspace.workspaceReference.name}}</a></li>
-        </ul>
-      </div>
-    </li>
-    <li> You have access to {{(projects.length == 0) ? '-' : projects.length}} projects in {{workspaces.length}} workspaces</li>
-    <li class="dropdown user-dropdown"> SORT BY:
-      <a href="" class="dropdown-toggle" data-toggle="dropdown"><i ng-class="reverse ? 'fa-caret-up' : 'fa-caret-down'" class="fa"></i> {{param == 'modificationDate' ? 'Date Modified' : 'Name'}}</a>
-      <ul class="dropdown-menu">
-        <li><a href="" ng-click="reverse = true; param = 'name'"><i class="fa fa-caret-up garrow"></i> Name</a></li>
-        <li><a href="" ng-click="reverse = false; param = 'name'"><i class="fa fa-caret-down garrow"></i> Name</a></li>
-        <li><a href="" ng-click="reverse = true; param = 'modificationDate'"><i class="fa fa-caret-up garrow"></i> Date Created</a></li>
-        <li><a href="" ng-click="reverse = false; param = 'modificationDate'"><i class="fa fa-caret-down garrow"></i> Date Created</a></li>
-      </ul>
-    </li>
-    <li class="dropdown user-dropdown"> WORKSPACE:
-      <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down garrow"></i> {{filter.workspaceName || 'All'}}</a>
-      <ul class="dropdown-menu">
-        <li><a href="" ng-click="filter.workspaceName=''">All</a></li>
-        <li ng-repeat="workspace in workspaces" ng-click="filter.workspaceName=workspace.workspaceReference.name"><a href="">{{workspace.workspaceReference.name}}</a></li>
-      </ul>
-    </li>
-    <li> 
-      <span>VIEW AS:</span>
-      <a href="" ng-click="box = 0" > <i style="font-size:16px;" ng-class="{'garrow':box == 1}" class="fa fa-bars" rel="tooltip" title="List View"></i></a>
-      <a href="" ng-click="box = 1"> <i style="font-size:16px;" ng-class="{'garrow':box == 0}" class="fa fa-th-large" rel="tooltip" title="Grid View"></i></a>
-    </li>
-    <li class="search1 clearfix">
-      <div>
-        <input type="button" class="searchfield "/>
-      </div><!-- content title-->
-      <div class="searchfull clearfix" style="display:none" >
-        <input type="button" class="closeBtn" style="display:none;" ng-click="filter = ''" />
-        <input type="text" ng-model="filter.name" class="searchfield " placeholder="Search for Projects"/>
-      </div>
-    </li>
-  </ul>
+    <ul class="breadcrumb projectnav breadcrumb clearfix">
+
+        <li class="new-project" ng-if="!box">
+            <div ng-if="workspaces.length == 1">
+                <a class="clearfix button" href="/ws/{{workspaces[0].workspaceReference.name}}?action=newProject" target="_blank">
+                    <span class="glyphicon glyphicon-plus"></span><strong>Create New Project</strong>
+                </a>
+            </div>
+            <div ng-if="workspaces.length > 1">
+                <button type="button" class="dropdown-toggle button" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-plus"></span><strong>Create New Project<span class="caret"></span></strong>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><span>Select Destination Workspace:</span></li>
+                    <li ng-repeat="workspace in workspaces"><a href="/ws/{{workspace.workspaceReference.name}}?action=newProject" target="_blank">{{workspace.workspaceReference.name}}</a></li>
+                </ul>
+            </div>
+        </li>
+        <li>You have access to {{(projects.length == 0) ? '-' : projects.length}} projects in {{workspaces.length}} workspaces</li>
+        <li class="dropdown user-dropdown">SORT BY:
+      <a href="" class="dropdown-toggle" data-toggle="dropdown"><i ng-class="reverse ? 'fa-caret-up' : 'fa-caret-down'" class="fa"></i>{{param == 'modificationDate' ? 'Date Modified' : 'Name'}}</a>
+            <ul class="dropdown-menu">
+                <li><a href="" ng-click="reverse = true; param = 'name'"><i class="fa fa-caret-up garrow"></i>Name</a></li>
+                <li><a href="" ng-click="reverse = false; param = 'name'"><i class="fa fa-caret-down garrow"></i>Name</a></li>
+                <li><a href="" ng-click="reverse = true; param = 'modificationDate'"><i class="fa fa-caret-up garrow"></i>Date Created</a></li>
+                <li><a href="" ng-click="reverse = false; param = 'modificationDate'"><i class="fa fa-caret-down garrow"></i>Date Created</a></li>
+            </ul>
+        </li>
+        <li class="dropdown user-dropdown">WORKSPACE:
+      <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-down garrow"></i>{{filter.workspaceName || 'All'}}</a>
+            <ul class="dropdown-menu">
+                <li><a href="" ng-click="filter.workspaceName=''">All</a></li>
+                <li ng-repeat="workspace in workspaces" ng-click="filter.workspaceName=workspace.workspaceReference.name"><a href="">{{workspace.workspaceReference.name}}</a></li>
+            </ul>
+        </li>
+        <li>
+            <span>VIEW AS:</span>
+            <a href="" ng-click="box = 0"><i style="font-size: 16px;" ng-class="{'garrow':box == 1}" class="fa fa-bars" rel="tooltip" title="List View"></i></a>
+            <a href="" ng-click="box = 1"><i style="font-size: 16px;" ng-class="{'garrow':box == 0}" class="fa fa-th-large" rel="tooltip" title="Grid View"></i></a>
+        </li>
+        <li class="search1 clearfix">
+            <div>
+                <input type="button" class="searchfield " />
+            </div>
+            <!-- content title-->
+            <div class="searchfull clearfix" style="display: none">
+                <input type="button" class="closeBtn" style="display: none;" ng-click="filter = ''" />
+                <input type="text" ng-model="filter.name" class="searchfield " placeholder="Search for Projects" />
+            </div>
+        </li>
+    </ul>
 </div>
-<div class="row"></div><!-- work in progress ... code may contain inline css-->
+<div class="row"></div>
+<!-- work in progress ... code may contain inline css-->
 
 <div class="col-md-12 factorylistbox" ng-show="projectselect">
-  <img style="margin-left: 68px; margin-top: -37px;" src="./images/up-arrow.png"/>
-  <h3 ng-click="projectselect=0" class="pull-right"><a href="">x</a></h3>
-  <div ng-include="'views/factory-carousal.html'"></div>
+    <img style="margin-left: 68px; margin-top: -37px;" src="./images/up-arrow.png" />
+    <h3 ng-click="projectselect=0" class="pull-right"><a href="">x</a></h3>
+    <div ng-include="'views/factory-carousal.html'"></div>
 </div>
 
 <div class="project-box clearfix" ng-if="box">
 
-  <div class="new-project col-md-2">
+    <div class="new-project col-md-2">
 
-    <div class="box box-two" ng-if="workspaces.length == 1">
-      <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=newProject" target="_blank">
-        <span class="glyphicon white glyphicon-plus"></span><br/>
-        <div class="text-center" style="color:#919191"><strong>Create New Project</strong></div>
-      </a>
-    </div><!-- Box -->
-    <div class="box box-one" ng-if="workspaces.length > 1">
-      <button type="button" class="dropdown-toggle" data-toggle="dropdown">
-        <span class="glyphicon white glyphicon-plus"></span> <br><strong>Create New Project <span class="caret"></span></strong>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><span>Select Destination Workspace:</span></li>
-        <li ng-repeat="workspace in workspaces"><a href="/ws/{{workspace.workspaceReference.name}}?action=newProject" target="_blank">{{workspace.workspaceReference.name}}</a></li>
-      </ul>
-    </div><!-- Box -->
-  
-  </div><!-- New Project -->
+        <div class="box box-two" ng-if="workspaces.length == 1">
+            <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=newProject" target="_blank">
+                <span class="glyphicon white glyphicon-plus"></span>
+                <br />
+                <div class="text-center" style="color: #919191"><strong>Create New Project</strong></div>
+            </a>
+        </div>
+        <!-- Box -->
+        <div class="box box-one" ng-if="workspaces.length > 1">
+            <button type="button" class="dropdown-toggle" data-toggle="dropdown">
+                <span class="glyphicon white glyphicon-plus"></span>
+                <br>
+                <strong>Create New Project <span class="caret"></span></strong>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><span>Select Destination Workspace:</span></li>
+                <li ng-repeat="workspace in workspaces"><a href="/ws/{{workspace.workspaceReference.name}}?action=newProject" target="_blank">{{workspace.workspaceReference.name}}</a></li>
+            </ul>
+        </div>
+        <!-- Box -->
 
-  <div class="col-md-10">
-    <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <a href="{{project.ideUrl}}" target="_blank">
-            <div class="row">
-              <div class="col-md-3 col-sm-3 col-xs-3"  style="width:54px">
-                <img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt="">
-              </div>
-              <div class="col-md-9 col-sm-9 col-xs-9">
-                <h3 class="panel-title"><strong>{{project.name}}</strong></h3>
-                <span>{{project.workspaceName}}</span>
-              </div>
-            </div><!-- .row -->
-          </a>
-        </div><!-- panel-heading -->
-        <div class="panel-body" ng-if="project.description != '' ">{{project.description}}</div>
-        <div class="panel-body empty" ng-if="project.description == '' " ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><a href="">Add description...</a></div>
-        <div class="panel-footer">
-          <div class="row" ng-click="selectProject(project)">
-            <div class="col-md-4 col-sm-4 col-xs-4" data-toggle="modal" data-target="#privacyModal" ng-if="project.workspaceName==ownerWorkspace"><div class="row" ><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
-            <div class="col-md-4 col-sm-4 col-xs-4" data-toggle="modal" data-target="#privacyMessageModal" ng-if="project.workspaceName!=ownerWorkspace"><div class="row" ><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></div>
-            <div class="col-md-4 col-sm-4 col-xs-4" data-toggle="modal" data-target="#developersModal"><div class="row"><i class="fa fa-fw fa-users"></i><small> Developers</small></div></div>
-            <div class="col-md-4 col-sm-4 col-xs-4" data-toggle="modal" data-target="#projectDetailModal"><div class="row"><i class="fa fa-fw fa-cog"></i></div></div>
-          </div><!-- .row -->
-        </div><!-- panel-footer -->
-      </div><!-- panel-default -->
-    </div><!-- projectbox -->
-  </div>
+    </div>
+    <!-- New Project -->
+
+    <div class="col-md-10">
+        <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a href="{{project.ideUrl}}" target="_blank">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-3 col-xs-3" style="width: 54px">
+                                <img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt="">
+                            </div>
+                            <div class="col-md-9 col-sm-9 col-xs-9">
+                                <h3 class="panel-title"><strong>{{project.name}}</strong></h3>
+                                <span>{{project.workspaceName}}</span>
+                            </div>
+                        </div>
+                        <!-- .row -->
+                    </a>
+                </div>
+                <!-- panel-heading -->
+                <div class="panel-body" ng-if="project.description != '' ">{{project.description}}</div>
+                <div class="panel-body empty" ng-if="project.description == '' " ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><a href="">Add description...</a></div>
+                <div class="panel-footer">
+                    <div class="row" ng-click="selectProject(project)">
+                        <div class="col-md-4 col-sm-4 col-xs-4" data-toggle="modal" data-target="#privacyModal" ng-if="project.workspaceName==ownerWorkspace">
+                            <div class="row"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small>{{project.visibility}}</small></div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4" data-toggle="modal" data-target="#privacyMessageModal" ng-if="project.workspaceName!=ownerWorkspace">
+                            <div class="row"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small>{{project.visibility}}</small></div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4" data-toggle="modal" data-target="#developersModal">
+                            <div class="row"><i class="fa fa-fw fa-users"></i><small>Developers</small></div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4" data-toggle="modal" data-target="#projectDetailModal">
+                            <div class="row"><i class="fa fa-fw fa-cog"></i></div>
+                        </div>
+                    </div>
+                    <!-- .row -->
+                </div>
+                <!-- panel-footer -->
+            </div>
+            <!-- panel-default -->
+        </div>
+        <!-- projectbox -->
+    </div>
 </div>
 
-<div ng-if="notification" style="width:300px" class="col-md-3 projectbox" data-toggle="modal" data-target="#myModal">
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      <div class="row">
-        <div class="col-md-12">
-          <h3 class="panel-title white"><strong>WIN 6 MONTHS PREMIUM SERVICES</strong></h3>
+<div ng-if="notification" style="width: 300px" class="col-md-3 projectbox" data-toggle="modal" data-target="#myModal">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="panel-title white"><strong>WIN 6 MONTHS PREMIUM SERVICES</strong></h3>
+                </div>
+            </div>
+            <!-- .row -->
         </div>
-      </div><!-- .row -->
-    </div><!-- panel-header -->
-    <div class="panel-body">
-      <ul class="list-unstyled">
-        <li>1 Organize a User Group and we will be there,</li>
-        <li>2 Organize a User Presentation and we will be there,</li>
-        <li>3 Organize a User Classroom and we will be there,</li>
-      </ul>
-    </div><!-- panel-body -->
-    <div class="panel-footer">
-      <div class="row">
-        <div class="col-md-12 text-center">Contact US</div>
-      </div><!-- .row -->
-    </div><!-- panel-footer -->
-  </div><!-- panel-primary -->
-</div><!-- projectbox -->
+        <!-- panel-header -->
+        <div class="panel-body">
+            <ul class="list-unstyled">
+                <li>1 Organize a User Group and we will be there,</li>
+                <li>2 Organize a User Presentation and we will be there,</li>
+                <li>3 Organize a User Classroom and we will be there,</li>
+            </ul>
+        </div>
+        <!-- panel-body -->
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-12 text-center">Contact US</div>
+            </div>
+            <!-- .row -->
+        </div>
+        <!-- panel-footer -->
+    </div>
+    <!-- panel-primary -->
+</div>
+<!-- projectbox -->
 
 <div class="projectlist" ng-if="!box">
-  <table class="table table-hover">
-    <tr ng-repeat="project in projects| filter: filter | orderBy:param:reverse" >
-      <td class="col-md-1 image"><a href="{{project.ideUrl}}" target="_blank"><img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt=""></a></td>
-      <td class="col-md-1">
-        <h3 class="panel-title"><a href="{{project.ideUrl}}" target="_blank"><strong>{{project.name}}</strong></a></h3>
-        <div class="mic-info">{{project.workspaceName}}</div>
-      </td>
-      <td class="col-md-6"><div class="comment-text">{{project.description}}</div></td>
-      <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#privacyModal" ng-if="project.workspaceName==ownerWorkspace"><div class="button"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></td>
-      <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#privacyMessageModal" ng-if="project.workspaceName!=ownerWorkspace"><div class="button"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small> {{project.visibility}}</small></div></td>
-      <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#developersModal"><div class="button"><i class="fa fa-fw fa-users"></i><small> Developers</small></div></td>
-      <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><div class="button"><i class="fa fa-fw fa-cog"></i></div></td>
-    </tr><!-- panel-default -->
-  </table><!-- row -->
+    <table class="table table-hover">
+        <tr ng-repeat="project in projects| filter: filter | orderBy:param:reverse">
+            <td class="col-md-1 image">
+                <a href="{{project.ideUrl}}" target="_blank">
+                    <img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt=""></a>
+            </td>
+            <td class="col-md-1">
+                <h3 class="panel-title"><a href="{{project.ideUrl}}" target="_blank"><strong>{{project.name}}</strong></a></h3>
+                <div class="mic-info">{{project.workspaceName}}</div>
+            </td>
+            <td class="col-md-6">
+                <div class="comment-text">{{project.description}}</div>
+            </td>
+            <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#privacyModal" ng-if="project.workspaceName==ownerWorkspace">
+                <div class="button"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small>{{project.visibility}}</small></div>
+            </td>
+            <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#privacyMessageModal" ng-if="project.workspaceName!=ownerWorkspace">
+                <div class="button"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small>{{project.visibility}}</small></div>
+            </td>
+            <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#developersModal">
+                <div class="button"><i class="fa fa-fw fa-users"></i><small>Developers</small></div>
+            </td>
+            <td class="col-md-1 text-center" ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal">
+                <div class="button"><i class="fa fa-fw fa-cog"></i></div>
+            </td>
+        </tr>
+        <!-- panel-default -->
+    </table>
+    <!-- row -->
 </div>
+
 <div class="modal fade" id="privacyModal" tabindex="-1" role="dialog" aria-labelledby="privacyModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header" style="padding:10px;background:#f0f0f0;">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="privacyModalLabel">Update Project Privacy</h4>
-      </div>
-      <div class="modal-body">
-        <h4>Select the appropriate privacy for {{selected.name}}</h4>
-        <div class="form-group">
-          <label><input type="radio" ng-model="selected.visibility" value="public"> Public</label>
-          <p class="help-block">Everyone can see the project, You choose who can collabrate</p>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="privacyModalLabel">Update Project Privacy</h4>
+            </div>
+            <div class="modal-body">
+                <h4>Select the appropriate privacy for {{selected.name}}</h4>
+                <div class="form-group">
+                    <label>
+                        <input type="radio" ng-model="selected.visibility" value="public">
+                        Public</label>
+                    <p class="help-block">Everyone can see the project, You choose who can collabrate</p>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="radio" ng-model="selected.visibility" value="private">
+                        Private</label>
+                    <p class="help-block">You choose who can see and who can collabrate</p>
+                </div>
+            </div>
+            <!-- .modal-body -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="switchVisibility()" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
         </div>
-        <div class="form-group">
-          <label><input type="radio" ng-model="selected.visibility" value="private"> Private</label>
-          <p class="help-block">You choose who can see and who can collabrate</p>
-        </div>
-      </div><!-- .modal-body -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" ng-click="switchVisibility()" data-dismiss="modal">Ok</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-      </div>
     </div>
-  </div>
 </div>
 
 <!-- Modal -->
 <div class="modal fade" id="developersModal" tabindex="-1" role="dialog" aria-labelledby="developersModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header" style="padding:10px;background:#f0f0f0;">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="developersModalLabel">Manage Project &amp; Developers</h4>
-      </div>
-      <div class="modal-body">
-        <form>
-            <div class="permission">
-              <!--  {{activeMembers}}-->
-                <table class="table borderless">
-                    <thead>
-                        <tr>
-                            <th>
-                                <strong>Developers Permissions:</strong>
-                                <p>List of Workspace's developers</p>
-                            </th>
-                            <th>Read</th>
-                            <th>Write</th>
-                            <th>&nbsp;</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr ng-repeat="member in activeMembers">
-                            <td>{{member.fullName}} ({{member.email}})</td>
-                            <td><input type="checkbox" ng-model="member.read" ng-change="setReadWrite(member)"  ></td>
-                            <td><input type="checkbox"  ng-model="member.write" ng-change="setReadWrite(member)" ></td>
-                            <td class="last"><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                        </tr>
-                    </tbody>
-                </table>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="developersModalLabel">Manage Project &amp; Developers</h4>
             </div>
-        </form>
-        <div class="invitation">
-          <strong>Invite other Developers</strong>
-            <form class="form-inline">
-                <div class="form-group clearfix">
-                    <input type="text" class="form-control pull-left" ng-model="emailList" placeholder="Type email addresses seperated by commas">
-                    <input type="submit" class="btn btn-success pull-right" value="Invite" ng-click="invite()">
+            <div class="modal-body">
+                <form>
+                <div class="permission">
+                    <table class="table borderless">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <strong>Developers Permissions:</strong>
+                                    <p>List of Workspace's developers</p>
+                                </th>
+                                <th>Read</th>
+                                <th>Write</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="member in activeMembers" ng-if="member.userId !== currentUserId">
+                                <td>{{member.fullName}} ({{member.email}})</td>
+                                <td>
+                                    <input type="checkbox" ng-model="member.read" ng-change="setReadWrite(member)">
+                                </td>
+                                <td>
+                                    <input type="checkbox" ng-model="member.write" ng-change="setReadWrite(member)">
+                                </td>
+                                <td class="last"><a ng-click="removeMember(member)"><i class="fa fa-trash-o"></i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </form>
-            <p ng-show="showInviteError" style="background-color:#f7d6d5;color:#cc9291;font-weight: bold;  border: 1px solid #e18986;padding: 5px;margin: 5px;" >{{errors}} must be Codenvy user(s) before being added as developer(s) of your workspace.</p>
-          <p>These developers will be added to the workspace and be granted permissions accross all projects of the workspace.</p>
+                </form>
+                <div class="invitation" ng-show="isAdmin">
+                    <strong>Invite other Developers</strong>
+                    <form class="form-inline">
+                    <div class="form-group clearfix">
+                        <input type="text" class="form-control pull-left" ng-model="emailList" placeholder="Type email addresses seperated by commas">
+                        <input type="submit" class="btn btn-success pull-right" value="Invite" ng-click="invite()">
+                        <div id="btn-preloader1" style="display: none">
+                            <div id="bowlG">
+                                <div id="bowl_ringG">
+                                    <div class="ball_holderG">
+                                        <div class="ballG"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                    <p ng-show="showInviteError" style="background-color: #f7d6d5; color: #cc9291; font-weight: bold; border: 1px solid #e18986; padding: 5px; margin: 5px;">{{errors}} must be Codenvy user(s) before being added as developer(s) of your workspace.</p>
+                    <p>These developers will be added to the workspace and be granted permissions accross all projects of the workspace.</p>
+                </div>
+                <div class="invitation" ng-show="!isAdmin">
+                    <p>Invitation require Administrator permissions to the project's workspace.</p>
+                </div>
+            </div>
+            <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer" style="margin-top:10px;padding:10px; background:#f0f0f0;">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-      </div>
     </div>
-  </div>
 </div>
 
 <!-- Modal -->
 <div class="modal fade" id="projectDetailModal" tabindex="-1" role="dialog" aria-labelledby="projectDetailModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header" style="padding:10px;background:#f0f0f0;">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="projectDetailModalLabel">Project Detail</h4>
-      </div>
-      <div class="modal-body">
-          <div class="row">
-              <div class="col-md-6 form-group">
-                <label>Project Name:</label>
-                <input type="text" autofocus required="" ng-model="selected.name" placeholder="Intuit" name="name" id="name" class="form-control">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="projectDetailModalLabel">Project Detail</h4>
             </div>
-              <div class="col-md-6">
-                <label>Project Technology:</label>
+            <div class="modal-body">
                 <div class="row">
-                        <div style="width:54px" class="col-md-3"><img width="44" height="44" alt="" class="bordered" ng-src="./images/{{selected.projectTypeId}}.png"></div>
-                        <div class="col-md-9">
-                            <h3 ng-if="selected.projectTypeName == 'nameless' " class="panel-title">Blank Project</h3>
-                            <h3 ng-if="selected.projectTypeName != 'nameless' " class="panel-title">{{selected.projectTypeName}}</h3>
+                    <div class="col-md-6 form-group">
+                        <label>Project Name:</label>
+                        <input type="text" autofocus required="" ng-model="selected.name" placeholder="Intuit" name="name" id="name" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Project Technology:</label>
+                        <div class="row">
+                            <div style="width: 54px" class="col-md-3">
+                                <img width="44" height="44" alt="" class="bordered" ng-src="./images/{{selected.projectTypeId}}.png"></div>
+                            <div class="col-md-9">
+                                <h3 ng-if="selected.projectTypeName == 'nameless' " class="panel-title">Blank Project</h3>
+                                <h3 ng-if="selected.projectTypeName != 'nameless' " class="panel-title">{{selected.projectTypeName}}</h3>
+                            </div>
                         </div>
                     </div>
-             </div>
-        </div>
-           <div class="row">
-              <div class="col-md-12 form-group">
-                <label>Project Description:</label>
-                  <textarea ng-model="selected.description" class="form-control" placeholder="Add a Description..."></textarea>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <label>Project Description:</label>
+                        <textarea ng-model="selected.description" class="form-control" placeholder="Add a Description..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
+                <button type="button" class="btn btn-primary" ng-click="updateProject()" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-default" ng-click="cancelProject()" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger pull-left" ng-click="deleteProject()" data-dismiss="modal"><i class="fa fa-trash-o"></i></i> Delete Project</button>
             </div>
         </div>
-          </div>
-      <div class="modal-footer" style="margin-top:10px;padding:10px; background:#f0f0f0;">
-        <button type="button" class="btn btn-primary" ng-click="updateProject()" data-dismiss="modal">Ok</button>
-        <button type="button" class="btn btn-default" ng-click="cancelProject()" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-danger pull-left" ng-click="deleteProject()" data-dismiss="modal"><i class="fa fa-trash-o"></i></i> Delete Project</button>
-      </div>
     </div>
-  </div>
 </div>
 
 <!-- Modal -->
 <div class="modal fade" id="privacyMessageModal" tabindex="-1" role="dialog" aria-labelledby="privacyMessageModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header" style="padding:10px;background:#f0f0f0;">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="privacyMessageModalLabel">Project Privacy</h4>
-      </div>
-      <div class="modal-body">
-        <p>As a developer of the workspace, <b>{{selected.workspaceName}}</b>, you are not permitted to change privacy of the project. This action is only permitted for users with workspace/admin role designation.</p>
-      </div>
-      <div class="modal-footer" style="margin-top:10px;padding:10px; background:#f0f0f0;">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-      </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="privacyMessageModalLabel">Project Privacy</h4>
+            </div>
+            <div class="modal-body">
+                <p>As a developer of the workspace, <b>{{selected.workspaceName}}</b>, you are not permitted to change privacy of the project. This action is only permitted for users with workspace/admin role designation.</p>
+            </div>
+            <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
+
 

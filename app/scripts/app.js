@@ -87,6 +87,10 @@ angular.module('odeskApp', [
             templateUrl: BASE_URL + 'views/stats.html',
             controller: 'StatsCtrl'
         })
+      .when('/runner', {
+        templateUrl: BASE_URL + 'views/runner.html',
+        controller: 'RunnerCtrl'
+      })
         .when('/admin', {
             templateUrl: BASE_URL + 'views/admin.html',
             controller: 'AdminCtrl'

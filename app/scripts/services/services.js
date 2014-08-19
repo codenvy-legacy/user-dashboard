@@ -64,6 +64,19 @@ angular.module('odeskApp')
                 .error(function (err) { deferred.reject(); });
 
         };
+        
+        item.removeMember = function (workspaceId, userId) {
+            var deferred = $q.defer();
+            $http.delete('/api/workspace/' + workspaceId + '/members/' + userId)
+                .success(function (data) {
+                    deferred.resolve(data);
+                })
+                .error(function (err) {
+                    deferred.reject();
+                });
+            return deferred.promise;
+        };
+        
         return item;
     }]);
 
@@ -282,7 +295,7 @@ angular.module('odeskApp')
             query: { method: 'GET', params: {}, isArray: true },
             put: { method: 'PUT', params: { workspaceID: 'workspaceimb0rqn76p2euvn4' }, isArray: false }
         });
-
+        
         item.getPermissions = function (workspaceId, projectName) { // custom function added to the resource object
             var deferred = $q.defer();
             var con = {
@@ -298,36 +311,29 @@ angular.module('odeskApp')
                 .error(function (err) { deferred.reject(); });
             return deferred.promise;
         };
-
+        
         item.setPermissions = function (workspaceId, projectName, data) {
             var deferred = $q.defer();
+            
             var con = {
                 headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'Content-Type': 'application/json; charset=UTF-8'
                 }
             };
-
+            
             $http.post('/api/project/' + workspaceId + "/permissions/" + projectName,
                 data,
-                con
-                //{
-                //    headers: {
-                //        'Accept': '*/*',
-                //        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                //        'X-Requested-With': 'XMLHttpRequest'
-                //    }
-                //}
-                )
-                .success(function (data) {
-                    deferred.resolve(data); //resolve data
+                con)
+                .success(function (response) {
+                    deferred.resolve(response); //resolve data
                 })
-                .error(function (err) { deferred.reject(); });
-
-
+                .error(function (err) { 
+                    deferred.reject(); 
+                });
+              
             return deferred.promise;
         };
-
+        
         return item;
     }]);
 
