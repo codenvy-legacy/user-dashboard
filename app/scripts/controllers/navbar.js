@@ -28,23 +28,22 @@ angular.module('odeskApp')
                 'title': 'Projects',
                 'link': '#/dashboard'
             },
-            {
+            /*{
                 'title': 'Factories',
                 'link': '#/factories'
             },
             {
                 'title': 'Stats',
                 'link': '#/stats'
-            },
+            },*/
             {
                 'title': 'Account',
                 'link': '#/account'
             },
-            {
+            /*{
                 'title': 'Runners',
                 'link': '#/runner'
-            }
-            /*,
+            },
             {
                 'title': 'Subscriptions',
                 'link': '#/subscriptions'
