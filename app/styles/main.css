@@ -34,7 +34,7 @@ h4    { color: #363636; font-size: 10px; font-weight: bold; text-transform: uppe
 .breadcrumb > li + li:before { content: none; } 
 .breadcrumb li a { color: #177eb7;}
 
-.action-button { min-height:36px;background-color:#1d1d1d border:none;/* position: fixed;*/ width: 100%; z-index: 999; margin-bottom: 0;}
+.action-button { min-height:36px;background:none !important; padding: 0px 15px !important; border:none;/* position: fixed;*/ width: 100%; z-index: 999; margin-bottom: 0;}
 .action-button > li + li:before { content: none; } 
 .action-button li a { color: #177eb7;}
 
@@ -442,8 +442,10 @@ transform:rotate(360deg)
   -o-transition: -o-transform 0.1s ease-out;
   transition: transform 0.1s ease-out;
 }
-.panel .panel-footer .fa-fw {
-    width: 20px;
+.panel .panel-footer .fa-fw
+{
+  /*border: 1px solid #008000;*/
+  width: 20px;
 }
 
 /* Reset Default buttons
@@ -855,6 +857,7 @@ transform:rotate(360deg)
   color: #898989;
   text-transform: none !important;
 }
+
 .hr-margin{ margin: 10px 0px !important;}
 .mrg-7 { margin: 7px 0px !important;}
 .mrg-top0 { margin-top: 0px;}
@@ -863,3 +866,18 @@ transform:rotate(360deg)
 .mrg-top10 { margin-top: 9px;}
 .btn-bdr-lf { border-bottom: none; border-left: none;}
 .btn-bdr-rt { border-bottom: none; border-right: none; border-left: none;}
+
+#developersModal #showInviteError
+{
+  background-color: #f7d6d5;
+  color: #B35B59;
+  font-weight: bold;
+  border: 1px solid #e18986;
+  padding: 5px;
+  margin: 5px;
+}
+
+#developersModal .invitation p.darkBlack {
+  color: black;
+  font-weight: bold;
+}
