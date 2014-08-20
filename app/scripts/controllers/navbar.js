@@ -88,8 +88,13 @@ angular.module('odeskApp')
         };
         
         $http({method: 'GET', url: '/api/profile'}).success(function (profile, status) {
-          $scope.fullUserName = profile.attributes['firstName'] + ' ' + profile.attributes['lastName'];
+          if (profile.attributes.firstName && profile.attributes.lastName) {
+            $scope.fullUserName = profile.attributes.firstName + ' ' + profile.attributes.lastName;
+          } else {
+            $scope.fullUserName = profile.attributes.email;
+          }
         });
+        
         $scope.logout = function () {
             $http({
                 url: "/api/auth/logout",
