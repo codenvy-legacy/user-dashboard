@@ -108,6 +108,7 @@ angular.module('odeskApp')
       
       //public methods   
       $scope.selectProject = function (project) {
+        $scope.emailList = '';
         $scope.activeMembers = [];
 
         $scope.showInviteError = false;
@@ -215,6 +216,8 @@ angular.module('odeskApp')
       };
 
       $scope.showLoadingInvite = false;
+      $scope.showInviteError = false;
+      
       $scope.invite = function () {
         $scope.showLoadingInvite = true;
         $scope.errors = "";
@@ -231,6 +234,7 @@ angular.module('odeskApp')
 
                 $scope.emailList = '';
                 $scope.showLoadingInvite = false;
+                $scope.showInviteError = false;
               });
 
             });
