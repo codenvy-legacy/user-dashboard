@@ -856,3 +856,18 @@ transform:rotate(360deg)
   color: #898989;
   text-transform: none !important;
 }
+
+#developersModal #showInviteError
+{
+  background-color: #f7d6d5;
+  color: #B35B59;
+  font-weight: bold;
+  border: 1px solid #e18986;
+  padding: 5px;
+  margin: 5px;
+}
+
+#developersModal .invitation p.darkBlack {
+  color: black;
+  font-weight: bold;
+}

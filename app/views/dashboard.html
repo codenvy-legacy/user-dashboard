@@ -241,21 +241,34 @@
                     <table class="table borderless">
                         <thead>
                             <tr>
-                                <th>
-                                    <strong>Developers Permissions:</strong>
-                                    <p>List of Workspace's developers</p>
+                              <th ng-show="isAdmin">
+                                <strong >Developers Permissions:</strong>
+                                <p>List of Workspace's developers</p>
+                              </th>
+                              <th ng-show="!isAdmin">
+                                  <strong>User Permissions:</strong>
+                                    <p>You can only see your permission on this project</p>
                                 </th>
                                 <th>Read</th>
                                 <th>Write</th>
                                 <th>&nbsp;</th>
                             </tr>
                         </thead>
-
+                        
                         <tbody>
+                            <tr ng-if="isAdmin==false" >
+                                <td>{{currentUser.fullName}} ({{currentUser.email}})</td>
+                                <td>
+                                    <input type="checkbox" ng-model="currentUser.read" disabled="disabled" >
+                                </td>
+                                <td>
+                                    <input type="checkbox" ng-model="currentUser.write" disabled="disabled" >
+                                </td>
+                            </tr>
                             <tr ng-repeat="member in activeMembers" ng-if="member.userId !== currentUserId">
                                 <td>{{member.fullName}} ({{member.email}})</td>
                                 <td>
-                                    <input type="checkbox" ng-model="member.read" ng-change="setReadWrite(member)">
+                                    <input type="checkbox" ng-model="member.read" disabled="disabled" ng-change="setReadWrite(member)">
                                 </td>
                                 <td>
                                     <input type="checkbox" ng-model="member.write" ng-change="setReadWrite(member)">
@@ -266,33 +279,35 @@
                     </table>
                 </div>
                 </form>
-                <div class="invitation" ng-show="isAdmin">
-                    <strong>Invite other Developers</strong>
-                    <form class="form-inline">
-                    <div class="form-group clearfix">
-                        <input type="text" class="form-control pull-left" ng-model="emailList" placeholder="Type email addresses seperated by commas">
-                        <input type="submit" class="btn btn-success pull-right" value="Invite" ng-click="invite()">
-                        <div id="btn-preloader1" style="display: none">
-                            <div id="bowlG">
-                                <div id="bowl_ringG">
-                                    <div class="ball_holderG">
-                                        <div class="ballG"></div>
-                                    </div>
-                                </div>
-                            </div>
+              <div class="invitation" ng-show="isAdmin">
+                <strong>Invite other Developers</strong>
+                <p ng-show="showInviteError">These developers will be added to the workspace and be granted permissions accross all projects of the workspace.</p>
+
+                <form class="form-inline">
+                  <div class="form-group clearfix">
+                    <input type="text" class="form-control pull-left" ng-model="emailList" placeholder="Type email addresses seperated by commas">
+                    <input type="submit" class="btn btn-success pull-right" value="Invite" ng-click="invite()">
+                    <div id="btn-preloader1" style="display: none">
+                      <div id="bowlG">
+                        <div id="bowl_ringG">
+                          <div class="ball_holderG">
+                            <div class="ballG"></div>
+                          </div>
                         </div>
+                      </div>
                     </div>
-                    </form>
-                    <p ng-show="showInviteError" style="background-color: #f7d6d5; color: #cc9291; font-weight: bold; border: 1px solid #e18986; padding: 5px; margin: 5px;">{{errors}} must be Codenvy user(s) before being added as developer(s) of your workspace.</p>
-                    <p>These developers will be added to the workspace and be granted permissions accross all projects of the workspace.</p>
-                </div>
-                <div class="invitation" ng-show="!isAdmin">
-                    <p>Invitation require Administrator permissions to the project's workspace.</p>
+                  </div>
+                </form>
+                <p id="showInviteError" ng-show="showInviteError" >{{errors}} must be Codenvy user(s) before being added as developer(s) of your workspace.</p>
+                <p ng-show="!showInviteError">These developers will be added to the workspace and be granted permissions accross all projects of the workspace.</p>
+              </div>
+                <div class="invitation " ng-show="!isAdmin">
+                    <p class="darkBlack">Invitation require Administrator permissions to the project's workspace.</p>
                 </div>
             </div>
             <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                
             </div>
         </div>
     </div>
