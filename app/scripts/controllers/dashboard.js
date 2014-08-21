@@ -156,10 +156,14 @@ angular.module('odeskApp')
       };
 
       $scope.updateProject = function () {
-        $http({ method: 'PUT', url: $scope.selected.url, data: $scope.selected }).
+
+        if("/"+$scope.selected.name != $scope.selected.path){
+
+          $http({ method: 'POST', url: "/api/project/"+ $scope.selected.workspaceId+"/rename"+$scope.selected.path +"?name="+$scope.selected.name}).
             success(function (data, status) {
-              console.log(data);
-            });
+            console.log(data);
+          });
+        }
       };
 
       $scope.switchVisibility = function () {
