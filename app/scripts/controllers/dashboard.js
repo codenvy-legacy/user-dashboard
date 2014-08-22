@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, Profile, $http, $window) {
+    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, Profile, $http, $q, $window) {
       var old_description = '';
       $scope.box = 1;
       $scope.search = 0;
@@ -156,10 +156,26 @@ angular.module('odeskApp')
       };
 
       $scope.updateProject = function () {
-        $http({ method: 'PUT', url: $scope.selected.url, data: $scope.selected }).
+
+        return $q.all([
+          $http({ method: 'POST', url: "/api/project/"+ $scope.selected.workspaceId+"/rename"+$scope.selected.path +"?name="+$scope.selected.name}).
+              success(function (data, status) {
+                console.log(data);
+              }),
+
+          $http({ method: 'GET', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name}).
             success(function (data, status) {
-              console.log(data);
+              data.description = $scope.selected.description;
+              $scope.updated = data;
+
+          })
+        ]).then(function (results) {
+              $http({ method: 'PUT', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name, data: $scope.updated }).
+                success(function (data, status) {
+                console.log(data);
+              });
             });
+
       };
 
       $scope.switchVisibility = function () {

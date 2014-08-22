@@ -839,7 +839,8 @@ transform:rotate(360deg)
 .mrg0 { margin: 0 !important;}
 .pad0 { padding: 0 !important;}
 .raw-pad { padding: 0 0 0 5px !important;}
-.start-btn {   background: green;
+.running-btn {
+  background: #15b354;
   border-radius: 100%;
   display: inline-block;
   margin: 0 5px 0px 0px;
@@ -856,6 +857,15 @@ transform:rotate(360deg)
   color: #898989;
   text-transform: none !important;
 }
+
+.hr-margin{ margin: 10px 0px !important;}
+.mrg-7 { margin: 7px 0px !important;}
+.mrg-top0 { margin-top: 0px;}
+.runner-right-text{color: #757575}
+.runner-left-text{color: #3c3c3c;}
+.mrg-top10 { margin-top: 9px;}
+.btn-bdr-lf { border-bottom: none; border-left: none;}
+.btn-bdr-rt { border-bottom: none; border-right: none; border-left: none;}
 
 #developersModal #showInviteError
 {

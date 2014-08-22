@@ -1916,6 +1916,12 @@ select[multiple].input-lg {
   margin-bottom: 10px;
   color: #7c7c7c;
 }
+.workspace-block{
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: #7c7c7c;
+}
 @media (min-width: 768px) {
   .form-inline .form-group {
     display: inline-block;

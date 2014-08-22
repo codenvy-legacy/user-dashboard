@@ -18,7 +18,7 @@
 
 angular.module('odeskApp')
     .controller('NavbarCtrl', function ($scope, $location, $http, $cookies, $window) {
-      
+
         $scope.menu = [
             /*{
             //    'title': 'Admin',
@@ -50,6 +50,7 @@ angular.module('odeskApp')
                 'link': '#/organizations'
             }*/
         ];
+
 
         $scope.helpMenu= [
             {
