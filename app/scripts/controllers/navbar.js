@@ -19,42 +19,38 @@
 angular.module('odeskApp')
     .controller('NavbarCtrl', function ($scope, $location, $http, $cookies, $window) {
 
-      $scope.menu = [
-        /*{
-         //    'title': 'Admin',
-         //    'link': '#/admin'
-         //},*/
-        {
-          'title': 'Projects',
-          'link': '#/dashboard'
-        },
-       /* {
-          'title': 'Runners',
-          'link': '#/runner'
-        },
-        {
-          'title': 'Factories',
-          'link': '#/factories'
-        },
-        {
-          'title': 'Stats',
-          'link': '#/stats'
-        },*/
-        {
-          'title': 'Account',
-          'link': '#/account'
-        }
-        /*,
-         {
-         'title': 'Subscriptions',
-         'link': '#/subscriptions'
-         }*/
-        /*,
-         {
-         'title': 'Organizations',
-         'link': '#/organizations'
-         }*/
-      ];
+        $scope.menu = [
+            /*{
+            //    'title': 'Admin',
+            //    'link': '#/admin'
+            //},*/
+            {
+                'title': 'Projects',
+                'link': '#/dashboard'
+            },
+            {
+                'title': 'Runners',
+                'link': '#/runner'
+            },
+            {
+                'title': 'Factories',
+                'link': '#/factories'
+            },
+            {
+                'title': 'Stats',
+                'link': '#/stats'
+            },
+            {
+                'title': 'Account',
+                'link': '#/account'
+            }
+            /*,
+            {
+                'title': 'Organizations',
+                'link': '#/organizations'
+            }*/
+        ];
+
 
         $scope.helpMenu= [
             {
