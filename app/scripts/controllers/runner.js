@@ -18,9 +18,13 @@ angular.module('odeskApp')
       $scope.runners = [];
       $scope.projects = [];
       $scope.ramConsumption = [];
+      $scope.filter = {};
+      $scope.workspaces = [];
       $scope.refreshStatus = $cookies['refreshStatus'];
+
       Workspace.all(function (resp) {
         $scope.workspaces = _.filter(resp, function (workspace) {return !workspace.workspaceReference.temporary;});
+
         angular.forEach($scope.workspaces, function (value) {
           // Get workspace related resources
           $http({method: 'GET', url:"/api/runner/"+ value.workspaceReference.id +"/resources" }).
@@ -58,6 +62,24 @@ angular.module('odeskApp')
                   });
               });
             });
+
+          $timeout(function () {
+            $("[rel=tooltip]").tooltip({ placement: 'bottom' });
+            $(document).on("click", ".searchfield", function () {
+              $('.searchfull').show();
+              $('.detail').animate({ opacity: 0 }, 400);
+              $('.searchfull').animate({ width: "100%" }, 400, function () { $(".closeBtn").show(); });
+              $('.searchfield').focus();
+            });
+            $(document).on("click", ".closeBtn", function () {
+              $(".closeBtn").hide();
+              $('.detail').animate({ opacity: 1 }, 400);
+              $('.searchfull').animate({ width: "43px" }, 400, function () {
+                $('.searchfield').val('');
+                $('.searchfull').hide();
+              });
+            });
+          });
 
         });
       });
