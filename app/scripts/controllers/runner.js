@@ -18,9 +18,13 @@ angular.module('odeskApp')
       $scope.runners = [];
       $scope.projects = [];
       $scope.ramConsumption = [];
+      $scope.filter = {};
+      $scope.workspaces = [];
       $scope.refreshStatus = $cookies['refreshStatus'];
+
       Workspace.all(function (resp) {
         $scope.workspaces = _.filter(resp, function (workspace) {return !workspace.workspaceReference.temporary;});
+
         angular.forEach($scope.workspaces, function (value) {
           // Get workspace related resources
           $http({method: 'GET', url:"/api/runner/"+ value.workspaceReference.id +"/resources" }).

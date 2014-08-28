@@ -4,10 +4,10 @@
     <li> You have {{(runners.length == 0) ? '0' : runners.length}} runners defined in {{workspaces.length}} workspaces</li>
 
     <li class="dropdown user-dropdown"> WORKSPACE:
-      <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down garrow"></i> {{filter.workspaceName || 'All'}}</a>
+      <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down garrow"></i> {{filter.project.workspaceName || 'All'}}</a>
       <ul class="dropdown-menu">
-        <li><a href="" ng-click="filter.workspaceName=''">All</a></li>
-        <li ng-repeat="workspace in workspaces" ng-click="filter.workspaceName=workspace.workspaceReference.name"><a href="">{{workspace.workspaceReference.name}}</a></li>
+        <li><a href="" ng-click="filter.project.workspaceName=''">All</a></li>
+        <li ng-repeat="workspace in workspaces" ng-click="filter.project.workspaceName=workspace.workspaceReference.name"><a href="">{{workspace.workspaceReference.name}}</a></li>
       </ul>
     </li>
 
@@ -65,7 +65,7 @@
           <div class="row">
 
             <!-- Start of runner box -->
-            <div class="col-lg-4 col-sm-6 col-md-4 col-xs-12" ng-repeat="runner in runners" >
+            <div class="col-lg-4 col-sm-6 col-md-4 col-xs-12" ng-repeat="runner in runners| filter: filter" >
               <div class="panel panel-default">
                 <div class="panel-heading">
                   <div class="row">
