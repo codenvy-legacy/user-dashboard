@@ -63,6 +63,24 @@ angular.module('odeskApp')
               });
             });
 
+          $timeout(function () {
+            $("[rel=tooltip]").tooltip({ placement: 'bottom' });
+            $(document).on("click", ".searchfield", function () {
+              $('.searchfull').show();
+              $('.detail').animate({ opacity: 0 }, 400);
+              $('.searchfull').animate({ width: "100%" }, 400, function () { $(".closeBtn").show(); });
+              $('.searchfield').focus();
+            });
+            $(document).on("click", ".closeBtn", function () {
+              $(".closeBtn").hide();
+              $('.detail').animate({ opacity: 1 }, 400);
+              $('.searchfull').animate({ width: "43px" }, 400, function () {
+                $('.searchfield').val('');
+                $('.searchfull').hide();
+              });
+            });
+          });
+
         });
       });
 
