@@ -21,26 +21,23 @@
             </button>
             <a class="navbar-brand" href="#"><img height="20" src="./images/logo2.png"/></a>
         </div>
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav navbar-hover">
-                <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
-                    <a ng-href="{{item.link}}">{{item.title}}</a>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><img height="24" style="margin:11px;padding:0px;" src="./images/user.png"/></li>
-                <li><a>{{fullUserName}}</a></li>
-                <li><a href="" style="font-size:24px" class="dropdown-toggle glyphicon glyphicon-question-sign" data-toggle="dropdown"></a>
-                      <ul class="dropdown-menu dropdown_bg">
-                        <li ng-repeat="helpItem in helpMenu">
-                            <a ng-href="{{helpItem.link}}">{{helpItem.title}}</a>
-                        </li>
-                      </ul>
-                </li>
-                <li><a style="font-size:27px" class="logout" href="" ng-click="logout()"><i class="fa fa-power-off"></i></a> </li>
-                <li class="col-md-1"> </li>
-            </ul>
-        </div>		
+        <ul class="nav navbar-nav navbar-hover collapse navbar-collapse">
+            <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
+                <a ng-href="{{item.link}}">{{item.title}}</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right help-bar">
+            <li><a href="" class="user"><img height="24" class="user-image" src="./images/user.png"><span class="user-name">{{fullUserName}}</span></a></li>
+            <li><a href="" style="font-size:24px" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-question-sign"></i></a>
+                  <ul class="dropdown-menu dropdown_bg">
+                    <li ng-repeat="helpItem in helpMenu">
+                        <a ng-href="{{helpItem.link}}">{{helpItem.title}}</a>
+                    </li>
+                  </ul>
+            </li>
+            <li><a style="font-size:27px" class="logout" href="" ng-click="logout()"><i class="fa fa-power-off"></i></a> </li>
+            <li class="col-md-1"> </li>
+        </ul>
     </div>
 </div>
 <!-- Modal -->

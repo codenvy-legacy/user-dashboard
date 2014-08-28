@@ -16,9 +16,22 @@ h4    { color: #363636; font-size: 10px; font-weight: bold; text-transform: uppe
 .mainDivContainer {
 	padding-top: 50px;
 }
-
-
-.navbar-inverse .navbar-nav > li > a { padding:2px 3px; margin:10px 15px; font-size:14px; }
+.navbar-collapse {
+  max-height: 100%;
+}
+.navbar-nav > li > a {
+  line-height: 18px;
+}
+.navbar-inverse .navbar-nav > li > a { padding:2px 3px; margin:10px 15px; font-size:14px;}
+.navbar-inverse .navbar-right > li > a.user {
+  display: inline-block;
+  margin: 5px 0;
+  vertical-align: middle;
+}
+.navbar-right .user-image {
+  margin: 5px 10px 5px 0;
+  vertical-align: middle;
+}
 .navbar-inverse .navbar-nav > li > a.logout { font-size: 25px; margin: 10px 0; padding: 0; }
 .navbar-inverse .navbar-nav > .active > a, 
 .navbar-inverse .navbar-nav > .active > a:hover, 
@@ -188,6 +201,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .form-control:-ms-input-placeholder {  
   color: #cecece;  
 }
+
 /* Breadcrumb Search
 ----------------------------------------------*/
 .breadcrumb .new-project {
@@ -246,7 +260,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .searchfull  {
   position: absolute; 
   right: 0; 
-  top: 0;
+  bottom: 0;
   z-index: 11;
 }
 .searchfullfactory  { 
@@ -722,6 +736,7 @@ transform:rotate(360deg)
 .panel-primary > a .panel-body{
   color: #3c3c3c;
 }
+
 /* LOADER
 --------------------------------*/
 #loading-bar-spinner {
@@ -824,6 +839,10 @@ transform:rotate(360deg)
     font-size: 10px !important;
     padding: 4px;
   }
+  .header .navbar-right li{
+    float: left;
+  }
+
 }
 
 @media screen and (min-width : 767px) {
@@ -867,8 +886,7 @@ transform:rotate(360deg)
 .btn-bdr-lf { border-bottom: none; border-left: none;}
 .btn-bdr-rt { border-bottom: none; border-right: none; border-left: none;}
 
-#developersModal #showInviteError
-{
+#developersModal #showInviteError{
   background-color: #f7d6d5;
   color: #B35B59;
   font-weight: bold;
@@ -876,8 +894,70 @@ transform:rotate(360deg)
   padding: 5px;
   margin: 5px;
 }
-
 #developersModal .invitation p.darkBlack {
   color: black;
   font-weight: bold;
+}
+/* Navigation
+----------------------------------------------*/
+.navbar-inverse .navbar-right {
+  padding-left: 20px;
+}
+.navbar-inverse .navbar-right > .open > a,
+.navbar-inverse .navbar-right > .open > a:hover,
+.navbar-inverse .navbar-right > .open > a:focus {
+  border-color: transparent;
+}
+@media screen and (max-width : 767px) {
+  .navbar-inverse .navbar-right {
+    position: absolute;
+    right: 60px;
+    top: 0;
+    margin: 0;
+    z-index: 1;
+  }
+  .header .navbar-toggle {
+    right: 0;
+    top: 0;
+    z-index: 9;
+  }
+  .breadcrumb > li {
+    display: block;
+  }
+  .project-box {
+    padding-top: 212px;
+  }
+  .projectlist {
+    padding-top: 240px
+  }
+  .projectnav > li {
+    padding-right: 5px;
+  }
+  .projectnav > li.search1 {
+    float: left;
+  }
+  .breadcrumb .dropdown-menu {
+    width: 100%;
+  }
+  .breadcrumb .dropdown-menu li a {
+    text-align: left;
+  }
+  .breadcrumb .new-project .dropdown-menu {
+    left: 0;
+  }
+  .breadcrumb .new-project .dropdown-menu,
+  .breadcrumb .new-project,
+  .breadcrumb .new-project button,
+  .breadcrumb .new-project a.button {
+    width: 100%;
+  }
+
+}
+@media screen and (max-width : 480px)  {
+  .navbar-right .user-image {
+    margin-right: 5px;
+  }
+  .navbar-right .user-name {
+    display: none;
+  }
 }
