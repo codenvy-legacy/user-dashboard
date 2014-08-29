@@ -21,17 +21,17 @@
         <h4 class="text-center">SUBSCRIPTIONS DETAILS</h4>
         <div class="row">
           <div class="col-md-12">
-              <label for="workspaceid">Name: {{subscription.id}} -- {{subscription.properties.Package}} {{subscription.properties.RAM}}</label>
+              <label for="workspaceid">Name: {{subscriptionAttributes.description}}</label>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-              <label for="workspaceid">Your subscription started on: January 1, 2013</label>
+              <label for="workspaceid">Your subscription started on: {{subscriptionAttributes.startDate}}</label>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-              <label for="workspaceid">Your subscription expired on: January 1, 2014</label>
+              <label for="workspaceid">Your subscription expired on: {{subscriptionAttributes.billingDescriptor.cycleTypeDescriptor.description}}</label>
           </div>
         </div>
         <div class="row">
@@ -56,13 +56,13 @@
         <div class="row">
           <div class="col-md-12">
               <label>Automatic Renewal:</label>&nbsp;&nbsp;&nbsp;&nbsp;
-              <input type="checkbox" name="autorenew" ng-model="check" value="1">
+              <input type="checkbox" name="autorenew" ng-model="autoRenewal" value="1">
               &nbsp;&nbsp;<label>Yes</label>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-              <label>Subscription Renewal On: January 1, 2014</label>
+              <label>Subscription Renewal On: {{contractRenewalDate}}</label>
           </div>
         </div>
       </div>
