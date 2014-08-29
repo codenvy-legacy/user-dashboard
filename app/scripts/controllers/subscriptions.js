@@ -20,6 +20,7 @@ angular.module('odeskApp')
         $scope.subscriptions = [];
         $scope.stDates = [];
         $scope.endDates = [];
+        $scope.desc = [];
         var temp = [];
         var temp2 = [];
         var num = 0;
@@ -45,6 +46,7 @@ angular.module('odeskApp')
                 temp2[i] = temp[i];
                 $scope.stDates[i] = datac.startDate;
                 $scope.endDates[i] = datac.endDate;
+                $scope.desc = datac.description;
                 num++;
                 if(num==temp.length)
                 {

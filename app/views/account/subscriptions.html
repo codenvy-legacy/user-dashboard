@@ -22,8 +22,8 @@
               </ul>
             </li>
 </ul>
-        <div class="breadcrumb projectnav" style="display: inline-block; overflow-y: scroll; max-height:150px;">
-            <table class="table table-striped table-condensed-" style="background:#ffffff;">
+        <div class="breadcrumb projectnav " style="display: inline-block; overflow-y: scroll; max-height:150px;">
+            <table class="table table-striped table-condensed- table-hover" style="background:#f9f9f9;">
                 <thead>
                     <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
                         <th style="width:54px"></th>
@@ -31,23 +31,23 @@
                         <th class="col-md-4 text-center"><h4>ACTIVATION DATE</h4></th>
                         <th class="col-md-1 text-center"><h4>EXPIRATION DATE</h4></th>
                         <th class="text-center" style="width:350px"><h4>ACTIONS</h4></th>
-                        <th>&nbsp;</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="subscription in subscriptions| filter: filter | orderBy:param:reverse">
                         <td>&nbsp;</td>
-                        <td class="text-center"><a ng-href="#/account/subscriptions/{{subscription.id}}">{{subscription.id}}</a></td>
+                        <td class="text-center blk_lnk"><a ng-href="#/account/subscriptions/{{subscription.id}}"><strong class="ng-binding">{{desc[$index]}}</strong></a></td>
                         <td  class="text-center">{{stDates[$index]}}</td>
                         <td class="text-center">{{endDates[$index]}}</td>
                         <td class="text-center">
                             <ul class="breadcrumb action-button boxnav">
-                                <li class="active"><a href="">Renew</a></li>
-                                <li class="active"><a href="">Upgrade</a></li>
-                                <li class="active"><a href="">Cancel</a></li>
+                                <li class="active no-bdr"><a href="" class="new_btn">Renew</a></li>
+                                <li class="active no-bdr"><a href="" class="new_btn">Upgrade</a></li>
+                                <li class="active no-bdr"><a href="" class="new_btn">Cancel</a></li>
                             </ul>
                         </td>
-                        <td>&nbsp;</td>
+                        
                     </tr>
                 </tbody>
             </table>
