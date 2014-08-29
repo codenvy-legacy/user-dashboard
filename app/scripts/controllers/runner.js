@@ -84,6 +84,56 @@ angular.module('odeskApp')
         });
       });
 
+      $scope.setDateFormat = function (startTime){
+        var now = new Date();
+        var startTimeInMs = new Date(startTime);
+
+        var delta = now.getTime() - startTimeInMs.getTime();
+
+        delta = delta/1000;
+
+        var min, hour, sec, days;
+
+        if(delta<=59){
+          delta = Math.floor(delta)
+          delta = delta <= 9 ? "0"+delta : delta
+          return "00:00:"+delta;
+        }
+
+        if(delta>=60 && delta<=3599){
+          min = Math.floor(delta/60);
+          min = min <= 9 ? "0"+min : min
+          sec = Math.floor(delta-(min*60));
+          sec = sec <= 9 ? "0"+sec : sec
+          return "00:"+min+":"+sec;
+        }
+
+        if(delta>=3600 && delta<=86399){
+          hour= Math.floor(delta/3600);
+          min = (delta-(hour*3600))/60;
+          sec = Math.floor(delta-(min*60));
+
+          hour = hour <= 9 ? "0"+hour : hour
+          min = min <= 9 ? "0"+min : min
+          sec = sec <= 9 ? "0"+sec : sec
+
+          return hour+":"+Math.floor(min)+":"+sec;
+        }
+
+        if(delta>=86400){
+          days =  Math.floor(delta/86400);
+          hour =  Math.floor((delta-(days*86400))/3600);
+          min  =  Math.floor((delta-(hour*3600))/60);
+          sec  =  Math.floor(delta-(min*60));
+
+          hour = hour <= 9 ? "0"+hour : hour
+          min = min <= 9 ? "0"+min : min
+          sec = sec <= 9 ? "0"+sec : sec
+
+          return days+" days and "+hour+":"+min+":"+sec;
+        }
+      };
+
       $scope.shutdownRunnerRefresh = function (shutdownUrl){
 
         var deferred = $q.defer();
