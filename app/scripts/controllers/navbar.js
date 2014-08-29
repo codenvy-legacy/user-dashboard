@@ -18,7 +18,7 @@
 
 angular.module('odeskApp')
     .controller('NavbarCtrl', function ($scope, $location, $http, $cookies, $window) {
-      
+
         $scope.menu = [
             /*{
             //    'title': 'Admin',
@@ -28,32 +28,29 @@ angular.module('odeskApp')
                 'title': 'Projects',
                 'link': '#/dashboard'
             },
-            /*{
+            {
+                'title': 'Runners',
+                'link': '#/runner'
+            },
+            {
                 'title': 'Factories',
                 'link': '#/factories'
             },
             {
                 'title': 'Stats',
                 'link': '#/stats'
-            },*/
+            },
             {
                 'title': 'Account',
                 'link': '#/account'
-            },
-            /*{
-                'title': 'Runners',
-                'link': '#/runner'
-            },
-            {
-                'title': 'Subscriptions',
-                'link': '#/subscriptions'
-            }*/
+            }
             /*,
             {
                 'title': 'Organizations',
                 'link': '#/organizations'
             }*/
         ];
+
 
         $scope.helpMenu= [
             {

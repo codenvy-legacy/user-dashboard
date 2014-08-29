@@ -14,18 +14,21 @@
 
 'use strict';
 angular.module('odeskApp')
-    .controller('RunnerCtrl', function ($scope, $timeout, Workspace, Project, Users, $http, $q) {
-
+    .controller('RunnerCtrl', function ($scope, Workspace, $http, $q, $cookies, $timeout) {
       $scope.runners = [];
       $scope.projects = [];
       $scope.ramConsumption = [];
+      $scope.filter = {};
+      $scope.workspaces = [];
+      $scope.refreshStatus = $cookies['refreshStatus'];
 
       Workspace.all(function (resp) {
         $scope.workspaces = _.filter(resp, function (workspace) {return !workspace.workspaceReference.temporary;});
+
         angular.forEach($scope.workspaces, function (value) {
           // Get workspace related resources
           $http({method: 'GET', url:"/api/runner/"+ value.workspaceReference.id +"/resources" }).
-            success(function (data, status) {
+            success(function (data) {
 
               var workspaceResources = {
                 workspaceName: value.workspaceReference.name,
@@ -41,7 +44,7 @@ angular.module('odeskApp')
               $scope.projects = $scope.projects.concat(data);
               angular.forEach($scope.projects, function (project) {
                 $http({method: 'GET', url:"/api/runner/"+ value.workspaceReference.id +"/processes?project="+project.path }).
-                  success(function (data, status) {
+                  success(function (data) {
                     if(data.length > 0){
                       var currentRunner = data[data.length-1]
                       if(currentRunner.status == "RUNNING"){
@@ -60,18 +63,49 @@ angular.module('odeskApp')
               });
             });
 
+          $timeout(function () {
+            $("[rel=tooltip]").tooltip({ placement: 'bottom' });
+            $(document).on("click", ".searchfield", function () {
+              $('.searchfull').show();
+              $('.detail').animate({ opacity: 0 }, 400);
+              $('.searchfull').animate({ width: "100%" }, 400, function () { $(".closeBtn").show(); });
+              $('.searchfield').focus();
+            });
+            $(document).on("click", ".closeBtn", function () {
+              $(".closeBtn").hide();
+              $('.detail').animate({ opacity: 1 }, 400);
+              $('.searchfull').animate({ width: "43px" }, 400, function () {
+                $('.searchfield').val('');
+                $('.searchfull').hide();
+              });
+            });
+          });
+
         });
       });
 
-      $scope.shutdownRunner = function (shutdownUrl){
+      $scope.shutdownRunnerRefresh = function (shutdownUrl){
 
         var deferred = $q.defer();
 
         $http({method: 'POST', url: shutdownUrl})
           .success(function (data) {
             deferred.resolve(data);
+            $scope.refresh();
           })
           .error(function (err) { deferred.reject(); });
+        return deferred.promise;
+      };
+
+      $scope.shutdownRunner = function (shutdownUrl){
+
+        var deferred = $q.defer();
+
+        $http({method: 'POST', url: shutdownUrl})
+            .success(function (data) {
+              deferred.resolve(data);
+            })
+            .error(function (err) { deferred.reject(); });
         return deferred.promise;
       };
 
@@ -90,4 +124,22 @@ angular.module('odeskApp')
         });
 
       };
+
+      $scope.refresh = function (){
+        location.reload();
+      };
+
+      $scope.refreshStatusCheck = function () {
+        if($cookies.refreshStatus == "DISABLED"){
+          $cookies.refreshStatus = "ENABLED"
+        }else{
+          $cookies.refreshStatus = "DISABLED"
+        }
+        $scope.refresh();
+      };
+
+      if($cookies.refreshStatus == "ENABLED"){
+        $timeout($scope.refresh, 30000);
+      }
+
     });
