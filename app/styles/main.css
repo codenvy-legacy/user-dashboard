@@ -171,6 +171,13 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 
 /* Stats page and general colors */
 .sparkline { display: inline-block; position: relative; }
+.dynamicsparklineProjectUpdated { display: inline-block; position: relative; }
+.dynamicsparklineBuilds { display: inline-block; position: relative; }
+.dynamicsparklineRuns { display: inline-block; position: relative; }
+.dynamicsparklineDebugs { display: inline-block; position: relative; }
+.dynamicsparklineDeploys { display: inline-block; position: relative; }
+.dynamicsparklineFactories { display: inline-block; position: relative; }
+.dynamicsparklineCollaborativeSession { display: inline-block; position: relative; }
 .orange { color:#e26e11; }
 .green  { color:#7dc686; }
 .violet { color:#bd8fc0; }

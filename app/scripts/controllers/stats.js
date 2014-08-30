@@ -21,6 +21,7 @@ angular.module('odeskApp')
         
 		$scope.noOfDays = 30;
 		$scope.isDays = true;
+		$scope.isGraphDrawnForDays = false;
 		$scope.noOfWeeks = 12;
 		
 		$scope.selectedPeriodText = 'Last 30 Days';
@@ -102,7 +103,26 @@ angular.module('odeskApp')
 
 			  if(month<10) { month='0'+month; } 
 
-			  return year + '-' + month + '-' + day;
+			  if($scope.isDays)
+				return year + '-' + month + '-' + day;
+			  else
+				return 'Week-' + year + '-' + month + '-' + day;
+			  
+		};
+		
+		// Used for graph scale
+		var getDateStringForGraph = function(d) {
+			var day = d.getDate();
+			  var month = d.getMonth() + 1;
+			  var year = d.getFullYear();
+				
+			  if(day<10) { day='0'+day; } 
+
+			  if(month<10) { month='0'+month; } 
+
+			  
+			return year + '-' + month + '-' + day;
+			  
 		};
 		
 		$scope.statsData = [];
@@ -116,10 +136,12 @@ angular.module('odeskApp')
 		$scope.totalCumulativeMinutes = 0;
 		$scope.dailyCumulativeMinutes = [];
 		
+		$scope.totalProjectUpdated = 0;
+		$scope.dailyProjectUpdated = [];
+		
 		$scope.totalBuilds = 0;
 		$scope.dailyBuilds = [];
-		
-		
+				
 		$scope.totalRuns = 0;
 		$scope.dailyRuns = [];
 		
@@ -127,7 +149,7 @@ angular.module('odeskApp')
 		$scope.dailyDebugs = [];
 		
 		$scope.totalDeploys = 0;
-		$scope.dailyDebugs = [];
+		$scope.dailyDeploys = [];
 		
 		$scope.totalCreatedFactories = 0;
 		$scope.dailyCreatedFactories = [];
@@ -145,17 +167,19 @@ angular.module('odeskApp')
 
 		$scope.totalTimeDockerConfig = 0;
 		
+		var reqData=[];
+		
 	var getCumulativeMinutesData = function() {
 			$scope.totalCumulativeMinutes = 0;
 			
 			// Build request data
-			var reqData=[];
-			angular.forEach($scope.statsData, function(day,key) {
-					reqData.push({"from_date":day.sdatestr, "to_date":day.edatestr});
-				});
-			
+			if(reqData == [])
+				angular.forEach($scope.statsData, function(day,key) {
+						reqData.push({"from_date":day.sdatestr, "to_date":day.edatestr});
+					});
+				
 			// Make post request
-			$http.post('/api/analytics/metric/product_usage_time_total/list',reqData,{cache: true}).success(function(data, status, headers, config) {
+			Stats.getCumulativeMinutesData(reqData).then(function(data) {
                     $scope.dailyCumulativeMinutes = [];
 					angular.forEach(data.metrics, function(day,key) {
 					    var iVal = parseInt(day.value);  // in milliseconds
@@ -180,38 +204,38 @@ angular.module('odeskApp')
 			$scope.totalSessions = 0;
 			
 			// Build request data
-			var reqData=[];
-			angular.forEach($scope.statsData, function(day,key) {
-					reqData.push({"from_date":day.sdatestr, "to_date":day.edatestr});
-				});
+			if(reqData == [])
+				angular.forEach($scope.statsData, function(day,key) {
+						reqData.push({"from_date":day.sdatestr, "to_date":day.edatestr});
+					});
 			
 			// Make post request
-			$http.post('/api/analytics/metric/product_usage_sessions/list',reqData,{cache: true}).success(function(data, status, headers, config) {
-                    $scope.dailySessions = [];
+			Stats.getSessionsData(reqData).then(function(data) {
+					$scope.dailySessions = [];
 					var i=0;
 					angular.forEach(data.metrics, function(day,key) {
 					    var iVal = parseInt(day.value);
-						$scope.dailySessions.push({x:getDateStringDispay($scope.statsData[i].sdate),y:i,z:iVal}); 
+						$scope.dailySessions.push({x:getDateStringForGraph($scope.statsData[i].sdate),y:i,z:iVal}); 
 						$scope.totalSessions += iVal;
 						i++;
 					});
 						
 					// redraw chart
 					graphSessions.setData($scope.dailySessions);
-                });
+			  });
 		};
 		
 	var getBuildsData = function() {
 			$scope.totalBuilds = 0;
 			
 			// Build request data
-			var reqData=[];
-			angular.forEach($scope.statsData, function(day,key) {
-					reqData.push({"from_date":day.sdatestr, "to_date":day.edatestr});
-				});
-			
+			if(reqData == [])
+				angular.forEach($scope.statsData, function(day,key) {
+						reqData.push({"from_date":day.sdatestr, "to_date":day.edatestr});
+					});
+				
 			// Make post request
-			$http.post('/api/analytics/metric/builds/list',reqData,{cache: true}).success(function(data, status, headers, config) {
+			Stats.getBuildsData(reqData).then(function(data) {
                     $scope.dailyBuilds = [];
 					angular.forEach(data.metrics, function(day,key) {
 					    var iVal = parseInt(day.value);
@@ -226,6 +250,131 @@ angular.module('odeskApp')
                 });
 		};
 	
+	var getRunsData = function() {
+			$scope.totalRuns = 0;
+			
+			// Build request data
+			if(reqData == [])
+				angular.forEach($scope.statsData, function(day,key) {
+						reqData.push({"from_date":day.sdatestr, "to_date":day.edatestr});
+					});
+				
+			// Make post request
+			Stats.getRunsData(reqData).then(function(data) {
+                    $scope.dailyRuns = [];
+					angular.forEach(data.metrics, function(day,key) {
+					    var iVal = parseInt(day.value);
+						$scope.dailyRuns.push(iVal);
+						$scope.totalRuns += iVal;
+					});
+						
+					// redraw charts
+					if ($(".dynamicsparklineRuns").length > 0) {
+						$(".dynamicsparklineRuns").sparkline($scope.dailyRuns, { enableTagOptions: true, disableHiddenCheck: true});
+					}
+                });
+		};
+		
+	var getDebugsData = function() {
+			$scope.totalDebugs = 0;
+			
+			// Build request data
+			if(reqData == [])
+				angular.forEach($scope.statsData, function(day,key) {
+						reqData.push({"from_date":day.sdatestr, "to_date":day.edatestr});
+					});
+				
+			// Make post request
+			Stats.getDebugsData(reqData).then(function(data) {
+                    $scope.dailyDebugs = [];
+					angular.forEach(data.metrics, function(day,key) {
+					    var iVal = parseInt(day.value);
+						$scope.dailyDebugs.push(iVal);
+						$scope.totalDebugs += iVal;
+					});
+						
+					// redraw charts
+					if ($(".dynamicsparklineDebugs").length > 0) {
+						$(".dynamicsparklineDebugs").sparkline($scope.dailyDebugs, { enableTagOptions: true, disableHiddenCheck: true});
+					}
+                });
+		};
+	
+	var getDeploysData = function() {
+			$scope.totalDeploys = 0;
+			
+			// Build request data
+			if(reqData == [])
+				angular.forEach($scope.statsData, function(day,key) {
+						reqData.push({"from_date":day.sdatestr, "to_date":day.edatestr});
+					});
+				
+			// Make post request
+			Stats.getDeploysData(reqData).then(function(data) {
+                    $scope.dailyDeploys = [];
+					angular.forEach(data.metrics, function(day,key) {
+					    var iVal = parseInt(day.value);
+						$scope.dailyDeploys.push(iVal);
+						$scope.totalDeploys += iVal;
+					});
+						
+					// redraw charts
+					if ($(".dynamicsparklineDeploys").length > 0) {
+						$(".dynamicsparklineDeploys").sparkline($scope.dailyDeploys, { enableTagOptions: true, disableHiddenCheck: true});
+					}
+                });
+		};
+	
+	var getCreatedFactoriesData = function() {
+			$scope.totalCreatedFactories = 0;
+			
+			// Build request data
+			if(reqData == [])
+				angular.forEach($scope.statsData, function(day,key) {
+						reqData.push({"from_date":day.sdatestr, "to_date":day.edatestr});
+					});
+				
+			// Make post request
+			Stats.getCreatedFactoriesData(reqData).then(function(data) {
+                    $scope.dailyCreatedFactories = [];
+					angular.forEach(data.metrics, function(day,key) {
+					    var iVal = parseInt(day.value);
+						$scope.dailyCreatedFactories.push(iVal);
+						$scope.totalCreatedFactories += iVal;
+					});
+						
+					// redraw charts
+					if ($(".dynamicsparklineFactories").length > 0) {
+						$(".dynamicsparklineFactories").sparkline($scope.dailyCreatedFactories, { enableTagOptions: true, disableHiddenCheck: true});
+					}
+                });
+		};
+		
+	var getCollaborativeSessionsData = function() {
+			$scope.totalCollaborativeSessionStarted = 0;
+			
+			// Build request data
+			if(reqData == [])
+				angular.forEach($scope.statsData, function(day,key) {
+						reqData.push({"from_date":day.sdatestr, "to_date":day.edatestr});
+					});
+			
+			// Make post request
+			Stats.getCollaborativeSessionsData(reqData).then(function(data) {
+                    $scope.dailyCollaborativeSessionStarted = [];
+					angular.forEach(data.metrics, function(day,key) {
+					    var iVal = parseInt(day.value);
+						$scope.dailyCollaborativeSessionStarted.push(iVal);
+						$scope.totalCollaborativeSessionStarted += iVal;
+					});
+						
+					// redraw charts
+					if ($(".dynamicsparklineCollaborativeSession").length > 0) {
+						$(".dynamicsparklineCollaborativeSession").sparkline($scope.dailyCollaborativeSessionStarted, { enableTagOptions: true, disableHiddenCheck: true});
+					}
+                });
+		};
+		
 	var getOneTimeStats = function() {
 		
 			Stats.getTimeInBuildQueue($scope.fromDate,$scope.toDate).then(function(data) {
@@ -262,13 +411,69 @@ angular.module('odeskApp')
 			getSessionsData();
 			getCumulativeMinutesData();
 			getBuildsData();
+			getRunsData();
+			getDebugsData();
+			getDeploysData();
+			getCreatedFactoriesData();
+			getCollaborativeSessionsData();
 			getOneTimeStats();
 		}
 		
+	var clearStatsData = function() {
 		
+		reqData=[];
+		
+		$scope.totalSessions = 0;
+		$scope.dailySessions = [];
+		
+		$scope.totalCumulativeMinutes = 0;
+		$scope.dailyCumulativeMinutes = [];
+		
+		$scope.totalProjectUpdated = 0;
+		$scope.dailyProjectUpdated = [];
+		
+		$scope.totalBuilds = 0;
+		$scope.dailyBuilds = [];
+				
+		$scope.totalRuns = 0;
+		$scope.dailyRuns = [];
+		
+		$scope.totalDebugs = 0;
+		$scope.dailyDebugs = [];
+		
+		$scope.totalDeploys = 0;
+		$scope.dailyDeploys = [];
+		
+		$scope.totalCreatedFactories = 0;
+		$scope.dailyCreatedFactories = [];
+		
+		$scope.totalCollaborativeSessionStarted = 0;
+		$scope.dailyCollaborativeSessionStarted = [];
+		
+		$scope.buildStatsTimeInQueue = 0;
+		$scope.buildStatsBuildsTime = 0;
+		$scope.buildStatsQueueTerminations = 0;
+		
+		$scope.runStatsTimeInQueue = 0;
+		$scope.runStatsRunsTime = 0;
+		$scope.runStatsQueueTerminations = 0;
+
+		$scope.totalTimeDockerConfig = 0;
+	}
+		
+	var buildRequestData = function() {
+		reqData = [];
+		angular.forEach($scope.statsData, function(day,key) {
+					reqData.push({"from_date":day.sdatestr, "to_date":day.edatestr});
+				});
+	}
+	
 	var timeSpanChanged = function() {
 			var startDate = getStartDate();
 			var endDate = new Date();
+			
+			if($scope.isDays != $scope.isGraphDrawnForDays) // If graph drawn previously has same x unit then no need to redraw it.
+				drawMorrisGraph();
 			
 			// get from date and to date in string format
 			$scope.fromDate = getDateString(startDate);
@@ -298,19 +503,20 @@ angular.module('odeskApp')
 					$scope.statsData.push(new DayData(datetemp1,strDate1,datetemp2,strDate2));
 				}
 			}
+	
+			clearStatsData();
+			
+			buildRequestData();
 			
 			getStatsData();
 		}
-		
-		setTimeout(timeSpanChanged(),60);
-		        
-        var Data = [{x:'2014-08-01',y:0,z:0} ];
-		
-		var graphSessions = null;
-        setTimeout(function () {
-            graphSessions = Morris.Area({element: 'graph-area-line',
+				        
+        var graphSessions = null;
+		var drawMorrisGraph = function() {
+		    $('#graph-area-line').empty();
+			graphSessions = Morris.Area({element: 'graph-area-line',
                          behaveLikeLine: false,
-                         data: Data,
+                         data: [{x:'',y:0,z:0} ],
                          xkey: 'x',
                          ykeys: ['z'],
                          labels: ['Z'],
@@ -318,7 +524,9 @@ angular.module('odeskApp')
                          lineWidth:1,
                          smooth:false,
                          goals:[0],
-                         xLabels:'day',
+                         xLabels: $scope.isDays ? 'day' : 'week',
+						 xLabelFormat: function(dt) { return getDateStringDispay(dt); },
+						 /*xLabelAngle: 15,*/
                          hoverCallback: function(index, options, content) {
                             var row = options.data[index];
                             return "<div class='morris-hover-row-label'>"+row.z+" Sessions</div><div class='morris-hover-point'>"+$scope.getCumulativeMinutesFor(row.y)+ " Minutes</div>";
@@ -330,8 +538,8 @@ angular.module('odeskApp')
                          pointFillColors:['#ffffff'],
                          pointStrokeColors:['#90c6ec'],
                          lineColors: ['#eff4f8']});
-            if ($(".sparkline").length > 0) {
-                $(".sparkline").sparkline('html', { enableTagOptions: true, disableHiddenCheck: true});
-            }
-        }, 50);
+			$scope.isGraphDrawnForDays = $scope.isDays;
+		}
+		
+		setTimeout(timeSpanChanged(),60);
     });
