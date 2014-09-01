@@ -119,6 +119,7 @@ angular.module('odeskApp')
         $scope.isAdmin = getAdmin($scope.currentWorkspace.roles);
         $scope.activeMembers = angular.copy($scope.currentWorkspace.members);
 
+
         if ($scope.isAdmin) {
           Project.getPermissions(project.workspaceId, project.name).then(function (data) { // get the permissions for the current selected project
             var projectPermissions = data;
@@ -154,7 +155,6 @@ angular.module('odeskApp')
         $scope.selected = project;
         old_description = project.description;
       };
-
       $scope.updateProject = function () {
 
         return $q.all([
@@ -290,7 +290,7 @@ angular.module('odeskApp')
           $scope.ownerWorkspace = _.pluck(_.pluck(account, 'accountReference'), 'name');
           $scope.currentUserId = account[0].userId;
         });
-
+        
         $timeout(function () {
           $("[rel=tooltip]").tooltip({ placement: 'bottom' });
           $(document).on("click", ".searchfield", function () {

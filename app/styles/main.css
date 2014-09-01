@@ -261,6 +261,11 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   width: 100%;
   z-index: 999;
 }
+.breadcrumb .new-project > div {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
 .search1   {
   float: right; 
   height: 35px;
@@ -629,6 +634,9 @@ transform:rotate(360deg)
   padding-top: 7px;
   color: #8d8d8d;
 }
+.box {
+  margin-bottom: 20px;
+}
 .projectlist .new-project .box-one .glyphicon{
   margin-right: 3px;
 }
@@ -672,10 +680,10 @@ transform:rotate(360deg)
 .project-box .projectbox {
   height: 190px;
 }
-.projectbox .empty {
+.projectbox .pointer {
   cursor: pointer;
 }
-.projectbox .empty a{
+.projectbox .pointer a{
   color: #3c3c3c;
 }
 
@@ -971,7 +979,26 @@ transform:rotate(360deg)
   .breadcrumb .new-project a.button {
     width: 100%;
   }
-
+  body {
+    padding-top: 0;
+  }
+  .breadcrumb-wrap,
+  .navbar-fixed-top {
+    position: relative;
+  }
+  .breadcrumb-wrap {
+    top: 0;
+  }
+  .project-box,
+  .projectlist {
+    padding-top: 20px;
+  }
+  .navbar-nav {
+    margin-right: 0;
+  }
+  .navbar {
+    margin-bottom: 0;
+  }
 }
 @media screen and (max-width : 480px)  {
   .navbar-right .user-image {
