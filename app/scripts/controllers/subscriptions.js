@@ -42,11 +42,10 @@ angular.module('odeskApp')
         function setData(sub,i)
         {
             $http.get('/api/account/subscriptions/'+sub.id+'/attributes').success(function(datac, status){
-                
                 temp2[i] = temp[i];
                 $scope.stDates[i] = datac.startDate;
                 $scope.endDates[i] = datac.endDate;
-                $scope.desc = datac.description;
+                $scope.desc[i] = datac.description;
                 num++;
                 if(num==temp.length)
                 {
