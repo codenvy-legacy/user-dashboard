@@ -156,10 +156,9 @@ angular.module('odeskApp')
         old_description = project.description;
       };
       $scope.updateProject = function () {
-
         return $q.all([
           $http({ method: 'POST', url: "/api/project/"+ $scope.selected.workspaceId+"/rename"+$scope.selected.path +"?name="+$scope.selected.name}).
-              success(function (data, status) {
+              success(function (data, status, headers, config) {
                 console.log(data);
               }),
 
@@ -170,11 +169,18 @@ angular.module('odeskApp')
 
           })
         ]).then(function (results) {
-              $http({ method: 'PUT', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name, data: $scope.updated }).
-                success(function (data, status) {
+            $http({ method: 'PUT', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name, data: $scope.updated }).
+              success(function (data, status) {
+                //Change Project URL
+
+                var projFound = $scope.projects.filter(function(p) {return p.name==data.name;})
+                if(projFound.length > 0)
+                {
+                  projFound[0].ideUrl = data.ideUrl;
+                }
                 console.log(data);
-              });
             });
+          });
 
       };
 
