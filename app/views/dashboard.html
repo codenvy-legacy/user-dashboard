@@ -1,7 +1,7 @@
 <div class="breadcrumb-wrap">
     <ul class="breadcrumb projectnav breadcrumb clearfix">
 
-        <li class="new-project" ng-if="!box">
+        <li class="new-project clearfix" ng-if="!box">
             <div ng-if="workspaces.length == 1">
                 <a class="clearfix button" href="/ws/{{workspaces[0].workspaceReference.name}}?action=newProject" target="_blank">
                     <span class="glyphicon glyphicon-plus"></span><strong>Create New Project</strong>
@@ -16,6 +16,9 @@
                     <li ng-repeat="workspace in workspaces"><a href="/ws/{{workspace.workspaceReference.name}}?action=newProject" target="_blank">{{workspace.workspaceReference.name}}</a></li>
                 </ul>
             </div>
+        </li>
+        <li ng-if="!box">
+          <a href="/ws/{{workspace.workspaceReference.name}}?action=importProject">Import Project</a>
         </li>
         <li>You have access to {{(projects.length == 0) ? '-' : projects.length}} projects in {{workspaces.length}} workspaces</li>
         <li class="dropdown user-dropdown">SORT BY:
@@ -70,8 +73,7 @@
                 <br />
                 <div class="text-center" style="color: #919191"><strong>Create New Project</strong></div>
             </a>
-        </div>
-        <!-- Box -->
+        </div><!-- Box -->
         <div class="box box-one" ng-if="workspaces.length > 1">
             <button type="button" class="dropdown-toggle" data-toggle="dropdown">
                 <span class="glyphicon white glyphicon-plus"></span>
@@ -82,11 +84,17 @@
                 <li><span>Select Destination Workspace:</span></li>
                 <li ng-repeat="workspace in workspaces"><a href="/ws/{{workspace.workspaceReference.name}}?action=newProject" target="_blank">{{workspace.workspaceReference.name}}</a></li>
             </ul>
-        </div>
-        <!-- Box -->
+        </div><!-- Box -->
 
-    </div>
-    <!-- New Project -->
+      <div class="box box-one">
+        <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=importProject" target="_blank">
+          <div class="text-center" style="color: #919191"><strong>Import Project</strong></div>
+        </a>
+      </div><!-- Box -->
+
+    </div><!-- New Project -->
+    
+    
 
     <div class="col-md-10">
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
@@ -101,13 +109,13 @@
                                 <h3 class="panel-title"><strong>{{project.name}}</strong></h3>
                                 <span>{{project.workspaceName}}</span>
                             </div>
-                        </div>
-                        <!-- .row -->
+                        </div><!-- .row -->
                     </a>
-                </div>
-                <!-- panel-heading -->
-                <div class="panel-body" ng-if="project.description != '' ">{{project.description}}</div>
-                <div class="panel-body empty" ng-if="project.description == '' " ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><a href="">Add description...</a></div>
+                </div><!-- panel-heading -->
+                
+                <div class="panel-body" ng-if="project.description != null ">{{project.description}}</div>
+                <div class="panel-body pointer" ng-if="project.description == null " ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><a href="">Add description...</a></div>
+                
                 <div class="panel-footer">
                     <div class="row" ng-click="selectProject(project)">
                         <div class="col-md-4 col-sm-4 col-xs-4" data-toggle="modal" data-target="#privacyModal" ng-if="project.workspaceName==ownerWorkspace">
@@ -122,14 +130,10 @@
                         <div class="col-md-4 col-sm-4 col-xs-4" data-toggle="modal" data-target="#projectDetailModal">
                             <div class="row"><i class="fa fa-fw fa-cog"></i></div>
                         </div>
-                    </div>
-                    <!-- .row -->
-                </div>
-                <!-- panel-footer -->
-            </div>
-            <!-- panel-default -->
-        </div>
-        <!-- projectbox -->
+                    </div><!-- .row -->
+                </div><!-- panel-footer -->
+            </div><!-- panel-default -->
+        </div><!-- projectbox -->
     </div>
 </div>
 
@@ -225,9 +229,9 @@
             </div>
         </div>
     </div>
-</div>
+</div><!-- Modal -->
 
-<!-- Modal -->
+
 <div class="modal fade" id="developersModal" tabindex="-1" role="dialog" aria-labelledby="developersModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -273,7 +277,7 @@
                                 <td>
                                     <input type="checkbox" ng-model="member.write" ng-change="setReadWrite(member)">
                                 </td>
-                                <td class="last"><a ng-click="removeMember(member)"><i class="fa fa-trash-o"></i></a></td>
+                                <td class="last"><a data-toggle="modal" data-target="#warning-user"><i class="fa fa-trash-o"></i></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -349,7 +353,7 @@
             <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
                 <button type="button" class="btn btn-primary" ng-click="updateProject()" data-dismiss="modal">Ok</button>
                 <button type="button" class="btn btn-default" ng-click="cancelProject()" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger pull-left" ng-click="deleteProject()" data-dismiss="modal"><i class="fa fa-trash-o"></i></i> Delete Project</button>
+                <button type="button" class="btn btn-danger pull-left" data-toggle="modal" data-target="#warning-project" data-dismiss="modal"><i class="fa fa-trash-o"></i></i> Delete Project</button>
             </div>
         </div>
     </div>
@@ -364,7 +368,12 @@
                 <h4 class="modal-title" id="privacyMessageModalLabel">Project Privacy</h4>
             </div>
             <div class="modal-body">
-                <p>As a developer of the workspace, <b>{{selected.workspaceName}}</b>, you are not permitted to change privacy of the project. This action is only permitted for users with workspace/admin role designation.</p>
+              As a developer of the workspace, <b>{{selected.workspaceName}}</b>, you are not permitted to change privacy of the project. This action is only permitted for users with workspace/admin role designation. This workspace's administrator is ---------.
+              <p>{{currentUser.fullName}}</p>
+            </div>
+            <div class="modal-body">
+              <p>As a developer of the workspace, <b>{{selected.workspaceName}}</b>, you are not permitted to change privacy of the project. This action is only permitted for users with workspace/admin role designation. This workspace's administrator are ---------, -------- and ---------.</p>
+              <p>{{currentUser.fullName}}</p>
             </div>
             <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
@@ -373,4 +382,48 @@
     </div>
 </div>
 
+<div class="modal modal-user fade" id="warning-user" tabindex="-1" role="dialog" aria-labelledby="WarningUserLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    
+      <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="WarningUserLabel">Warning</h4>
+      </div><!-- modal-header -->
+      
+      <div class="modal-body">
+        <p>You are going to remove {{user.fullname(user.email)}} from the workspace/developer of {{workspace}}. This developer will be removed permissions to all projects of the workspace. </p>
+        <p>Are you sure you want to continue?</p>
+      </div><!-- modal-body -->
+      
+      <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
+        <a ng-click="removeMember(member)" class="btn btn-danger" data-dismiss="modal">Ok</a>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div><!-- modal-footer -->
+      
+    </div><!-- modal-content -->
+  </div><!-- modal-dialog -->
+</div><!-- Warning-user Modal -->
 
+
+<div class="modal modal-project fade" id="warning-project" tabindex="-1" role="dialog" aria-labelledby="WarningProjectLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    
+      <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="WarningProjectLabel">Warning</h4>
+      </div><!-- modal-header -->
+      
+      <div class="modal-body">
+        <p>Removing a project can't be undone, are you sure you want to continue?</p>
+      </div><!-- modal-body -->
+      
+      <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
+        <a  class="btn btn-danger" ng-click="deleteProject()" data-dismiss="modal">Ok</a>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div><!-- modal-footer -->
+      
+    </div><!-- modal-content -->
+  </div><!-- modal-dialog -->
+</div><!-- Warning-project Modal -->

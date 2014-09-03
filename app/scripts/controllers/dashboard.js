@@ -119,6 +119,7 @@ angular.module('odeskApp')
         $scope.isAdmin = getAdmin($scope.currentWorkspace.roles);
         $scope.activeMembers = angular.copy($scope.currentWorkspace.members);
 
+
         if ($scope.isAdmin) {
           Project.getPermissions(project.workspaceId, project.name).then(function (data) { // get the permissions for the current selected project
             var projectPermissions = data;
@@ -154,12 +155,10 @@ angular.module('odeskApp')
         $scope.selected = project;
         old_description = project.description;
       };
-
       $scope.updateProject = function () {
-
         return $q.all([
           $http({ method: 'POST', url: "/api/project/"+ $scope.selected.workspaceId+"/rename"+$scope.selected.path +"?name="+$scope.selected.name}).
-              success(function (data, status) {
+              success(function (data, status, headers, config) {
                 console.log(data);
               }),
 
@@ -170,11 +169,18 @@ angular.module('odeskApp')
 
           })
         ]).then(function (results) {
-              $http({ method: 'PUT', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name, data: $scope.updated }).
-                success(function (data, status) {
+            $http({ method: 'PUT', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name, data: $scope.updated }).
+              success(function (data, status) {
+                //Change Project URL
+
+                var projFound = $scope.projects.filter(function(p) {return p.name==data.name;})
+                if(projFound.length > 0)
+                {
+                  projFound[0].ideUrl = data.ideUrl;
+                }
                 console.log(data);
-              });
             });
+          });
 
       };
 
@@ -290,7 +296,7 @@ angular.module('odeskApp')
           $scope.ownerWorkspace = _.pluck(_.pluck(account, 'accountReference'), 'name');
           $scope.currentUserId = account[0].userId;
         });
-
+        
         $timeout(function () {
           $("[rel=tooltip]").tooltip({ placement: 'bottom' });
           $(document).on("click", ".searchfield", function () {

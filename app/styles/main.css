@@ -37,6 +37,19 @@ h4    { color: #363636; font-size: 10px; font-weight: bold; text-transform: uppe
 .navbar-inverse .navbar-nav > .active > a:hover, 
 .navbar-inverse .navbar-nav > .active > a:focus, 
 .navbar-inverse .navbar-hover li:hover > a { border-bottom:2px solid #54aee0; padding:2px 3px; background: transparent;}
+.blk_lnk .ng-binding{color:#3c3c3c; font-size: 12px; }
+.blk_lnk a:hover{color:#3c3c3c;}
+/*.td_hover .table-hover{background: #e6e6e6 !important}*/
+a.new_btn{margin-top:7px;
+min-height: 28px;
+padding: 6px 20px !important;
+color: #8f8f8f;
+background-color: #fff;
+box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+cursor: pointer;
+border:0px; border-radius: 0px !important}
+a.new_btn:hover{background-color: #e6e6e6;}
+li.no-bdr{border: 0px !important; background: none !important} 
 
 /* search Animation */
 .search { width:100%; }
@@ -247,6 +260,11 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   top: 46px;
   width: 100%;
   z-index: 999;
+}
+.breadcrumb .new-project > div {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
 }
 .search1   {
   float: right; 
@@ -616,6 +634,9 @@ transform:rotate(360deg)
   padding-top: 7px;
   color: #8d8d8d;
 }
+.box {
+  margin-bottom: 20px;
+}
 .projectlist .new-project .box-one .glyphicon{
   margin-right: 3px;
 }
@@ -659,10 +680,10 @@ transform:rotate(360deg)
 .project-box .projectbox {
   height: 190px;
 }
-.projectbox .empty {
+.projectbox .pointer {
   cursor: pointer;
 }
-.projectbox .empty a{
+.projectbox .pointer a{
   color: #3c3c3c;
 }
 
@@ -958,7 +979,26 @@ transform:rotate(360deg)
   .breadcrumb .new-project a.button {
     width: 100%;
   }
-
+  body {
+    padding-top: 0;
+  }
+  .breadcrumb-wrap,
+  .navbar-fixed-top {
+    position: relative;
+  }
+  .breadcrumb-wrap {
+    top: 0;
+  }
+  .project-box,
+  .projectlist {
+    padding-top: 20px;
+  }
+  .navbar-nav {
+    margin-right: 0;
+  }
+  .navbar {
+    margin-bottom: 0;
+  }
 }
 @media screen and (max-width : 480px)  {
   .navbar-right .user-image {
