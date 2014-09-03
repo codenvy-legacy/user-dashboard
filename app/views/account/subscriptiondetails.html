@@ -10,7 +10,7 @@
 <div class="col-md-12">
     <div class="row">
 <ul class="breadcrumb projectnav" style="margin-bottom:0px;border-top:0px solid #dcdcdc; border-bottom:none;">
-            <li><a ng-href="#/account/subscriptions">All Subscriptions</a> &nbsp;  > &nbsp;  {{subscription.id}} </li>
+            <li><a ng-href="#/account/subscriptions">All Subscriptions</a> &nbsp;  > &nbsp; {{subscriptionAttributes.description | uppercase}} </li>
 </ul>
     </div>
 </div>
@@ -21,17 +21,17 @@
         <h4 class="text-center">SUBSCRIPTIONS DETAILS</h4>
         <div class="row">
           <div class="col-md-12">
-              <label for="workspaceid">Name: {{subscriptionAttributes.description}}</label>
+              <label for="workspaceid">Name: <b>{{subscriptionAttributes.description | uppercase}}</b></label>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-              <label for="workspaceid">Your subscription started on: {{subscriptionAttributes.startDate}}</label>
+              <label for="workspaceid">Your subscription started on: <b>{{subscriptionAttributes.startDate}}</b></label>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-              <label for="workspaceid">Your subscription expired on: {{subscriptionAttributes.endDate}}</label>
+              <label for="workspaceid">Your subscription expired on: <b>{{subscriptionAttributes.endDate}}</b></label>
           </div>
         </div>
         <div class="row">
@@ -39,7 +39,7 @@
             <ul class="breadcrumb action-button boxnav">
               <li class="active"><a href="">Renew</a></li>
               <li class="active"><a href="">Upgrade</a></li>
-              <li class="active"><a href="">Cancel</a></li>
+              <li class="active"><a href="" data-toggle="modal" data-target="#message-deletesub" data-dismiss="modal">Cancel</a></li>
             </ul>
           </div>
         </div>
@@ -69,3 +69,25 @@
     
   </div>
 </div>
+
+<div class="modal modal-project fade" id="message-deletesub" tabindex="-1" role="dialog" aria-labelledby="WarningProjectLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    
+      <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title"></h4>
+      </div><!-- modal-header -->
+      
+      <div class="modal-body">
+        <p>We'd hate to see you go, but if you ever need to cancel, just contact our Customer Support.</p>
+      </div><!-- modal-body -->
+      
+      <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
+        <a  class="btn btn-danger" data-dismiss="modal">Ok</a>
+        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>-->
+      </div><!-- modal-footer -->
+      
+    </div><!-- modal-content -->
+  </div><!-- modal-dialog -->
+</div><!-- Warning-project Modal -->
