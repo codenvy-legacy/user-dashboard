@@ -9,7 +9,7 @@
 </ul>
 <div class="col-md-12">
     <div class="row">
-<ul class="breadcrumb projectnav" style="margin-bottom:0px;border-top:1px solid #dcdcdc; border-bottom:none;">
+<ul class="breadcrumb projectnav" style="margin-bottom:0px;border-top:0px solid #dcdcdc; border-bottom:none;">
             <li>All Subscriptions</li>
             <li class="dropdown user-dropdown"> SORT BY:
               <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-up garrow"></i> Name</a>
@@ -42,9 +42,7 @@
                         <td class="text-center">{{endDate  | date: 'dd/MM/yy'}}</td>
                         <td class="text-center">
                             <ul class="breadcrumb action-button boxnav">
-                                <li class="active"><a href="">Renew</a></li>
-                                <li class="active"><a href="">Upgrade</a></li>
-                                <li class="active"><a href="">Cancel</a></li>
+                                <li class="active"><a ng-href="#/account/subscriptions/{{subscription.id}}">Manage subscription</a></li>
                             </ul>
                         </td>
                         <td>&nbsp;</td>
