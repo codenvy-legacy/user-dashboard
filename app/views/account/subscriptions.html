@@ -37,13 +37,11 @@
                 <tbody>
                     <tr ng-repeat="subscription in subscriptions| filter: filter | orderBy:param:reverse">
                         <td>&nbsp;</td>
-                        <td class="text-center blk_lnk"><a ng-href="#/account/subscriptions/{{subscription.id}}"><strong class="ng-binding">{{desc[$index] | uppercase}}</strong></a></td>
-                        <td  class="text-center">{{stDates[$index]}}</td>
-                        <td class="text-center">{{endDates[$index]}}</td>
-                        <td class="text-center">
-                            <ul class="breadcrumb action-button boxnav">
-                                <li class="active"><a ng-href="#/account/subscriptions/{{subscription.id}}">Manage subscription</a></li>
-                            </ul>
+                        <td class="text-center blk_lnk" style="vertical-align:middle;"><a ng-href="#/account/subscriptions/{{subscription.id}}"><strong class="ng-binding">{{desc[$index] | uppercase}}</strong></a></td>
+                        <td  class="text-center" style="vertical-align:middle;">{{stDates[$index]}}</td>
+                        <td class="text-center" style="vertical-align:middle;">{{endDates[$index]}}</td>
+                        <td class="text-center" style="vertical-align:middle;">
+							<div class="codenvybutton" style="width:150px;margin-left: auto;margin-right: auto;"><a ng-href="#/account/subscriptions/{{subscription.id}}" style="color: #8f8f8f;text-decoration:none;">Manage subscription</a></div>
                         </td>
                         
                     </tr>

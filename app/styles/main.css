@@ -1013,3 +1013,16 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
     margin-right: 5px;
   }
 }
+
+.codenvybutton {
+  margin-top:7px;
+  min-height: 28px;
+  padding-top: 6px;
+  color: #8f8f8f;
+  background-color: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+  cursor: pointer;
+}
+.codenvybutton:hover {
+  background-color: #e6e6e6;
+}
