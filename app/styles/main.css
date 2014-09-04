@@ -32,6 +32,14 @@ h4    { color: #363636; font-size: 10px; font-weight: bold; text-transform: uppe
   margin: 5px 10px 5px 0;
   vertical-align: middle;
 }
+.navbar-right .user-name {
+  line-height: 34px;
+  vertical-align: middle;
+}
+.projectnav > li.import-button a {
+  text-align: center;
+  display: block;
+}
 .navbar-inverse .navbar-nav > li > a.logout { font-size: 25px; margin: 10px 0; padding: 0; }
 .navbar-inverse .navbar-nav > .active > a, 
 .navbar-inverse .navbar-nav > .active > a:hover, 
@@ -317,6 +325,10 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   opacity: 1;
 }
 
+.header .help-bar i:hover{
+  color: #54aee0;
+}
+
 /* Spinner Alignment
 ----------------------------------------------*/
 #loading-bar-spinner .spinner-icon {
@@ -395,50 +407,45 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 	height: 8px;
 	background: #3F8CB8;
 }
- @-moz-keyframes 
-ball_moveG {
-0% {
--moz-transform:rotate(0deg)
+ @-moz-keyframes ball_moveG {
+  0% {
+  -moz-transform:rotate(0deg)
+  }
+   100% {
+  -moz-transform:rotate(360deg)
+  }
 }
- 100% {
--moz-transform:rotate(360deg)
+ @-webkit-keyframes ball_moveG {
+  0% {
+  -webkit-transform:rotate(0deg)
+  }
+   100% {
+  -webkit-transform:rotate(360deg)
+  }
 }
+ @-ms-keyframes ball_moveG {
+  0% {
+  -ms-transform:rotate(0deg)
+  }
+   100% {
+  -ms-transform:rotate(360deg)
+  }
 }
- @-webkit-keyframes 
-ball_moveG {
-0% {
--webkit-transform:rotate(0deg)
+ @-o-keyframes ball_moveG {
+  0% {
+  -o-transform:rotate(0deg)
+  }
+   100% {
+  -o-transform:rotate(360deg)
+  }
 }
- 100% {
--webkit-transform:rotate(360deg)
-}
-}
- @-ms-keyframes 
-ball_moveG {
-0% {
--ms-transform:rotate(0deg)
-}
- 100% {
--ms-transform:rotate(360deg)
-}
-}
- @-o-keyframes 
-ball_moveG {
-0% {
--o-transform:rotate(0deg)
-}
- 100% {
--o-transform:rotate(360deg)
-}
-}
- @keyframes 
-ball_moveG {
-0% {
-transform:rotate(0deg)
-}
- 100% {
-transform:rotate(360deg)
-}
+ @keyframes ball_moveG {
+  0% {
+  transform:rotate(0deg)
+  }
+   100% {
+  transform:rotate(360deg)
+  }
 }
 
 /*--------------loader css end -------------*/
@@ -481,8 +488,7 @@ transform:rotate(360deg)
   -o-transition: -o-transform 0.1s ease-out;
   transition: transform 0.1s ease-out;
 }
-.panel .panel-footer .fa-fw
-{
+.panel .panel-footer .fa-fw {
   /*border: 1px solid #008000;*/
   width: 20px;
 }
@@ -569,7 +575,7 @@ transform:rotate(360deg)
 .new-project .box > button,
 .new-project .box > a{
   display: block;
-  padding: 16px;
+  padding: 30px 16px;
   width: 100%;
   border-radius: 0;
   background-color: #fff;
@@ -577,8 +583,10 @@ transform:rotate(360deg)
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 
-.new-project a:hover{
+.new-project .box > button:hover,
+.new-project .box > a:hover{
   text-decoration: none;
+  box-shadow: 0 7px 5px 0 rgba(0, 0, 0, 0.2);
 }
 .new-project button{
   background: none;
@@ -635,7 +643,7 @@ transform:rotate(360deg)
   color: #8d8d8d;
 }
 .box {
-  margin-bottom: 20px;
+  margin-bottom: 34px;
 }
 .projectlist .new-project .box-one .glyphicon{
   margin-right: 3px;
@@ -1003,8 +1011,5 @@ transform:rotate(360deg)
 @media screen and (max-width : 480px)  {
   .navbar-right .user-image {
     margin-right: 5px;
-  }
-  .navbar-right .user-name {
-    display: none;
   }
 }

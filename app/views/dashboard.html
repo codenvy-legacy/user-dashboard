@@ -17,7 +17,7 @@
                 </ul>
             </div>
         </li>
-        <li ng-if="!box">
+        <li class="import-button" ng-if="!box">
           <a href="/ws/{{workspace.workspaceReference.name}}?action=importProject">Import Project</a>
         </li>
         <li>You have access to {{(projects.length == 0) ? '-' : projects.length}} projects in {{workspaces.length}} workspaces</li>
@@ -88,6 +88,8 @@
 
       <div class="box box-one">
         <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=importProject" target="_blank">
+          <span class="glyphicon white glyphicon-import"></span>
+          <br />
           <div class="text-center" style="color: #919191"><strong>Import Project</strong></div>
         </a>
       </div><!-- Box -->
