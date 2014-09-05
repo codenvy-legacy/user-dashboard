@@ -96,8 +96,29 @@
 
     </div><!-- New Project -->
     
-    
-
+	<div ng-show="isNeedToShowHelp()" class="col-lg-3 col-md-6 col-sm-6 col-xs-12 projectbox">
+	
+     <div class="panel panel-default">
+	    <img class="codenvyicon" ng-src="./images/codenvy-rounded-logo.png" alt="" >
+		<div class="panel-heading">
+			<div class="row">
+				<div class="col-md-3 col-sm-3 col-xs-3" style="width:60px">
+					
+				</div>
+				<div class="col-md-9 col-sm-9 col-xs-9" style="vertical-align:middle;">
+					<h3 class="panel-title"><strong>Welcome to your workspace!</strong></h3>
+				</div>
+			</div><!-- .row -->
+		</div><!-- panel-heading -->
+		
+		<div class="panel-body" style="height:120px">
+			Codenvy is your Cloud Developer Environment. <br/>
+			<br/>
+			Kick <b>Create New Project</b> off by starting your first project.<br/>
+			Want to learn more? Check out the 60 second video for tips to getting the most from Codenvy.
+		</div>
+		</div><!-- panel-default -->
+	</div>
     <div class="col-md-10">
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
             <div class="panel panel-default">
@@ -279,7 +300,7 @@
                                 <td>
                                     <input type="checkbox" ng-model="member.write" ng-change="setReadWrite(member)">
                                 </td>
-                                <td class="last"><a data-toggle="modal" data-target="#warning-user"><i class="fa fa-trash-o"></i></a></td>
+                                <td class="last"><a data-toggle="modal" data-target="#warning-user" ng-click="setMemberToBeDeleted(member)"><i class="fa fa-trash-o"></i></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -394,7 +415,7 @@
       </div><!-- modal-header -->
       
       <div class="modal-body">
-        <p>You are going to remove {{user.fullname(user.email)}} from the workspace/developer of {{workspace}}. This developer will be removed permissions to all projects of the workspace. </p>
+        <p>You are going to remove {{selectMemberToBeDeleted.fullName}} ({{selectMemberToBeDeleted.email}}) from the workspace/developer of {{selected.workspaceName}}. This developer will be removed permissions to all projects of the workspace. </p>
         <p>Are you sure you want to continue?</p>
       </div><!-- modal-body -->
       

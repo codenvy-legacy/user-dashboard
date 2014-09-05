@@ -37,7 +37,7 @@ angular.module('odeskApp')
 					
 					//Figure out trial end date = start date + trialDuration (in days)
 					// if trial expired then display "---"
-					var dtStart = new Date(datab.startDate)
+					var dtStart = new Date(datab.startDate);
 					var temp = dtStart.getTime() + datab.trialDuration * 86400000; // 86400000 = 24h * 3600 secs * 1000 ms
 					var dtToday = new Date();
 					if(dtToday < temp)

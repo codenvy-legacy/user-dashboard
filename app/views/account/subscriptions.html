@@ -1,6 +1,6 @@
-<ul class="breadcrumb boxnav">
-  <li><a href="#/account/profile">Profile</a></li>
-  <li class="active"><a href="#/account/subscriptions">Subscriptions</a></li>
+<ul class="breadcrumb boxnav" >
+  <li style="vertical-align:middle;"><a href="#/account/profile">Profile</a></li>
+  <li style="vertical-align:middle;" class="active"><a href="#/account/subscriptions">Subscriptions</a></li>
   <!-- 
     <li><a href="#/account/configuration">Configuration</a></li>
     <li><a href="#/account/preferences">Preferences</a></li>
@@ -28,7 +28,8 @@
                     <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
                         <th style="width:54px"></th>
                         <th class="col-md-2 text-center"><h4>NAME</h4></th>
-                        <th class="col-md-4 text-center"><h4>ACTIVATION DATE</h4></th>
+                        <th class="col-md-2 text-center"><h4>ACTIVATION DATE</h4></th>
+						<th class="col-md-2 text-center"><h4>TRIAL END DATE</h4></th>
                         <th class="col-md-1 text-center"><h4>EXPIRATION DATE</h4></th>
                         <th class="text-center" style="width:350px"><h4>ACTIONS</h4></th>
                         
@@ -39,7 +40,8 @@
                         <td>&nbsp;</td>
                         <td class="text-center blk_lnk" style="vertical-align:middle;"><a ng-href="#/account/subscriptions/{{subscription.id}}"><strong class="ng-binding">{{desc[$index] | uppercase}}</strong></a></td>
                         <td  class="text-center" style="vertical-align:middle;">{{stDates[$index]}}</td>
-                        <td class="text-center" style="vertical-align:middle;">{{endDates[$index]}}</td>
+                        <td class="text-center" style="vertical-align:middle;">{{trialEndDates[$index]}}</td>
+						<td class="text-center" style="vertical-align:middle;">{{endDates[$index]}}</td>
                         <td class="text-center" style="vertical-align:middle;">
 							<div class="codenvybutton" style="width:150px;margin-left: auto;margin-right: auto;"><a ng-href="#/account/subscriptions/{{subscription.id}}" style="color: #8f8f8f;text-decoration:none;">Manage subscription</a></div>
                         </td>

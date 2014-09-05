@@ -1026,3 +1026,12 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .codenvybutton:hover {
   background-color: #e6e6e6;
 }
+
+.codenvyicon {
+float:left;
+width:54px;
+height:54px;
+margin-top:20px;
+margin-left:5px;
+
+}
