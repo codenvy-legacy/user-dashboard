@@ -26,7 +26,7 @@ angular.module('odeskApp')
                 data: { "username": $scope.username, "password": $scope.password}
             }).then(function (response) { // success
                 $cookies.token = response.data.value;
-                $cookies.refreshStatus = "DISABLED"
+                $cookies.refreshStatus = "DISABLED";
                 $location.path("/dashboard");
             }, function (response) { // optional
                 console.log("error on login");

@@ -1021,3 +1021,6 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   font-size: 12px;
   margin-left: 10px;
 }
+
+.breadcrumb li i { margin-right: 8px; margin-bottom: 5px; font-size: 20px; vertical-align: middle; color: #ccc;}
+.breadcrumb li a.new_btn  { padding:6px 10px !important; color:#363636; text-decoration: none;}
