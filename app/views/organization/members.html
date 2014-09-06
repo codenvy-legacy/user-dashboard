@@ -1,0 +1,213 @@
+<ul class="breadcrumb boxnav">
+  <li><a href="#/organizations"> WORKSPACES <span class="badge">{{workspaces.length}}</span></a></li>
+  <li class="active"><a href="#/organizations/members"> MEMBERS <span class="badge">40</span> </a></li>
+  <!--<li><a href="#"> GROUPS <span class="badge">10</span> </a></li>-->
+</ul>
+
+<div class="col-md-12">
+  <div class="row">
+    <ul class="breadcrumb projectnav breadcrumb clearfix">
+      <li class="dropdown user-dropdown"> SORT BY:
+        <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-down garrow"></i> Alphabetically </a>
+        <ul class="dropdown-menu">
+          <li><a href=""> Alphabetically </a></li>
+          <li><a href=""> Last Update </a></li>
+          <li><a href=""> Added Date </a></li>
+          <li><a href=""> Role(Owner) </a></li>
+          <li><a href=""> Role(Developer) </a></li>
+        </ul>
+      </li>
+
+      <li class="ws-button">
+        <div>
+          <a href="" class="new_btn" data-toggle="modal" data-target="#addNewMember"><i class="glyphicon glyphicon-plus"></i>New Member</a>
+        </div>
+      </li>
+      <li class="search1 clearfix">
+        <div>
+          <input type="button" class="searchfield "/>
+        </div><!-- content title-->
+        <div class="searchfull clearfix" style="display:none" >
+          <input type="button" class="closeBtn" style="display:none;" ng-click="filter = ''" />
+          <input type="text" ng-model="filter.project.name" class="searchfield " placeholder="Search for Runners"/>
+        </div>
+      </li>
+    </ul>
+
+    <div class="breadcrumb-without-border projectnav">
+      <table class="table table-striped table-condensed- table-hover" style="background:#f9f9f9;">
+        <thead>
+        <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
+          <th class=""></th>
+          <th class="text-center"><h4>NAME</h4></th>
+          <th class="text-center"><h4>LAST UPDATE</h4></th>
+          <th class="text-center"><h4>ADDED DATE</h4></th>
+          <th class="text-center"><h4>WORKSPACES</h4></th>
+          <th class="text-center"><h4>PROJECTS</h4></th>
+          <th class="text-center"><h4>ROLE</h4></th>
+          <th></th>
+          <th style="text-align: right; padding-right: 81px;"><h4>ACTIONS</h4></th>
+        </tr>
+        </thead>
+
+        <tr class="v-center">
+          <td style="width: 1%;"></td>
+          <td><a ng-href="#">Parth Chhaiya</a></td>
+          <td class="text-center"></td>
+          <td class="text-center"></td>
+          <td class="text-center"></td>
+          <td class="text-center"></td>
+          <td class="text-center">Owner</td>
+          <td></td>
+          <td style="text-align: right;">
+            <ul class="breadcrumb action-button boxnav">
+              <li class="active no-bdr"><a href="" class="new_btn">Edit</a></li>
+              <li class="active no-bdr"><a href="" class="new_btn">Remove</a></li>
+            </ul>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+    <div class="text-center">
+      <ul class="pagination pagination-sm">
+        <li><a href="#">«</a></li>
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li><a href="#">»</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!---- Add New Member Modal Start--->
+<div class="modal-col">
+  <div class="modal fade" id="addNewMember" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Add Member(s) Into Organization</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-field">
+            <!--<div class="row">
+              <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                <form role="form">
+                  <div class="form-group">
+                    <label>Define Workspace Name:</label>
+                    <input type="text" placeholder="Workspace Name" class="form-control">
+                  </div>
+                </form>
+              </div>
+            </div>-->
+            <div class="menber-col">
+              <div class="row">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                  User(s) to add:
+                </div>
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                  Owner
+                </div>
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                  Member
+                </div>
+              </div>
+            </div>
+            <div class="menber-textarea mrg-top10">
+              <div class="row mrg-btm5">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                  <p>Tyler Jewell (tyler@codenvy.com)</p>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="active-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="dactive-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  &nbsp;
+                </div>
+              </div>
+              <div class="row mrg-btm5">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                  <p>Sergey Kabashyuk (sergey@codenvy.com)</p>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="active-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="dactive-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  &nbsp;
+                </div>
+              </div>
+              <div class="row mrg-btm5">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                  <p>Gennady Azarenkov (gennady@codenvy.com)</p>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="dactive-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="active-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <a href="#"><i class="glyphicon glyphicon-trash"></i></a>
+                </div>
+              </div>
+              <div class="row mrg-btm5">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                  <p>Eric Cavazos (eric@codenvy.com)</p>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="dactive-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="active-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  &nbsp;
+                </div>
+              </div>
+            </div>
+            <div class="row mrg-top10">
+              <div class="col-lg-7 col-sm-6 col-md-6 col-xs-12">
+                <form role="form">
+                  <div class="form-group">
+                    <label>Select Users(s):</label>
+                    <input type="text" placeholder="Type email adresses separated by commas" class="form-control">
+                  </div>
+                </form>
+              </div>
+              <div class="col-lg-5 col-sm-6 col-md-6 col-xs-12">
+                <div class="row mrg-top30">
+                  <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">Owner </div>
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top:3px;">
+                  <div class="active-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">Member </div>
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style=" margin-top: 3px;padding-left: 5px;"><div class="dactive-btn">&nbsp;</div></div>
+                  <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                    <button type="button" class="btn btn-success">ADD</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Ok</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!---- Add New Workspace Modal end--->
