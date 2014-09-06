@@ -20,8 +20,5 @@ angular.module('odeskApp')
       $scope.workspaces = [];
       Workspace.all(function (resp) {
         $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceReference.temporary; });
-        console.debug($scope.workspaces.length);
-        console.debug($scope.workspaces)
-
       });
     });

@@ -895,8 +895,8 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
     padding: 4px;
   }
 }
-.mrg-top80 { margin-top: 80px;;}
-.mrg-top40 { margin-top: 80px !important; margin-left: 10px; margin-right: 10px;;}
+.mrg-top80 { margin-top: 80px;}
+.mrg-top40 { margin-top: 60px !important; margin-left: 10px; margin-right: 10px;}
 .btn-rt { float: right;}
 .btn-sm-text {}
 .mrg0 { margin: 0 !important;}
@@ -1120,3 +1120,57 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .mrg-top30 { margin-top:30px;}
 .pad-0{ padding: 0;}
 /*----------------------- End of Add New Workspace Modal css-------------------------*/
+
+.ws-name{ color: #000000;}
+
+
+.information-contant {}
+.box-bg {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  display: block;
+  padding: 16px;
+  width: 100%;
+  margin-bottom:20px;
+}
+
+.detail-ttl { font-size:14px; text-transform:uppercase;}
+
+.box-bg label {
+  display: inline-block;
+  margin-bottom: 8px; color:#8b8b8b;
+}
+
+.Privacy-contant { display:block;}
+.Privacy-text { font-size:14px; margin:20px 0px; color:#8b8b8b;}
+
+.pad-lf10 { padding-left:10px !important;}
+.mrg-btm5 { margin-bottom:5px;}
+
+.text-col {}
+.text-col h4 { font-size:13px; font-weight:bolder; margin:0px; }
+.text-col p { font-size:12px; margin:0px;color:#8b8b8b;}
+
+.administrator-block {}
+.administrator-block ul { margin:0; padding:0;}
+.administrator-block ul li { display:block; list-style:none; padding:8px 0px; border-top:1px solid #ddd;}
+.administrator-block .btn { font-size:11px !important;}
+
+.update-member {}
+.update-ttl {font-size:14px; margin:0px 0px 10px; color:#8b8b8b;}
+
+@media (min-width: 768px) {
+
+  .workspaces-table .table > tbody > tr > td {
+    font-size: 11px;
+    padding: 8px 5px;
+  }
+
+}
+
+.mrg-btm10 { margin-bottom:10px;}
+.mrg-btm20 { margin-bottom:20px;}
+
+.line-hight-80 { line-height: 70px;}

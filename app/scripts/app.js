@@ -103,6 +103,10 @@ angular.module('odeskApp', [
           templateUrl: BASE_URL + 'views/organization/members.html',
           controller: 'OrganizationsCtrl'
       })
+      .when('/organizations/workspace/edit', {
+        templateUrl: BASE_URL + 'views/organization/edit_workspace.html',
+        controller: 'OrganizationsCtrl'
+      })
 	    .when('/organizations/:name', {
             templateUrl: BASE_URL + 'views/orgdetail.html',
             controller: 'OrgdetailCtrl'

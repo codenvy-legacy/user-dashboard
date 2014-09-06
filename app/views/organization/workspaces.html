@@ -46,13 +46,13 @@
             <th class="text-center"><h4>PROJECTS</h4></th>
             <th class="text-center"><h4>FACTORIES</h4></th>
             <th></th>
-            <th style="text-align: right; padding-right: 104px;"><h4>ACTIONS</h4></th>
+            <th style="text-align: right; padding-right: 81px;"><h4>ACTIONS</h4></th>
           </tr>
         </thead>
 
           <tr ng-repeat="workspace in workspaces| filter: filter | orderBy:name:reverse" class="v-center">
             <td style="width: 1%;"><i class="glyphicon glyphicon-lock"></i></td>
-            <td><a ng-href="#">{{workspace.workspaceReference.name}}</a></td>
+            <td><a ng-href="#/organizations/workspace/edit" class="ws-name">{{workspace.workspaceReference.name}}</a></td>
             <td class="text-center"></td>
             <td class="text-center"></td>
             <td class="text-center"></td>
@@ -61,8 +61,8 @@
             <td></td>
             <td style="text-align: right;">
               <ul class="breadcrumb action-button boxnav">
-                <li class="active no-bdr"><a href="" class="new_btn">Edit</a></li>
-                <li class="active no-bdr"><a href="" class="new_btn">Remove</a></li>
+                <li class="active no-bdr"><a href="#" class="new_btn">Edit</a></li>
+                <li class="active no-bdr"><a href="#" class="new_btn">Remove</a></li>
               </ul>
             </td>
           </tr>
