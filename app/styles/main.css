@@ -1024,3 +1024,91 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 
 .breadcrumb li i { margin-right: 8px; margin-bottom: 5px; font-size: 20px; vertical-align: middle; color: #ccc;}
 .breadcrumb li a.new_btn  { padding:6px 10px !important; color:#363636; text-decoration: none;}
+
+.breadcrumb .badge {
+  background-color: #999999;
+  border-radius: 10px;
+  color: #ffffff;
+  display: inline-block;
+  font-size: 10px;
+  font-weight: normal;
+  line-height: 1;
+  margin: 0 5px;
+  min-width: 18px;
+  padding: 3px 10px;
+  text-align: center;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.ws-button{
+  border:none !important; position: absolute; right: 60px; top: -1px;
+}
+
+/*----------------------- Start of Add New Workspace Modal css-------------------------*/
+
+.modal-col { display: block;}
+.modal-col .btn { font-size:11px;}
+.modal-col .modal-header {
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #e5e5e5;
+  min-height: 16.4286px;
+  padding: 8px 10px;
+}
+
+.modal-col .modal-header h4 {
+  font-size: 12px;
+  font-weight: normal;
+  text-align: left;
+  text-transform: none;
+}
+
+.form-field label, .menber-col{
+  font-size: 14px;
+  color: #000000;
+}
+
+.modal-col .modal-content {
+  background-clip: padding-box;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius:0;
+  box-shadow:none !important;
+  outline: medium none;
+  position: relative;
+}
+.modal-col .modal-footer {
+  border-top: 1px solid #e5e5e5; background-color: #f0f0f0;
+  padding:8px 10px;
+  text-align: right;
+}
+
+.menber-textarea { border:#e5e5e5 1px solid; height: 125px; padding:8px; overflow-x: hidden; overflow-y: scroll;}
+.menber-textarea p { font-size:12px; margin:0px 0px 5px 0px;color:#8b8b8b;}
+.menber-textarea .table { width:100%; margin-bottom:0px !important;}
+.menber-textarea .table > tbody > tr > td {  border-bottom: 0 none;
+  border-top: 0 none;
+  font-size: 12px;
+  line-height: 22px;
+  padding: 0;
+  text-align: left;
+}
+.active-btn {  background: none repeat scroll 0 0 #226cb6;
+  border-radius: 100%;
+  height: 13px;
+  margin: 0 auto;
+  width: 13px;
+  border:#cdcdcd 2px solid;
+}
+.dactive-btn {  background:#cdcdcd;
+  border-radius: 100%;
+  height: 13px;
+  margin: 0 auto;
+  width: 13px;
+}
+.menber-textarea i { color:#cdcdcd;}
+
+.mrg-top10 { margin-top:10px;}
+.mrg-top30 { margin-top:30px;}
+
+/*----------------------- End of Add New Workspace Modal css-------------------------*/

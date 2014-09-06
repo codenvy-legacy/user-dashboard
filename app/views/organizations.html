@@ -1,8 +1,8 @@
 
 <ul class="breadcrumb boxnav">
-  <li class="active"><a href="#"> WORKSPACES ({{workspaces.length}})</a></li>
-  <li><a href="#"> MEMBERS (40) </a></li>
-  <li><a href="#"> GROUPS (10) </a></li>
+  <li class="active"><a href="#"> WORKSPACES <span class="badge">{{workspaces.length}}</span></a></li>
+  <li><a href="#"> MEMBERS <span class="badge">40</span> </a></li>
+  <li><a href="#"> GROUPS <span class="badge">10</span> </a></li>
 </ul>
 
 
@@ -18,9 +18,9 @@
         </ul>
       </li>
 
-      <li style="border:none; position: absolute; right: 32px; top: -1px;">
+      <li class="ws-button">
         <div>
-          <a href="" class="new_btn"><i class="glyphicon glyphicon-plus"></i>New Workspace</a>
+          <a href="" class="new_btn" data-toggle="modal" data-target="#addNewWorkspace"><i class="glyphicon glyphicon-plus"></i>New Workspace</a>
         </div>
       </li>
       <li class="search1 clearfix">
@@ -82,3 +82,134 @@
     </div>
   </div>
 </div>
+
+<!---- Add New Workspace Modal Start--->
+<div class="modal-col">
+  <div class="modal fade" id="addNewWorkspace" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Add New Workspace Into Organization</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-field">
+            <div class="row">
+              <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                <form role="form">
+                  <div class="form-group">
+                    <label>Define Workspace Name:</label>
+                    <input type="text" placeholder="Workspace Name" class="form-control">
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="menber-col">
+              <div class="row">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                  Member(s) to add:
+                </div>
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                  Administrator
+                </div>
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                  Developer
+                </div>
+              </div>
+            </div>
+            <div class="menber-textarea mrg-top10">
+              <div class="row mrg-btm5">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                  <p>Tyler Jewell (tyler@codenvy.com)</p>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="active-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="dactive-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  &nbsp;
+                </div>
+              </div>
+              <div class="row mrg-btm5">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                  <p>Sergey Kabashyuk (sergey@codenvy.com)</p>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="active-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="dactive-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  &nbsp;
+                </div>
+              </div>
+              <div class="row mrg-btm5">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                  <p>Gennady Azarenkov (gennady@codenvy.com)</p>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="dactive-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="active-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <a href="#"><i class="glyphicon glyphicon-trash"></i></a>
+                </div>
+              </div>
+              <div class="row mrg-btm5">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                  <p>Eric Cavazos (eric@codenvy.com)</p>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="dactive-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="active-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  &nbsp;
+                </div>
+              </div>
+            </div>
+            <div class="row mrg-top10">
+              <div class="col-lg-5 col-sm-6 col-md-6 col-xs-12">
+                <form role="form">
+                  <div class="form-group">
+                    <label>Select Members(s):</label>
+                    <input type="text" placeholder="Type email adresses " class="form-control">
+                  </div>
+                </form>
+              </div>
+              <div class="col-lg-7 col-sm-6 col-md-6 col-xs-12">
+                <div class="row mrg-top30">
+                  <div class="col-lg-4 col-sm-3 col-md-3 col-xs-12">Administrator </div>
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top:3px;">
+                    <div class="active-btn">&nbsp;</div></div>
+                  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">Developer </div>
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top:3px;"><div class="dactive-btn">&nbsp;</div></div>
+                  <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                    <button type="button" class="btn btn-success">ADD</button>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Ok</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!---- Add New Workspace Modal end--->
