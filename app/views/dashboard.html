@@ -95,30 +95,24 @@
       </div><!-- Box -->
 
     </div><!-- New Project -->
-    
-	<div ng-show="isNeedToShowHelp()" class="col-lg-3 col-md-6 col-sm-6 col-xs-12 projectbox">
 	
-     <div class="panel panel-default">
-	    <img class="codenvyicon" ng-src="./images/codenvy-rounded-logo.png" alt="" >
-		<div class="panel-heading">
-			<div class="row">
-				<div class="col-md-3 col-sm-3 col-xs-3" style="width:60px">
-					
-				</div>
-				<div class="col-md-9 col-sm-9 col-xs-9" style="vertical-align:middle;">
-					<h3 class="panel-title"><strong>Welcome to your workspace!</strong></h3>
-				</div>
-			</div><!-- .row -->
-		</div><!-- panel-heading -->
-		
-		<div class="panel-body" style="height:120px">
-			Codenvy is your Cloud Developer Environment. <br/>
-			<br/>
-			Kick <b>Create New Project</b> off by starting your first project.<br/>
-			Want to learn more? Check out the 60 second video for tips to getting the most from Codenvy.
-		</div>
-		</div><!-- panel-default -->
+    <!-- start help-->
+	<div ng-show="isNeedToShowHelp()" class="box-example">
+    	<div class="col-lg-3">
+        	<div class="arrow-img"><img src="./images/arrow.png" class="img-responsive"  alt=""/></div>
+            <div class="panel panel-default">
+            	<div class="codenvy-rounded-logo"><img src="./images/codenvy-rounded-logo.png" class="img-responsive"  alt=""/></div>
+              <div class="panel-heading" style="text-align:right"><strong>Welcome to your workspace!</strong></div>
+              <div class="panel-body">
+                <p style="text-align:right">Codenvy is your Cloud Developer</p>
+                <p style="margin-top:2px">Kick <b>Create New Project</b> off by starting your first project.</p>
+                <p>Want to learn more? Check out the 60 second video for tips to getting the most from Codenvy.</p>
+              </div>
+            </div>
+        </div>
 	</div>
+	<!-- end help-->
+	
     <div class="col-md-10">
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
             <div class="panel panel-default">
