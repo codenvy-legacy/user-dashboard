@@ -17,9 +17,24 @@
                 </ul>
             </div>
         </li>
-        <li class="import-button" ng-if="!box">
-          <a href="/ws/{{workspace.workspaceReference.name}}?action=importProject">Import Project</a>
+
+        <li class="new-project import clearfix" ng-if="!box">
+            <div ng-if="workspaces.length > 1">
+                <a class="clearfix button" href="/ws/{{workspaces[0].workspaceReference.name}}?action=importProject" target="_blank">
+                    <strong>Import Project</strong>
+                </a>
+            </div>
+            <div ng-if="workspaces.length == 1">
+                <button type="button" class="dropdown-toggle button" data-toggle="dropdown">
+                    <strong>Import Project<span class="caret"></span></strong>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><span>Select Destination Workspace:</span></li>
+                    <li ng-repeat="workspace in workspaces"><a href="/ws/{{workspace.workspaceReference.name}}?action=importProject" target="_blank">{{workspace.workspaceReference.name}}</a></li>
+                </ul>
+            </div>
         </li>
+
         <li>You have access to {{(projects.length == 0) ? '-' : projects.length}} projects in {{workspaces.length}} workspaces</li>
         <li class="dropdown user-dropdown">SORT BY:
       <a href="" class="dropdown-toggle" data-toggle="dropdown"><i ng-class="reverse ? 'fa-caret-up' : 'fa-caret-down'" class="fa"></i>{{param == 'modificationDate' ? 'Date Modified' : 'Name'}}</a>
@@ -86,13 +101,26 @@
             </ul>
         </div><!-- Box -->
 
-      <div class="box box-one">
-        <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=importProject" target="_blank">
-          <span class="glyphicon white glyphicon-import"></span>
-          <br />
-          <div class="text-center" style="color: #919191"><strong>Import Project</strong></div>
-        </a>
-      </div><!-- Box -->
+
+        <div class="box box-two" ng-if="workspaces.length == 1">
+            <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=importProject" target="_blank">
+                <span class="glyphicon white glyphicon-import"></span>
+                <br />
+                <div class="text-center" style="color: #919191"><strong>Import Project</strong></div>
+            </a>
+        </div><!-- Box -->
+        <div class="box box-one" ng-if="workspaces.length > 1">
+            <button type="button" class="dropdown-toggle" data-toggle="dropdown">
+                <span class="glyphicon white glyphicon-import"></span>
+                <br>
+                <strong>Import Project <span class="caret"></span></strong>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><span>Select Destination Workspace:</span></li>
+                <li ng-repeat="workspace in workspaces"><a href="/ws/{{workspace.workspaceReference.name}}?action=importProject" target="_blank">{{workspace.workspaceReference.name}}</a></li>
+            </ul>
+        </div><!-- Box -->
+
 
     </div><!-- New Project -->
     

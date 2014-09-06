@@ -274,6 +274,14 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   *display: inline;
   *zoom: 1;
 }
+.breadcrumb .new-project.import {
+  margin-left: -3px;
+}
+.breadcrumb .new-project.import .dropdown-menu {
+  left: auto;
+  right: -1px;
+  width: 169px;
+}
 .search1   {
   float: right; 
   height: 35px;
