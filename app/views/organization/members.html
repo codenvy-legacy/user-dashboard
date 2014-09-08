@@ -61,7 +61,7 @@
           <td></td>
           <td style="text-align: right;">
             <ul class="breadcrumb action-button boxnav">
-              <li class="active no-bdr"><a href="" class="new_btn">Edit</a></li>
+              <li class="active no-bdr"><a href="" class="new_btn" data-toggle="modal" data-target="#updateRoleModal">Edit</a></li>
               <li class="active no-bdr"><a href="" class="new_btn">Remove</a></li>
             </ul>
           </td>
@@ -201,3 +201,56 @@
   </div>
 </div>
 <!---- Add New Workspace Modal end--->
+
+<!---- Update role Modal start--->
+<div class="modal-col">
+  <div class="modal fade" id="updateRoleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 500px; margin: 200px auto;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <h4 class="modal-title">Update Member Role</h4>
+        </div>
+        <div class="modal-body">
+          <div class="update-member">
+            <div class="update-ttl">Select the appropriate role for slemeur@codenvy.com:</div>
+            <div class="row">
+              <div class="col-lg-11 col-lg-offset-1 col-sm-12 col-md-12 col-xs-12">
+                <div class="row mrg-btm10">
+                  <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="margin-top:3px;">
+                    <div class="active-btn">&nbsp;</div>
+                  </div>
+                  <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">
+                    <div class="text-col">
+                      <h4>Public</h4>
+                      <p>Everyone can see and find the workspace</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="margin-top:3px;">
+                    <div class="dactive-btn">&nbsp;</div>
+                  </div>
+                  <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">
+                    <div class="text-col">
+                      <h4>Private</h4>
+                      <p>Only members of your organization can see and find the workspace</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Ok</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!---- Update role Modal end--->
