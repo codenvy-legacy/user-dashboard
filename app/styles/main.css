@@ -1150,7 +1150,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .mrg-btm5 { margin-bottom:5px;}
 
 .text-col {}
-.text-col h4 { font-size:13px; font-weight:bolder; margin:0px; }
+.text-col h4 { font-size:13px; font-weight:bolder; margin:0px; text-transform: none;}
 .text-col p { font-size:12px; margin:0px;color:#8b8b8b;}
 
 .administrator-block {}
@@ -1174,3 +1174,20 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .mrg-btm20 { margin-bottom:20px;}
 
 .line-hight-80 { line-height: 70px;}
+
+.btn-white {
+  background-color: #fff;
+  border-color: #ccc;
+  color: #333;
+  text-transform: none !important;
+}
+.btn-white:hover {
+  color: #333333;
+  background-color: #ebebeb;
+  border-color: #adadad;
+}
+
+.add-admin-text{
+  position: relative;
+  top: -2px;
+}
