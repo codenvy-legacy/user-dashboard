@@ -413,12 +413,7 @@
                 <h4 class="modal-title" id="privacyMessageModalLabel">Project Privacy</h4>
             </div>
             <div class="modal-body">
-              As a developer of the workspace, <b>{{selected.workspaceName}}</b>, you are not permitted to change privacy of the project. This action is only permitted for users with workspace/admin role designation. This workspace's administrator is ---------.
-              <p>{{currentUser.fullName}}</p>
-            </div>
-            <div class="modal-body">
-              <p>As a developer of the workspace, <b>{{selected.workspaceName}}</b>, you are not permitted to change privacy of the project. This action is only permitted for users with workspace/admin role designation. This workspace's administrator are ---------, -------- and ---------.</p>
-              <p>{{currentUser.fullName}}</p>
+              As a developer of the workspace, <b>{{selected.workspaceName}}</b>, you are not permitted to change privacy of the project. This action is only permitted for users with workspace/admin role designation. This workspace's administrator {{getAllAdminListToDisplay()}}.
             </div>
             <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
