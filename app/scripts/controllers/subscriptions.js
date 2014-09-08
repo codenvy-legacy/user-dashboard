@@ -20,6 +20,7 @@ angular.module('odeskApp')
         $scope.subscriptions = [];
         $scope.stDates = [];
         $scope.endDates = [];
+		$scope.trialEndDates = [];
         $scope.desc = [];
         var temp = [];
         var temp2 = [];
@@ -46,6 +47,18 @@ angular.module('odeskApp')
                 $scope.stDates[i] = datac.startDate;
                 $scope.endDates[i] = datac.endDate;
                 $scope.desc[i] = datac.description;
+					
+				var dtStart = new Date(datac.startDate);
+				var tempTime = dtStart.getTime() + (datac.trialDuration * 86400000); // 86400000 = 24h * 3600 secs * 1000 ms
+				var dtToday = new Date();
+				if(dtToday < tempTime)
+				{
+					var dtTrialEnd = new Date(tempTime);
+					$scope.trialEndDates[i] = (dtTrialEnd.getMonth()+1) + "/" + dtTrialEnd.getDate() + "/" + dtTrialEnd.getFullYear();
+				}
+				else
+					$scope.trialEndDates[i] = '---';
+									
                 num++;
                 if(num==temp.length)
                 {

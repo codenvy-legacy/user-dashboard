@@ -212,6 +212,14 @@ angular.module('odeskApp')
         });
       };
 
+	  $scope.isNeedToShowHelp = function() {
+			return $scope.projects==null || $scope.projects.length==0;
+	  }
+	    
+	  $scope.selectMemberToBeDeleted = null;
+	  $scope.setMemberToBeDeleted = function(member) {
+		$scope.selectMemberToBeDeleted = member;
+	  }
       $scope.removeMember = function (member) {
         Workspace.removeMember($scope.activeProject.workspaceId, member.userId).then(function (data) {
           var removedMemberIndex = -1;
@@ -270,6 +278,10 @@ angular.module('odeskApp')
       //constructor
       var init = function () {
         Workspace.all(function (resp) {
+		  var tempWorkspaces = _.filter(resp, function (workspace) { return workspace.workspaceReference.temporary; });
+		  if(tempWorkspaces.length > 0)
+			 	$window.location.href = $.map(tempWorkspaces[0].workspaceReference.links, function (obj) { if (obj.rel == "workspace by id") return obj.href })[0];
+				
           $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceReference.temporary; });
 
           angular.forEach($scope.workspaces, function (workspace) {
