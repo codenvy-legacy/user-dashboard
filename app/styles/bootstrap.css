@@ -2383,8 +2383,6 @@ input[type="button"].btn-block {
 }
 .glyphicon-plus:before {
   content: "\2b";
-  font-size: 16px;
-  color: #ccc;
 }
 .glyphicon-euro:before {
   content: "\20ac";
