@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('NavbarCtrl', function ($scope, $location, $http, $cookies, $window) {
+    .controller('NavbarCtrl', function ($scope, $location, $http, $cookies, $window, Account, $q) {
 
         $scope.menu = [
             /*{
@@ -43,13 +43,31 @@ angular.module('odeskApp')
             {
                 'title': 'Account',
                 'link': '#/account'
-            },
-            {
-                'title': 'Organizations',
-                'link': '#/organizations'
             }
         ];
 
+        var accountId = [];
+        var serviceIds = ["Saas", "OnPremises"];
+        var packages = ["Team", "Enterprise"];
+
+        return $q.all([
+          Account.getAccountId().then(function (response){
+            accountId.push(_.pluck(_.pluck(response, 'accountReference'), 'id')[0]);
+          })
+        ]).then(function () {
+          Account.getSubscription(accountId[0]).then(function (response){
+            var serviceId = _.pluck(response, 'serviceId')[0];
+            var packageName = _.pluck(_.pluck(response, 'properties'),'Package')[0];
+            if(_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
+              var organizationLink = {
+                'title': 'Organizations',
+                'link': '#/organizations'
+              };
+              $scope.menu.push(organizationLink);
+            }
+
+          });
+        });
 
         $scope.helpMenu= [
             {

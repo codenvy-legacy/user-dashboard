@@ -202,8 +202,40 @@ angular.module('odeskApp')
                     })
                     .error(function (err) { deferred.reject(); });
 	            return deferred.promise;
-	        }
-	    };
+	        },
+
+          getAccountId: function (){
+            var deferred = $q.defer();
+            var con = {
+              headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+              }
+            };
+            $http.get('/api/account/', con)
+                .success(function (data) {
+                  deferred.resolve(data); //resolve data
+                })
+                .error(function (err) { deferred.reject(); });
+            return deferred.promise;
+          },
+
+          getSubscription: function (accountId){
+            var deferred = $q.defer();
+            var con = {
+              headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+              }
+            };
+            $http.get('/api/account/'+ accountId +'/subscriptions', con)
+                .success(function (data) {
+                  deferred.resolve(data); //resolve data
+                })
+                .error(function (err) { deferred.reject(); });
+            return deferred.promise;
+          }
+      };
 	});
 
 angular.module('odeskApp')
