@@ -312,9 +312,9 @@ angular.module('odeskApp')
       //constructor
       var init = function () {
         Workspace.all(function (resp) {
-		  var tempWorkspaces = _.filter(resp, function (workspace) { return workspace.workspaceReference.temporary; });
-		  if(tempWorkspaces.length > 0)
-			 	$window.location.href = $.map(tempWorkspaces[0].workspaceReference.links, function (obj) { if (obj.rel == "workspace by id") return obj.href })[0];
+		    //var tempWorkspaces = _.filter(resp, function (workspace) { return workspace.workspaceReference.temporary; });
+		    //if(tempWorkspaces.length > 0)
+			 	//$window.location.href = $.map(tempWorkspaces[0].workspaceReference.links, function (obj) { if (obj.rel == "workspace by id") return obj.href })[0];
 				
           $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceReference.temporary; });
 
