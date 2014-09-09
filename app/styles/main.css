@@ -1038,3 +1038,9 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 
 .codenvy-rounded-logo {position: absolute; z-index: 999; max-width: 70px;  left: 9%;top: 3%; }
 .arrow-img {  left: -28px; position: absolute; top: 4px; z-index: 999;}
+
+.runhelpblock {
+    color: #898989;
+    text-transform: none;
+	padding-top:10px;
+}
