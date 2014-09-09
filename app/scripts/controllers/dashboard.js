@@ -312,12 +312,14 @@ angular.module('odeskApp')
       //constructor
       var init = function () {
         Workspace.all(function (resp) {
-		  var tempWorkspaces = _.filter(resp, function (workspace) { return workspace.workspaceReference.temporary; });
-		  if(tempWorkspaces.length > 0)
-			 	$window.location.href = $.map(tempWorkspaces[0].workspaceReference.links, function (obj) { if (obj.rel == "workspace by id") return obj.href })[0];
-				
-          $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceReference.temporary; });
-
+		  $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceReference.temporary; });
+		
+		  if($scope.workspaces.length==0) {
+			  var tempWorkspaces = _.filter(resp, function (workspace) { return workspace.workspaceReference.temporary; });
+			  if(tempWorkspaces.length > 0)
+					$window.location.href = '/ws/' + tempWorkspaces[0].workspaceReference.name;
+		  }
+        
 		  $scope.projects = []; //clear the project list
 		  
           angular.forEach($scope.workspaces, function (workspace) {
