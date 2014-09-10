@@ -325,7 +325,7 @@ angular.module('odeskApp')
 					
 			  $scope.isProjectDataFetched = true;
 		  }
-        
+
 		  $scope.projects = []; //clear the project list
 		  
           angular.forEach($scope.workspaces, function (workspace) {
