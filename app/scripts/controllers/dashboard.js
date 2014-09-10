@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, Profile, $http, $q, $window) {
+    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, Profile, $http, $q, $window, $location) {
       var old_description = '';
       $scope.box = 1;
       $scope.search = 0;
@@ -321,11 +321,11 @@ angular.module('odeskApp')
 		  if($scope.workspaces.length==0) {
 			  var tempWorkspaces = _.filter(resp, function (workspace) { return workspace.workspaceReference.temporary; });
 			  if(tempWorkspaces.length > 0)
-					$window.location.href = '/ws/' + tempWorkspaces[0].workspaceReference.name;
+					$location.path("/login");
 					
 			  $scope.isProjectDataFetched = true;
 		  }
-
+        
 		  $scope.projects = []; //clear the project list
 		  
           angular.forEach($scope.workspaces, function (workspace) {
