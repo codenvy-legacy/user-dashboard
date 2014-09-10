@@ -212,8 +212,12 @@ angular.module('odeskApp')
         });
       };
 
+	  $scope.isProjectDataFetched = false;
 	  $scope.isNeedToShowHelp = function() {
-			return $scope.projects==null || $scope.projects.length==0;
+			if($scope.isProjectDataFetched)
+				return $scope.projects==null || $scope.projects.length==0;
+			else
+				return false;
 	  }
 	    
 	  $scope.selectMemberToBeDeleted = null;
@@ -312,11 +316,15 @@ angular.module('odeskApp')
       //constructor
       var init = function () {
         Workspace.all(function (resp) {
-		    //var tempWorkspaces = _.filter(resp, function (workspace) { return workspace.workspaceReference.temporary; });
-		    //if(tempWorkspaces.length > 0)
-			 	//$window.location.href = $.map(tempWorkspaces[0].workspaceReference.links, function (obj) { if (obj.rel == "workspace by id") return obj.href })[0];
-				
-          $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceReference.temporary; });
+		  $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceReference.temporary; });
+		
+		  if($scope.workspaces.length==0) {
+			  var tempWorkspaces = _.filter(resp, function (workspace) { return workspace.workspaceReference.temporary; });
+			  if(tempWorkspaces.length > 0)
+					$window.location.href = '/ws/' + tempWorkspaces[0].workspaceReference.name;
+					
+			  $scope.isProjectDataFetched = true;
+		  }
 
 		  $scope.projects = []; //clear the project list
 		  
@@ -335,7 +343,11 @@ angular.module('odeskApp')
 
             $http({ method: 'GET', url: $.map(workspace.workspaceReference.links, function (obj) { if (obj.rel == "get projects") return obj.href })[0] }).
                 success(function (data, status) {
+				  $scope.isProjectDataFetched = true;
                   $scope.projects = $scope.projects.concat(data);
+                })
+				.error(function (data, status) {
+				  $scope.isProjectDataFetched = true;
                 });
           });
         });
