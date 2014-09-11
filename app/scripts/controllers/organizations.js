@@ -34,7 +34,6 @@ angular.module('odeskApp')
         if(_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
           $scope.isOrgAddOn = true;
           $scope.workspaces = [];
-          $scope.filter = {};
 
           // Display workspace details in workspace
           $http({method: 'GET', url: '/api/workspace/find/account?id='+$scope.accountId[0]})
@@ -58,6 +57,7 @@ angular.module('odeskApp')
                       })
                   ]).then(function (results) {
                       var workspaceDetails = {
+                        id: workspace.id,
                         name: workspace.name,
                         projects: projectsLength,
                         developers: membersLength
@@ -70,6 +70,45 @@ angular.module('odeskApp')
               });
             })
             .error(function (err) {  });
+
+          // Create workspace related to account
+          $scope.createWorkspace = function(accountId){
+
+            var deferred = $q.defer();
+            var con = {
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            };
+
+            var data = {
+              "accountId": accountId,
+              "name": $("#ws_name").val() // needs to be array
+            };
+
+            $http.post('/api/workspace',data,con)
+              .success(function (data) {
+                  $('#addNewWorkspace').modal('toggle');
+                  location.reload();
+                  deferred.resolve(data); //resolve data
+              });
+          }
+
+          // Remove workspace related to account
+          $scope.removeWorkspace = function(workspaceId){
+
+            var deferred = $q.defer();
+
+            $http.delete('/api/workspace/' + workspaceId )
+              .success(function (data) {
+                deferred.resolve(data);
+                location.reload();
+              })
+              .error(function (err) {
+                deferred.reject();
+              });
+          }
+
         }else{
           $scope.isOrgAddOn = false;
           window.location = "/#/dashboard"
