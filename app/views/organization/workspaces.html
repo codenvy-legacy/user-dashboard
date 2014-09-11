@@ -29,7 +29,7 @@
           </div><!-- content title-->
           <div class="searchfull clearfix" style="display:none" >
             <input type="button" class="closeBtn" style="display:none;" ng-click="filter = ''" />
-            <input type="text" ng-model="filter.project.name" class="searchfield " placeholder="Search for Runners"/>
+            <input type="text" ng-model="filter.workspace.name" class="searchfield " placeholder="Search for Workspaces"/>
           </div>
         </li>
       </ul>
@@ -52,11 +52,11 @@
 
             <tr ng-repeat="workspace in workspaces| filter: filter | orderBy:name:reverse" class="v-center">
               <td style="width: 1%;"><i class="glyphicon glyphicon-lock"></i></td>
-              <td><a ng-href="#/organizations/workspace/info" class="ws-name">{{workspace.workspaceReference.name}}</a></td>
+              <td><a ng-href="#/organizations/workspace/info" class="ws-name">{{workspace.name}}</a></td>
               <td class="text-center"></td>
               <td class="text-center"></td>
-              <td class="text-center"></td>
-              <td class="text-center"></td>
+              <td class="text-center">{{workspace.developers}}</td>
+              <td class="text-center">{{workspace.projects}}</td>
               <td class="text-center"></td>
               <td></td>
               <td style="text-align: right;">

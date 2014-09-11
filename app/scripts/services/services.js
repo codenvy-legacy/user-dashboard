@@ -81,6 +81,27 @@ angular.module('odeskApp')
         return item;
     }]);
 
+// Get workspace details based on workspace id
+angular.module('odeskApp')
+    .factory('WorkspaceInfo', function ($http, $q) {
+      return {
+        getDetail: function (workspaceId) {
+          var deferred = $q.defer();
+          var con = {
+            headers: {
+              'Accept': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            }
+          };
+          $http.get('/api/workspace/' + workspaceId, con)
+            .success(function (data) {
+              deferred.resolve(data); //resolve data
+            })
+
+          return deferred.promise;
+        }
+      };
+    });
 
 angular.module('odeskApp')
 	.factory('Profile', function ($http, $q) {

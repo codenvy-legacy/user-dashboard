@@ -16,7 +16,7 @@
 'use strict';
 
 angular.module('odeskApp')
-  .controller('OrganizationsCtrl', function ($scope, Workspace, Account, $http, $q) {
+  .controller('OrganizationsCtrl', function ($scope, Account,WorkspaceInfo,Workspace, $http, $q) {
 
     $scope.isOrgAddOn = false;
     $scope.accountId = [];
@@ -34,10 +34,42 @@ angular.module('odeskApp')
         if(_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
           $scope.isOrgAddOn = true;
           $scope.workspaces = [];
+          $scope.filter = {};
 
-          Workspace.all(function (resp) {
-            $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceReference.temporary; });
-          });
+          // Display workspace details in workspace
+          $http({method: 'GET', url: '/api/workspace/find/account?id='+$scope.accountId[0]})
+            .success(function (workspaces) {
+
+              angular.forEach(workspaces, function (workspace) {
+                //  Get workspace's projects and developers using workspace id
+                WorkspaceInfo.getDetail(workspace.id).then(function (response){
+                  var projectsLength;
+                  var membersLength;
+
+                  return $q.all([
+                    $http({method: 'GET', url: $.map(response.links,function(obj){if(obj.rel=="get projects") return obj.href})[0]})
+                      .success(function (data) {
+                        projectsLength = data.length;
+                      }),
+
+                    $http({method: 'GET', url: $.map(response.links,function(obj){if(obj.rel=="get members") return obj.href})[0]})
+                      .success(function (data) {
+                        membersLength = data.length;
+                      })
+                  ]).then(function (results) {
+                      var workspaceDetails = {
+                        name: workspace.name,
+                        projects: projectsLength,
+                        developers: membersLength
+                      }
+
+                      $scope.workspaces.push(workspaceDetails);
+                    });
+                });
+
+              });
+            })
+            .error(function (err) {  });
         }else{
           $scope.isOrgAddOn = false;
           window.location = "/#/dashboard"
