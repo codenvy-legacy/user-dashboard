@@ -123,9 +123,24 @@
 
 
     </div><!-- New Project -->
-    
-    
-
+	
+    <!-- start help-->
+	<div ng-show="isNeedToShowHelp()" class="box-example">
+    	<div class="col-lg-3">
+        	<div class="arrow-img"><img src="./images/arrow.png" class="img-responsive"  alt=""/></div>
+            <div class="panel panel-default">
+            	<div class="codenvy-rounded-logo"><img src="./images/codenvy-rounded-logo.png" class="img-responsive"  alt=""/></div>
+              <div class="panel-heading" style="text-align:right"><strong>Welcome to your workspace!</strong></div>
+              <div class="panel-body">
+                <p style="text-align:right">Codenvy is your Cloud Developer</p>
+                <p style="margin-top:2px">Kick <b>Create New Project</b> off by starting your first project.</p>
+                <p>Want to learn more? Check out the 60 second video for tips to getting the most from Codenvy.</p>
+              </div>
+            </div>
+        </div>
+	</div>
+	<!-- end help-->
+	
     <div class="col-md-10">
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
             <div class="panel panel-default">
@@ -307,7 +322,7 @@
                                 <td>
                                     <input type="checkbox" ng-model="member.write" ng-change="setReadWrite(member)">
                                 </td>
-                                <td class="last"><a data-toggle="modal" data-target="#warning-user"><i class="fa fa-trash-o"></i></a></td>
+                                <td class="last"><a data-toggle="modal" data-target="#warning-user" ng-click="setMemberToBeDeleted(member)"><i class="fa fa-trash-o"></i></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -376,7 +391,7 @@
                 <div class="row">
                     <div class="col-md-12 form-group">
                         <label>Project Description:</label>
-                        <textarea ng-model="selected.description" class="form-control" placeholder="Add a Description..."></textarea>
+                        <textarea ng-model="selected.description" class="form-control" style="max-width:100%" placeholder="Add a Description..."></textarea>
                     </div>
                 </div>
             </div>
@@ -398,12 +413,7 @@
                 <h4 class="modal-title" id="privacyMessageModalLabel">Project Privacy</h4>
             </div>
             <div class="modal-body">
-              As a developer of the workspace, <b>{{selected.workspaceName}}</b>, you are not permitted to change privacy of the project. This action is only permitted for users with workspace/admin role designation. This workspace's administrator is ---------.
-              <p>{{currentUser.fullName}}</p>
-            </div>
-            <div class="modal-body">
-              <p>As a developer of the workspace, <b>{{selected.workspaceName}}</b>, you are not permitted to change privacy of the project. This action is only permitted for users with workspace/admin role designation. This workspace's administrator are ---------, -------- and ---------.</p>
-              <p>{{currentUser.fullName}}</p>
+              As a developer of the workspace, <b>{{selected.workspaceName}}</b>, you are not permitted to change privacy of the project. This action is only permitted for users with workspace/admin role designation. This workspace's administrator {{getAllAdminListToDisplay()}}.
             </div>
             <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
@@ -422,12 +432,12 @@
       </div><!-- modal-header -->
       
       <div class="modal-body">
-        <p>You are going to remove {{user.fullname(user.email)}} from the workspace/developer of {{workspace}}. This developer will be removed permissions to all projects of the workspace. </p>
+        <p>You are going to remove {{selectMemberToBeDeleted.fullName}} ({{selectMemberToBeDeleted.email}}) from the workspace/developer of {{selected.workspaceName}}. This developer will be removed permissions to all projects of the workspace. </p>
         <p>Are you sure you want to continue?</p>
       </div><!-- modal-body -->
       
       <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
-        <a ng-click="removeMember(member)" class="btn btn-danger" data-dismiss="modal">Ok</a>
+        <a ng-click="removeMember(selectMemberToBeDeleted)" class="btn btn-danger" data-dismiss="modal">Ok</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
       </div><!-- modal-footer -->
       

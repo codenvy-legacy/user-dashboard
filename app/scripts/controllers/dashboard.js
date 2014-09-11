@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, Profile, $http, $q, $window) {
+    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, Profile, $http, $q, $window, $location) {
       var old_description = '';
       $scope.box = 1;
       $scope.search = 0;
@@ -212,6 +212,18 @@ angular.module('odeskApp')
         });
       };
 
+	  $scope.isProjectDataFetched = false;
+	  $scope.isNeedToShowHelp = function() {
+			if($scope.isProjectDataFetched)
+				return $scope.projects==null || $scope.projects.length==0;
+			else
+				return false;
+	  }
+	    
+	  $scope.selectMemberToBeDeleted = null;
+	  $scope.setMemberToBeDeleted = function(member) {
+		$scope.selectMemberToBeDeleted = member;
+	  }
       $scope.removeMember = function (member) {
         Workspace.removeMember($scope.activeProject.workspaceId, member.userId).then(function (data) {
           var removedMemberIndex = -1;
@@ -267,11 +279,55 @@ angular.module('odeskApp')
         });
       };
 
+	  $scope.getAllAdminListToDisplay = function() {
+		//var selectedWorkspace = _.filter($scope.workspaces, function (workspace) { return !workspace.workspaceReference.id==workspaceId; });
+		var listAdmins = [];
+		angular.forEach($scope.currentWorkspace.members, function (tempmember) {
+			if(tempmember.roles) {
+				if(tempmember.roles.indexOf('workspace/admin')!=-1)
+					listAdmins.push(tempmember.fullName);
+			}
+		});
+		
+		if(listAdmins.length == 1)
+		{
+			return 'is ' + listAdmins[0];
+		}
+		
+		if(listAdmins.length > 1)
+		{
+			var strAdmins = '';
+			for(var i=0;i<listAdmins.length;i++)
+			{
+				if(i==0)
+					strAdmins += listAdmins[i];
+				else if(listAdmins.length > 1 && (listAdmins.length-1)==i)
+					strAdmins += ' and ' + listAdmins[i];
+				else
+					strAdmins +=  ', ' + listAdmins[i];
+			}
+			return 'are ' + strAdmins;
+		}
+		
+		return '';
+	  }
+	  
+	  
       //constructor
       var init = function () {
         Workspace.all(function (resp) {
-          $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceReference.temporary; });
-
+		  $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceReference.temporary; });
+		
+		  if($scope.workspaces.length==0) {
+			  var tempWorkspaces = _.filter(resp, function (workspace) { return workspace.workspaceReference.temporary; });
+			  if(tempWorkspaces.length > 0)
+					$location.path("/login");
+					
+			  $scope.isProjectDataFetched = true;
+		  }
+        
+		  $scope.projects = []; //clear the project list
+		  
           angular.forEach($scope.workspaces, function (workspace) {
             workspace.members = [];
 
@@ -287,7 +343,11 @@ angular.module('odeskApp')
 
             $http({ method: 'GET', url: $.map(workspace.workspaceReference.links, function (obj) { if (obj.rel == "get projects") return obj.href })[0] }).
                 success(function (data, status) {
+				  $scope.isProjectDataFetched = true;
                   $scope.projects = $scope.projects.concat(data);
+                })
+				.error(function (data, status) {
+				  $scope.isProjectDataFetched = true;
                 });
           });
         });
@@ -314,7 +374,7 @@ angular.module('odeskApp')
             });
           });
         });
-
+		
       };
       init(); // all code starts here
     });
