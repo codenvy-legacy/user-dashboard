@@ -96,6 +96,7 @@ angular.module('odeskApp')
                 }
                 $scope.workspaces.push(workspaceDetails);
                 $('#addNewWorkspace').modal('toggle');
+                $("#ws_name").val("")
                 deferred.resolve(data); //resolve data
               });
           }
