@@ -88,21 +88,31 @@ angular.module('odeskApp')
 
             $http.post('/api/workspace',data,con)
               .success(function (data) {
-                  $('#addNewWorkspace').modal('toggle');
-                  location.reload();
-                  deferred.resolve(data); //resolve data
+                var workspaceDetails = {
+                  id: data.id,
+                  name: data.name,
+                  projects: 0,
+                  developers: 1
+                }
+                $scope.workspaces.push(workspaceDetails);
+                $('#addNewWorkspace').modal('toggle');
+                deferred.resolve(data); //resolve data
               });
           }
 
           // Remove workspace related to account
           $scope.removeWorkspace = function(workspaceId){
-
             var deferred = $q.defer();
-
             $http.delete('/api/workspace/' + workspaceId )
-              .success(function (data) {
+              .success(function (data, status) {
+                if(status == 204){
+                  var removeWS = _.find($scope.workspaces, function(ws){ if(ws.id == workspaceId) return ws; });
+                  var index = $scope.workspaces.indexOf(removeWS)
+                  if (index != -1) {
+                    $scope.workspaces.splice(index, 1);
+                  }
+                }
                 deferred.resolve(data);
-                location.reload();
               })
               .error(function (err) {
                 deferred.reject();
