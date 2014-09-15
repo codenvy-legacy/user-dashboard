@@ -16,7 +16,7 @@
 'use strict';
 
 angular.module('odeskApp')
-  .controller('OrganizationsCtrl', function ($scope, Account,WorkspaceInfo,Workspace, $http, $q) {
+  .controller('OrganizationsCtrl', function ($scope, Account,WorkspaceInfo,Workspace, $http, $q, $timeout) {
 
     $scope.isOrgAddOn = false;
     $scope.accountId = [];
@@ -31,9 +31,12 @@ angular.module('odeskApp')
       Account.getSubscription($scope.accountId[0]).then(function (response){
         var serviceId = _.pluck(response, 'serviceId')[0];
         var packageName = _.pluck(_.pluck(response, 'properties'),'Package')[0];
+
+        // Check for subscription is available or not for organization tab
         if(_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
           $scope.isOrgAddOn = true;
           $scope.workspaces = [];
+          $scope.members = [];
 
           // Display workspace details in workspace
           $http({method: 'GET', url: '/api/workspace/find/account?id='+$scope.accountId[0]})
@@ -70,6 +73,25 @@ angular.module('odeskApp')
               });
             })
             .error(function (err) {  });
+
+          // For search
+          $timeout(function () {
+            $("[rel=tooltip]").tooltip({ placement: 'bottom' });
+            $(document).on("click", ".searchfield", function () {
+              $('.searchfull').show();
+              $('.detail').animate({ opacity: 0 }, 400);
+              $('.searchfull').animate({ width: "100%" }, 400, function () { $(".closeBtn").show(); });
+              $('.searchfield').focus();
+            });
+            $(document).on("click", ".closeBtn", function () {
+              $(".closeBtn").hide();
+              $('.detail').animate({ opacity: 1 }, 400);
+              $('.searchfull').animate({ width: "43px" }, 400, function () {
+                $('.searchfield').val('');
+                $('.searchfull').hide();
+              });
+            });
+          });
 
           // Create workspace related to account
           $scope.createWorkspace = function(accountId){
@@ -119,6 +141,35 @@ angular.module('odeskApp')
                 deferred.reject();
               });
           }
+
+          // Display members details in members page for organizations
+          $http({method: 'GET', url: '/api/account/'+$scope.accountId[0]+'/members'})
+            .success(function (members) {
+
+              angular.forEach(members, function (member) {
+
+                //  Get member's email and name
+                var email;
+                var name;
+                return $q.all([
+                  $http({method: 'GET', url: '/api/profile/'+member['userId']})
+                    .success(function (data) {
+                      email = data['attributes'].email;
+                      name = data['attributes'].firstName +" "+ data['attributes'].lastName;
+                    })
+                ]).then(function (results) {
+                  var memberDetails = {
+                    role: member['roles'][0].split("/")[1],
+                    email: email,
+                    name: name
+                  }
+
+                  $scope.members.push(memberDetails);
+                });
+
+              });
+            })
+            .error(function (err) {  });
 
         }else{
           $scope.isOrgAddOn = false;

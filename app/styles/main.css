@@ -1213,3 +1213,6 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
     text-transform: none;
 	padding-top:10px;
 }
+
+.email-ttl { font-size:11px; margin:0 0 -9px;  color: #787878; font-weight: 900;}
+.small-info { font-size: 11px; color: #787878; margin-top: 4px;}

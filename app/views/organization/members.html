@@ -1,6 +1,6 @@
 <ul class="breadcrumb boxnav">
   <li><a href="#/organizations"> WORKSPACES <span class="badge">{{workspaces.length}}</span></a></li>
-  <li class="active"><a href="#/organizations/members"> MEMBERS <span class="badge">40</span> </a></li>
+  <li class="active"><a href="#/organizations/members"> MEMBERS <span class="badge">{{members.length}}</span> </a></li>
   <!--<li><a href="#"> GROUPS <span class="badge">10</span> </a></li>-->
 </ul>
 
@@ -23,6 +23,7 @@
           <a href="" class="new_btn" data-toggle="modal" data-target="#addNewMember"><i class="glyphicon glyphicon-plus"></i>New Member</a>
         </div>
       </li>
+
       <li class="search1 clearfix">
         <div>
           <input type="button" class="searchfield "/>
@@ -50,14 +51,19 @@
         </tr>
         </thead>
 
-        <tr class="v-center">
+        <tr class="v-center" ng-repeat="member in members| filter: filter | orderBy:'name'">
           <td style="width: 1%;"></td>
-          <td><a ng-href="#">Parth Chhaiya</a></td>
+          <td>
+            <span>
+              <h3 class="email-ttl ">{{member.email}}</h3>
+              <small class="small-info">{{member.name}}</small>
+            </span>
+          </td>
           <td class="text-center"></td>
           <td class="text-center"></td>
           <td class="text-center"></td>
           <td class="text-center"></td>
-          <td class="text-center">Owner</td>
+          <td class="text-center">{{member.role}}</td>
           <td></td>
           <td style="text-align: right;">
             <ul class="breadcrumb action-button boxnav">

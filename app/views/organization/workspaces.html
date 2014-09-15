@@ -11,8 +11,8 @@
         <li class="dropdown user-dropdown"> SORT BY:
           <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-down garrow"></i> Alphabetically </a>
           <ul class="dropdown-menu">
-            <li><a href=""> Alphabetically </a></li>
-            <li><a href=""> Last Update </a></li>
+            <li><a href="" ng-click="filter.workspace.name"> Alphabetically </a></li>
+            <li><a href="" > Last Update </a></li>
             <li><a href=""> Creation Date </a></li>
           </ul>
         </li>
@@ -22,11 +22,12 @@
             <a href="" class="new_btn" data-toggle="modal" data-target="#addNewWorkspace" ><i class="glyphicon glyphicon-plus"></i>New Workspace</a>
           </div>
         </li>
+
         <li class="search1 clearfix">
           <div>
             <input type="button" class="searchfield "/>
           </div><!-- content title-->
-          <div class="searchfull clearfix" style="display:none" >
+          <div class="searchfull clearfix" style="display:none">
             <input type="button" class="closeBtn" style="display:none;" ng-click="filter = ''" />
             <input type="text" ng-model="filter.workspace.name" class="searchfield " placeholder="Search for Workspaces"/>
           </div>
@@ -49,7 +50,7 @@
             </tr>
           </thead>
 
-            <tr ng-repeat="workspace in workspaces| filter: filter | orderBy:name:reverse" class="v-center">
+            <tr ng-repeat="workspace in workspaces| filter: filter | orderBy:'name'" class="v-center">
               <td style="width: 1%;"><!--<i class="glyphicon glyphicon-lock"></i>--></td>
               <td><a ng-href="#/organizations/workspace/info" class="ws-name">{{workspace.name}}</a></td>
               <td class="text-center"></td>
