@@ -1,9 +1,9 @@
 <div class="breadcrumb-wrap">
   <ul class="breadcrumb boxnav">
-    <li><a href="#/organizations"> All Workspaces </a> > WorkspaceName</li>
+    <li><a href="#/organizations" class="all-ws"> All Workspaces </a> >  {{workspace.name}}</li>
 
-    <li class="active"><a href="#"> INFORMATION </a></li>
-    <li><a href="#"> MEMBERS </a></li>
+    <li class="active"><a href="#/organizations/workspace/{{workspace.id}}"> INFORMATION </a></li>
+    <li><a href="#/organizations/workspace/{{workspace.id}}/members"> MEMBERS </a></li>
     <li><a href="#"> GROUPS </a></li>
   </ul>
 </div>
@@ -21,7 +21,7 @@
               <form role="form">
                 <div class="form-group">
                   <label>Name:</label>
-                  <input type="text" class="form-control" placeholder="Workspace Angular">
+                  <input type="text" class="form-control" value="{{workspace.name}}">
                 </div>
               </form>
               <div class="Privacy-contant">

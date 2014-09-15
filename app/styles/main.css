@@ -1222,6 +1222,15 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .mrg-rht5{margin-right: 5px !important;}
 .top0{top: 0;}
 
+.all-ws{
+  text-decoration: underline;
+}
+
+.all-ws:hover, .all-ws:focus{
+  color: #248bc4;
+  text-decoration: underline !important;
+}
+
 /*media*/
 @media (min-width: 320px) and (max-width: 480px) {
   .boxnav > li{padding: 10px;}
