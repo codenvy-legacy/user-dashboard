@@ -299,7 +299,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   background-color: #e3e3e3;
 }
 .searchfull  {
-  position: absolute; 
+  position: absolute;
   right: 0; 
   bottom: 0;
   z-index: 11;
@@ -1022,7 +1022,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   }
 }
 
-.projectnav .table > tbody > tr > td { line-height: 34px;}
+.projectnav .table > tbody > tr > td { /*line-height: 34px;*/ vertical-align: middle !important;}
 
 .projectnav .table i {
   color: #8f8f8f;
@@ -1050,7 +1050,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 }
 
 .ws-button{
-  border:none !important; position: absolute; right: 60px; top: -1px;
+  border:none !important;/* position: absolute; right: 60px; top: -1px;  */
 }
 
 /*----------------------- Start of Add New Workspace Modal css-------------------------*/
@@ -1116,8 +1116,8 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 }
 .menber-textarea i { color:#cdcdcd;}
 
-.mrg-top10 { margin-top:10px;}
-.mrg-top30 { margin-top:30px;}
+.mrg-top10 { margin-top:10px !important;}
+.mrg-top30 { margin-top:30px !important;}
 .pad-0{ padding: 0;}
 /*----------------------- End of Add New Workspace Modal css-------------------------*/
 
@@ -1214,5 +1214,39 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 	padding-top:10px;
 }
 
-.email-ttl { font-size:11px; margin:0 0 -9px;  color: #787878; font-weight: 900;}
-.small-info { font-size: 11px; color: #787878; margin-top: 4px;}
+.email-ttl { font-size:11px; margin:2px 0 5px 0;  color: #787878; font-weight: 900;}
+.small-info { font-size: 11px; color: #787878; margin:0;}
+
+.pad-lft18{padding-left: 18px !important;}
+.mrg-top8{margin-top: 8px !important;}
+.mrg-rht5{margin-right: 5px !important;}
+.top0{top: 0;}
+
+/*media*/
+@media (min-width: 320px) and (max-width: 480px) {
+  .boxnav > li{padding: 10px;}
+  .ws-button{width: 100%;}
+}
+
+@media (min-width: 360px) and (max-width: 640px) {
+
+}
+
+@media (min-width: 401px) and (max-width: 767px) {
+
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991px) {
+
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199px) {
+
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+}
