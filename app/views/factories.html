@@ -53,7 +53,7 @@
 					<tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
 						<th style="width:54px"></th>
 						<th class="col-md-2 text-center"><h4>PROJECT</h4></th>
-						<th class="col-md-4 text-center"><h4>DESCRIPTION</h4></th>
+						<th class="col-md-3 text-center"><h4>DESCRIPTION</h4></th>
 						<th class="col-md-1 text-center"><h4>CREATED</h4></th>
 						<th class="text-center" style="width:100px"><h4>VIEWS</h4></th>
 						<th class="text-center" style="width:100px"><h4>BUILDS</h4></th>
@@ -65,17 +65,17 @@
 				<tbody>
 					<tr ng-repeat="factory in factories| filter: filter | orderBy:param:reverse">
 						<td><img  class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeName}}.png"/></td>
-						<td class="text-center">
+						<td class="text-center" style="vertical-align:middle;" >
 							<p><strong>{{factory.projectname}}</strong></p>
 							<span>{{factory.project.workspace}}</span>
 						</td>
-						<td>{{factory.description}}
-						<td class="text-center">{{factory.created | date: 'dd MMM yyyy'}}</td>
-						<td  class="text-center">{{factory.views}}</td>
-						<td class="text-center">{{factory.builds}}</td>
-						<td class="text-center">{{factory.runs}}</td>
-						<td class="text-center">{{factory.copies}}</td>
-						<td class="text-center">
+						<td class="text-center" style="vertical-align:middle;">{{factory.description}}</td>
+						<td class="text-center" style="vertical-align:middle;">{{factory.created | date: 'dd MMM yyyy'}}</td>
+						<td  class="text-center" style="vertical-align:middle;">{{factory.views}}</td>
+						<td class="text-center" style="vertical-align:middle;">{{factory.builds}}</td>
+						<td class="text-center" style="vertical-align:middle;">{{factory.runs}}</td>
+						<td class="text-center" style="vertical-align:middle;">{{factory.copies}}</td>
+						<td class="text-center" style="vertical-align:middle;">
 							<a ng-href="{{factory.seeURL}}" class="col-md-4 text-left" >See</a>
 							<a onclick='$("#snippetsModal").modal("show");' class="col-md-4 text-center" >Snippets</a>
 							<a href="" class="col-md-4 text-right" >Share</a>

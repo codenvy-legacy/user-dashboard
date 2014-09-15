@@ -288,26 +288,34 @@ angular.module('odeskApp')
 				
 				$http.get('/api/analytics/metric/factories_accepted',con)
 					.success(function (data, status, headers, config) {
-						var _factory = _.find($scope.factories, function(fct){ if(fct.id == getIDFromFactoryURL(config.params.factory)) return fct; });
-						_factory.views = data.value;
+					    var facid = getIDFromFactoryURL(decodeURIComponent(config.params.factory));
+						var _factory = _.find($scope.factories, function(fct){ if(fct.id == facid) return fct; });
+						if(_factory)
+							_factory.views = data.value;
 					});
 					
 				$http.get('/api/analytics/metric/factories_built',con)
 					.success(function (data, status, headers, config) {
-						var _factory = _.find($scope.factories, function(fct){ if(fct.id == getIDFromFactoryURL(config.params.factory)) return fct; });
-						_factory.builds = data.value;
+						var facid = getIDFromFactoryURL(decodeURIComponent(config.params.factory));
+						var _factory = _.find($scope.factories, function(fct){ if(fct.id == facid) return fct; });
+						if(_factory)
+							_factory.builds = data.value;
 					});
 					
 				$http.get('/api/analytics/metric/factories_run',con)
 					.success(function (data, status, headers, config) {
-						var _factory = _.find($scope.factories, function(fct){ if(fct.id == getIDFromFactoryURL(config.params.factory)) return fct; });
-						_factory.runs = data.value;
+						var facid = getIDFromFactoryURL(decodeURIComponent(config.params.factory));
+						var _factory = _.find($scope.factories, function(fct){ if(fct.id == facid) return fct; });
+						if(_factory)
+							_factory.runs = data.value;
 					});
 					
 				$http.get('/api/analytics/metric/factories_imported',con)
 					.success(function (data, status, headers, config) {
-						var _factory = _.find($scope.factories, function(fct){ if(fct.id == getIDFromFactoryURL(config.params.factory)) return fct; });
-						_factory.copies = data.value;
+						var facid = getIDFromFactoryURL(decodeURIComponent(config.params.factory));
+						var _factory = _.find($scope.factories, function(fct){ if(fct.id == facid) return fct; });
+						if(_factory)
+							_factory.copies = data.value;
 					});
 			});
 		}		
@@ -389,7 +397,7 @@ angular.module('odeskApp')
                          pointSize:5,
                          pointFillColors:['#ffffff'],
                          pointStrokeColors:['#90c6ec'],
-                         lineColors: ['#eff4f8']});
+                         lineColors: ['#c0c0c0']});
 			$scope.isGraphDrawnForDays = $scope.isDays;
 		}
 		
@@ -421,18 +429,26 @@ angular.module('odeskApp')
                         },
                          lineColors: ['#e5e5e5']});*/
 
-        $(document).on( "click", ".searchfield", function() {
-            $('.searchfull').show();
-            $('.detail').animate({ opacity: 0}, 400);
-            $('.searchfull').animate({width: "100%" }, 400, function(){ $(".closeBtn").show(); } );
-            
-        });
-        $(document).on( "click", ".closeBtn", function() {
-            $(".closeBtn").hide();
-            $('.detail').animate({ opacity: 1}, 400);
-            $('.searchfull').animate({width: "43px" }, 400 , function(){ $('.searchfull').hide();   });
-        });
+			$(document).on( "click", ".searchfield", function() {
+				$('.searchfull').show();
+				$('.detail').animate({ opacity: 0}, 400);
+				$('.searchfull').animate({width: "100%" }, 400, function(){ $(".closeBtn").show(); } );
+				
+			});
+			$(document).on( "click", ".closeBtn", function() {
+				$(".closeBtn").hide();
+				$('.detail').animate({ opacity: 1}, 400);
+				$('.searchfull').animate({width: "43px" }, 400 , function(){ $('.searchfull').hide();   });
+			});
 
-        });
+			$(document).on("mouseenter","#graph-area-line", function() {
+				$(".morris-hover").show();
+			});
+			
+			$(document).on("mouseleave","#graph-area-line", function() {
+				$(".morris-hover").hide();
+			});
+		
+		});
 		
     });
