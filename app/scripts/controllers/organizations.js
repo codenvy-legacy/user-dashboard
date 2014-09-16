@@ -159,6 +159,7 @@ angular.module('odeskApp')
                     })
                 ]).then(function (results) {
                   var memberDetails = {
+                    id: member['userId'],
                     role: member['roles'][0].split("/")[1],
                     email: email,
                     name: name
@@ -170,6 +171,25 @@ angular.module('odeskApp')
               });
             })
             .error(function (err) {  });
+
+          // Remove member related to account
+          $scope.removeMember = function(memberId){
+            var deferred = $q.defer();
+            $http.delete('/api/account/'+$scope.accountId[0]+'/members/' + memberId )
+              .success(function (data, status) {
+                if(status == 204){
+                  var removeMember = _.find($scope.members, function(member){ if(member.id == memberId) return member; });
+                  var index = $scope.members.indexOf(removeMember)
+                  if (index != -1) {
+                    $scope.members.splice(index, 1);
+                  }
+                }
+                deferred.resolve(data);
+              })
+              .error(function (err) {
+                deferred.reject();
+              });
+          }
 
         }else{
           $scope.isOrgAddOn = false;
