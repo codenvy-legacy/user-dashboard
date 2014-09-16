@@ -32,7 +32,7 @@
                       <div style="margin-top:3px;" class="col-lg-1 col-sm-1 col-md-1 col-xs-1">
                         <div class="active-btn">&nbsp;</div>
                       </div>
-                      <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">
+                      <div class="col-lg-11 col-sm-10 col-md-11 col-xs-10 pad-lf10">
                         <div class="text-col">
                           <h4>Public</h4>
                           <p>Everyone can see and find the workspace</p>
@@ -44,7 +44,7 @@
                       <div style="margin-top:3px;" class="col-lg-1 col-sm-1 col-md-1 col-xs-1">
                         <div class="dactive-btn">&nbsp;</div>
                       </div>
-                      <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">
+                      <div class="col-lg-11 col-sm-10 col-md-11 col-xs-10 pad-lf10">
                         <div class="text-col">
                           <h4>Private</h4>
                           <p>Only members of your organization can see and find the workspace</p>
@@ -62,38 +62,12 @@
           <div class="text-center detail-ttl mrg-btm20 mrg-top10">WORKSPACE ADMINISTRATORS</div>
           <div class="administrator-block">
             <ul>
-              <li>
-                <div class="row">
+              <li ng-repeat="member in workspace.members">
+                <div class="row" ng-if="member.role == 'admin'">
                   <div class="col-lg-9 col-sm-9 col-md-9 col-xs-10">
                     <div class="text-col">
-                      <h4>slemeur@codenvy.com</h4>
-                      <p>Stevan Le Meur</p>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-2">
-                    <button class="btn btn-white pull-right" type="button">Remove</button>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="row">
-                  <div class="col-lg-9 col-sm-9 col-md-9 col-xs-10">
-                    <div class="text-col">
-                      <h4>slemeur@codenvy.com</h4>
-                      <p>Stevan Le Meur</p>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-2">
-                    <button class="btn btn-white pull-right" type="button">Remove</button>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="row">
-                  <div class="col-lg-9 col-sm-9 col-md-9 col-xs-10">
-                    <div class="text-col">
-                      <h4>slemeur@codenvy.com</h4>
-                      <p>Stevan Le Meur</p>
+                      <h4>{{member.email}}</h4>
+                      <p>{{member.name}}</p>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-3 col-md-3 col-xs-2">
