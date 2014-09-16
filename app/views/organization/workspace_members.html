@@ -1,11 +1,256 @@
-<div class="breadcrumb-wrap">
-  <ul class="breadcrumb boxnav">
-    <li><a href="#/organizations" class="all-ws"> All Workspaces </a> >  {{workspace.name}}</li>
-
-    <li><a href="#/organizations/workspace/{{workspace.id}}"> INFORMATION </a></li>
-    <li class="active"><a href="#/organizations/workspace/{{workspace.id}}/members"> MEMBERS </a></li>
-    <li><a href="#"> GROUPS </a></li>
-  </ul>
-</div>
+<ul class="breadcrumb boxnav">
+  <li><a href="#/organizations" class="all-ws"> All Workspaces </a> >  {{workspace.name}}</li>
+  <li><a href="#/organizations/workspace/{{workspace.id}}"> INFORMATION </a></li>
+  <li class="active"><a href="#/organizations/workspace/{{workspace.id}}/members"> MEMBERS </a></li>
+  <li><a href="#"> GROUPS </a></li>
+</ul>
 
 <div class="clearfix"></div>
+
+<div class="col-md-12">
+  <div class="row">
+    <ul class="breadcrumb projectnav breadcrumb clearfix">
+      <li class="dropdown user-dropdown"> SORT BY:
+        <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-down garrow"></i> Alphabetically </a>
+        <ul class="dropdown-menu">
+          <li><a href=""> Alphabetically </a></li>
+          <li><a href=""> Last Update </a></li>
+          <li><a href=""> Added Date </a></li>
+        </ul>
+      </li>
+
+      <div class="clearfix visible-xs"></div>
+      <li class="search1 pull-right">
+        <div>
+          <input type="button" class="searchfield "/>
+        </div><!-- content title-->
+        <div class="searchfull top0 clearfix" style="display:none" >
+          <input type="button" class="closeBtn" style="display:none;" ng-click="filter = ''" />
+          <input type="text" ng-model="filter.name" class="searchfield " placeholder="Search for Members"/>
+        </div>
+      </li>
+      <li class="ws-button pad0 pull-right mrg-rht5">
+        <div>
+          <a href="" class="new_btn" data-toggle="modal" data-target="#addWorkspaceNewMember"><i class="glyphicon glyphicon-plus"></i>Add Member</a>
+        </div>
+      </li>
+    </ul>
+
+    <div class="projectnav table-responsive">
+      <table class="table table-hover" style="background:#f9f9f9;">
+        <thead>
+        <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
+          <th class="text-center"><h4>NAME</h4></th>
+          <th class="text-center"><h4>LAST CONTRIBUTION DATE</h4></th>
+          <th class="text-center"><h4>ADDED DATE</h4></th>
+          <th class="text-center"><h4>ROLE</h4></th>
+          <th style="text-align: right; padding-right: 81px;"><h4>ACTIONS</h4></th>
+        </tr>
+        </thead>
+
+        <tr class="v-center" ng-repeat="member in workspace.members| filter: filter | orderBy:'name'">
+
+          <td class="pad-lft18">
+            <span>
+              <h3 class="email-ttl ">{{member.email}}</h3>
+              <small class="small-info">{{member.name}}</small>
+            </span>
+          </td>
+          <td class="text-center"></td>
+          <td class="text-center"></td>
+          <td class="text-center">{{member.role}}</td>
+          <td style="text-align: right;">
+            <ul class="breadcrumb action-button boxnav">
+              <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#updateMemberRoleModal">Edit</a></li>
+              <li class="active no-bdr mrg-top8"><a href="" class="new_btn">Remove</a></li>
+            </ul>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+    <div class="text-center">
+      <ul class="pagination pagination-sm">
+        <li><a href="#">«</a></li>
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li><a href="#">»</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!---- Add New Member into workspace Modal Start--->
+<div class="modal-col">
+  <div class="modal fade" id="addWorkspaceNewMember" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Add Member(s) Into Organization</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-field">
+            <div class="menber-col">
+              <div class="row">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                  User(s) to add:
+                </div>
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                  Owner
+                </div>
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                  Member
+                </div>
+              </div>
+            </div>
+            <div class="menber-textarea mrg-top10">
+              <div class="row mrg-btm5">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                  <p>Tyler Jewell (tyler@codenvy.com)</p>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="active-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="dactive-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  &nbsp;
+                </div>
+              </div>
+              <div class="row mrg-btm5">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                  <p>Sergey Kabashyuk (sergey@codenvy.com)</p>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="active-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="dactive-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  &nbsp;
+                </div>
+              </div>
+              <div class="row mrg-btm5">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                  <p>Gennady Azarenkov (gennady@codenvy.com)</p>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="dactive-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="active-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <a href="#"><i class="glyphicon glyphicon-trash"></i></a>
+                </div>
+              </div>
+              <div class="row mrg-btm5">
+                <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                  <p>Eric Cavazos (eric@codenvy.com)</p>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="dactive-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  <div class="active-btn">&nbsp;</div>
+                </div>
+                <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                  &nbsp;
+                </div>
+              </div>
+            </div>
+            <div class="row mrg-top10">
+              <div class="col-lg-7 col-sm-6 col-md-6 col-xs-12">
+                <form role="form">
+                  <div class="form-group">
+                    <label>Select Users(s):</label>
+                    <input type="text" placeholder="Type email adresses separated by commas" class="form-control">
+                  </div>
+                </form>
+              </div>
+              <div class="col-lg-5 col-sm-6 col-md-6 col-xs-12">
+                <div class="row mrg-top30">
+                  <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">Owner </div>
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top:3px;">
+                    <div class="active-btn">&nbsp;</div>
+                  </div>
+                  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">Member </div>
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style=" margin-top: 3px;padding-left: 5px;"><div class="dactive-btn">&nbsp;</div></div>
+                  <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                    <button type="button" class="btn btn-success">ADD</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Ok</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!---- Add New Member into workspace end--->
+
+<!---- Update role Modal for workspace start--->
+<div class="modal-col">
+  <div class="modal fade" id="updateMemberRoleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 500px; margin: 200px auto;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <h4 class="modal-title">Update Member Role</h4>
+        </div>
+        <div class="modal-body">
+          <div class="update-member">
+            <div class="update-ttl">Select the appropriate role for slemeur@codenvy.com:</div>
+            <div class="row">
+              <div class="col-lg-11 col-lg-offset-1 col-sm-12 col-md-12 col-xs-12">
+                <div class="row mrg-btm10">
+                  <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="margin-top:3px;">
+                    <div class="active-btn">&nbsp;</div>
+                  </div>
+                  <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">
+                    <div class="text-col">
+                      <h4>Public</h4>
+                      <p>Everyone can see and find the workspace</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="margin-top:3px;">
+                    <div class="dactive-btn">&nbsp;</div>
+                  </div>
+                  <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">
+                    <div class="text-col">
+                      <h4>Private</h4>
+                      <p>Only members of your organization can see and find the workspace</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Ok</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!---- Update role Modal for workspace end--->
