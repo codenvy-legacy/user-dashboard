@@ -64,7 +64,7 @@
           <td class="text-center">{{member.role}}</td>
           <td style="text-align: right;">
             <ul class="breadcrumb action-button boxnav">
-              <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#updateRoleModal">Edit</a></li>
+              <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#updateRoleModal" ng-click="updateMember(member.email)">Edit</a></li>
               <li class="active no-bdr mrg-top8" ng-click="removeMember(member.id)"><a class="new_btn">Remove</a></li>
             </ul>
           </td>
@@ -208,7 +208,7 @@
 <!---- Update role Modal start--->
 <div class="modal-col">
   <div class="modal fade" id="updateRoleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width: 500px; margin: 200px auto;">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">
@@ -219,7 +219,7 @@
         </div>
         <div class="modal-body">
           <div class="update-member">
-            <div class="update-ttl">Select the appropriate role for slemeur@codenvy.com:</div>
+            <div class="update-ttl"><strong>Select the appropriate role for</strong> {{memberEmail}}:</div>
             <div class="row">
               <div class="col-lg-11 col-lg-offset-1 col-sm-12 col-md-12 col-xs-12">
                 <div class="row mrg-btm10">
@@ -228,8 +228,8 @@
                   </div>
                   <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">
                     <div class="text-col">
-                      <h4>Public</h4>
-                      <p>Everyone can see and find the workspace</p>
+                      <h4>Owner</h4>
+                      <p>User is be able to manage members and projects of the organization.</p>
                     </div>
                   </div>
                 </div>
@@ -239,8 +239,8 @@
                   </div>
                   <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">
                     <div class="text-col">
-                      <h4>Private</h4>
-                      <p>Only members of your organization can see and find the workspace</p>
+                      <h4>Member</h4>
+                      <p>User has read/write permissions to all projects of selected workspaces.</p>
                     </div>
                   </div>
                 </div>

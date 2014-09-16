@@ -172,6 +172,9 @@ angular.module('odeskApp')
             })
             .error(function (err) {  });
 
+          $scope.updateMember = function(memberEmail){
+            $scope.memberEmail = memberEmail;
+          }
           // Remove member related to account
           $scope.removeMember = function(memberId){
             var deferred = $q.defer();
