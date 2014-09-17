@@ -246,11 +246,10 @@ angular.module('odeskApp')
 					// redraw charts
 					if($scope.totalBuilds == 0)
 					{
-						$(".dynamicsparklineBuilds").hide();
+						$(".dynamicsparklineBuilds").sparkline([], { enableTagOptions: true, disableHiddenCheck: true});
 					}
 					else
 					{
-						$(".dynamicsparklineBuilds").show();
 						if ($(".dynamicsparklineBuilds").length > 0) {
 							$(".dynamicsparklineBuilds").sparkline($scope.dailyBuilds, { enableTagOptions: true, disableHiddenCheck: true});
 						}
@@ -279,11 +278,10 @@ angular.module('odeskApp')
 					// redraw charts
 					if($scope.totalRuns == 0)
 					{
-						$(".dynamicsparklineRuns").hide();
+						$(".dynamicsparklineRuns").sparkline([], { enableTagOptions: true, disableHiddenCheck: true});
 					}
 					else
 					{
-						$(".dynamicsparklineRuns").show();
 						if ($(".dynamicsparklineRuns").length > 0) {
 							$(".dynamicsparklineRuns").sparkline($scope.dailyRuns, { enableTagOptions: true, disableHiddenCheck: true});
 						}
@@ -312,11 +310,10 @@ angular.module('odeskApp')
 					// redraw charts
 					if($scope.totalDebugs == 0)
 					{
-						$(".dynamicsparklineDebugs").hide();
+						$(".dynamicsparklineDebugs").sparkline([], { enableTagOptions: true, disableHiddenCheck: true});
 					}
 					else
 					{
-						$(".dynamicsparklineDebugs").show();
 						if ($(".dynamicsparklineDebugs").length > 0) {
 							$(".dynamicsparklineDebugs").sparkline($scope.dailyDebugs, { enableTagOptions: true, disableHiddenCheck: true});
 						}
@@ -345,11 +342,10 @@ angular.module('odeskApp')
 					// redraw charts
 					if($scope.totalDeploys == 0)
 					{
-						$(".dynamicsparklineDeploys").hide();
+						$(".dynamicsparklineDeploys").sparkline([], { enableTagOptions: true, disableHiddenCheck: true});
 					}
 					else
 					{
-						$(".dynamicsparklineDeploys").show();
 						if ($(".dynamicsparklineDeploys").length > 0) {
 							$(".dynamicsparklineDeploys").sparkline($scope.dailyDeploys, { enableTagOptions: true, disableHiddenCheck: true});
 						}
@@ -378,11 +374,10 @@ angular.module('odeskApp')
 					// redraw charts
 					if($scope.totalCreatedFactories == 0)
 					{
-						$(".dynamicsparklineFactories").hide();
+						$(".dynamicsparklineFactories").sparkline([], { enableTagOptions: true, disableHiddenCheck: true});
 					}
 					else
 					{
-						$(".dynamicsparklineFactories").show();
 						if ($(".dynamicsparklineFactories").length > 0) {
 							$(".dynamicsparklineFactories").sparkline($scope.dailyCreatedFactories, { enableTagOptions: true, disableHiddenCheck: true});
 						}
@@ -411,11 +406,10 @@ angular.module('odeskApp')
 					// redraw charts
 					if($scope.totalCollaborativeSessionStarted == 0)
 					{
-						$(".dynamicsparklineCollaborativeSession").hide();
+						$(".dynamicsparklineCollaborativeSession").sparkline([], { enableTagOptions: true, disableHiddenCheck: true});
 					}
 					else
 					{
-						$(".dynamicsparklineCollaborativeSession").show();
 						if ($(".dynamicsparklineCollaborativeSession").length > 0) {
 							$(".dynamicsparklineCollaborativeSession").sparkline($scope.dailyCollaborativeSessionStarted, { enableTagOptions: true, disableHiddenCheck: true});
 						}

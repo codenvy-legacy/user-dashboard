@@ -165,14 +165,12 @@ angular.module('odeskApp')
 			}
 	
 			clearStatsData();
-			
 			getStatsData();
-			getFactoryStats1();
+			getFactoryStats();
 		}
 		
 		$scope.nCountFactories = 0;
 		var getStatsData = function() {
-						
 			// Build request data
 			var reqData = [];
 			
@@ -180,8 +178,6 @@ angular.module('odeskApp')
 					reqData.push({"from_date":day.sdatestr, "to_date":day.edatestr});
 				});
 					
-			
-            
 			$scope.nCountFactories = 0;
 			$scope.dailyUses = [];
 			
@@ -194,7 +190,7 @@ angular.module('odeskApp')
 					cache:true
 				};
 				
-				$http.post('/api/analytics/metric/product_usage_sessions/list', reqData, con)
+				$http.post('/api/analytics/metric/factory_used/list', reqData, con)
                 .success(function (data, status) {
 					$scope.nCountFactories++;
 					var i=0;
@@ -216,6 +212,14 @@ angular.module('odeskApp')
 						graphSessions.setData($scope.dailyUses);
 					}
                 })
+				.error(function (data, status) {
+				  //As we are keeping count of request/response, it's important to handle error case too.
+				  $scope.nCountFactories++;
+				  if($scope.nCountFactories==$scope.factories.length){
+						// redraw chart
+						graphSessions.setData($scope.dailyUses);
+					}
+                });
 								
 			});
 		}
@@ -250,31 +254,8 @@ angular.module('odeskApp')
 			});
 		}
 		
-		function getFactoryStats(){
-						
-			var uri = '/api/analytics/metric/factory_statistics_list';
-			uri = uri + '?from_date=' + $scope.fromDate;
-			uri = uri + '&to_date=' + $scope.toDate;
-			
-			//uri = uri + '&' + factoriesConcatUrl;  //ToDo - Send all factories at once when 502 response is resolved.
-
-			$scope.factories.forEach(function (factory){
-				var _uri = uri + '&factory=' + encodeURIComponent(factory.url);
-				
-				$http.get(_uri).success(function(data, status){
-					if(data.value.length > 2){
-						var temp = JSON.parse(data.value.slice(1, -1));
-						var _factory = _.find($scope.factories, function(fct){ if(fct.id == getIDFromFactoryURL(temp.factory)) return fct; });
-						_factory.builds = temp.builds;
-						_factory.runs = temp.runs;
-						_factory.views = temp.sessions;
-						_factory.copies = temp.converted_factory_session;
-					}
-				});
-			});
-		}
 		
-		function getFactoryStats1() {
+		function getFactoryStats() {
 		
 			$scope.factories.forEach(function (factory){
 				var con = {
@@ -286,7 +267,7 @@ angular.module('odeskApp')
 					cache: true
 				};
 				
-				$http.get('/api/analytics/metric/factories_accepted',con)
+				$http.get('/api/analytics/metric/factory_used',con)
 					.success(function (data, status, headers, config) {
 					    var facid = getIDFromFactoryURL(decodeURIComponent(config.params.factory));
 						var _factory = _.find($scope.factories, function(fct){ if(fct.id == facid) return fct; });
@@ -319,6 +300,7 @@ angular.module('odeskApp')
 					});
 			});
 		}		
+		
 		function formatDate(date){
 			var formattedDate = new String();
 
@@ -401,34 +383,8 @@ angular.module('odeskApp')
 			$scope.isGraphDrawnForDays = $scope.isDays;
 		}
 		
-        /*var Data = [{x: '2011 Q1', y: 3, z: 3},
-                                {x: '2011 Q2', y: 2, z: 1},
-                                {x: '2011 Q3', y: 2, z: 4},
-                                {x: '2011 Q4', y: 3, z: 3},
-                                {x: '2011 Q5', y: 3, z: 4}];*/
         $timeout(function () {
-            /*Morris.Line({element: 'graph-area-line',
-                         behaveLikeLine: false,
-                         data: Data,
-                         xkey: 'x',
-                         ykeys: ['z'],
-                         labels: ['Z'],
-                         grid:false,
-                         lineWidth:1,
-                         smooth:false,
-                         goals:[0],
-                         goalLineColors:['#d9d9d9'],
-                         eventLineColors:['#d9d9d9'],
-                         events:[Data[0].x],
-                         pointSize:5,
-                         pointFillColors:['#ffffff'],
-                         pointStrokeColors:['#90c6ec'],
-                         hoverCallback: function(index, options, content) {
-                            var row = options.data[index];
-                            return "<div class='morris-hover-row-label'>"+row.z+" Sessions</div><div class='morris-hover-point'>235 Minutes</div>";
-                        },
-                         lineColors: ['#e5e5e5']});*/
-
+          
 			$(document).on( "click", ".searchfield", function() {
 				$('.searchfull').show();
 				$('.detail').animate({ opacity: 0}, 400);
