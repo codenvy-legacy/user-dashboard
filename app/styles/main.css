@@ -1231,6 +1231,29 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   text-decoration: underline !important;
 }
 
+/* Set radio button css */
+.css-checkbox {position:absolute; z-index:-1000; top:-1000px; overflow: hidden;
+  clip: rect(0 0 0 0); height:1px; width:1px; margin:-1px; padding:0; border:0;}
+
+.css-checkbox + label.css-label {
+  height:14px; width:14px;
+  display:inline-block;
+  vertical-align:middle; border-radius:100%;
+  cursor:pointer;
+}
+
+.css-checkbox:checked + label.css-label {
+  background:#226cb6; border:#cdcdcd 2px solid;
+}
+label.css-label {background:#cdcdcd;
+}
+label {margin-right:0px;}
+/* Set radio button css */
+
+.error-text{
+  color: #ff0000;
+}
+
 /*media*/
 @media (min-width: 320px) and (max-width: 480px) {
   .boxnav > li{padding: 10px;}

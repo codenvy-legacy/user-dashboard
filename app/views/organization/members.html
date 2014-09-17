@@ -113,57 +113,23 @@
               </div>
             </div>
             <div class="menber-textarea mrg-top10">
-              <div class="row mrg-btm5">
+              <div class="row mrg-btm5" ng-repeat="member in selectedMembers">
                 <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
-                  <p>Tyler Jewell (tyler@codenvy.com)</p>
+                  <p>{{member.name}} ({{member.email}})</p>
                 </div>
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                  <div class="active-btn">&nbsp;</div>
+                  <div class="text-center">
+                    <input type="radio" name="user_role_{{$index}}" id="radio{{$index}}" class="css-checkbox" checked ng-if="member.role=='owner'"/>
+                    <input type="radio" name="user_role_{{$index}}" id="radio{{$index}}" class="css-checkbox" ng-if="member.role!='owner'"/>
+                    <label for="radio{{$index}}" class="css-label radGroup1">&nbsp;</label>
+                  </div>
                 </div>
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                  <div class="dactive-btn">&nbsp;</div>
-                </div>
-                <div class="col-lg-1 col-sm-1 col-md-1 col-xs-12">
-                  <a href="#"><i class="glyphicon glyphicon-trash"></i></a>
-                </div>
-              </div>
-              <div class="row mrg-btm5">
-                <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
-                  <p>Sergey Kabashyuk (sergey@codenvy.com)</p>
-                </div>
-                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                  <div class="active-btn">&nbsp;</div>
-                </div>
-                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                  <div class="dactive-btn">&nbsp;</div>
-                </div>
-                <div class="col-lg-1 col-sm-1 col-md-1 col-xs-12">
-                  <a href="#"><i class="glyphicon glyphicon-trash"></i></a>
-                </div>
-              </div>
-              <div class="row mrg-btm5">
-                <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
-                  <p>Gennady Azarenkov (gennady@codenvy.com)</p>
-                </div>
-                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                  <div class="dactive-btn">&nbsp;</div>
-                </div>
-                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                  <div class="active-btn">&nbsp;</div>
-                </div>
-                <div class="col-lg-1 col-sm-1 col-md-1 col-xs-12">
-                  <a href="#"><i class="glyphicon glyphicon-trash"></i></a>
-                </div>
-              </div>
-              <div class="row mrg-btm5">
-                <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
-                  <p>Eric Cavazos (eric@codenvy.com)</p>
-                </div>
-                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                  <div class="dactive-btn">&nbsp;</div>
-                </div>
-                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                  <div class="active-btn">&nbsp;</div>
+                  <div class="text-center">
+                    <input type="radio" name="user_role_{{$index}}" id="radio_{{$index}}" class="css-checkbox" checked ng-if="member.role=='member'"/>
+                    <input type="radio" name="user_role_{{$index}}" id="radio_{{$index}}" class="css-checkbox" ng-if="member.role!='member'"/>
+                    <label for="radio_{{$index}}" class="css-label radGroup1">&nbsp;</label>
+                  </div>
                 </div>
                 <div class="col-lg-1 col-sm-1 col-md-1 col-xs-12">
                   <a href="#"><i class="glyphicon glyphicon-trash"></i></a>
@@ -175,28 +141,33 @@
                 <form role="form">
                   <div class="form-group">
                     <label>Select Users(s):</label>
-                    <input type="text" placeholder="Type email addresses separated by commas" class="form-control">
+                    <input type="text" name="selected_users" id="selected_users" placeholder="Type email addresses separated by commas" class="form-control">
                   </div>
                 </form>
               </div>
               <div class="col-lg-5 col-sm-5 col-md-5 col-xs-12">
                 <div class="row mrg-top30">
                   <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">Owner </div>
-                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top:3px;">
-                    <div class="active-btn">&nbsp;</div>
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12">
+                    <input type="radio" name="member_role" id="owner_radio" class="css-checkbox" value="account/owner" checked="checked"/>
+                    <label for="owner_radio" class="css-label radGroup1">&nbsp;</label>
                   </div>
                   <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">Member </div>
-                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style=" margin-top: 3px;padding-left: 5px;"><div class="dactive-btn">&nbsp;</div></div>
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12">
+                    <input type="radio" name="member_role" id="member_radio" class="css-checkbox" value="account/member" checked="checked"/>
+                    <label for="member_radio" class="css-label radGroup1">&nbsp;</label>
+                  </div>
                   <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
-                    <button type="button" class="btn btn-success">ADD</button>
+                    <button type="button" class="btn btn-success" ng-click="addUserToList()">ADD</button>
                   </div>
                 </div>
               </div>
             </div>
+            <span id="userNotFoundError" style="display: none" class="error-text"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of your organization. </span>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Ok</button>
+          <button type="button" class="btn btn-primary" ng-click="addMembers(selectedMembers)">Ok</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
       </div>

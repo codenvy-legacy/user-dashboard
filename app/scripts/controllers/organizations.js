@@ -37,6 +37,7 @@ angular.module('odeskApp')
           $scope.isOrgAddOn = true;
           $scope.workspaces = [];
           $scope.members = [];
+          $scope.selectedMembers = [];
 
           // Display workspace details in workspace
           $http({method: 'GET', url: '/api/workspace/find/account?id='+$scope.accountId[0]})
@@ -174,7 +175,66 @@ angular.module('odeskApp')
 
           $scope.updateMember = function(memberEmail){
             $scope.memberEmail = memberEmail;
-          }
+          };
+
+          // For add user in users list in add members popup modal in organization Tab
+          $scope.addUserToList = function(){
+
+            var selectedUsers = $("#selected_users").val();
+            var selectedUserEmails = selectedUsers.split(",");
+
+            var role = $("input[name=member_role]:checked").val();
+            $scope.userNotFoundList = [];
+
+            angular.forEach(selectedUserEmails, function (memberEmail) {
+
+              var email, name, userId;
+              return $q.all([
+                $http({method: 'GET', url: '/api/user/find', params: {email: memberEmail}})
+                  .success(function (data) {
+                      userId = data["id"]
+                  })
+                  .error(function (err) {
+                    $scope.userNotFoundList.push(memberEmail);
+                    $("#userNotFoundError").show();
+                  })
+
+              ]).then(function (results) {
+                $http({method: 'GET', url: '/api/profile/'+userId})
+                  .success(function (data) {
+                    email = data['attributes'].email;
+                    name = data['attributes'].firstName +" "+ data['attributes'].lastName;
+                    var memberDetails = {
+                      id: userId,
+                      role: role.split("/")[1],
+                      email: email,
+                      name: name
+                    }
+                    $scope.selectedMembers.push(memberDetails);
+                  });
+
+              });
+            });
+            $("#selected_users").val("");
+            $("#userNotFoundError").hide();
+          };
+
+          // For add members in organization Tab
+          $scope.addMembers = function(members){
+            return $q.all([
+              angular.forEach(members, function (member) {
+                $http({method: 'POST', url: '/api/account/'+$scope.accountId[0]+'/members', params: {userid: member.id}})
+                  .success(function (data) {
+                    $scope.members.push(member);
+                  });
+              })
+            ]).then(function (results) {
+              $('#addNewMember').modal('toggle');
+              $scope.selectedMembers = [];
+              $("#userNotFoundError").hide();
+            });
+          };
+
           // Remove member related to account
           $scope.removeMember = function(memberId){
             var deferred = $q.defer();
