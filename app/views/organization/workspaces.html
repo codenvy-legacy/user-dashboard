@@ -111,10 +111,10 @@
                 <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
                   Member(s) to add:
                 </div>
-                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12 pad-0">
                   Administrator
                 </div>
-                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12 pad-0">
                   Developer
                 </div>
               </div>
@@ -125,52 +125,16 @@
                   <p>Tyler Jewell (tyler@codenvy.com)</p>
                 </div>
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                  <div class="active-btn">&nbsp;</div>
+                  <div class="text-center">
+                    <input type="radio" name="user_role" id="radio" class="css-checkbox" checked />
+                    <label for="radio" class="css-label radGroup1">&nbsp;</label>
+                  </div>
                 </div>
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                  <div class="dactive-btn">&nbsp;</div>
-                </div>
-                <div class="col-lg-1 col-sm-1 col-md-1 col-xs-12">
-                  <a href="#"><i class="glyphicon glyphicon-trash"></i></a>
-                </div>
-              </div>
-              <div class="row mrg-btm5">
-                <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
-                  <p>Sergey Kabashyuk (sergey@codenvy.com)</p>
-                </div>
-                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                  <div class="active-btn">&nbsp;</div>
-                </div>
-                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                  <div class="dactive-btn">&nbsp;</div>
-                </div>
-                <div class="col-lg-1 col-sm-1 col-md-1 col-xs-12">
-                  <a href="#"><i class="glyphicon glyphicon-trash"></i></a>
-                </div>
-              </div>
-              <div class="row mrg-btm5">
-                <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
-                  <p>Gennady Azarenkov (gennady@codenvy.com)</p>
-                </div>
-                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                  <div class="dactive-btn">&nbsp;</div>
-                </div>
-                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                  <div class="active-btn">&nbsp;</div>
-                </div>
-                <div class="col-lg-1 col-sm-1 col-md-1 col-xs-12">
-                  <a href="#"><i class="glyphicon glyphicon-trash"></i></a>
-                </div>
-              </div>
-              <div class="row mrg-btm5">
-                <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
-                  <p>Eric Cavazos (eric@codenvy.com)</p>
-                </div>
-                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                  <div class="dactive-btn">&nbsp;</div>
-                </div>
-                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
-                  <div class="active-btn">&nbsp;</div>
+                  <div class="text-center">
+                    <input type="radio" name="user_role" id="radio2" class="css-checkbox" />
+                    <label for="radio2" class="css-label radGroup1">&nbsp;</label>
+                  </div>
                 </div>
                 <div class="col-lg-1 col-sm-1 col-md-1 col-xs-12">
                   <a href="#"><i class="glyphicon glyphicon-trash"></i></a>
@@ -189,10 +153,15 @@
               <div class="col-lg-5 col-sm-6 col-md-6 col-xs-12">
                 <div class="row mrg-top30">
                   <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 pad-0">Administrator </div>
-                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top:3px;padding: 0 18px;">
-                    <div class="active-btn">&nbsp;</div></div>
-                  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 pad-0">Developer </div>
-                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top:3px;padding-left: 1px;"><div class="dactive-btn">&nbsp;</div></div>
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12">
+                    <input type="radio" name="ws_member_role" id="ws_admin_radio" class="css-checkbox" value="workspace/admin"/>
+                    <label for="ws_admin_radio" class="css-label radGroup1">&nbsp;</label>
+                  </div>
+                  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">Developer </div>
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12">
+                    <input type="radio" name="ws_member_role" id="ws_dev_radio" class="css-checkbox" value="workspace/developer" checked="checked"/>
+                    <label for="ws_dev_radio" class="css-label radGroup1">&nbsp;</label>
+                  </div>
                   <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
                     <button type="button" class="btn btn-success">ADD</button>
                   </div>
