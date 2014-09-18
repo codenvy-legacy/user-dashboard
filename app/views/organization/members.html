@@ -149,7 +149,7 @@
                 <div class="row mrg-top30">
                   <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">Owner </div>
                   <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12">
-                    <input type="radio" name="member_role" id="owner_radio" class="css-checkbox" value="account/owner" checked="checked"/>
+                    <input type="radio" name="member_role" id="owner_radio" class="css-checkbox" value="account/owner"/>
                     <label for="owner_radio" class="css-label radGroup1">&nbsp;</label>
                   </div>
                   <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">Member </div>
@@ -164,6 +164,7 @@
               </div>
             </div>
             <span id="userNotFoundError" style="display: none" class="error-text"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of your organization. </span>
+            <span id="userAlreadyAdded" style="display: none" class="error-text"></br>User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </span>
           </div>
         </div>
         <div class="modal-footer">

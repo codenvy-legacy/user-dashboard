@@ -185,9 +185,9 @@ angular.module('odeskApp')
 
             var role = $("input[name=member_role]:checked").val();
             $scope.userNotFoundList = [];
+            $scope.userAlreadyAdded = [];
 
             angular.forEach(selectedUserEmails, function (memberEmail) {
-
               var email, name, userId;
               return $q.all([
                 $http({method: 'GET', url: '/api/user/find', params: {email: memberEmail}})
@@ -200,7 +200,10 @@ angular.module('odeskApp')
                   })
 
               ]).then(function (results) {
-                $http({method: 'GET', url: '/api/profile/'+userId})
+                var alreadyAddedMember = _.find($scope.selectedMembers, function(member){ if(member.id == userId) return member; });
+
+                if(typeof(alreadyAddedMember)=="undefined"){
+                  $http({method: 'GET', url: '/api/profile/'+userId})
                   .success(function (data) {
                     email = data['attributes'].email;
                     name = data['attributes'].firstName +" "+ data['attributes'].lastName;
@@ -210,13 +213,19 @@ angular.module('odeskApp')
                       email: email,
                       name: name
                     }
+
                     $scope.selectedMembers.push(memberDetails);
                   });
+                }else{
+                  $scope.userAlreadyAdded.push(memberEmail);
+                  $("#userAlreadyAdded").show();
+                }
 
               });
             });
             $("#selected_users").val("");
             $("#userNotFoundError").hide();
+            $("#userAlreadyAdded").hide();
           };
 
           // For add members in organization Tab
@@ -232,6 +241,7 @@ angular.module('odeskApp')
               $('#addNewMember').modal('toggle');
               $scope.selectedMembers = [];
               $("#userNotFoundError").hide();
+              $("#userAlreadyAdded").hide();
             });
           };
 
