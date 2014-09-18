@@ -244,8 +244,15 @@ angular.module('odeskApp')
 					});
 						
 					// redraw charts
-					if ($(".dynamicsparklineBuilds").length > 0) {
-						$(".dynamicsparklineBuilds").sparkline($scope.dailyBuilds, { enableTagOptions: true, disableHiddenCheck: true});
+					if($scope.totalBuilds == 0)
+					{
+						$(".dynamicsparklineBuilds").sparkline([], { enableTagOptions: true, disableHiddenCheck: true});
+					}
+					else
+					{
+						if ($(".dynamicsparklineBuilds").length > 0) {
+							$(".dynamicsparklineBuilds").sparkline($scope.dailyBuilds, { enableTagOptions: true, disableHiddenCheck: true});
+						}
 					}
                 });
 		};
@@ -269,8 +276,15 @@ angular.module('odeskApp')
 					});
 						
 					// redraw charts
-					if ($(".dynamicsparklineRuns").length > 0) {
-						$(".dynamicsparklineRuns").sparkline($scope.dailyRuns, { enableTagOptions: true, disableHiddenCheck: true});
+					if($scope.totalRuns == 0)
+					{
+						$(".dynamicsparklineRuns").sparkline([], { enableTagOptions: true, disableHiddenCheck: true});
+					}
+					else
+					{
+						if ($(".dynamicsparklineRuns").length > 0) {
+							$(".dynamicsparklineRuns").sparkline($scope.dailyRuns, { enableTagOptions: true, disableHiddenCheck: true});
+						}
 					}
                 });
 		};
@@ -294,8 +308,15 @@ angular.module('odeskApp')
 					});
 						
 					// redraw charts
-					if ($(".dynamicsparklineDebugs").length > 0) {
-						$(".dynamicsparklineDebugs").sparkline($scope.dailyDebugs, { enableTagOptions: true, disableHiddenCheck: true});
+					if($scope.totalDebugs == 0)
+					{
+						$(".dynamicsparklineDebugs").sparkline([], { enableTagOptions: true, disableHiddenCheck: true});
+					}
+					else
+					{
+						if ($(".dynamicsparklineDebugs").length > 0) {
+							$(".dynamicsparklineDebugs").sparkline($scope.dailyDebugs, { enableTagOptions: true, disableHiddenCheck: true});
+						}
 					}
                 });
 		};
@@ -319,8 +340,15 @@ angular.module('odeskApp')
 					});
 						
 					// redraw charts
-					if ($(".dynamicsparklineDeploys").length > 0) {
-						$(".dynamicsparklineDeploys").sparkline($scope.dailyDeploys, { enableTagOptions: true, disableHiddenCheck: true});
+					if($scope.totalDeploys == 0)
+					{
+						$(".dynamicsparklineDeploys").sparkline([], { enableTagOptions: true, disableHiddenCheck: true});
+					}
+					else
+					{
+						if ($(".dynamicsparklineDeploys").length > 0) {
+							$(".dynamicsparklineDeploys").sparkline($scope.dailyDeploys, { enableTagOptions: true, disableHiddenCheck: true});
+						}
 					}
                 });
 		};
@@ -344,8 +372,15 @@ angular.module('odeskApp')
 					});
 						
 					// redraw charts
-					if ($(".dynamicsparklineFactories").length > 0) {
-						$(".dynamicsparklineFactories").sparkline($scope.dailyCreatedFactories, { enableTagOptions: true, disableHiddenCheck: true});
+					if($scope.totalCreatedFactories == 0)
+					{
+						$(".dynamicsparklineFactories").sparkline([], { enableTagOptions: true, disableHiddenCheck: true});
+					}
+					else
+					{
+						if ($(".dynamicsparklineFactories").length > 0) {
+							$(".dynamicsparklineFactories").sparkline($scope.dailyCreatedFactories, { enableTagOptions: true, disableHiddenCheck: true});
+						}
 					}
                 });
 		};
@@ -369,8 +404,15 @@ angular.module('odeskApp')
 					});
 						
 					// redraw charts
-					if ($(".dynamicsparklineCollaborativeSession").length > 0) {
-						$(".dynamicsparklineCollaborativeSession").sparkline($scope.dailyCollaborativeSessionStarted, { enableTagOptions: true, disableHiddenCheck: true});
+					if($scope.totalCollaborativeSessionStarted == 0)
+					{
+						$(".dynamicsparklineCollaborativeSession").sparkline([], { enableTagOptions: true, disableHiddenCheck: true});
+					}
+					else
+					{
+						if ($(".dynamicsparklineCollaborativeSession").length > 0) {
+							$(".dynamicsparklineCollaborativeSession").sparkline($scope.dailyCollaborativeSessionStarted, { enableTagOptions: true, disableHiddenCheck: true});
+						}
 					}
                 });
 		};
@@ -531,15 +573,27 @@ angular.module('odeskApp')
                             var row = options.data[index];
                             return "<div class='morris-hover-row-label'>"+row.z+" Sessions</div><div class='morris-hover-point'>"+$scope.getCumulativeMinutesFor(row.y)+ " Minutes</div>";
                         },
-                         goalLineColors:['#d9d9d9'],
-                         eventLineColors:['#d9d9d9'],
+                         goalLineColors:['#c9c9c9'],
+                         eventLineColors:['#c9c9c9'],
                          /*events:[Data[0].x],*/
                          pointSize:5,
                          pointFillColors:['#ffffff'],
                          pointStrokeColors:['#90c6ec'],
-                         lineColors: ['#eff4f8']});
+                         lineColors: ['#c0c0c0']});
 			$scope.isGraphDrawnForDays = $scope.isDays;
 		}
 		
+		setTimeout(function () {
+           	$(document).on("mouseenter","#graph-area-line", function() {
+				$(".morris-hover").show();
+			});
+			
+			$(document).on("mouseleave","#graph-area-line", function() {
+				$(".morris-hover").hide();
+			});
+		});
+		
 		setTimeout(timeSpanChanged(),60);
+		
+		
     });
