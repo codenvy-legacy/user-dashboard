@@ -200,25 +200,26 @@ angular.module('odeskApp')
                   })
 
               ]).then(function (results) {
+                var alreadyListedMember = _.find($scope.members, function(member){ if(member.email == memberEmail) return member; });
                 var alreadyAddedMember = _.find($scope.selectedMembers, function(member){ if(member.id == userId) return member; });
 
-                if(typeof(alreadyAddedMember)=="undefined"){
-                  $http({method: 'GET', url: '/api/profile/'+userId})
-                  .success(function (data) {
-                    email = data['attributes'].email;
-                    name = data['attributes'].firstName +" "+ data['attributes'].lastName;
-                    var memberDetails = {
-                      id: userId,
-                      role: role.split("/")[1],
-                      email: email,
-                      name: name
-                    }
-
-                    $scope.selectedMembers.push(memberDetails);
-                  });
-                }else{
+                if((typeof(alreadyAddedMember)!="undefined") || (typeof(alreadyListedMember)!="undefined")){
                   $scope.userAlreadyAdded.push(memberEmail);
                   $("#userAlreadyAdded").show();
+                }else{
+                  $http({method: 'GET', url: '/api/profile/'+userId})
+                    .success(function (data) {
+                      email = data['attributes'].email;
+                      name = data['attributes'].firstName +" "+ data['attributes'].lastName;
+                      var memberDetails = {
+                        id: userId,
+                        role: role.split("/")[1],
+                        email: email,
+                        name: name
+                      }
+
+                      $scope.selectedMembers.push(memberDetails);
+                    });
                 }
 
               });
@@ -226,6 +227,15 @@ angular.module('odeskApp')
             $("#selected_users").val("");
             $("#userNotFoundError").hide();
             $("#userAlreadyAdded").hide();
+          };
+
+          // Remove user from selected list
+          $scope.removeUserToList = function(user){
+            var removedMember = _.find($scope.selectedMembers, function(member){ if(member.id == user.id) return member; });
+            var index = $scope.selectedMembers.indexOf(removedMember)
+            if (index != -1) {
+              $scope.selectedMembers.splice(index, 1);
+            }
           };
 
           // For add members in organization Tab

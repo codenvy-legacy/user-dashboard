@@ -1254,6 +1254,9 @@ label {margin-right:0px;}
   color: #ff0000;
 }
 
+.glyphicon-trash:hover{
+  cursor: pointer;
+}
 /*media*/
 @media (min-width: 320px) and (max-width: 480px) {
   .boxnav > li{padding: 10px;}
