@@ -185,6 +185,12 @@ angular.module('odeskApp')
 
             // For add members in workspace for organization Tab
             $scope.addMembersToWs = function(members){
+              $("#userNotFoundError").hide();
+              $("#userNotMemberList").hide();
+              $("#userAlreadyAdded").hide();
+              $("#emptyEmails").hide();
+              $("#selectedMembers").parent().removeClass('has-error');
+
               return $q.all([
                 angular.forEach(members, function (member) {
                   var roles = ['workspace/'+member.role];

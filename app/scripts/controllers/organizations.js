@@ -182,51 +182,61 @@ angular.module('odeskApp')
 
             var selectedUsers = $("#selected_users").val();
             var selectedUserEmails = selectedUsers.split(",");
-
             var role = $("input[name=member_role]:checked").val();
+
+            $("#emptyEmails").hide();
+
             $scope.userNotFoundList = [];
             $scope.userAlreadyAdded = [];
-
-            angular.forEach(selectedUserEmails, function (memberEmail) {
-              var email, name, userId;
-              return $q.all([
-                $http({method: 'GET', url: '/api/user/find', params: {email: memberEmail}})
-                  .success(function (data) {
-                      userId = data["id"]
-                  })
-                  .error(function (err) {
-                    $scope.userNotFoundList.push(memberEmail);
-                    $("#userNotFoundError").show();
-                  })
-
-              ]).then(function (results) {
-                var alreadyListedMember = _.find($scope.members, function(member){ if(member.email == memberEmail) return member; });
-                var alreadyAddedMember = _.find($scope.selectedMembers, function(member){ if(member.id == userId) return member; });
-
-                if((typeof(alreadyAddedMember)!="undefined") || (typeof(alreadyListedMember)!="undefined")){
-                  $scope.userAlreadyAdded.push(memberEmail);
-                  $("#userAlreadyAdded").show();
-                }else{
-                  $http({method: 'GET', url: '/api/profile/'+userId})
+            if (selectedUsers.length>0){
+              $("#selected_users").parent().removeClass('has-error');
+              $("#emptyEmails").hide();
+              angular.forEach(selectedUserEmails, function (memberEmail) {
+                var email, name, userId;
+                return $q.all([
+                  $http({method: 'GET', url: '/api/user/find', params: {email: memberEmail}})
                     .success(function (data) {
-                      email = data['attributes'].email;
-                      name = data['attributes'].firstName +" "+ data['attributes'].lastName;
-                      var memberDetails = {
-                        id: userId,
-                        role: role.split("/")[1],
-                        email: email,
-                        name: name
-                      }
+                        userId = data["id"]
+                    })
+                    .error(function (err) {
+                      $scope.userNotFoundList.push(memberEmail);
+                      $("#userNotFoundError").show();
+                    })
 
-                      $scope.selectedMembers.push(memberDetails);
-                    });
-                }
+                ]).then(function (results) {
+                  var alreadyListedMember = _.find($scope.members, function(member){ if(member.email == memberEmail) return member; });
+                  var alreadyAddedMember = _.find($scope.selectedMembers, function(member){ if(member.id == userId) return member; });
 
+                  if((typeof(alreadyAddedMember)!="undefined") || (typeof(alreadyListedMember)!="undefined")){
+                    $scope.userAlreadyAdded.push(memberEmail);
+                    $("#userAlreadyAdded").show();
+                  }else{
+                    $http({method: 'GET', url: '/api/profile/'+userId})
+                      .success(function (data) {
+                        email = data['attributes'].email;
+                        name = data['attributes'].firstName +" "+ data['attributes'].lastName;
+                        var memberDetails = {
+                          id: userId,
+                          role: role.split("/")[1],
+                          email: email,
+                          name: name
+                        }
+                        $scope.selectedMembers.push(memberDetails);
+                      });
+                  }
+
+                });
               });
-            });
-            $("#selected_users").val("");
-            $("#userNotFoundError").hide();
-            $("#userAlreadyAdded").hide();
+              $("#selected_users").val("");
+              $("#userNotFoundError").hide();
+              $("#userAlreadyAdded").hide();
+            }
+            else
+            {
+              $("#userAlreadyAdded").hide();
+              $("#selected_users").parent().addClass('has-error');
+              $("#emptyEmails").show();
+            }
           };
 
           // Remove user from selected list
