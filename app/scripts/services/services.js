@@ -42,7 +42,7 @@ angular.module('odeskApp')
             var deferred = $q.defer();
             var con = {
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 }
             };
             

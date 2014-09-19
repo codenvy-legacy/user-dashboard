@@ -16,7 +16,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('workspaceInfoCtrl', function ($scope, Account, WorkspaceInfo, $http, $q, $route, $timeout) {
+    .controller('workspaceInfoCtrl', function ($scope, Account, Workspace, WorkspaceInfo, $http, $q, $route, $timeout) {
 
       $scope.isOrgAddOn = false;
       $scope.accountId = [];
@@ -37,6 +37,9 @@ angular.module('odeskApp')
             $scope.isOrgAddOn = true;
             var workspaceId = $route.current.params.id;
             $scope.workspace = {};
+            $scope.account_members = [];
+            $scope.ws_members = [];
+            $scope.selectedMembers = [];
 
             // Display workspace details in workspace
             WorkspaceInfo.getDetail(workspaceId).then(function (response){
@@ -57,6 +60,7 @@ angular.module('odeskApp')
                           })
                       ]).then(function (results) {
                         var memberDetails = {
+                          id: member['userId'],
                           role: member['roles'][0].split("/")[1],
                           email: email,
                           name: name
@@ -76,6 +80,136 @@ angular.module('odeskApp')
                 }
               });
             });
+
+            // Get all members of the current workspace
+            Workspace.getMembersForWorkspace(workspaceId).then(function (response){
+              $scope.ws_members = response;
+            });
+
+            // Get all members of the current organization/account
+            $http({method: 'GET', url: '/api/account/'+$scope.accountId[0]+'/members'})
+              .success(function(members){
+                $scope.account_members = members;
+              })
+              .error(function(error){
+            });
+
+            // Add members to workspace list
+            $scope.addMemberToWsList = function(){
+              var selectedMembers = $("#selectedMembers").val();
+              var selectedMemberEmails = selectedMembers.split(",");
+              var role = $("input[name=ws_member_role]:checked").val();
+
+              $("#userNotFoundError").hide();
+              $("#userNotMemberList").hide();
+              $("#userAlreadyAdded").hide();
+              $("#emptyEmails").hide();
+              $("#addMemberErr").hide();
+
+              $scope.userNotFoundList = [];
+              $scope.userNotMemberList = [];
+              $scope.userAlreadyAdded =[];
+
+              if (selectedMembers.length>0){
+                $("#selectedMembers").parent().removeClass('has-error');
+                $("#emptyEmails").hide();
+                angular.forEach(selectedMemberEmails, function (memberEmail) {
+                  var email, name, userId;
+                  return $q.all([
+                    $http({method: 'GET', url: '/api/user/find', params: {email: memberEmail}})
+                      .success(function (data) {
+                        userId = data["id"]
+                      })
+                      .error(function (err) {
+                        $scope.userNotFoundList.push(memberEmail);
+                        $("#userNotFoundError").show();
+                        $("#selectedMembers").parent().addClass('has-error');
+                      })
+
+                  ]).then(function (results) {
+                    var foundMember = _.find($scope.account_members, function(member){ if(member.userId == userId) return member; });
+                    var index = $scope.account_members.indexOf(foundMember);
+                    if (index != -1) {
+                      var alreadyAddedMember = _.find($scope.selectedMembers, function(member){ if(member.id == userId) return member; });
+                      var alreadyWsMember = _.find($scope.ws_members, function(member){ if(member.userId == userId) return member; });
+                      if((typeof(alreadyAddedMember)!="undefined") || (typeof(alreadyWsMember)!="undefined")){
+                        $scope.userAlreadyAdded.push(memberEmail);
+                        $("#userAlreadyAdded").show();
+                        $("#selectedMembers").parent().addClass('has-error');
+                      }
+                      else
+                      {
+                        $("#userAlreadyAdded").hide();
+                        $http({method: 'GET', url: '/api/profile/'+userId})
+                          .success(function (data) {
+                            email = data['attributes'].email;
+                            name = data['attributes'].firstName +" "+ data['attributes'].lastName;
+                            var memberDetails = {
+                              id: userId,
+                              role: role.split("/")[1],
+                              email: email,
+                              name: name
+                            }
+                            $scope.selectedMembers.push(memberDetails);
+                          });
+                      }
+                    }
+                    else{
+                      $scope.userNotMemberList.push(memberEmail);
+                      $("#userNotMemberList").show();
+                      $("#userAlreadyAdded").hide();
+                      $("#selectedMembers").parent().addClass('has-error');
+                    }
+                  });
+                });
+                $("#selectedMembers").val("");
+                $("#userNotFoundError").hide();
+                $("#userAlreadyAdded").hide();
+              }
+              else
+              {
+                $("#userAlreadyAdded").hide();
+                $("#selectedMembers").parent().addClass('has-error');
+                $("#emptyEmails").show();
+              }
+            };
+
+            // Remove member from selected list
+            $scope.removeMemberToList = function(user){
+              var removedMember = _.find($scope.selectedMembers, function(member){ if(member.id == user.id) return member; });
+              var index = $scope.selectedMembers.indexOf(removedMember)
+              if (index != -1) {
+                $scope.selectedMembers.splice(index, 1);
+              }
+            };
+
+            // For add members in workspace for organization Tab
+            $scope.addMembersToWs = function(members){
+              return $q.all([
+                angular.forEach(members, function (member) {
+                  var roles = ['workspace/'+member.role];
+                  $http({method: 'POST', url: '/api/workspace/' + workspaceId + '/members', params: {userId: member.id, roles: roles}})
+                    .success(function (data) {
+                      var memberDetails = {
+                        id: member.id,
+                        role: member.role,
+                        email: member.email,
+                        name: member.name
+                      }
+                      $scope.workspace.members.push(memberDetails);
+                    })
+                    .error(function (err, status) {
+                      $("#addMemberErr").show();
+                      $("#addMemberErr").html(err["message"]);
+                    });
+                })
+              ]).then(function (results) {
+                $('#addNewMember').modal('toggle');
+                $scope.selectedMembers = [];
+                $("#userNotFoundError").hide();
+                $("#userAlreadyAdded").hide();
+              });
+            };
 
             // For search
             $timeout(function () {
