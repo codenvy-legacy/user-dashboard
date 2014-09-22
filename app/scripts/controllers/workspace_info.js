@@ -193,8 +193,25 @@ angular.module('odeskApp')
 
               return $q.all([
                 angular.forEach(members, function (member) {
-                  var roles = ['workspace/'+member.role];
-                  $http({method: 'POST', url: '/api/workspace/' + workspaceId + '/members', params: {userId: member.id, roles: roles}})
+
+                  var con = {
+                    headers: {
+                      'Content-Type': 'application/json'
+                    }
+                  };
+
+                  var roles = [
+                    "workspace/"+member.role
+                  ];
+
+                  var data = {
+                    "userId": member.id,
+                    "roles": roles // needs to be array
+                  };
+
+                  $http.post('/api/workspace/' + workspaceId + "/members",
+                    data,
+                    con)
                     .success(function (data) {
                       var memberDetails = {
                         id: member.id,
@@ -210,12 +227,31 @@ angular.module('odeskApp')
                     });
                 })
               ]).then(function (results) {
-                $('#addNewMember').modal('toggle');
+                $('#addWorkspaceNewMember').modal('toggle');
                 $scope.selectedMembers = [];
                 $("#userNotFoundError").hide();
                 $("#userAlreadyAdded").hide();
               });
             };
+
+            // Remove member related to workspace
+            $scope.removeMemberFromWs = function(memberId){
+              var deferred = $q.defer();
+              $http.delete('/api/workspace/'+workspaceId+'/members/' + memberId )
+                .success(function (data, status) {
+                  if(status == 204){
+                    var removeMember = _.find($scope.workspace.members, function(member){ if(member.id == memberId) return member; });
+                    var index = $scope.workspace.members.indexOf(removeMember)
+                    if (index != -1) {
+                      $scope.workspace.members.splice(index, 1);
+                    }
+                  }
+                  deferred.resolve(data);
+                })
+                .error(function (err) {
+                  deferred.reject();
+                });
+            }
 
             // For search
             $timeout(function () {
