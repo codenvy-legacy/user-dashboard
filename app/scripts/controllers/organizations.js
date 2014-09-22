@@ -38,6 +38,7 @@ angular.module('odeskApp')
           $scope.workspaces = [];
           $scope.members = [];
           $scope.selectedMembers = [];
+          $scope.selectedWsMembers = [];
 
           // Display workspace details in workspace
           $http({method: 'GET', url: '/api/workspace/find/account?id='+$scope.accountId[0]})
@@ -75,6 +76,86 @@ angular.module('odeskApp')
             })
             .error(function (err) {  });
 
+          // Add members to workspace list
+          $scope.addMemberToWsList = function(){
+            var selectedMembers = $("#selectedMembers").val();
+            var selectedMemberEmails = selectedMembers.split(",");
+            var role = $("input[name=ws_member_role]:checked").val();
+
+            $("#userNotFoundError").hide();
+            $("#userNotMemberList").hide();
+            $("#userAlreadyAdded").hide();
+            $("#emptyEmails").hide();
+            $("#addMemberErr").hide();
+
+            $scope.userNotFoundList = [];
+            $scope.userNotMemberList = [];
+            $scope.userAlreadyAdded =[];
+
+            if (selectedMembers.length>0){
+              $("#selectedMembers").parent().removeClass('has-error');
+              $("#emptyEmails").hide();
+              angular.forEach(selectedMemberEmails, function (memberEmail) {
+                var email, name, userId;
+                return $q.all([
+                  $http({method: 'GET', url: '/api/user/find', params: {email: memberEmail}})
+                    .success(function (data) {
+                      userId = data["id"]
+                    })
+                    .error(function (err) {
+                      $scope.userNotFoundList.push(memberEmail);
+                      $("#userNotFoundError").show();
+                      $("#selectedMembers").parent().addClass('has-error');
+                    })
+
+                ]).then(function (results) {
+
+                  var foundMember = _.find($scope.members, function(member){ if(member.id == userId) return member; });
+                  var index = $scope.members.indexOf(foundMember);
+                  if (index != -1) {
+                    var alreadyAddedMember = _.find($scope.selectedWsMembers, function(member){ if(member.id == userId) return member; });
+                    if(typeof(alreadyAddedMember)!="undefined"){
+                      $scope.userAlreadyAdded.push(memberEmail);
+                      $("#userAlreadyAdded").show();
+                      $("#selectedMembers").parent().addClass('has-error');
+                    }
+                    else
+                    {
+                      $("#userAlreadyAdded").hide();
+                      $http({method: 'GET', url: '/api/profile/'+userId})
+                        .success(function (data) {
+                          email = data['attributes'].email;
+                          name = data['attributes'].firstName +" "+ data['attributes'].lastName;
+                          var memberDetails = {
+                            id: userId,
+                            role: role.split("/")[1],
+                            email: email,
+                            name: name
+                          }
+                          $scope.selectedWsMembers.push(memberDetails);
+                        });
+                    }
+                  }
+                  else{
+                    $scope.userNotMemberList.push(memberEmail);
+                    $("#userNotMemberList").show();
+                    $("#userAlreadyAdded").hide();
+                    $("#selectedMembers").parent().addClass('has-error');
+                  }
+                });
+              });
+              $("#selectedMembers").val("");
+              $("#userNotFoundError").hide();
+              $("#userAlreadyAdded").hide();
+            }
+            else
+            {
+              $("#userAlreadyAdded").hide();
+              $("#selectedMembers").parent().addClass('has-error');
+              $("#emptyEmails").show();
+            }
+          };
+
           // For search
           $timeout(function () {
             $("[rel=tooltip]").tooltip({ placement: 'bottom' });
@@ -95,9 +176,14 @@ angular.module('odeskApp')
           });
 
           // Create workspace related to account
-          $scope.createWorkspace = function(accountId){
+          $scope.createWorkspace = function(accountId, selectedMembers){
 
-            var deferred = $q.defer();
+            $("#userNotFoundError").hide();
+            $("#userNotMemberList").hide();
+            $("#userAlreadyAdded").hide();
+            $("#emptyEmails").hide();
+            $("#selectedMembers").parent().removeClass('has-error');
+
             var con = {
               headers: {
                 'Content-Type': 'application/json'
@@ -109,19 +195,49 @@ angular.module('odeskApp')
               "name": $("#ws_name").val() // needs to be array
             };
 
-            $http.post('/api/workspace',data,con)
-              .success(function (data) {
-                var workspaceDetails = {
-                  id: data.id,
-                  name: data.name,
-                  projects: 0,
-                  developers: 1
-                }
-                $scope.workspaces.push(workspaceDetails);
-                $('#addNewWorkspace').modal('toggle');
-                $("#ws_name").val("")
-                deferred.resolve(data); //resolve data
-              });
+            var workspaceId, workspaceName;
+
+            return $q.all([
+              $http.post('/api/workspace',data,con)
+                .success(function (data) {
+                  workspaceId = data.id;
+                  workspaceName = data.name;
+                })
+            ]).then(function (results) {
+              angular.forEach(selectedMembers, function (member) {
+                var roles = [
+                      "workspace/"+member.role
+                ];
+
+                var memberData = {
+                  "userId": member.id,
+                  "roles": roles // needs to be array
+                };
+
+                $http.post('/api/workspace/' + workspaceId + "/members",
+                  memberData,
+                  con)
+                  .success(function (data) {
+
+                  })
+                  .error(function (err, status) {
+                    $("#addMemberErr").show();
+                    $("#addMemberErr").html(err["message"]);
+                  });
+              })
+              var workspaceDetails = {
+                id: workspaceId,
+                name: workspaceName,
+                projects: 0,
+                developers: (selectedMembers.length + 1)
+              }
+              $scope.workspaces.push(workspaceDetails);
+              $('#addNewWorkspace').modal('toggle');
+              $("#ws_name").val("")
+              $scope.selectedMembers = [];
+              $("#userNotFoundError").hide();
+              $("#userAlreadyAdded").hide();
+            });
           }
 
           // Remove workspace related to account

@@ -120,24 +120,26 @@
               </div>
             </div>
             <div class="menber-textarea mrg-top10">
-              <div class="row mrg-btm5">
+              <div class="row mrg-btm5" ng-repeat="member in selectedWsMembers">
                 <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
-                  <p>Tyler Jewell (tyler@codenvy.com)</p>
+                  <p>{{member.name}} ({{member.email}})</p>
                 </div>
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
                   <div class="text-center">
-                    <input type="radio" name="user_role" id="radio" class="css-checkbox" checked />
-                    <label for="radio" class="css-label radGroup1">&nbsp;</label>
+                    <input type="radio" name="user_role_{{$index}}" id="radio{{$index}}" class="css-checkbox" checked ng-if="member.role=='admin'"/>
+                    <input type="radio" name="user_role_{{$index}}" id="radio{{$index}}" class="css-checkbox" ng-if="member.role!='admin'"/>
+                    <label for="radio{{$index}}" class="css-label radGroup1">&nbsp;</label>
                   </div>
                 </div>
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
                   <div class="text-center">
-                    <input type="radio" name="user_role" id="radio2" class="css-checkbox" />
-                    <label for="radio2" class="css-label radGroup1">&nbsp;</label>
+                    <input type="radio" name="user_role_{{$index}}" id="radio_{{$index}}" class="css-checkbox" checked ng-if="member.role=='developer'"/>
+                    <input type="radio" name="user_role_{{$index}}" id="radio_{{$index}}" class="css-checkbox" ng-if="member.role!='developer'"/>
+                    <label for="radio_{{$index}}" class="css-label radGroup1">&nbsp;</label>
                   </div>
                 </div>
                 <div class="col-lg-1 col-sm-1 col-md-1 col-xs-12">
-                  <a href="#"><i class="glyphicon glyphicon-trash"></i></a>
+                  <a ng-click="removeMemberToList(member)"><i class="glyphicon glyphicon-trash"></i></a>
                 </div>
               </div>
             </div>
@@ -145,8 +147,8 @@
               <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
                 <form role="form">
                   <div class="form-group">
-                    <label>Select Members(s):</label>
-                    <input type="text" placeholder="Type email addresses separated by commas" class="form-control">
+                    <label>Select Users(s):</label>
+                    <input type="text" name="selectedMembers" id="selectedMembers" placeholder="Type email addresses separated by commas" class="form-control">
                   </div>
                 </form>
               </div>
@@ -163,16 +165,20 @@
                     <label for="ws_dev_radio" class="css-label radGroup1">&nbsp;</label>
                   </div>
                   <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
-                    <button type="button" class="btn btn-success">ADD</button>
+                    <button type="button" class="btn btn-success" ng-click="addMemberToWsList()">ADD</button>
                   </div>
                 </div>
               </div>
             </div>
+            <span id="userNotFoundError" style="display: none" class="error-text"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of this workspace. </span>
+            <span id="userNotMemberList" style="display: none" class="error-text"><strong>'{{userNotMemberList.join(", ")}}'</strong> must be Accont Member(s) before being added as member(s) of this workspace. </span>
+            <span id="userAlreadyAdded" style="display: none" class="error-text"></br>User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </span>
+            <span id="emptyEmails" style="display: none" class="error-text"><strong>Type email addresses separated by commas</strong></span>
 
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" ng-click="createWorkspace(accountId[0])">Ok</button>
+          <button type="button" class="btn btn-primary" ng-click="createWorkspace(accountId[0], selectedWsMembers)">Ok</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
       </div>
