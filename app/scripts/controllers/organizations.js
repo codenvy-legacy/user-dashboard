@@ -93,6 +93,8 @@ angular.module('odeskApp')
             $scope.userAlreadyAdded =[];
 
             if (selectedMembers.length>0){
+              $("#ws_name").parent().removeClass('has-error');
+              $("#emptyWs").hide();
               $("#selectedMembers").parent().removeClass('has-error');
               $("#emptyEmails").hide();
               angular.forEach(selectedMemberEmails, function (memberEmail) {
@@ -184,60 +186,68 @@ angular.module('odeskApp')
             $("#emptyEmails").hide();
             $("#selectedMembers").parent().removeClass('has-error');
 
-            var con = {
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            };
+            var wsName = $("#ws_name").val();
+            if (wsName.length>0) {
+              $("#ws_name").parent().removeClass('has-error');
+              $("#emptyWs").hide();
+              var con = {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              };
 
-            var data = {
-              "accountId": accountId,
-              "name": $("#ws_name").val() // needs to be array
-            };
+              var data = {
+                "accountId": accountId,
+                "name": $("#ws_name").val() // needs to be array
+              };
 
-            var workspaceId, workspaceName;
+              var workspaceId, workspaceName;
 
-            return $q.all([
-              $http.post('/api/workspace',data,con)
-                .success(function (data) {
-                  workspaceId = data.id;
-                  workspaceName = data.name;
+              return $q.all([
+                $http.post('/api/workspace', data, con)
+                    .success(function (data) {
+                      workspaceId = data.id;
+                      workspaceName = data.name;
+                    })
+              ]).then(function (results) {
+                angular.forEach(selectedMembers, function (member) {
+                  var roles = [
+                        "workspace/" + member.role
+                  ];
+
+                  var memberData = {
+                    "userId": member.id,
+                    "roles": roles // needs to be array
+                  };
+
+                  $http.post('/api/workspace/' + workspaceId + "/members",
+                      memberData,
+                      con)
+                      .success(function (data) {
+
+                      })
+                      .error(function (err, status) {
+                        $("#addMemberErr").show();
+                        $("#addMemberErr").html(err["message"]);
+                      });
                 })
-            ]).then(function (results) {
-              angular.forEach(selectedMembers, function (member) {
-                var roles = [
-                      "workspace/"+member.role
-                ];
-
-                var memberData = {
-                  "userId": member.id,
-                  "roles": roles // needs to be array
-                };
-
-                $http.post('/api/workspace/' + workspaceId + "/members",
-                  memberData,
-                  con)
-                  .success(function (data) {
-
-                  })
-                  .error(function (err, status) {
-                    $("#addMemberErr").show();
-                    $("#addMemberErr").html(err["message"]);
-                  });
-              })
-              var workspaceDetails = {
-                id: workspaceId,
-                name: workspaceName,
-                projects: 0,
-                developers: (selectedMembers.length + 1)
-              }
-              $scope.workspaces.push(workspaceDetails);
-              $('#addNewWorkspace').modal('toggle');
-              $("#ws_name").val("")
-              $scope.selectedMembers = [];
-              $("#userNotFoundError").hide();
-              $("#userAlreadyAdded").hide();
-            });
+                var workspaceDetails = {
+                  id: workspaceId,
+                  name: workspaceName,
+                  projects: 0,
+                  developers: (selectedMembers.length + 1)
+                }
+                $scope.workspaces.push(workspaceDetails);
+                $('#addNewWorkspace').modal('toggle');
+                $("#ws_name").val("")
+                $scope.selectedMembers = [];
+                $("#userNotFoundError").hide();
+                $("#userAlreadyAdded").hide();
+              });
+            }else{
+              $("#ws_name").parent().addClass('has-error');
+              $("#emptyWs").show();
+            }
           }
 
           // Remove workspace related to account
