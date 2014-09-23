@@ -188,65 +188,73 @@ angular.module('odeskApp')
 
             var wsName = $("#ws_name").val();
             if (wsName.length>0) {
-              $("#ws_name").parent().removeClass('has-error');
-              $("#emptyWs").hide();
-              var con = {
-                headers: {
-                  'Content-Type': 'application/json'
-                }
-              };
+              if ((wsName.match(/^[0-9a-zA-Z-._]+$/) != null) && (wsName.length>3) && (wsName.length < 20) && (wsName[0].match(/^[0-9a-zA-Z]+$/) != null)) {
+                $("#ws_name").parent().removeClass('has-error');
+                $("#emptyWs").hide();
+                var con = {
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                };
 
-              var data = {
-                "accountId": accountId,
-                "name": $("#ws_name").val() // needs to be array
-              };
+                var data = {
+                  "accountId": accountId,
+                  "name": $("#ws_name").val() // needs to be array
+                };
 
-              var workspaceId, workspaceName;
+                var workspaceId, workspaceName;
 
-              return $q.all([
-                $http.post('/api/workspace', data, con)
-                    .success(function (data) {
-                      workspaceId = data.id;
-                      workspaceName = data.name;
-                    })
-              ]).then(function (results) {
-                angular.forEach(selectedMembers, function (member) {
-                  var roles = [
-                        "workspace/" + member.role
-                  ];
-
-                  var memberData = {
-                    "userId": member.id,
-                    "roles": roles // needs to be array
-                  };
-
-                  $http.post('/api/workspace/' + workspaceId + "/members",
-                      memberData,
-                      con)
+                return $q.all([
+                  $http.post('/api/workspace', data, con)
                       .success(function (data) {
-
+                        workspaceId = data.id;
+                        workspaceName = data.name;
                       })
-                      .error(function (err, status) {
-                        $("#addMemberErr").show();
-                        $("#addMemberErr").html(err["message"]);
-                      });
-                })
-                var workspaceDetails = {
-                  id: workspaceId,
-                  name: workspaceName,
-                  projects: 0,
-                  developers: (selectedMembers.length + 1)
-                }
-                $scope.workspaces.push(workspaceDetails);
-                $('#addNewWorkspace').modal('toggle');
-                $("#ws_name").val("")
-                $scope.selectedMembers = [];
-                $("#userNotFoundError").hide();
-                $("#userAlreadyAdded").hide();
-              });
+                ]).then(function (results) {
+                  angular.forEach(selectedMembers, function (member) {
+                    var roles = [
+                          "workspace/" + member.role
+                    ];
+
+                    var memberData = {
+                      "userId": member.id,
+                      "roles": roles // needs to be array
+                    };
+
+                    $http.post('/api/workspace/' + workspaceId + "/members",
+                        memberData,
+                        con)
+                        .success(function (data) {
+
+                        })
+                        .error(function (err, status) {
+                          $("#addMemberErr").show();
+                          $("#addMemberErr").html(err["message"]);
+                        });
+                  })
+                  var workspaceDetails = {
+                    id: workspaceId,
+                    name: workspaceName,
+                    projects: 0,
+                    developers: (selectedMembers.length + 1)
+                  }
+                  $scope.workspaces.push(workspaceDetails);
+                  $('#addNewWorkspace').modal('toggle');
+                  $("#ws_name").val("")
+                  $scope.selectedMembers = [];
+                  $("#userNotFoundError").hide();
+                  $("#userAlreadyAdded").hide();
+                });
+              }
+              else{
+                $("#ws_name").parent().addClass('has-error');
+                $("#emptyWs").show();
+                $("#emptyWs").html("<strong> Workspace characters should be between 3 to 20 characters and must have digit, letters and - . _ and must start with digits or letters</strong>");
+              }
             }else{
               $("#ws_name").parent().addClass('has-error');
               $("#emptyWs").show();
+              $("#emptyWs").html("<strong>Define the name of the workspace</strong>");
             }
           }
 
