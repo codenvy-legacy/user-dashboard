@@ -262,7 +262,7 @@ angular.module('odeskApp')
               // refresh member list
               Profile.getById(user.id).then(function (data) {
                 var member = createMember(data.attributes, user.id, true, true);
-                
+
                 $scope.currentWorkspace.members.push(member);
                 $scope.activeMembers.push(member);
 
@@ -280,36 +280,38 @@ angular.module('odeskApp')
       };
 
 	  $scope.getAllAdminListToDisplay = function() {
-		//var selectedWorkspace = _.filter($scope.workspaces, function (workspace) { return !workspace.workspaceReference.id==workspaceId; });
-		var listAdmins = [];
-		angular.forEach($scope.currentWorkspace.members, function (tempmember) {
-			if(tempmember.roles) {
-				if(tempmember.roles.indexOf('workspace/admin')!=-1)
-					listAdmins.push(tempmember.fullName);
-			}
-		});
-		
-		if(listAdmins.length == 1)
-		{
-			return 'is ' + listAdmins[0];
-		}
-		
-		if(listAdmins.length > 1)
-		{
-			var strAdmins = '';
-			for(var i=0;i<listAdmins.length;i++)
-			{
-				if(i==0)
-					strAdmins += listAdmins[i];
-				else if(listAdmins.length > 1 && (listAdmins.length-1)==i)
-					strAdmins += ' and ' + listAdmins[i];
-				else
-					strAdmins +=  ', ' + listAdmins[i];
-			}
-			return 'are ' + strAdmins;
-		}
-		
-		return '';
+      //var selectedWorkspace = _.filter($scope.workspaces, function (workspace) { return !workspace.workspaceReference.id==workspaceId; });
+      var listAdmins = [];
+
+      if(typeof($scope.currentWorkspace)!="undefined"){
+        angular.forEach($scope.currentWorkspace.members, function (tempmember) {
+          if (tempmember.roles) {
+            if (tempmember.roles.indexOf('workspace/admin') != -1)
+              listAdmins.push(tempmember.fullName);
+          }
+        });
+        if(listAdmins.length == 1)
+        {
+          return 'is ' + listAdmins[0];
+        }
+
+        if(listAdmins.length > 1)
+        {
+          var strAdmins = '';
+          for(var i=0;i<listAdmins.length;i++)
+          {
+            if(i==0)
+              strAdmins += listAdmins[i];
+            else if(listAdmins.length > 1 && (listAdmins.length-1)==i)
+              strAdmins += ' and ' + listAdmins[i];
+            else
+              strAdmins +=  ', ' + listAdmins[i];
+          }
+          return 'are ' + strAdmins;
+        }
+      }
+
+      return '';
 	  }
 	  
 	  
