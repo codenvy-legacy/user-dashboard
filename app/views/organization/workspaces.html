@@ -1,0 +1,189 @@
+<div ng-if="isOrgAddOn">
+  <ul class="breadcrumb boxnav">
+    <li class="active"><a href="#/organizations"> WORKSPACES <span class="badge">{{workspaces.length}}</span></a></li>
+    <li><a href="#/organizations/members"> MEMBERS <span class="badge">{{members.length}}</span> </a></li>
+    <!--<li><a href="#"> GROUPS <span class="badge">10</span> </a></li>-->
+  </ul>
+
+  <div class="col-md-12">
+    <div class="row">
+      <ul class="breadcrumb projectnav breadcrumb clearfix">
+        <li class="dropdown user-dropdown"> SORT BY:
+          <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-down garrow"></i> Alphabetically </a>
+          <ul class="dropdown-menu">
+            <li><a href="" ng-click="filter.name"> Alphabetically </a></li>
+            <li><a href=""> Last Update </a></li>
+            <li><a href=""> Creation Date </a></li>
+          </ul>
+        </li>
+        <div class="clearfix visible-xs"></div>
+        <li class="search1 pull-right">
+          <div>
+            <input type="button" class="searchfield "/>
+          </div><!-- content title-->
+          <div class="searchfull top0 clearfix" style="display:none">
+            <input type="button" class="closeBtn" style="display:none;" ng-click="filter = ''" />
+            <input type="text" ng-model="filter.name" class="searchfield " placeholder="Search for Workspaces"/>
+          </div>
+        </li>
+        <li class="ws-button pad0 pull-right mrg-rht5">
+          <div>
+            <a href="" class="new_btn" data-toggle="modal" data-target="#addNewWorkspace" ><i class="glyphicon glyphicon-plus"></i>New Workspace</a>
+          </div>
+        </li>
+
+      </ul>
+
+      <div class="projectnav table-responsive">
+        <table class="table table-hover" style="background:#f9f9f9;">
+          <thead>
+            <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
+              <th class=""></th>
+              <th class="text-center"><h4>NAME</h4></th>
+              <th class="text-center"><h4>LAST UPDATE</h4></th>
+              <th class="text-center"><h4>CREATION DATE</h4></th>
+              <th class="text-center"><h4>DEVELOPERS</h4></th>
+              <th class="text-center"><h4>PROJECTS</h4></th>
+              <th class="text-center"><h4>FACTORIES</h4></th>
+              <th></th>
+              <th style="text-align: right; padding-right: 81px;"><h4>ACTIONS</h4></th>
+            </tr>
+          </thead>
+
+            <tr ng-repeat="workspace in workspaces| filter: filter | orderBy:'name'" class="v-center">
+              <td style="width: 1%;"><!--<i class="glyphicon glyphicon-lock"></i>--></td>
+              <td><a ng-href="#/organizations/workspace/{{workspace.id}}" class="ws-name">{{workspace.name}}</a></td>
+              <td class="text-center"></td>
+              <td class="text-center"></td>
+              <td class="text-center">{{workspace.developers}}</td>
+              <td class="text-center">{{workspace.projects}}</td>
+              <td class="text-center"></td>
+              <td></td>
+              <td style="text-align: right;">
+                <ul class="breadcrumb action-button boxnav">
+                  <li class="active no-bdr mrg-top8"><a href="#" class="new_btn">Edit</a></li>
+                  <li class="active no-bdr mrg-top8" ng-click="removeWorkspace(workspace.id)"><a class="new_btn">Remove</a></li>
+                </ul>
+              </td>
+            </tr>
+
+        </table>
+      </div>
+      <div class="text-center">
+        <ul class="pagination pagination-sm">
+          <li><a href="#">«</a></li>
+          <li><a href="#">1</a></li>
+          <li><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">4</a></li>
+          <li><a href="#">5</a></li>
+          <li><a href="#">»</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<!---- Add New Workspace Modal Start--->
+<div class="modal-col">
+  <div class="modal fade" id="addNewWorkspace" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Add New Workspace Into Organization</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-field">
+            <div class="row">
+              <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                <form role="form">
+                  <div class="form-group">
+                    <label>Define Workspace Name:</label>
+                    <input type="text" placeholder="Workspace Name" class="form-control" id="ws_name">
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="menber-col">
+              <div class="row">
+                <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
+                  Member(s) to add:
+                </div>
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12 pad-0">
+                  Administrator
+                </div>
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12 pad-0">
+                  Developer
+                </div>
+              </div>
+            </div>
+            <div class="menber-textarea mrg-top10">
+              <div class="row mrg-btm5" ng-repeat="member in selectedWsMembers">
+                <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
+                  <p>{{member.name}} ({{member.email}})</p>
+                </div>
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                  <div class="text-center">
+                    <input type="radio" name="user_role_{{$index}}" id="radio{{$index}}" class="css-checkbox" checked ng-if="member.role=='admin'"/>
+                    <input type="radio" name="user_role_{{$index}}" id="radio{{$index}}" class="css-checkbox" ng-if="member.role!='admin'"/>
+                    <label for="radio{{$index}}" class="css-label radGroup1">&nbsp;</label>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                  <div class="text-center">
+                    <input type="radio" name="user_role_{{$index}}" id="radio_{{$index}}" class="css-checkbox" checked ng-if="member.role=='developer'"/>
+                    <input type="radio" name="user_role_{{$index}}" id="radio_{{$index}}" class="css-checkbox" ng-if="member.role!='developer'"/>
+                    <label for="radio_{{$index}}" class="css-label radGroup1">&nbsp;</label>
+                  </div>
+                </div>
+                <div class="col-lg-1 col-sm-1 col-md-1 col-xs-12">
+                  <a ng-click="removeMemberToList(member)"><i class="glyphicon glyphicon-trash"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="row mrg-top10">
+              <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
+                <form role="form">
+                  <div class="form-group">
+                    <label>Select Users(s):</label>
+                    <input type="text" name="selectedMembers" id="selectedMembers" placeholder="Type email addresses separated by commas" class="form-control">
+                  </div>
+                </form>
+              </div>
+              <div class="col-lg-5 col-sm-5 col-md-5 col-xs-12">
+                <div class="row mrg-top30">
+                  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 pad-0">Administrator </div>
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12">
+                    <input type="radio" name="ws_member_role" id="ws_admin_radio" class="css-checkbox" value="workspace/admin"/>
+                    <label for="ws_admin_radio" class="css-label radGroup1">&nbsp;</label>
+                  </div>
+                  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">Developer </div>
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12">
+                    <input type="radio" name="ws_member_role" id="ws_dev_radio" class="css-checkbox" value="workspace/developer" checked="checked"/>
+                    <label for="ws_dev_radio" class="css-label radGroup1">&nbsp;</label>
+                  </div>
+                  <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                    <button type="button" class="btn btn-success" ng-click="addMemberToWsList()">ADD</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <span id="userNotFoundError" style="display: none" class="error-text"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of this workspace. </span>
+            <span id="userNotMemberList" style="display: none" class="error-text"><strong>'{{userNotMemberList.join(", ")}}'</strong> must be Accont Member(s) before being added as member(s) of this workspace. </span>
+            <span id="userAlreadyAdded" style="display: none" class="error-text"></br>User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </span>
+            <span id="emptyEmails" style="display: none" class="error-text"><strong>Type email addresses separated by commas</strong></span>
+            <span id="emptyWs" style="display: none" class="error-text"></span>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" ng-click="createWorkspace(accountId[0], selectedWsMembers)">Ok</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!---- Add New Workspace Modal end--->

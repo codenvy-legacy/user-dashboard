@@ -16,161 +16,412 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('OrganizationsCtrl', function ($scope, $timeout, $filter) {
-        $scope.organizations = 1;
-        
- // init
-    $scope.sort = {       
-                sortingOrder : 'id',
-                reverse : false
-            };
-    
-    $scope.gap = 5;
-    
-    $scope.filteredItems = [];
-    $scope.groupedItems = [];
-    $scope.itemsPerPage = 5;
-    $scope.pagedItems = [];
-    $scope.currentPage = 0;
-    $scope.items = [
-        {"id":"1","name":"name 1","description":"description 1","field3":"field3 1","field4":"field4 1","field5 ":"field5 1"}, 
-        {"id":"2","name":"name 2","description":"description 1","field3":"field3 2","field4":"field4 2","field5 ":"field5 2"}, 
-        {"id":"3","name":"name 3","description":"description 1","field3":"field3 3","field4":"field4 3","field5 ":"field5 3"}, 
-        {"id":"4","name":"name 4","description":"description 1","field3":"field3 4","field4":"field4 4","field5 ":"field5 4"}, 
-        {"id":"5","name":"name 5","description":"description 1","field3":"field3 5","field4":"field4 5","field5 ":"field5 5"}, 
-        {"id":"6","name":"name 6","description":"description 1","field3":"field3 6","field4":"field4 6","field5 ":"field5 6"}, 
-        {"id":"7","name":"name 7","description":"description 1","field3":"field3 7","field4":"field4 7","field5 ":"field5 7"}, 
-        {"id":"8","name":"name 8","description":"description 1","field3":"field3 8","field4":"field4 8","field5 ":"field5 8"}, 
-        {"id":"9","name":"name 9","description":"description 1","field3":"field3 9","field4":"field4 9","field5 ":"field5 9"}, 
-        {"id":"10","name":"name 10","description":"description 1","field3":"field3 10","field4":"field4 10","field5 ":"field5 10"}, 
-        {"id":"11","name":"name 11","description":"description 1","field3":"field3 11","field4":"field4 11","field5 ":"field5 11"}, 
-        {"id":"12","name":"name 12","description":"description 1","field3":"field3 12","field4":"field4 12","field5 ":"field5 12"}, 
-        {"id":"13","name":"name 13","description":"description 1","field3":"field3 13","field4":"field4 13","field5 ":"field5 13"}, 
-        {"id":"14","name":"name 14","description":"description 1","field3":"field3 14","field4":"field4 14","field5 ":"field5 14"}, 
-        {"id":"15","name":"name 15","description":"description 1","field3":"field3 15","field4":"field4 15","field5 ":"field5 15"}, 
-        {"id":"16","name":"name 16","description":"description 1","field3":"field3 16","field4":"field4 16","field5 ":"field5 16"}, 
-        {"id":"17","name":"name 17","description":"description 1","field3":"field3 17","field4":"field4 17","field5 ":"field5 17"}, 
-        {"id":"18","name":"name 18","description":"description 1","field3":"field3 18","field4":"field4 18","field5 ":"field5 18"}, 
-        {"id":"19","name":"name 19","description":"description 1","field3":"field3 19","field4":"field4 19","field5 ":"field5 19"}, 
-        {"id":"20","name":"name 5","description":"description 1","field3":"field3 5","field4":"field4 5","field5 ":"field5 5"}, 
-        {"id":"21","name":"name 6","description":"description 1","field3":"field3 6","field4":"field4 6","field5 ":"field5 6"}, 
-        {"id":"22","name":"name 7","description":"description 1","field3":"field3 7","field4":"field4 7","field5 ":"field5 7"}, 
-        {"id":"23","name":"name 8","description":"description 1","field3":"field3 8","field4":"field4 8","field5 ":"field5 8"}, 
-        {"id":"24","name":"name 9","description":"description 1","field3":"field3 9","field4":"field4 9","field5 ":"field5 9"}, 
-        {"id":"25","name":"name 10","description":"description 1","field3":"field3 10","field4":"field4 10","field5 ":"field5 10"}, 
-        {"id":"26","name":"name 11","description":"description 1","field3":"field3 11","field4":"field4 11","field5 ":"field5 11"}, 
-        {"id":"27","name":"name 12","description":"description 1","field3":"field3 12","field4":"field4 12","field5 ":"field5 12"}, 
-        {"id":"28","name":"name 13","description":"description 1","field3":"field3 13","field4":"field4 13","field5 ":"field5 13"}, 
-        {"id":"29","name":"name 14","description":"description 1","field3":"field3 14","field4":"field4 14","field5 ":"field5 14"}, 
-        {"id":"30","name":"name 15","description":"description 1","field3":"field3 15","field4":"field4 15","field5 ":"field5 15"}, 
-        {"id":"31","name":"name 16","description":"description 1","field3":"field3 16","field4":"field4 16","field5 ":"field5 16"}, 
-        {"id":"32","name":"name 17","description":"description 1","field3":"field3 17","field4":"field4 17","field5 ":"field5 17"}, 
-        {"id":"33","name":"name 18","description":"description 1","field3":"field3 18","field4":"field4 18","field5 ":"field5 18"}, 
-        {"id":"34","name":"name 19","description":"description 1","field3":"field3 19","field4":"field4 19","field5 ":"field5 19"}, 
-        {"id":"35","name":"name 5","description":"description 1","field3":"field3 5","field4":"field4 5","field5 ":"field5 5"}, 
-        {"id":"36","name":"name 6","description":"description 1","field3":"field3 6","field4":"field4 6","field5 ":"field5 6"}, 
-        {"id":"37","name":"name 7","description":"description 1","field3":"field3 7","field4":"field4 7","field5 ":"field5 7"}, 
-        {"id":"38","name":"name 8","description":"description 1","field3":"field3 8","field4":"field4 8","field5 ":"field5 8"}, 
-        {"id":"39","name":"name 9","description":"description 1","field3":"field3 9","field4":"field4 9","field5 ":"field5 9"}, 
-        {"id":"40","name":"name 10","description":"description 1","field3":"field3 10","field4":"field4 10","field5 ":"field5 10"}, 
-        {"id":"41","name":"name 11","description":"description 1","field3":"field3 11","field4":"field4 11","field5 ":"field5 11"}, 
-        {"id":"42","name":"name 12","description":"description 1","field3":"field3 12","field4":"field4 12","field5 ":"field5 12"}, 
-        {"id":"43","name":"name 13","description":"description 1","field3":"field3 13","field4":"field4 13","field5 ":"field5 13"}, 
-        {"id":"44","name":"name 14","description":"description 1","field3":"field3 14","field4":"field4 14","field5 ":"field5 14"}, 
-        {"id":"45","name":"name 15","description":"description 1","field3":"field3 15","field4":"field4 15","field5 ":"field5 15"}, 
-        {"id":"46","name":"name 16","description":"description 1","field3":"field3 16","field4":"field4 16","field5 ":"field5 16"}, 
-        {"id":"47","name":"name 17","description":"description 1","field3":"field3 17","field4":"field4 17","field5 ":"field5 17"}, 
-        {"id":"48","name":"name 18","description":"description 1","field3":"field3 18","field4":"field4 18","field5 ":"field5 18"}, 
-        {"id":"49","name":"name 19","description":"description 1","field3":"field3 19","field4":"field4 19","field5 ":"field5 19"}, 
-        {"id":"50","name":"name 5","description":"description 1","field3":"field3 5","field4":"field4 5","field5 ":"field5 5"}, 
-        {"id":"51","name":"name 6","description":"description 1","field3":"field3 6","field4":"field4 6","field5 ":"field5 6"}, 
-        {"id":"52","name":"name 7","description":"description 1","field3":"field3 7","field4":"field4 7","field5 ":"field5 7"}, 
-        {"id":"53","name":"name 8","description":"description 1","field3":"field3 8","field4":"field4 8","field5 ":"field5 8"}, 
-        {"id":"54","name":"name 9","description":"description 1","field3":"field3 9","field4":"field4 9","field5 ":"field5 9"}, 
-        {"id":"55","name":"name 10","description":"description 1","field3":"field3 10","field4":"field4 10","field5 ":"field5 10"}, 
-        {"id":"56","name":"name 11","description":"description 1","field3":"field3 11","field4":"field4 11","field5 ":"field5 11"}, 
-        {"id":"57","name":"name 12","description":"description 1","field3":"field3 12","field4":"field4 12","field5 ":"field5 12"}, 
-        {"id":"58","name":"name 13","description":"description 1","field3":"field3 13","field4":"field4 13","field5 ":"field5 13"}, 
-        {"id":"59","name":"name 14","description":"description 1","field3":"field3 14","field4":"field4 14","field5 ":"field5 14"}, 
-        {"id":"60","name":"name 15","description":"description 1","field3":"field3 15","field4":"field4 15","field5 ":"field5 15"}, 
-        {"id":"61","name":"name 16","description":"description 1","field3":"field3 16","field4":"field4 16","field5 ":"field5 16"}, 
-        {"id":"62","name":"name 17","description":"description 1","field3":"field3 17","field4":"field4 17","field5 ":"field5 17"}, 
-        {"id":"63","name":"name 18","description":"description 1","field3":"field3 18","field4":"field4 18","field5 ":"field5 18"}, 
-        {"id":"64","name":"name 19","description":"description 1","field3":"field3 19","field4":"field4 19","field5 ":"field5 19"}, 
-        {"id":"65","name":"name 20","description":"description 1","field3":"field3 20","field4":"field4 20","field5 ":"field5 20"}
-    ];
+  .controller('OrganizationsCtrl', function ($scope, Account,WorkspaceInfo,Workspace, $http, $q, $timeout) {
 
-    var searchMatch = function (haystack, needle) {
-        if (!needle) {
-            return true;
-        }
-        return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
-    };
+    $scope.isOrgAddOn = false;
+    $scope.accountId = [];
+    var serviceIds = ["Saas", "OnPremises"];
+    var packages = ["Team", "Enterprise"];
 
-    // init the filtered items
-    $scope.search = function () {
-        $scope.filteredItems = $filter('filter')($scope.items, function (item) {
-            for(var attr in item) {
-                if (searchMatch(item[attr], $scope.query))
-                    return true;
+    return $q.all([
+      Account.getAccountId().then(function (response){
+        $scope.accountId.push(_.pluck(_.pluck(response, 'accountReference'), 'id')[0]);
+      })
+    ]).then(function () {
+      Account.getSubscription($scope.accountId[0]).then(function (response){
+        var serviceId = _.pluck(response, 'serviceId')[0];
+        var packageName = _.pluck(_.pluck(response, 'properties'),'Package')[0];
+
+        // Check for subscription is available or not for organization tab
+        if(_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
+          $scope.isOrgAddOn = true;
+          $scope.workspaces = [];
+          $scope.members = [];
+          $scope.selectedMembers = [];
+          $scope.selectedWsMembers = [];
+
+          // Display workspace details in workspace
+          $http({method: 'GET', url: '/api/workspace/find/account?id='+$scope.accountId[0]})
+            .success(function (workspaces) {
+
+              angular.forEach(workspaces, function (workspace) {
+                //  Get workspace's projects and developers using workspace id
+                WorkspaceInfo.getDetail(workspace.id).then(function (response){
+                  var projectsLength;
+                  var membersLength;
+
+                  return $q.all([
+                    $http({method: 'GET', url: $.map(response.links,function(obj){if(obj.rel=="get projects") return obj.href})[0]})
+                      .success(function (data) {
+                        projectsLength = data.length;
+                      }),
+
+                    $http({method: 'GET', url: $.map(response.links,function(obj){if(obj.rel=="get members") return obj.href})[0]})
+                      .success(function (data) {
+                        membersLength = data.length;
+                      })
+                  ]).then(function (results) {
+                      var workspaceDetails = {
+                        id: workspace.id,
+                        name: workspace.name,
+                        projects: projectsLength,
+                        developers: membersLength
+                      }
+
+                      $scope.workspaces.push(workspaceDetails);
+                    });
+                });
+
+              });
+            })
+            .error(function (err) {  });
+
+          // Add members to workspace list
+          $scope.addMemberToWsList = function(){
+            var selectedMembers = $("#selectedMembers").val();
+            var selectedMemberEmails = selectedMembers.split(",");
+            var role = $("input[name=ws_member_role]:checked").val();
+
+            $("#userNotFoundError").hide();
+            $("#userNotMemberList").hide();
+            $("#userAlreadyAdded").hide();
+            $("#emptyEmails").hide();
+            $("#addMemberErr").hide();
+
+            $scope.userNotFoundList = [];
+            $scope.userNotMemberList = [];
+            $scope.userAlreadyAdded =[];
+
+            if (selectedMembers.length>0){
+              $("#ws_name").parent().removeClass('has-error');
+              $("#emptyWs").hide();
+              $("#selectedMembers").parent().removeClass('has-error');
+              $("#emptyEmails").hide();
+              angular.forEach(selectedMemberEmails, function (memberEmail) {
+                var email, name, userId;
+                return $q.all([
+                  $http({method: 'GET', url: '/api/user/find', params: {email: memberEmail}})
+                    .success(function (data) {
+                      userId = data["id"]
+                    })
+                    .error(function (err) {
+                      $scope.userNotFoundList.push(memberEmail);
+                      $("#userNotFoundError").show();
+                      $("#selectedMembers").parent().addClass('has-error');
+                    })
+
+                ]).then(function (results) {
+
+                  var foundMember = _.find($scope.members, function(member){ if(member.id == userId) return member; });
+                  var index = $scope.members.indexOf(foundMember);
+                  if (index != -1) {
+                    var alreadyAddedMember = _.find($scope.selectedWsMembers, function(member){ if(member.id == userId) return member; });
+                    if(typeof(alreadyAddedMember)!="undefined"){
+                      $scope.userAlreadyAdded.push(memberEmail);
+                      $("#userAlreadyAdded").show();
+                      $("#selectedMembers").parent().addClass('has-error');
+                    }
+                    else
+                    {
+                      $("#userAlreadyAdded").hide();
+                      $http({method: 'GET', url: '/api/profile/'+userId})
+                        .success(function (data) {
+                          email = data['attributes'].email;
+                          name = data['attributes'].firstName +" "+ data['attributes'].lastName;
+                          var memberDetails = {
+                            id: userId,
+                            role: role.split("/")[1],
+                            email: email,
+                            name: name
+                          }
+                          $scope.selectedWsMembers.push(memberDetails);
+                        });
+                    }
+                  }
+                  else{
+                    $scope.userNotMemberList.push(memberEmail);
+                    $("#userNotMemberList").show();
+                    $("#userAlreadyAdded").hide();
+                    $("#selectedMembers").parent().addClass('has-error');
+                  }
+                });
+              });
+              $("#selectedMembers").val("");
+              $("#userNotFoundError").hide();
+              $("#userAlreadyAdded").hide();
             }
-            return false;
-        });
-        // take care of the sorting order
-        if ($scope.sort.sortingOrder !== '') {
-            $scope.filteredItems = $filter('orderBy')($scope.filteredItems, $scope.sort.sortingOrder, $scope.sort.reverse);
-        }
-        $scope.currentPage = 0;
-        // now group by pages
-        $scope.groupToPages();
-    };
-    
-  
-    // calculate page in place
-    $scope.groupToPages = function () {
-        $scope.pagedItems = [];
-        
-        for (var i = 0; i < $scope.filteredItems.length; i++) {
-            if (i % $scope.itemsPerPage === 0) {
-                $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [ $scope.filteredItems[i] ];
-            } else {
-                $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
+            else
+            {
+              $("#userAlreadyAdded").hide();
+              $("#selectedMembers").parent().addClass('has-error');
+              $("#emptyEmails").show();
             }
-        }
-    };
-    
-    $scope.range = function (size,start, end) {
-        var ret = [];        
-        console.log(size,start, end);
-                      
-        if (size < end) {
-            end = size;
-            start = size-$scope.gap;
-        }
-        for (var i = start; i < end; i++) {
-            ret.push(i);
-        }        
-         console.log(ret);        
-        return ret;
-    };
-    
-    $scope.prevPage = function () {
-        if ($scope.currentPage > 0) {
-            $scope.currentPage--;
-        }
-    };
-    
-    $scope.nextPage = function () {
-        if ($scope.currentPage < $scope.pagedItems.length - 1) {
-            $scope.currentPage++;
-        }
-    };
-    
-    $scope.setPage = function () {
-        $scope.currentPage = this.n;
-    };
+          };
 
-    // functions have been describe process the data for display
-    $scope.search();
+          // For search
+          $timeout(function () {
+            $("[rel=tooltip]").tooltip({ placement: 'bottom' });
+            $(document).on("click", ".searchfield", function () {
+              $('.searchfull').show();
+              $('.detail').animate({ opacity: 0 }, 400);
+              $('.searchfull').animate({ width: "100%" }, 400, function () { $(".closeBtn").show(); });
+              $('.searchfield').focus();
+            });
+            $(document).on("click", ".closeBtn", function () {
+              $(".closeBtn").hide();
+              $('.detail').animate({ opacity: 1 }, 400);
+              $('.searchfull').animate({ width: "43px" }, 400, function () {
+                $('.searchfield').val('');
+                $('.searchfull').hide();
+              });
+            });
+          });
 
+          // Create workspace related to account
+          $scope.createWorkspace = function(accountId, selectedMembers){
+
+            $("#userNotFoundError").hide();
+            $("#userNotMemberList").hide();
+            $("#userAlreadyAdded").hide();
+            $("#emptyEmails").hide();
+            $("#selectedMembers").parent().removeClass('has-error');
+
+            var wsName = $("#ws_name").val();
+            if (wsName.length>0) {
+              if ((wsName.match(/^[0-9a-zA-Z-._]+$/) != null) && (wsName.length>3) && (wsName.length < 20) && (wsName[0].match(/^[0-9a-zA-Z]+$/) != null)) {
+                $("#ws_name").parent().removeClass('has-error');
+                $("#emptyWs").hide();
+                var con = {
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                };
+
+                var data = {
+                  "accountId": accountId,
+                  "name": $("#ws_name").val() // needs to be array
+                };
+
+                var workspaceId, workspaceName;
+
+                return $q.all([
+                  $http.post('/api/workspace', data, con)
+                      .success(function (data) {
+                        workspaceId = data.id;
+                        workspaceName = data.name;
+                      })
+                ]).then(function (results) {
+                  angular.forEach(selectedMembers, function (member) {
+                    var roles = [
+                          "workspace/" + member.role
+                    ];
+
+                    var memberData = {
+                      "userId": member.id,
+                      "roles": roles // needs to be array
+                    };
+
+                    $http.post('/api/workspace/' + workspaceId + "/members",
+                        memberData,
+                        con)
+                        .success(function (data) {
+
+                        })
+                        .error(function (err, status) {
+                          $("#addMemberErr").show();
+                          $("#addMemberErr").html(err["message"]);
+                        });
+                  })
+                  var workspaceDetails = {
+                    id: workspaceId,
+                    name: workspaceName,
+                    projects: 0,
+                    developers: (selectedMembers.length + 1)
+                  }
+                  $scope.workspaces.push(workspaceDetails);
+                  $('#addNewWorkspace').modal('toggle');
+                  $("#ws_name").val("")
+                  $scope.selectedMembers = [];
+                  $("#userNotFoundError").hide();
+                  $("#userAlreadyAdded").hide();
+                });
+              }
+              else{
+                $("#ws_name").parent().addClass('has-error');
+                $("#emptyWs").show();
+                $("#emptyWs").html("<strong> Workspace characters should be between 3 to 20 characters and must have digit, letters and - . _ and must start with digits or letters</strong>");
+              }
+            }else{
+              $("#ws_name").parent().addClass('has-error');
+              $("#emptyWs").show();
+              $("#emptyWs").html("<strong>Define the name of the workspace</strong>");
+            }
+          }
+
+          // Remove workspace related to account
+          $scope.removeWorkspace = function(workspaceId){
+            var deferred = $q.defer();
+            $http.delete('/api/workspace/' + workspaceId )
+              .success(function (data, status) {
+                if(status == 204){
+                  var removeWS = _.find($scope.workspaces, function(ws){ if(ws.id == workspaceId) return ws; });
+                  var index = $scope.workspaces.indexOf(removeWS)
+                  if (index != -1) {
+                    $scope.workspaces.splice(index, 1);
+                  }
+                }
+                deferred.resolve(data);
+              })
+              .error(function (err) {
+                deferred.reject();
+              });
+          }
+
+          // Display members details in members page for organizations
+          $http({method: 'GET', url: '/api/account/'+$scope.accountId[0]+'/members'})
+            .success(function (members) {
+
+              angular.forEach(members, function (member) {
+
+                //  Get member's email and name
+                var email;
+                var name;
+                return $q.all([
+                  $http({method: 'GET', url: '/api/profile/'+member['userId']})
+                    .success(function (data) {
+                      email = data['attributes'].email;
+                      name = data['attributes'].firstName +" "+ data['attributes'].lastName;
+                    })
+                ]).then(function (results) {
+                  var memberDetails = {
+                    id: member['userId'],
+                    role: member['roles'][0].split("/")[1],
+                    email: email,
+                    name: name
+                  }
+
+                  $scope.members.push(memberDetails);
+                });
+
+              });
+            })
+            .error(function (err) {  });
+
+          $scope.updateMember = function(memberEmail){
+            $scope.memberEmail = memberEmail;
+          };
+
+          // For add user in users list in add members popup modal in organization Tab
+          $scope.addUserToList = function(){
+
+            var selectedUsers = $("#selected_users").val();
+            var selectedUserEmails = selectedUsers.split(",");
+            var role = $("input[name=member_role]:checked").val();
+
+            $("#emptyEmails").hide();
+
+            $scope.userNotFoundList = [];
+            $scope.userAlreadyAdded = [];
+            if (selectedUsers.length>0){
+              $("#selected_users").parent().removeClass('has-error');
+              $("#emptyEmails").hide();
+              angular.forEach(selectedUserEmails, function (memberEmail) {
+                var email, name, userId;
+                return $q.all([
+                  $http({method: 'GET', url: '/api/user/find', params: {email: memberEmail}})
+                    .success(function (data) {
+                        userId = data["id"]
+                    })
+                    .error(function (err) {
+                      $scope.userNotFoundList.push(memberEmail);
+                      $("#userNotFoundError").show();
+                    })
+
+                ]).then(function (results) {
+                  var alreadyListedMember = _.find($scope.members, function(member){ if(member.email == memberEmail) return member; });
+                  var alreadyAddedMember = _.find($scope.selectedMembers, function(member){ if(member.id == userId) return member; });
+
+                  if((typeof(alreadyAddedMember)!="undefined") || (typeof(alreadyListedMember)!="undefined")){
+                    $scope.userAlreadyAdded.push(memberEmail);
+                    $("#userAlreadyAdded").show();
+                  }else{
+                    $http({method: 'GET', url: '/api/profile/'+userId})
+                      .success(function (data) {
+                        email = data['attributes'].email;
+                        name = data['attributes'].firstName +" "+ data['attributes'].lastName;
+                        var memberDetails = {
+                          id: userId,
+                          role: role.split("/")[1],
+                          email: email,
+                          name: name
+                        }
+                        $scope.selectedMembers.push(memberDetails);
+                      });
+                  }
+
+                });
+              });
+              $("#selected_users").val("");
+              $("#userNotFoundError").hide();
+              $("#userAlreadyAdded").hide();
+            }
+            else
+            {
+              $("#userAlreadyAdded").hide();
+              $("#selected_users").parent().addClass('has-error');
+              $("#emptyEmails").show();
+            }
+          };
+
+          // Remove user from selected list
+          $scope.removeUserToList = function(user){
+            var removedMember = _.find($scope.selectedMembers, function(member){ if(member.id == user.id) return member; });
+            var index = $scope.selectedMembers.indexOf(removedMember)
+            if (index != -1) {
+              $scope.selectedMembers.splice(index, 1);
+            }
+          };
+
+          // For add members in organization Tab
+          $scope.addMembers = function(members){
+            return $q.all([
+              angular.forEach(members, function (member) {
+                $http({method: 'POST', url: '/api/account/'+$scope.accountId[0]+'/members', params: {userid: member.id}})
+                  .success(function (data) {
+                    $scope.members.push(member);
+                  });
+              })
+            ]).then(function (results) {
+              $('#addNewMember').modal('toggle');
+              $scope.selectedMembers = [];
+              $("#userNotFoundError").hide();
+              $("#userAlreadyAdded").hide();
+            });
+          };
+
+          // Remove member related to account
+          $scope.removeMember = function(memberId){
+            var deferred = $q.defer();
+            $http.delete('/api/account/'+$scope.accountId[0]+'/members/' + memberId )
+              .success(function (data, status) {
+                if(status == 204){
+                  var removeMember = _.find($scope.members, function(member){ if(member.id == memberId) return member; });
+                  var index = $scope.members.indexOf(removeMember)
+                  if (index != -1) {
+                    $scope.members.splice(index, 1);
+                  }
+                }
+                deferred.resolve(data);
+              })
+              .error(function (err) {
+                deferred.reject();
+              });
+          }
+
+        }else{
+          $scope.isOrgAddOn = false;
+          window.location = "/#/dashboard"
+        }
+      });
     });
+  });

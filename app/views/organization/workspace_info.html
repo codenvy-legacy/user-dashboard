@@ -1,0 +1,104 @@
+<div class="breadcrumb-wrap">
+  <ul class="breadcrumb boxnav">
+    <li><a href="#/organizations" class="all-ws"> All Workspaces </a> >  {{workspace.name}}</li>
+
+    <li class="active"><a href="#/organizations/workspace/{{workspace.id}}"> INFORMATION </a></li>
+    <li><a href="#/organizations/workspace/{{workspace.id}}/members"> MEMBERS </a></li>
+    <li><a href="#"> GROUPS </a></li>
+  </ul>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="container-fluid mrg-top40">
+  <div class="row">
+    <div class="col-lg-5 col-sm-6 col-md-6 col-xs-12">
+      <div class="information-contant">
+        <div class="box-bg">
+          <div class="text-center detail-ttl mrg-btm10 mrg-top10">WORKSPACE INFORMATION</div>
+          <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+              <form role="form">
+                <div class="form-group">
+                  <label>Name:</label>
+                  <input type="text" class="form-control" value="{{workspace.name}}">
+                </div>
+              </form>
+              <div class="Privacy-contant">
+                <h3 class="Privacy-text">Privacy:</h3>
+                <div class="row">
+                  <div class="col-lg-11 col-lg-offset-1 col-sm-12 col-md-12 col-xs-12">
+                    <div class="row mrg-btm20">
+                      <div style="margin-top:3px;" class="col-lg-1 col-sm-1 col-md-1 col-xs-1">
+                        <div class="active-btn">&nbsp;</div>
+                      </div>
+                      <div class="col-lg-11 col-sm-10 col-md-11 col-xs-10 pad-lf10">
+                        <div class="text-col">
+                          <h4>Public</h4>
+                          <p>Everyone can see and find the workspace</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row mrg-btm10">
+                      <div style="margin-top:3px;" class="col-lg-1 col-sm-1 col-md-1 col-xs-1">
+                        <div class="dactive-btn">&nbsp;</div>
+                      </div>
+                      <div class="col-lg-11 col-sm-10 col-md-11 col-xs-10 pad-lf10">
+                        <div class="text-col">
+                          <h4>Private</h4>
+                          <p>Only members of your organization can see and find the workspace</p>
+                        </div>
+                      </div>
+                    </div>
+                    <button class="btn btn-primary pull-right" type="button">UPDATE</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="box-bg">
+          <div class="text-center detail-ttl mrg-btm20 mrg-top10">WORKSPACE ADMINISTRATORS</div>
+          <div class="administrator-block">
+            <ul>
+              <li ng-repeat="member in workspace.members">
+                <div class="row" ng-if="member.role == 'admin'">
+                  <div class="col-lg-9 col-sm-9 col-md-9 col-xs-10">
+                    <div class="text-col">
+                      <h4>{{member.email}}</h4>
+                      <p>{{member.name}}</p>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-2">
+                    <button class="btn btn-white pull-right" type="button">Remove</button>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="row">
+                  <div class="col-lg-5 col-lg-offset-7 col-sm-12 col-md-12 col-xs-12">
+                    <button class="btn btn-white pull-right" type="button">
+                      <i class="glyphicon glyphicon-plus"></i>
+                      <span class="add-admin-text">Add Administrator</span>
+                    </button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5 col-lg-offset-2 col-sm-6 col-md-6 col-xs-12">
+      <div class="information-contant">
+        <div class="box-bg">
+          <div class="text-center detail-ttl mrg-btm10 mrg-top10 line-hight-80">STATS IN THE FUTURE</div>
+        </div>
+        <div class="box-bg">
+          <div class="text-center detail-ttl mrg-btm10 mrg-top10 line-hight-80">PLUGINS IN THE FUTURE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
