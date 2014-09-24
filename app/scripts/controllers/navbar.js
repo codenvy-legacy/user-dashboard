@@ -60,7 +60,7 @@ angular.module('odeskApp')
             var packageName = _.pluck(_.pluck(response, 'properties'),'Package')[0];
             if(_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
               var organizationLink = {
-                'title': 'Organizations',
+                'title': 'Organization',
                 'link': '#/organizations'
               };
               $scope.menu.push(organizationLink);
