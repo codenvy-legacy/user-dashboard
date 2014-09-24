@@ -158,6 +158,13 @@ angular.module('odeskApp')
             }
           };
 
+          $scope.removeMemberFromWsList = function(user){
+            var removedMember = _.find($scope.selectedWsMembers, function(member){ if(member.id == user.id) return member; });
+            var index = $scope.selectedWsMembers.indexOf(removedMember)
+            if (index != -1) {
+              $scope.selectedWsMembers.splice(index, 1);
+            }
+          };
           // For search
           $timeout(function () {
             $("[rel=tooltip]").tooltip({ placement: 'bottom' });
