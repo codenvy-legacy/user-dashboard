@@ -69,7 +69,37 @@ angular.module('odeskApp')
         var serviceIds = ["Saas", "OnPremises"];
         var packages = ["Team", "Enterprise"];
 
-        return $q.all([
+        $http({method: 'GET', url: '/api/profile'}).success(function (profile, status) {
+          if (profile.attributes.firstName && profile.attributes.lastName) {
+            $scope.fullUserName = profile.attributes.firstName + ' ' + profile.attributes.lastName;
+          } else {
+            $scope.fullUserName = profile.attributes.email;
+          }
+        });
+    
+        $scope.isActive = function (route) {
+            //return route === '#' + $location.path(); //here # is added because of location html5 mode        
+            var str = '#' + $location.path(),
+                str2 = route;
+            
+            if (str.indexOf(str2) > -1) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+                
+        $scope.logout = function () {
+            $http({
+                url: "/api/auth/logout",
+                method: "POST",
+                data: { "token": $cookies['session-access-key']}
+            }).success(function (data, status) {
+                $window.location.href = '/site/login';
+            });
+        };
+		
+		return $q.all([
           Account.getAccountId().then(function (response){
             accountId.push(_.pluck(_.pluck(response, 'accountReference'), 'id')[0]);
           })
@@ -88,35 +118,4 @@ angular.module('odeskApp')
           });
         });
 
-        
-    
-        $scope.isActive = function (route) {
-            //return route === '#' + $location.path(); //here # is added because of location html5 mode        
-            var str = '#' + $location.path(),
-                str2 = route;
-            
-            if (str.indexOf(str2) > -1) {
-                return true;
-            } else {
-                return false;
-            }
-        };
-        
-        $http({method: 'GET', url: '/api/profile'}).success(function (profile, status) {
-          if (profile.attributes.firstName && profile.attributes.lastName) {
-            $scope.fullUserName = profile.attributes.firstName + ' ' + profile.attributes.lastName;
-          } else {
-            $scope.fullUserName = profile.attributes.email;
-          }
-        });
-        
-        $scope.logout = function () {
-            $http({
-                url: "/api/auth/logout",
-                method: "POST",
-                data: { "token": $cookies['session-access-key']}
-            }).success(function (data, status) {
-                $window.location.href = '/site/login';
-            });
-        };
     });
