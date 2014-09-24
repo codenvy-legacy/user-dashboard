@@ -274,7 +274,10 @@ angular.module('odeskApp')
             });
           }, function () {
             $scope.showInviteError = true;
-            $scope.errors += email + " ,";
+			if($scope.errors.length!==0)
+				$scope.errors += ", " + email;
+			else
+				$scope.errors += email;
           });
         });
       };

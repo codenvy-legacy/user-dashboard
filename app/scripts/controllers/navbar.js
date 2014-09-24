@@ -20,7 +20,7 @@ angular.module('odeskApp')
     .controller('NavbarCtrl', function ($scope, $location, $http, $cookies, $window, Account, $q) {
 
         $scope.menu = [
-            /*{
+            /*//{
             //    'title': 'Admin',
             //    'link': '#/admin'
             //},*/
@@ -46,6 +46,25 @@ angular.module('odeskApp')
             }
         ];
 
+		$scope.helpMenu = [
+            {
+                'title': 'Codenvy Help',
+                'link': 'http://docs.codenvy-next.com'
+            },
+            {
+                'title': 'Forum',
+                'link': 'https://helpdesk.codenvy.com/'
+            },
+            {
+                'title': 'Feedback',
+                'link': 'https://codenvy.uservoice.com/'
+            },
+            {
+                'title': 'Create Support Tickets',
+                'link': 'mailto:support@codenvy.com'
+            }
+            ];
+			
         var accountId = [];
         var serviceIds = ["Saas", "OnPremises"];
         var packages = ["Team", "Enterprise"];
@@ -69,24 +88,7 @@ angular.module('odeskApp')
           });
         });
 
-        $scope.helpMenu= [
-            {
-                'title': 'Codenvy Help',
-                'link': 'http://docs.codenvy-next.com'
-            },
-            {
-                'title': 'Forum',
-                'link': 'https://helpdesk.codenvy.com/'
-            },
-            {
-                'title': 'Feedback',
-                'link': 'https://codenvy.uservoice.com/'
-            },
-            {
-                'title': 'Create Support Tickets',
-                'link': 'mailto:support@codenvy.com'
-            }
-            ];
+        
     
         $scope.isActive = function (route) {
             //return route === '#' + $location.path(); //here # is added because of location html5 mode        
