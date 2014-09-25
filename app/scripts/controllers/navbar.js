@@ -20,7 +20,7 @@ angular.module('odeskApp')
     .controller('NavbarCtrl', function ($scope, $location, $http, $cookies, $window, Account, $q) {
 
         $scope.menu = [
-            /*{
+            /*//{
             //    'title': 'Admin',
             //    'link': '#/admin'
             //},*/
@@ -46,30 +46,7 @@ angular.module('odeskApp')
             }
         ];
 
-        var accountId = [];
-        var serviceIds = ["Saas", "OnPremises"];
-        var packages = ["Team", "Enterprise"];
-
-        return $q.all([
-          Account.getAccountId().then(function (response){
-            accountId.push(_.pluck(_.pluck(response, 'accountReference'), 'id')[0]);
-          })
-        ]).then(function () {
-          Account.getSubscription(accountId[0]).then(function (response){
-            var serviceId = _.pluck(response, 'serviceId')[0];
-            var packageName = _.pluck(_.pluck(response, 'properties'),'Package')[0];
-            if(_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
-              var organizationLink = {
-                'title': 'Organizations',
-                'link': '#/organizations'
-              };
-              $scope.menu.push(organizationLink);
-            }
-
-          });
-        });
-
-        $scope.helpMenu= [
+		$scope.helpMenu = [
             {
                 'title': 'Codenvy Help',
                 'link': 'http://docs.codenvy-next.com'
@@ -87,6 +64,18 @@ angular.module('odeskApp')
                 'link': 'mailto:support@codenvy.com'
             }
             ];
+			
+        var accountId = [];
+        var serviceIds = ["Saas", "OnPremises"];
+        var packages = ["Team", "Enterprise"];
+
+        $http({method: 'GET', url: '/api/profile'}).success(function (profile, status) {
+          if (profile.attributes.firstName && profile.attributes.lastName) {
+            $scope.fullUserName = profile.attributes.firstName + ' ' + profile.attributes.lastName;
+          } else {
+            $scope.fullUserName = profile.attributes.email;
+          }
+        });
     
         $scope.isActive = function (route) {
             //return route === '#' + $location.path(); //here # is added because of location html5 mode        
@@ -99,15 +88,7 @@ angular.module('odeskApp')
                 return false;
             }
         };
-        
-        $http({method: 'GET', url: '/api/profile'}).success(function (profile, status) {
-          if (profile.attributes.firstName && profile.attributes.lastName) {
-            $scope.fullUserName = profile.attributes.firstName + ' ' + profile.attributes.lastName;
-          } else {
-            $scope.fullUserName = profile.attributes.email;
-          }
-        });
-        
+                
         $scope.logout = function () {
             $http({
                 url: "/api/auth/logout",
@@ -117,4 +98,24 @@ angular.module('odeskApp')
                 $window.location.href = '/site/login';
             });
         };
+		
+		return $q.all([
+          Account.getAccountId().then(function (response){
+            accountId.push(_.pluck(_.pluck(response, 'accountReference'), 'id')[0]);
+          })
+        ]).then(function () {
+          Account.getSubscription(accountId[0]).then(function (response){
+            var serviceId = _.pluck(response, 'serviceId')[0];
+            var packageName = _.pluck(_.pluck(response, 'properties'),'Package')[0];
+            if(_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
+              var organizationLink = {
+                'title': 'Organization',
+                'link': '#/organizations'
+              };
+              $scope.menu.push(organizationLink);
+            }
+
+          });
+        });
+
     });
