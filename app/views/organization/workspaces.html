@@ -54,7 +54,8 @@
               <td style="text-align: right;">
                 <ul class="breadcrumb action-button boxnav">
                   <li class="active no-bdr mrg-top8"><a ng-href="#/organizations/workspace/{{workspace.id}}" class="new_btn">Edit</a></li>
-                  <li class="active no-bdr mrg-top8" ng-click="removeWorkspace(workspace.id)"><a class="new_btn">Remove</a></li>
+                  <li class="active no-bdr mrg-top8" ng-click="addWsProject(workspace)" data-toggle="modal" data-target="#removeWorkspaceConfirm"><a class="new_btn">Remove</a></li>
+                  <!--<li class="active no-bdr mrg-top8" ng-click="removeWorkspace(workspace.id)"><a class="new_btn">Remove</a></li>-->
                 </ul>
               </td>
             </tr>
@@ -179,3 +180,39 @@
   </div>
 </div>
 <!---- Add New Workspace Modal end--->
+
+<!---- Remove Workspace Modal Start--->
+<div class="modal-col">
+  <div class="modal fade" id="removeWorkspaceConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          Remove Workspace: <strong>{{selectedWsForRemove.name}}</strong>
+        </div>
+        <div class="modal-body">
+          Removing a workspace will delete all projects inside that workspace:
+
+          <ul ng-if="selectedWsForRemove.projectsName.length>0">
+            <li ng-repeat="project in selectedWsForRemove.projectsName" >
+              {{project}}
+            </li>
+          </ul>
+
+          <div ng-if="selectedWsForRemove.projectsName.length==0">
+            <strong>No Projects added</strong>
+          </div>
+
+          <br/>
+          If you are going to remove a workspace ensure no one is working on any of the projects listed above before proceeding.
+          <br/>
+          <strong>Removing a workspace can't be undone, are you sure you want to continue?</strong>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" ng-click="removeWorkspace(selectedWsForRemove.id)">Ok</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!---- End Workspace Modal Start--->

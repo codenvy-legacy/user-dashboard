@@ -48,11 +48,13 @@ angular.module('odeskApp')
                 //  Get workspace's projects and developers using workspace id
                 WorkspaceInfo.getDetail(workspace.id).then(function (response){
                   var projectsLength;
+                  var projectsName;
                   var membersLength;
 
                   return $q.all([
                     $http({method: 'GET', url: $.map(response.links,function(obj){if(obj.rel=="get projects") return obj.href})[0]})
                       .success(function (data) {
+                        projectsName = _.pluck(data,'name');
                         projectsLength = data.length;
                       }),
 
@@ -65,6 +67,7 @@ angular.module('odeskApp')
                         id: workspace.id,
                         name: workspace.name,
                         projects: projectsLength,
+                        projectsName: projectsName,
                         developers: membersLength
                       }
 
@@ -243,6 +246,7 @@ angular.module('odeskApp')
                     id: workspaceId,
                     name: workspaceName,
                     projects: 0,
+                    projectsName: [],
                     developers: (selectedMembers.length + 1)
                   }
                   $scope.workspaces.push(workspaceDetails);
@@ -265,6 +269,11 @@ angular.module('odeskApp')
             }
           }
 
+          // Add project lists while removing workspace
+          $scope.addWsProject = function(workspace){
+            $scope.selectedWsForRemove = workspace;
+          };
+
           // Remove workspace related to account
           $scope.removeWorkspace = function(workspaceId){
             var deferred = $q.defer();
@@ -275,6 +284,7 @@ angular.module('odeskApp')
                   var index = $scope.workspaces.indexOf(removeWS)
                   if (index != -1) {
                     $scope.workspaces.splice(index, 1);
+                    $('#removeWorkspaceConfirm').modal('toggle');
                   }
                 }
                 deferred.resolve(data);
@@ -391,8 +401,6 @@ angular.module('odeskApp')
 
           // For add members in organization Tab
           $scope.addMembers = function(members){
-
-            console.log(members)
             return $q.all([
               angular.forEach(members, function (member) {
                 var con = {
