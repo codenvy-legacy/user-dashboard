@@ -48,11 +48,13 @@ angular.module('odeskApp')
                 //  Get workspace's projects and developers using workspace id
                 WorkspaceInfo.getDetail(workspace.id).then(function (response){
                   var projectsLength;
+                  var projectsName;
                   var membersLength;
 
                   return $q.all([
                     $http({method: 'GET', url: $.map(response.links,function(obj){if(obj.rel=="get projects") return obj.href})[0]})
                       .success(function (data) {
+                        projectsName = _.pluck(data,'name');
                         projectsLength = data.length;
                       }),
 
@@ -65,6 +67,7 @@ angular.module('odeskApp')
                         id: workspace.id,
                         name: workspace.name,
                         projects: projectsLength,
+                        projectsName: projectsName,
                         developers: membersLength
                       }
 
@@ -158,6 +161,13 @@ angular.module('odeskApp')
             }
           };
 
+          $scope.removeMemberFromWsList = function(user){
+            var removedMember = _.find($scope.selectedWsMembers, function(member){ if(member.id == user.id) return member; });
+            var index = $scope.selectedWsMembers.indexOf(removedMember)
+            if (index != -1) {
+              $scope.selectedWsMembers.splice(index, 1);
+            }
+          };
           // For search
           $timeout(function () {
             $("[rel=tooltip]").tooltip({ placement: 'bottom' });
@@ -236,6 +246,7 @@ angular.module('odeskApp')
                     id: workspaceId,
                     name: workspaceName,
                     projects: 0,
+                    projectsName: [],
                     developers: (selectedMembers.length + 1)
                   }
                   $scope.workspaces.push(workspaceDetails);
@@ -258,6 +269,11 @@ angular.module('odeskApp')
             }
           }
 
+          // Add project lists while removing workspace
+          $scope.addWsProject = function(workspace){
+            $scope.selectedWsForRemove = workspace;
+          };
+
           // Remove workspace related to account
           $scope.removeWorkspace = function(workspaceId){
             var deferred = $q.defer();
@@ -268,6 +284,7 @@ angular.module('odeskApp')
                   var index = $scope.workspaces.indexOf(removeWS)
                   if (index != -1) {
                     $scope.workspaces.splice(index, 1);
+                    $('#removeWorkspaceConfirm').modal('toggle');
                   }
                 }
                 deferred.resolve(data);
@@ -386,7 +403,19 @@ angular.module('odeskApp')
           $scope.addMembers = function(members){
             return $q.all([
               angular.forEach(members, function (member) {
-                $http({method: 'POST', url: '/api/account/'+$scope.accountId[0]+'/members', params: {userid: member.id}})
+                var con = {
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                };
+
+                var data = {
+                  "userId": member.id,
+                  "roles": [
+                    "account/"+member.role
+                  ]
+                };
+                $http.post('/api/account/'+$scope.accountId[0]+'/members', data, con)
                   .success(function (data) {
                     $scope.members.push(member);
                   });

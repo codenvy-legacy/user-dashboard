@@ -12,8 +12,6 @@
           <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-down garrow"></i> Alphabetically </a>
           <ul class="dropdown-menu">
             <li><a href="" ng-click="filter.name"> Alphabetically </a></li>
-            <li><a href=""> Last Update </a></li>
-            <li><a href=""> Creation Date </a></li>
           </ul>
         </li>
         <div class="clearfix visible-xs"></div>
@@ -40,11 +38,8 @@
             <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
               <th class=""></th>
               <th class="text-center"><h4>NAME</h4></th>
-              <th class="text-center"><h4>LAST UPDATE</h4></th>
-              <th class="text-center"><h4>CREATION DATE</h4></th>
               <th class="text-center"><h4>DEVELOPERS</h4></th>
               <th class="text-center"><h4>PROJECTS</h4></th>
-              <th class="text-center"><h4>FACTORIES</h4></th>
               <th></th>
               <th style="text-align: right; padding-right: 81px;"><h4>ACTIONS</h4></th>
             </tr>
@@ -53,23 +48,21 @@
             <tr ng-repeat="workspace in workspaces| filter: filter | orderBy:'name'" class="v-center">
               <td style="width: 1%;"><!--<i class="glyphicon glyphicon-lock"></i>--></td>
               <td><a ng-href="#/organizations/workspace/{{workspace.id}}" class="ws-name">{{workspace.name}}</a></td>
-              <td class="text-center"></td>
-              <td class="text-center"></td>
               <td class="text-center">{{workspace.developers}}</td>
               <td class="text-center">{{workspace.projects}}</td>
-              <td class="text-center"></td>
               <td></td>
               <td style="text-align: right;">
                 <ul class="breadcrumb action-button boxnav">
-                  <li class="active no-bdr mrg-top8"><a href="#" class="new_btn">Edit</a></li>
-                  <li class="active no-bdr mrg-top8" ng-click="removeWorkspace(workspace.id)"><a class="new_btn">Remove</a></li>
+                  <li class="active no-bdr mrg-top8"><a ng-href="#/organizations/workspace/{{workspace.id}}" class="new_btn">Edit</a></li>
+                  <li class="active no-bdr mrg-top8" ng-click="addWsProject(workspace)" data-toggle="modal" data-target="#removeWorkspaceConfirm"><a class="new_btn">Remove</a></li>
+                  <!--<li class="active no-bdr mrg-top8" ng-click="removeWorkspace(workspace.id)"><a class="new_btn">Remove</a></li>-->
                 </ul>
               </td>
             </tr>
 
         </table>
       </div>
-      <div class="text-center">
+      <!--<div class="text-center">
         <ul class="pagination pagination-sm">
           <li><a href="#">«</a></li>
           <li><a href="#">1</a></li>
@@ -79,7 +72,7 @@
           <li><a href="#">5</a></li>
           <li><a href="#">»</a></li>
         </ul>
-      </div>
+      </div>-->
     </div>
   </div>
 </div>
@@ -139,7 +132,7 @@
                   </div>
                 </div>
                 <div class="col-lg-1 col-sm-1 col-md-1 col-xs-12">
-                  <a ng-click="removeMemberToList(member)"><i class="glyphicon glyphicon-trash"></i></a>
+                  <a ng-click="removeMemberFromWsList(member)"><i class="glyphicon glyphicon-trash"></i></a>
                 </div>
               </div>
             </div>
@@ -187,3 +180,39 @@
   </div>
 </div>
 <!---- Add New Workspace Modal end--->
+
+<!---- Remove Workspace Modal Start--->
+<div class="modal-col">
+  <div class="modal fade" id="removeWorkspaceConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          Remove Workspace: <strong>{{selectedWsForRemove.name}}</strong>
+        </div>
+        <div class="modal-body">
+          Removing a workspace will delete all projects inside that workspace:
+
+          <ul ng-if="selectedWsForRemove.projectsName.length>0">
+            <li ng-repeat="project in selectedWsForRemove.projectsName" >
+              {{project}}
+            </li>
+          </ul>
+
+          <div ng-if="selectedWsForRemove.projectsName.length==0">
+            <strong>No Projects added</strong>
+          </div>
+
+          <br/>
+          If you are going to remove a workspace ensure no one is working on any of the projects listed above before proceeding.
+          <br/>
+          <strong>Removing a workspace can't be undone, are you sure you want to continue?</strong>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" ng-click="removeWorkspace(selectedWsForRemove.id)">Ok</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!---- End Workspace Modal Start--->

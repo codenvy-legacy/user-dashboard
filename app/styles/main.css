@@ -1190,6 +1190,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .add-admin-text{
   position: relative;
   top: -2px;
+  font-size: 13px;
 }
 .codenvybutton {
   padding-top: 0px;
@@ -1256,6 +1257,10 @@ label {margin-right:0px;}
 
 .glyphicon-trash:hover{
   cursor: pointer;
+}
+
+.add-size{
+  font-size: 16px !important; color: #DEDEDE; margin-top: 2px;
 }
 /*media*/
 @media (min-width: 320px) and (max-width: 480px) {
