@@ -1030,7 +1030,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   margin-left: 10px;
 }
 
-.breadcrumb li i { margin-right: 8px; margin-bottom: 5px; font-size: 20px; vertical-align: middle; color: #ccc;}
+.breadcrumb li i { margin-right: 8px; margin-bottom: 5px; font-size: 20px; vertical-align: middle;}
 .breadcrumb li a.new_btn  { padding:6px 10px !important; color:#363636; text-decoration: none;}
 
 .breadcrumb .badge {
@@ -1205,7 +1205,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 
 .box-example { margin-top:50px;}
 
-.codenvy-rounded-logo {position: absolute; z-index: 999; max-width: 70px;  left: 9%;top: 3%; }
+.codenvy-rounded-logo { max-width: 70px;  margin-left: auto; margin-right: auto; margin-top:-42px;}
 .arrow-img {  left: -28px; position: absolute; top: 4px; z-index: 999;}
 
 .runhelpblock {
