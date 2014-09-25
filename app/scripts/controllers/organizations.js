@@ -391,9 +391,23 @@ angular.module('odeskApp')
 
           // For add members in organization Tab
           $scope.addMembers = function(members){
+
+            console.log(members)
             return $q.all([
               angular.forEach(members, function (member) {
-                $http({method: 'POST', url: '/api/account/'+$scope.accountId[0]+'/members', params: {userid: member.id}})
+                var con = {
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                };
+
+                var data = {
+                  "userId": member.id,
+                  "roles": [
+                    "account/"+member.role
+                  ]
+                };
+                $http.post('/api/account/'+$scope.accountId[0]+'/members', data, con)
                   .success(function (data) {
                     $scope.members.push(member);
                   });
