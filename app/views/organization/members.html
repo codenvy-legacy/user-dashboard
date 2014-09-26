@@ -55,7 +55,7 @@
             <td class="text-center">{{member.role}}</td>
             <td style="text-align: right;">
               <ul class="breadcrumb action-button boxnav">
-                <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#updateRoleModal" ng-click="updateMember(member.email)">Edit</a></li>
+                <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#updateRoleModal" ng-click="updateMember(member)">Edit</a></li>
                 <li class="active no-bdr mrg-top8" ng-click="removeMember(member.id)"><a class="new_btn">Remove</a></li>
               </ul>
             </td>
@@ -183,12 +183,13 @@
         </div>
         <div class="modal-body">
           <div class="update-member">
-            <div class="update-ttl"><strong>Select the appropriate role for</strong> {{memberEmail}}:</div>
+            <div class="update-ttl"><strong>Select the appropriate role for</strong> {{editMember.email}}:</div>
             <div class="row">
               <div class="col-lg-11 col-lg-offset-1 col-sm-12 col-md-12 col-xs-12">
                 <div class="row mrg-btm10">
                   <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="margin-top:3px;">
-                    <input type="radio" name="member_role_update" id="member_role_update1" class="css-checkbox" checked="checked"/>
+                    <input type="radio" name="member_role_update" id="member_role_update1" class="css-checkbox" checked="checked" ng-if="editMember.role=='owner'"/>
+                    <input type="radio" name="member_role_update" id="member_role_update1" class="css-checkbox" ng-if="editMember.role!='owner'"/>
                     <label for="member_role_update1" class="css-label radGroup1">&nbsp;</label>
                   </div>
                   <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">
@@ -200,7 +201,8 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="margin-top:3px;">
-                    <input type="radio" name="member_role_update" id="member_role_update2" class="css-checkbox"/>
+                    <input type="radio" name="member_role_update" id="member_role_update2" class="css-checkbox" checked="checked" ng-if="editMember.role=='member'"/>
+                    <input type="radio" name="member_role_update" id="member_role_update2" class="css-checkbox" ng-if="editMember.role!='member'"/>
                     <label for="member_role_update2" class="css-label radGroup1">&nbsp;</label>
                   </div>
                   <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">

@@ -345,8 +345,8 @@ angular.module('odeskApp')
             })
             .error(function (err) {  });
 
-          $scope.updateMember = function(memberEmail){
-            $scope.memberEmail = memberEmail;
+          $scope.updateMember = function(member){
+            $scope.editMember = member;
           };
 
           // For add user in users list in add members popup modal in organization Tab
