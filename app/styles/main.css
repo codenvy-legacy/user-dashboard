@@ -1224,7 +1224,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .top0{top: 0;}
 
 .all-ws{
-  text-decoration: underline;
+  color: #177eb7 !important;
 }
 
 .all-ws:hover, .all-ws:focus{
