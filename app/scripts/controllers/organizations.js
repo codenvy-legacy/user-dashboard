@@ -50,6 +50,7 @@ angular.module('odeskApp')
                   var projectsLength;
                   var projectsName;
                   var membersLength;
+                  var allocatedRam;
 
                   return $q.all([
                     $http({method: 'GET', url: $.map(response.links,function(obj){if(obj.rel=="get projects") return obj.href})[0]})
@@ -61,11 +62,16 @@ angular.module('odeskApp')
                     $http({method: 'GET', url: $.map(response.links,function(obj){if(obj.rel=="get members") return obj.href})[0]})
                       .success(function (data) {
                         membersLength = data.length;
+                      }),
+                    $http({method: 'GET', url:"/api/runner/"+ workspace.id +"/resources" }).
+                      success(function (data) {
+                        allocatedRam = data.totalMemory;
                       })
                   ]).then(function (results) {
                       var workspaceDetails = {
                         id: workspace.id,
                         name: workspace.name,
+                        allocatedRam:allocatedRam,
                         projects: projectsLength,
                         projectsName: projectsName,
                         developers: membersLength
@@ -90,6 +96,7 @@ angular.module('odeskApp')
             $("#userAlreadyAdded").hide();
             $("#emptyEmails").hide();
             $("#addMemberErr").hide();
+            $("#wsAlreadyExist").hide();
 
             $scope.userNotFoundList = [];
             $scope.userNotMemberList = [];
@@ -194,6 +201,7 @@ angular.module('odeskApp')
             $("#userNotMemberList").hide();
             $("#userAlreadyAdded").hide();
             $("#emptyEmails").hide();
+            $("#wsAlreadyExist").hide();
             $("#selectedMembers").parent().removeClass('has-error');
 
             var wsName = $("#ws_name").val();
@@ -212,49 +220,62 @@ angular.module('odeskApp')
                   "name": $("#ws_name").val() // needs to be array
                 };
 
-                var workspaceId, workspaceName;
+                var workspaceId, workspaceName, allocatedRam;
 
                 return $q.all([
                   $http.post('/api/workspace', data, con)
-                      .success(function (data) {
-                        workspaceId = data.id;
-                        workspaceName = data.name;
-                      })
+                    .success(function (data) {
+                      workspaceId = data.id;
+                      workspaceName = data.name;
+                    }).error(function (err){
+                      $("#wsAlreadyExist").show();
+                      $("#wsAlreadyExist").html(err['message']);
+                    })
+
                 ]).then(function (results) {
-                  angular.forEach(selectedMembers, function (member) {
-                    var roles = [
+                  return $q.all([
+                    $http({method: 'GET', url:"/api/runner/"+ workspaceId +"/resources" }).
+                      success(function (data) {
+                        allocatedRam = data.totalMemory;
+                      }),
+                      angular.forEach(selectedMembers, function (member) {
+                        var roles = [
                           "workspace/" + member.role
-                    ];
+                        ];
 
-                    var memberData = {
-                      "userId": member.id,
-                      "roles": roles // needs to be array
-                    };
+                        var memberData = {
+                          "userId": member.id,
+                          "roles": roles // needs to be array
+                        };
 
-                    $http.post('/api/workspace/' + workspaceId + "/members",
-                        memberData,
-                        con)
-                        .success(function (data) {
+                        $http.post('/api/workspace/' + workspaceId + "/members",
+                          memberData,
+                          con)
+                          .success(function (data) {
 
-                        })
-                        .error(function (err, status) {
-                          $("#addMemberErr").show();
-                          $("#addMemberErr").html(err["message"]);
-                        });
-                  })
-                  var workspaceDetails = {
-                    id: workspaceId,
-                    name: workspaceName,
-                    projects: 0,
-                    projectsName: [],
-                    developers: (selectedMembers.length + 1)
-                  }
-                  $scope.workspaces.push(workspaceDetails);
-                  $('#addNewWorkspace').modal('toggle');
-                  $("#ws_name").val("")
-                  $scope.selectedMembers = [];
-                  $("#userNotFoundError").hide();
-                  $("#userAlreadyAdded").hide();
+                          })
+                          .error(function (err, status) {
+                            $("#addMemberErr").show();
+                            $("#addMemberErr").html(err["message"]);
+                          });
+                      })
+                    ]).then(function (result) {
+                      var workspaceDetails = {
+                        id: workspaceId,
+                        name: workspaceName,
+                        allocatedRam: allocatedRam,
+                        projects: 0,
+                        projectsName: [],
+                        developers: (selectedMembers.length + 1)
+                      }
+                      $scope.workspaces.push(workspaceDetails);
+                      $('#addNewWorkspace').modal('toggle');
+                      $("#ws_name").val("")
+                      $scope.selectedMembers = [];
+                      $("#userNotFoundError").hide();
+                      $("#userAlreadyAdded").hide();
+                      $("#wsAlreadyExist").hide();
+                    })
                 });
               }
               else{

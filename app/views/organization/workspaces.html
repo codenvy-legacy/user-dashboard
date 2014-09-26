@@ -38,6 +38,7 @@
             <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
               <th class=""></th>
               <th class="text-center"><h4>NAME</h4></th>
+              <th class="text-center"><h4>ALLOCATED RAM</h4></th>
               <th class="text-center"><h4>DEVELOPERS</h4></th>
               <th class="text-center"><h4>PROJECTS</h4></th>
               <th></th>
@@ -48,6 +49,7 @@
             <tr ng-repeat="workspace in workspaces| filter: filter | orderBy:'name'" class="v-center">
               <td style="width: 1%;"><!--<i class="glyphicon glyphicon-lock"></i>--></td>
               <td><a ng-href="#/organizations/workspace/{{workspace.id}}" class="ws-name">{{workspace.name}}</a></td>
+              <td class="text-center">{{workspace.allocatedRam}}</td>
               <td class="text-center">{{workspace.developers}}</td>
               <td class="text-center">{{workspace.projects}}</td>
               <td></td>
@@ -168,6 +170,7 @@
             <span id="userAlreadyAdded" style="display: none" class="error-text"></br>User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </span>
             <span id="emptyEmails" style="display: none" class="error-text"><strong>Type email addresses separated by commas</strong></span>
             <span id="emptyWs" style="display: none" class="error-text"></span>
+            <span id="wsAlreadyExist" style="display: none" class="error-text"></span>
 
           </div>
         </div>
