@@ -1258,6 +1258,11 @@ label {margin-right:0px;}
 .add-size{
   font-size: 17px !important; color: #DEDEDE; margin-top: 2px;
 }
+
+.lft-radio{
+  float: right;
+  margin-top: 5px;
+}
 /*media*/
 @media (min-width: 320px) and (max-width: 480px) {
   .boxnav > li{padding: 10px;}

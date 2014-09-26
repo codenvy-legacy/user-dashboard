@@ -150,14 +150,14 @@
                 </form>
               </div>
               <div class="col-lg-5 col-sm-5 col-md-5 col-xs-12">
-                <div class="row mrg-top30">
+                <div class="row mrg-top30" style="line-height: 25px;">
                   <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 pad-0">Administrator </div>
-                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12">
-                    <input type="radio" name="ws_member_role" id="ws_admin_radio" class="css-checkbox" value="workspace/admin"/>
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top: 2px;">
+                    <input type="radio" name="ws_member_role" id="ws_admin_radio" class="css-checkbox lft-radio"  value="workspace/admin"/>
                     <label for="ws_admin_radio" class="css-label radGroup1">&nbsp;</label>
                   </div>
                   <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">Developer </div>
-                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12">
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top: 2px;">
                     <input type="radio" name="ws_member_role" id="ws_dev_radio" class="css-checkbox" value="workspace/developer" checked="checked"/>
                     <label for="ws_dev_radio" class="css-label radGroup1">&nbsp;</label>
                   </div>
@@ -167,12 +167,12 @@
                 </div>
               </div>
             </div>
-            <span id="userNotFoundError" style="display: none" class="org-errors"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of this workspace. </span>
-            <span id="userNotMemberList" style="display: none" class="org-errors"><strong>'{{userNotMemberList.join(", ")}}'</strong> must be Accont Member(s) before being added as member(s) of this workspace. </span>
-            <span id="userAlreadyAdded" style="display: none" class="org-errors">User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </span>
-            <span id="emptyEmails" style="display: none" class="org-errors"><strong>Type email addresses separated by commas</strong></span>
-            <span id="emptyWs" style="display: none" class="org-errors"></span>
-            <span id="wsAlreadyExist" style="display: none" class="org-errors"></span>
+            <div id="userNotFoundError" style="display: none" class="org-errors"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of this workspace. </div>
+            <div id="userNotMemberList" style="display: none" class="org-errors"><strong>'{{userNotMemberList.join(", ")}}'</strong> must be Account Member(s) before being added as member(s) of this workspace. </div>
+            <div id="userAlreadyAdded" style="display: none" class="org-errors">User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </div>
+            <div id="emptyEmails" style="display: none" class="org-errors"><strong>Type email addresses separated by commas</strong></div>
+            <div id="emptyWs" style="display: none" class="org-errors"></div>
+            <div id="wsAlreadyExist" style="display: none" class="org-errors"></div>
 
           </div>
         </div>
