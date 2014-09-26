@@ -930,7 +930,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .btn-bdr-lf { border-bottom: none; border-left: none;}
 .btn-bdr-rt { border-bottom: none; border-right: none; border-left: none;}
 
-#developersModal #showInviteError{
+#developersModal #showInviteError, .org-errors{
   background-color: #f7d6d5;
   color: #B35B59;
   font-weight: bold;
@@ -1250,10 +1250,6 @@ label.css-label {background:#cdcdcd;
 }
 label {margin-right:0px;}
 /* Set radio button css */
-
-.error-text{
-  color: #ff0000;
-}
 
 .glyphicon-trash:hover{
   cursor: pointer;
