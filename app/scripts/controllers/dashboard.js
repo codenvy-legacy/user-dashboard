@@ -19,6 +19,7 @@
 angular.module('odeskApp')
     .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, Profile, $http, $q, $window, $location) {
       var old_description = '';
+	  var old_projectname = '';
       $scope.box = 1;
       $scope.search = 0;
       $scope.projects = [];
@@ -154,8 +155,19 @@ angular.module('odeskApp')
         $scope.activeProject = project; // used in setRead setWrite
         $scope.selected = project;
         old_description = project.description;
+		old_projectname = project.name;
       };
       $scope.updateProject = function () {
+	    if($scope.selected.name && $scope.selected.name.length > 0)
+		{
+			var res = /[^0-9a-zA-Z\-._]/.test($scope.selected.name) || $scope.selected.name[0] == '-' || $scope.selected.name[0] == '.' || $scope.selected.name[0] == '_';
+			if(res)
+			{
+				alert('Project name must contain only Latin letters, digits or these following special characters -._');
+				$scope.selected.name = old_projectname;
+				return;
+			}
+		}
         return $q.all([
           $http({ method: 'POST', url: "/api/project/"+ $scope.selected.workspaceId+"/rename"+$scope.selected.path +"?name="+$scope.selected.name}).
               success(function (data, status, headers, config) {
@@ -200,6 +212,7 @@ angular.module('odeskApp')
 
       $scope.cancelProject = function () {
         $scope.selected.description = old_description;
+		$scope.selected.name = old_projectname;
       };
 
       // used to save permissions to server
@@ -326,7 +339,7 @@ angular.module('odeskApp')
 		  if($scope.workspaces.length==0) {
 			  var tempWorkspaces = _.filter(resp, function (workspace) { return workspace.workspaceReference.temporary; });
 			  if(tempWorkspaces.length > 0)
-					$location.path("/login");
+					$window.location.href = '/site/login';
 					
 			  $scope.isProjectDataFetched = true;
 		  }
