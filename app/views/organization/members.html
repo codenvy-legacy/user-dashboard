@@ -29,7 +29,7 @@
         </li>
         <li class="ws-button pad0 pull-right mrg-rht5">
           <div>
-            <a href="" class="new_btn" data-toggle="modal" data-target="#addNewMember"><i class="glyphicon glyphicon-plus"></i>New Member</a>
+            <a href="" class="new_btn" data-toggle="modal" data-target="#addNewMember"><i class="glyphicon glyphicon-plus add-size"></i>New Member</a>
           </div>
         </li>
       </ul>
@@ -55,7 +55,7 @@
             <td class="text-center">{{member.role}}</td>
             <td style="text-align: right;">
               <ul class="breadcrumb action-button boxnav">
-                <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#updateRoleModal" ng-click="updateMember(member.email)">Edit</a></li>
+                <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#updateRoleModal" ng-click="updateMember(member)">Edit</a></li>
                 <li class="active no-bdr mrg-top8" ng-click="removeMember(member.id)"><a class="new_btn">Remove</a></li>
               </ul>
             </td>
@@ -137,14 +137,14 @@
                 </form>
               </div>
               <div class="col-lg-5 col-sm-5 col-md-5 col-xs-12">
-                <div class="row mrg-top30">
+                <div class="row mrg-top30" style="line-height: 25px;">
                   <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">Owner </div>
-                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12">
-                    <input type="radio" name="member_role" id="owner_radio" class="css-checkbox" value="account/owner"/>
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top: 2px;">
+                    <input type="radio" name="member_role" id="owner_radio" class="css-checkbox lft-radio" value="account/owner"/>
                     <label for="owner_radio" class="css-label radGroup1">&nbsp;</label>
                   </div>
                   <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">Member </div>
-                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12">
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top: 2px;">
                     <input type="radio" name="member_role" id="member_radio" class="css-checkbox" value="account/member" checked="checked"/>
                     <label for="member_radio" class="css-label radGroup1">&nbsp;</label>
                   </div>
@@ -154,9 +154,9 @@
                 </div>
               </div>
             </div>
-            <span id="userNotFoundError" style="display: none" class="error-text"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of your organization. </span>
-            <span id="userAlreadyAdded" style="display: none" class="error-text"></br>User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </span>
-            <span id="emptyEmails" style="display: none" class="error-text"><strong>Type email addresses separated by commas</strong></span>
+            <div id="userNotFoundError" style="display: none" class="org-errors"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of your organization. </div>
+            <div id="userAlreadyAdded" style="display: none" class="org-errors">User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </div>
+            <div id="emptyEmails" style="display: none" class="org-errors"><strong>Type email addresses separated by commas</strong></div>
           </div>
         </div>
         <div class="modal-footer">
@@ -183,12 +183,13 @@
         </div>
         <div class="modal-body">
           <div class="update-member">
-            <div class="update-ttl"><strong>Select the appropriate role for</strong> {{memberEmail}}:</div>
+            <div class="update-ttl"><strong>Select the appropriate role for</strong> {{editMember.email}}:</div>
             <div class="row">
               <div class="col-lg-11 col-lg-offset-1 col-sm-12 col-md-12 col-xs-12">
                 <div class="row mrg-btm10">
                   <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="margin-top:3px;">
-                    <input type="radio" name="member_role_update" id="member_role_update1" class="css-checkbox" checked="checked"/>
+                    <input type="radio" name="member_role_update" id="member_role_update1" class="css-checkbox" checked="checked" ng-if="editMember.role=='owner'"/>
+                    <input type="radio" name="member_role_update" id="member_role_update1" class="css-checkbox" ng-if="editMember.role!='owner'"/>
                     <label for="member_role_update1" class="css-label radGroup1">&nbsp;</label>
                   </div>
                   <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">
@@ -200,7 +201,8 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="margin-top:3px;">
-                    <input type="radio" name="member_role_update" id="member_role_update2" class="css-checkbox"/>
+                    <input type="radio" name="member_role_update" id="member_role_update2" class="css-checkbox" checked="checked" ng-if="editMember.role=='member'"/>
+                    <input type="radio" name="member_role_update" id="member_role_update2" class="css-checkbox" ng-if="editMember.role!='member'"/>
                     <label for="member_role_update2" class="css-label radGroup1">&nbsp;</label>
                   </div>
                   <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">

@@ -26,7 +26,9 @@
         </li>
         <li class="ws-button pad0 pull-right mrg-rht5">
           <div>
-            <a href="" class="new_btn" data-toggle="modal" data-target="#addNewWorkspace" ><i class="glyphicon glyphicon-plus"></i>New Workspace</a>
+            <a href="" class="new_btn" data-toggle="modal" data-target="#addNewWorkspace" >
+              <i class="glyphicon glyphicon-plus add-size"></i>New Workspace
+            </a>
           </div>
         </li>
 
@@ -38,6 +40,7 @@
             <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
               <th class=""></th>
               <th class="text-center"><h4>NAME</h4></th>
+              <th class="text-center"><h4>ALLOCATED RAM</h4></th>
               <th class="text-center"><h4>DEVELOPERS</h4></th>
               <th class="text-center"><h4>PROJECTS</h4></th>
               <th></th>
@@ -48,6 +51,7 @@
             <tr ng-repeat="workspace in workspaces| filter: filter | orderBy:'name'" class="v-center">
               <td style="width: 1%;"><!--<i class="glyphicon glyphicon-lock"></i>--></td>
               <td><a ng-href="#/organizations/workspace/{{workspace.id}}" class="ws-name">{{workspace.name}}</a></td>
+              <td class="text-center">{{workspace.allocatedRam}}</td>
               <td class="text-center">{{workspace.developers}}</td>
               <td class="text-center">{{workspace.projects}}</td>
               <td></td>
@@ -146,14 +150,14 @@
                 </form>
               </div>
               <div class="col-lg-5 col-sm-5 col-md-5 col-xs-12">
-                <div class="row mrg-top30">
+                <div class="row mrg-top30" style="line-height: 25px;">
                   <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 pad-0">Administrator </div>
-                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12">
-                    <input type="radio" name="ws_member_role" id="ws_admin_radio" class="css-checkbox" value="workspace/admin"/>
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top: 2px;">
+                    <input type="radio" name="ws_member_role" id="ws_admin_radio" class="css-checkbox lft-radio"  value="workspace/admin"/>
                     <label for="ws_admin_radio" class="css-label radGroup1">&nbsp;</label>
                   </div>
                   <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">Developer </div>
-                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12">
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top: 2px;">
                     <input type="radio" name="ws_member_role" id="ws_dev_radio" class="css-checkbox" value="workspace/developer" checked="checked"/>
                     <label for="ws_dev_radio" class="css-label radGroup1">&nbsp;</label>
                   </div>
@@ -163,11 +167,12 @@
                 </div>
               </div>
             </div>
-            <span id="userNotFoundError" style="display: none" class="error-text"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of this workspace. </span>
-            <span id="userNotMemberList" style="display: none" class="error-text"><strong>'{{userNotMemberList.join(", ")}}'</strong> must be Accont Member(s) before being added as member(s) of this workspace. </span>
-            <span id="userAlreadyAdded" style="display: none" class="error-text"></br>User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </span>
-            <span id="emptyEmails" style="display: none" class="error-text"><strong>Type email addresses separated by commas</strong></span>
-            <span id="emptyWs" style="display: none" class="error-text"></span>
+            <div id="userNotFoundError" style="display: none" class="org-errors"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of this workspace. </div>
+            <div id="userNotMemberList" style="display: none" class="org-errors"><strong>'{{userNotMemberList.join(", ")}}'</strong> must be Account Member(s) before being added as member(s) of this workspace. </div>
+            <div id="userAlreadyAdded" style="display: none" class="org-errors">User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </div>
+            <div id="emptyEmails" style="display: none" class="org-errors"><strong>Type email addresses separated by commas</strong></div>
+            <div id="emptyWs" style="display: none" class="org-errors"></div>
+            <div id="wsAlreadyExist" style="display: none" class="org-errors"></div>
 
           </div>
         </div>

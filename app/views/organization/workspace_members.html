@@ -1,5 +1,5 @@
 <ul class="breadcrumb boxnav">
-  <li><a href="#/organizations" class="all-ws"> All Workspaces </a> >  {{workspace.name}}</li>
+  <li><a href="#/organizations" class="all-ws"> All Workspaces </a> > &nbsp; {{workspace.name}}</li>
   <li><a href="#/organizations/workspace/{{workspace.id}}"> INFORMATION </a></li>
   <li class="active"><a href="#/organizations/workspace/{{workspace.id}}/members"> MEMBERS<span class="badge">{{workspace.members.length}}</span></a></li>
   <!--<li><a href="#"> GROUPS </a></li>-->
@@ -31,7 +31,7 @@
       </li>
       <li class="ws-button pad0 pull-right mrg-rht5">
         <div>
-          <a href="" class="new_btn" data-toggle="modal" data-target="#addWorkspaceNewMember"><i class="glyphicon glyphicon-plus"></i>Add Member</a>
+          <a href="" class="new_btn" data-toggle="modal" data-target="#addWorkspaceNewMember"><i class="glyphicon glyphicon-plus add-size"></i>Add Member</a>
         </div>
       </li>
     </ul>
@@ -57,7 +57,7 @@
           <td class="text-center">{{member.role}}</td>
           <td style="text-align: right;">
             <ul class="breadcrumb action-button boxnav">
-              <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#updateMemberRoleModal">Edit</a></li>
+              <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#updateMemberRoleModal" ng-click="updateWsMember(member)">Edit</a></li>
               <li class="active no-bdr mrg-top8" ng-click="removeMemberFromWs(member.id)"><a class="new_btn">Remove</a></li>
             </ul>
           </td>
@@ -139,14 +139,14 @@
                 </form>
               </div>
               <div class="col-lg-5 col-sm-5 col-md-5 col-xs-12">
-                <div class="row mrg-top30">
+                <div class="row mrg-top30" style="line-height: 25px;">
                   <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 pad-0">Administrator </div>
-                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12">
-                    <input type="radio" name="ws_member_role" id="ws_admin_radio" class="css-checkbox" value="workspace/admin"/>
+                  <div class="col-lg-1 col-sm-2 col-md-2 col-xs-12" style="margin-top: 2px;">
+                    <input type="radio" name="ws_member_role" id="ws_admin_radio" class="css-checkbox lft-radio" value="workspace/admin" />
                     <label for="ws_admin_radio" class="css-label radGroup1">&nbsp;</label>
                   </div>
                   <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">Developer </div>
-                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12">
+                  <div class="col-lg-1 col-sm-2 col-md-2 col-xs-12" style="margin-top: 2px;">
                     <input type="radio" name="ws_member_role" id="ws_dev_radio" class="css-checkbox" value="workspace/developer" checked="checked"/>
                     <label for="ws_dev_radio" class="css-label radGroup1">&nbsp;</label>
                   </div>
@@ -157,11 +157,11 @@
               </div>
             </div>
 
-            <span id="userNotFoundError" style="display: none" class="error-text"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of this workspace. </span>
-            <span id="userNotMemberList" style="display: none" class="error-text"><strong>'{{userNotMemberList.join(", ")}}'</strong> must be Accont Member(s) before being added as member(s) of this workspace. </span>
-            <span id="userAlreadyAdded" style="display: none" class="error-text"></br>User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </span>
-            <span id="emptyEmails" style="display: none" class="error-text"><strong>Type email addresses separated by commas</strong></span>
-            <span id="addMemberErr" style="display: none" class="error-text"></span>
+            <div id="userNotFoundError" style="display: none" class="org-errors"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of this workspace. </div>
+            <div id="userNotMemberList" style="display: none" class="org-errors"><strong>'{{userNotMemberList.join(", ")}}'</strong> must be Account Member(s) before being added as member(s) of this workspace. </div>
+            <div id="userAlreadyAdded" style="display: none" class="org-errors">User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </div>
+            <div id="emptyEmails" style="display: none" class="org-errors"><strong>Type email addresses separated by commas</strong></div>
+            <div id="addMemberErr" style="display: none" class="org-errors"></div>
           </div>
         </div>
         <div class="modal-footer">
@@ -188,13 +188,14 @@
         </div>
         <div class="modal-body">
           <div class="update-member">
-            <div class="update-ttl">Select the appropriate role for slemeur@codenvy.com:</div>
+            <div class="update-ttl"><strong>Select the appropriate role for</strong> {{editWsMember.email}}:</div>
             <div class="row">
               <div class="col-lg-11 col-lg-offset-1 col-sm-12 col-md-12 col-xs-12">
                 <div class="row mrg-btm10">
                   <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="margin-top:3px;">
-                    <input type="radio" name="ws_member_role_update" id="ws_member_role_update1" class="css-checkbox" checked="checked"/>
-                    <label for="ws_member_role_update1" class="css-label radGroup1">&nbsp;</label>
+                    <input type="radio" name="member_role_update" id="member_role_update1" class="css-checkbox" checked="checked" ng-if="editWsMember.role=='admin'"/>
+                    <input type="radio" name="member_role_update" id="member_role_update1" class="css-checkbox" ng-if="editWsMember.role!='admin'"/>
+                    <label for="member_role_update1" class="css-label radGroup1">&nbsp;</label>
                   </div>
                   <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">
                     <div class="text-col">
@@ -205,8 +206,9 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="margin-top:3px;">
-                    <input type="radio" name="ws_member_role_update" id="ws_member_role_update2" class="css-checkbox"/>
-                    <label for="ws_member_role_update2" class="css-label radGroup1">&nbsp;</label>
+                    <input type="radio" name="member_role_update" id="member_role_update2" class="css-checkbox" checked="checked" ng-if="editWsMember.role=='developer'"/>
+                    <input type="radio" name="member_role_update" id="member_role_update2" class="css-checkbox" ng-if="editWsMember.role!='developer'"/>
+                    <label for="member_role_update2" class="css-label radGroup1">&nbsp;</label>
                   </div>
                   <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">
                     <div class="text-col">

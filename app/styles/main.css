@@ -930,7 +930,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .btn-bdr-lf { border-bottom: none; border-left: none;}
 .btn-bdr-rt { border-bottom: none; border-right: none; border-left: none;}
 
-#developersModal #showInviteError{
+#developersModal #showInviteError, .org-errors{
   background-color: #f7d6d5;
   color: #B35B59;
   font-weight: bold;
@@ -1224,7 +1224,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .top0{top: 0;}
 
 .all-ws{
-  text-decoration: underline;
+  color: #177eb7 !important;
 }
 
 .all-ws:hover, .all-ws:focus{
@@ -1251,16 +1251,17 @@ label.css-label {background:#cdcdcd;
 label {margin-right:0px;}
 /* Set radio button css */
 
-.error-text{
-  color: #ff0000;
-}
-
 .glyphicon-trash:hover{
   cursor: pointer;
 }
 
 .add-size{
-  font-size: 16px !important; color: #DEDEDE; margin-top: 2px;
+  font-size: 17px !important; color: #DEDEDE; margin-top: 2px;
+}
+
+.lft-radio{
+  float: right;
+  margin-top: 5px;
 }
 /*media*/
 @media (min-width: 320px) and (max-width: 480px) {

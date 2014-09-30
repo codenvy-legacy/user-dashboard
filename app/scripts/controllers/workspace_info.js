@@ -253,6 +253,10 @@ angular.module('odeskApp')
                 });
             }
 
+            $scope.updateWsMember = function(member){
+              $scope.editWsMember = member;
+            };
+
             // For search
             $timeout(function () {
               $("[rel=tooltip]").tooltip({ placement: 'bottom' });
