@@ -398,9 +398,9 @@
                 </div>
             </div>
             <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
-                <button type="button" class="btn btn-primary" ng-click="updateProject()" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-primary" ng-click="updateProject()">Ok</button>
                 <button type="button" class="btn btn-default" ng-click="cancelProject()" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger pull-left" data-toggle="modal" data-target="#warning-project" data-dismiss="modal"><i class="fa fa-trash-o"></i></i> Delete Project</button>
+                <button type="button" class="btn btn-danger pull-left" data-toggle="modal" ng-click="deleteProjectConfirm()" data-dismiss="modal"><i class="fa fa-trash-o"></i></i> Delete Project</button>
             </div>
         </div>
     </div>
