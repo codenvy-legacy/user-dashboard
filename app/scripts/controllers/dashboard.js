@@ -168,6 +168,7 @@ angular.module('odeskApp')
 				return;
 			}
 		}
+		$('#projectDetailModal').modal('hide');
         return $q.all([
           $http({ method: 'POST', url: "/api/project/"+ $scope.selected.workspaceId+"/rename"+$scope.selected.path +"?name="+$scope.selected.name}).
               success(function (data, status, headers, config) {
@@ -208,7 +209,8 @@ angular.module('odeskApp')
 				$('#warning-project').modal('show');
 			else
 				alert("Deleting the project requires Administrator permissions to the project's workspace. Contact the workspace's Administrator or Owner.");
-	  }
+	  };
+	  
       $scope.deleteProject = function () {
         $http({ method: 'DELETE', url: $scope.selected.url }).
           success(function (status) {
