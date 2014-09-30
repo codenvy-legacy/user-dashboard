@@ -203,6 +203,12 @@ angular.module('odeskApp')
             });
       };
 
+	  $scope.deleteProjectConfirm = function() {
+			if($scope.isAdmin)
+				$('#warning-project').modal('show');
+			else
+				alert("Deleting the project requires Administrator permissions to the project's workspace. Contact the workspace's Administrator or Owner.");
+	  }
       $scope.deleteProject = function () {
         $http({ method: 'DELETE', url: $scope.selected.url }).
           success(function (status) {
