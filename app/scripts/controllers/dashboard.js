@@ -173,26 +173,24 @@ angular.module('odeskApp')
           $http({ method: 'POST', url: "/api/project/"+ $scope.selected.workspaceId+"/rename"+$scope.selected.path +"?name="+$scope.selected.name}).
               success(function (data, status, headers, config) {
                 console.log(data);
-              }),
-
-          $http({ method: 'GET', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name}).
-            success(function (data, status) {
-              data.description = $scope.selected.description;
-              $scope.updated = data;
-
-          })
+              })
         ]).then(function (results) {
-            $http({ method: 'PUT', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name, data: $scope.updated }).
-              success(function (data, status) {
-                //Change Project URL
-
-                var projFound = $scope.projects.filter(function(p) {return p.name==data.name;})
-                if(projFound.length > 0)
-                {
-                  projFound[0].ideUrl = data.ideUrl;
-                }
-                console.log(data);
-            });
+			$http({ method: 'GET', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name}).
+				success(function (data, status) {
+				  data.description = $scope.selected.description;
+				  $scope.updated = data;
+				
+				  $http({ method: 'PUT', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name, data: $scope.updated }).
+					  success(function (data, status) {
+						//Change Project URL & Path
+						var projFound = $scope.projects.filter(function(p) {return p.name==data.name;})
+						if(projFound.length > 0)
+						{
+						  projFound[0].ideUrl = data.ideUrl;
+						  projFound[0].path = data.path;
+						}
+					});
+			  })
           });
 
       };
