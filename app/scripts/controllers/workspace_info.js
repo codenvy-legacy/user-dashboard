@@ -49,9 +49,17 @@ angular.module('odeskApp')
                 $http({method: 'GET', url: $.map(response.links,function(obj){if(obj.rel=="get members") return obj.href})[0]})
                   .success(function (data) {
                     angular.forEach(data, function (member) {
+                      var email, name, role;
+                      if(member['roles'].length>1)
+                          {
+                            role = member['roles'][1].split("/")[1];
+                          }
+                        else{
+                          role = member['roles'][0].split("/")[1];
+                        }
 
                       //  Get member's email and name
-                      var email, name;
+                      
                       return $q.all([
                         $http({method: 'GET', url: '/api/profile/'+member['userId']})
                           .success(function (data) {
@@ -59,9 +67,12 @@ angular.module('odeskApp')
                             name = data['attributes'].firstName +" "+ data['attributes'].lastName;
                           })
                       ]).then(function (results) {
+                        
+                        
+
                         var memberDetails = {
                           id: member['userId'],
-                          role: member['roles'][0].split("/")[1],
+                          role: role,
                           email: email,
                           name: name
                         }
@@ -234,11 +245,16 @@ angular.module('odeskApp')
               });
             };
 
+              $scope.addMemberProject = function(member){
+            $scope.selectedMemberForRemove = member;
+             };
             // Remove member related to workspace
             $scope.removeMemberFromWs = function(memberId){
               var deferred = $q.defer();
               $http.delete('/api/workspace/'+workspaceId+'/members/' + memberId )
                 .success(function (data, status) {
+
+                  $('#removeMemberConfirm').modal('toggle');
                   if(status == 204){
                     var removeMember = _.find($scope.workspace.members, function(member){ if(member.id == memberId) return member; });
                     var index = $scope.workspace.members.indexOf(removeMember)
@@ -249,6 +265,7 @@ angular.module('odeskApp')
                   deferred.resolve(data);
                 })
                 .error(function (err) {
+                  alert("Can Not Remove Workspace/Admin");
                   deferred.reject();
                 });
             }

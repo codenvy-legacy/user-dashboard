@@ -195,8 +195,6 @@
           Remove Workspace: <strong>{{selectedWsForRemove.name}}</strong>
         </div>
         <div class="modal-body">
-          Removing a workspace will delete all projects inside that workspace:
-
           <ul ng-if="selectedWsForRemove.projectsName.length>0">
             <li ng-repeat="project in selectedWsForRemove.projectsName" >
               {{project}}

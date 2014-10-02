@@ -58,7 +58,7 @@
           <td style="text-align: right;">
             <ul class="breadcrumb action-button boxnav">
               <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#updateMemberRoleModal" ng-click="updateWsMember(member)">Edit</a></li>
-              <li class="active no-bdr mrg-top8" ng-click="removeMemberFromWs(member.id)"><a class="new_btn">Remove</a></li>
+              <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#removeMemberConfirm" ng-click="addMemberProject(member)">Remove</a></li>
             </ul>
           </td>
         </tr>
@@ -79,7 +79,7 @@
   </div>
 </div>
 
-<!---- Add New Member into workspace Modal Start--->
+<!-- Add New Member into workspace Modal Start-->
 <div class="modal-col">
   <div class="modal fade" id="addWorkspaceNewMember" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -172,9 +172,9 @@
     </div>
   </div>
 </div>
-<!---- Add New Member into workspace end--->
+<!--Add New Member into workspace end-->
 
-<!---- Update role Modal for workspace start--->
+<!-- Update role Modal for workspace start-->
 <div class="modal-col">
   <div class="modal fade" id="updateMemberRoleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -229,4 +229,26 @@
     </div>
   </div>
 </div>
-<!---- Update role Modal for workspace end--->
+<!-- Update role Modal for workspace end-->
+
+<!-- Remove Member Modal Start-->
+<div class="modal-col">
+  <div class="modal fade" id="removeMemberConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          Remove Member: <strong>{{selectedMemberForRemove.name}}</strong>
+        </div>
+        <div class="modal-body">
+       
+          <strong>Are you sure you want to Remove?</strong>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" ng-click="removeMemberFromWs(selectedMemberForRemove.id)">Ok</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Member Modal Start-->

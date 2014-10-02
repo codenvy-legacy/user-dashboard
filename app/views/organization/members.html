@@ -56,7 +56,7 @@
             <td style="text-align: right;">
               <ul class="breadcrumb action-button boxnav">
                 <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#updateRoleModal" ng-click="updateMember(member)">Edit</a></li>
-                <li class="active no-bdr mrg-top8" ng-click="removeMember(member.id)"><a class="new_btn">Remove</a></li>
+                <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#removeMemberConfirm" ng-click="addMemberProject(member)">Remove</a></li>
               </ul>
             </td>
           </tr>
@@ -77,7 +77,7 @@
     </div>
   </div>
 </div>
-<!---- Add New Member Modal Start--->
+<!-- Add New Member Modal Start -->
 <div class="modal-col">
   <div class="modal fade" id="addNewMember" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -167,9 +167,9 @@
     </div>
   </div>
 </div>
-<!---- Add New Member Modal end--->
+<!-- Add New Member Modal end -->
 
-<!---- Update role Modal start--->
+<!-- Update role Modal start -->
 <div class="modal-col">
   <div class="modal fade" id="updateRoleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -224,4 +224,24 @@
     </div>
   </div>
 </div>
-<!---- Update role Modal end--->
+<!-- Update role Modal end -->
+<!-- Remove Member Modal Start-->
+<div class="modal-col">
+  <div class="modal fade" id="removeMemberConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          Remove Member: <strong>{{selectedMemberForRemove.name}}</strong>
+        </div>
+        <div class="modal-body">
+          <strong>Are you sure you want to Remove?</strong>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" ng-click="removeMember(selectedMemberForRemove.id)">Ok</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Member Modal Start-->

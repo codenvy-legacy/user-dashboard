@@ -266,7 +266,7 @@ angular.module('odeskApp')
                         allocatedRam: allocatedRam,
                         projects: 0,
                         projectsName: [],
-                        developers: (selectedMembers.length + 1)
+                        developers: (selectedMembers.length)
                       }
                       $scope.workspaces.push(workspaceDetails);
                       $('#addNewWorkspace').modal('toggle');
@@ -346,7 +346,7 @@ angular.module('odeskApp')
             .error(function (err) {  });
 
           $scope.updateMember = function(member){
-            $scope.editMember = member;
+            $scope.editMember = member;            
           };
 
           // For add user in users list in add members popup modal in organization Tab
@@ -448,12 +448,15 @@ angular.module('odeskApp')
               $("#userAlreadyAdded").hide();
             });
           };
-
+           $scope.addMemberProject = function(member){
+            $scope.selectedMemberForRemove = member;
+          };
           // Remove member related to account
           $scope.removeMember = function(memberId){
             var deferred = $q.defer();
             $http.delete('/api/account/'+$scope.accountId[0]+'/members/' + memberId )
               .success(function (data, status) {
+                $('#removeMemberConfirm').modal('toggle');
                 if(status == 204){
                   var removeMember = _.find($scope.members, function(member){ if(member.id == memberId) return member; });
                   var index = $scope.members.indexOf(removeMember)
@@ -464,13 +467,14 @@ angular.module('odeskApp')
                 deferred.resolve(data);
               })
               .error(function (err) {
+                alert("Can Not Remove Workspace/Admin");
                 deferred.reject();
               });
           }
 
         }else{
           $scope.isOrgAddOn = false;
-          window.location = "/#/dashboard"
+          window.location = "/#/dashboard";
         }
       });
     });
