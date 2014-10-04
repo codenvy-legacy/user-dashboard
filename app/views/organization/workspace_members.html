@@ -58,7 +58,7 @@
           <td style="text-align: right;">
             <ul class="breadcrumb action-button boxnav">
               <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#updateMemberRoleModal" ng-click="updateWsMember(member)">Edit</a></li>
-              <li class="active no-bdr mrg-top8" ng-click="removeMemberFromWs(member.id)"><a class="new_btn">Remove</a></li>
+              <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#removeMemberConfirm" ng-click="addMemberProject(member)">Remove</a></li>
             </ul>
           </td>
         </tr>
@@ -79,7 +79,7 @@
   </div>
 </div>
 
-<!---- Add New Member into workspace Modal Start--->
+<!-- Add New Member into workspace Modal Start-->
 <div class="modal-col">
   <div class="modal fade" id="addWorkspaceNewMember" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -172,9 +172,9 @@
     </div>
   </div>
 </div>
-<!---- Add New Member into workspace end--->
+<!--Add New Member into workspace end-->
 
-<!---- Update role Modal for workspace start--->
+<!-- Update role Modal for workspace start-->
 <div class="modal-col">
   <div class="modal fade" id="updateMemberRoleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -193,9 +193,7 @@
               <div class="col-lg-11 col-lg-offset-1 col-sm-12 col-md-12 col-xs-12">
                 <div class="row mrg-btm10">
                   <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="margin-top:3px;">
-                    <input type="radio" name="member_role_update" id="member_role_update1" class="css-checkbox" checked="checked" ng-if="editWsMember.role=='admin'"/>
-                    <input type="radio" name="member_role_update" id="member_role_update1" class="css-checkbox" ng-if="editWsMember.role!='admin'"/>
-                    <label for="member_role_update1" class="css-label radGroup1">&nbsp;</label>
+                   <input type="radio" name="admin" ng-model="member_role" value="admin" >
                   </div>
                   <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">
                     <div class="text-col">
@@ -206,9 +204,7 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="margin-top:3px;">
-                    <input type="radio" name="member_role_update" id="member_role_update2" class="css-checkbox" checked="checked" ng-if="editWsMember.role=='developer'"/>
-                    <input type="radio" name="member_role_update" id="member_role_update2" class="css-checkbox" ng-if="editWsMember.role!='developer'"/>
-                    <label for="member_role_update2" class="css-label radGroup1">&nbsp;</label>
+                    <input type="radio" name="developer" ng-model="member_role" value="developer" >
                   </div>
                   <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">
                     <div class="text-col">
@@ -219,14 +215,38 @@
                 </div>
               </div>
             </div>
+            <div id="updateWsMemberError" style="display: none" class="org-errors">
+              Cannot change role of workspace/admin</div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Ok</button>
+          <button type="button" class="btn btn-primary" ng-click="updateMemberWs(member_role)" >Ok</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!---- Update role Modal for workspace end--->
+<!-- Update role Modal for workspace end-->
+
+<!-- Remove Member Modal Start-->
+<div class="modal-col">
+  <div class="modal fade" id="removeMemberConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          Remove Member: <strong>{{selectedMemberForRemove.name}}</strong>
+        </div>
+        <div class="modal-body">
+       
+          <strong>Are you sure you want to Remove?</strong>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" ng-click="removeMemberFromWs(selectedMemberForRemove.id)">Ok</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Member Modal Start-->

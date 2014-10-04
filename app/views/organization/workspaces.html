@@ -80,7 +80,7 @@
     </div>
   </div>
 </div>
-<!---- Add New Workspace Modal Start--->
+<!-- Add New Workspace Modal Start -->
 <div class="modal-col">
   <div class="modal fade" id="addNewWorkspace" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -184,9 +184,9 @@
     </div>
   </div>
 </div>
-<!---- Add New Workspace Modal end--->
+<!-- Add New Workspace Modal end -->
 
-<!---- Remove Workspace Modal Start--->
+<!-- Remove Workspace Modal Start -->
 <div class="modal-col">
   <div class="modal fade" id="removeWorkspaceConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -195,8 +195,6 @@
           Remove Workspace: <strong>{{selectedWsForRemove.name}}</strong>
         </div>
         <div class="modal-body">
-          Removing a workspace will delete all projects inside that workspace:
-
           <ul ng-if="selectedWsForRemove.projectsName.length>0">
             <li ng-repeat="project in selectedWsForRemove.projectsName" >
               {{project}}
@@ -209,7 +207,7 @@
 
           <br/>
           If you are going to remove a workspace ensure no one is working on any of the projects listed above before proceeding.
-          <br>
+          <br/>
           <strong>Removing a workspace can't be undone, are you sure you want to continue?</strong>
         </div>
         <div class="modal-footer">
