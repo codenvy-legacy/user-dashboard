@@ -265,7 +265,7 @@ angular.module('odeskApp')
                   deferred.resolve(data);
                 })
                 .error(function (err) {
-                  alert("Can Not Remove Workspace/Admin");
+                  alert("Can not remove workspace/admin");
                   deferred.reject();
                 });
             }
