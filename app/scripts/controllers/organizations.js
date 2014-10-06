@@ -492,7 +492,7 @@ angular.module('odeskApp')
                 deferred.resolve(data);
               })
               .error(function (err) {
-                alert("Can not remove workspace/admin");
+                alert("It is impossible to remove this user from the organization or update his role. The organization needs at least one account/owner.");
                 deferred.reject();
               });
           }
