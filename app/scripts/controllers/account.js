@@ -302,11 +302,12 @@ angular.module('odeskApp')
 
     $http({method: 'GET', url: '/api/account'}).success(function (account, status) {
       $http({method: 'GET', url: '/api/account/'+account[0].accountReference.id+'/subscriptions'}).success(function (subscription, status) {
-        if( subscription && subscription.length > 0) {
-		  $scope.accountType = 'PREMIUM';
-        } else {
-			$scope.accountType = 'FREE';
-        }
+        if( subscription[0].properties.Package=='Team' || subscription[0].properties.Package=='Enterprise' ) {
+              $scope.accountType = 'PREMIUM';
+            } else {
+              $scope.accountType = 'FREE';
+            }
+
       });
    });
 
