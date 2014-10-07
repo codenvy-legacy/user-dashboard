@@ -266,7 +266,7 @@ angular.module('odeskApp')
                         allocatedRam: allocatedRam,
                         projects: 0,
                         projectsName: [],
-                        developers: (selectedMembers.length + 1)
+                        developers: (selectedMembers.length)
                       }
                       $scope.workspaces.push(workspaceDetails);
                       $('#addNewWorkspace').modal('toggle');
@@ -320,7 +320,6 @@ angular.module('odeskApp')
             .success(function (members) {
 
               angular.forEach(members, function (member) {
-
                 //  Get member's email and name
                 var email;
                 var name;
@@ -337,7 +336,6 @@ angular.module('odeskApp')
                     email: email,
                     name: name
                   }
-
                   $scope.members.push(memberDetails);
                 });
 
@@ -346,7 +344,33 @@ angular.module('odeskApp')
             .error(function (err) {  });
 
           $scope.updateMember = function(member){
-            $scope.editMember = member;
+            $scope.editMember = member;       
+            $scope.member_role = $scope.editMember.role;
+            $('#updateOrgMemberError').hide();
+          };
+          //Update organization's member's role
+          $scope.updateMemberOrg = function(member_role){
+            $scope.member_role = member_role;            
+            $scope.editMember.role = member_role
+            var mcon = { headers: { 'Content-Type': 'application/json'  }  };
+            var memberData = {"userId": $scope.editMember.id, "roles": ["account/"+member_role] };  
+            $http.delete('/api/account/'+$scope.accountId[0]+'/members/' + $scope.editMember.id)
+              .success(function (data, status) {                
+                 if(status == 204){
+                  $('#updateRoleModal').modal('toggle');
+                  var removeMember = _.find($scope.members, function(member){ if(member.id == $scope.editMember.id) return member; });
+                  var index = $scope.members.indexOf(removeMember)
+                  if (index != -1) {
+                    $scope.members.splice(index, 1);                    
+                    $http.post('/api/account/'+$scope.accountId[0]+'/members', memberData, mcon)
+                    .success(function (data) {
+                      $scope.members.push($scope.editMember);
+                    });
+                  }
+                } 
+                }).error(function (err) {
+                  $('#updateOrgMemberError').show();
+              });
           };
 
           // For add user in users list in add members popup modal in organization Tab
@@ -449,11 +473,15 @@ angular.module('odeskApp')
             });
           };
 
+           $scope.addMemberProject = function(member){
+            $scope.selectedMemberForRemove = member;
+          };
           // Remove member related to account
           $scope.removeMember = function(memberId){
             var deferred = $q.defer();
             $http.delete('/api/account/'+$scope.accountId[0]+'/members/' + memberId )
               .success(function (data, status) {
+                $('#removeMemberConfirm').modal('toggle');
                 if(status == 204){
                   var removeMember = _.find($scope.members, function(member){ if(member.id == memberId) return member; });
                   var index = $scope.members.indexOf(removeMember)
@@ -464,13 +492,14 @@ angular.module('odeskApp')
                 deferred.resolve(data);
               })
               .error(function (err) {
+                alert("It is impossible to remove this user from the organization or update his role. The organization needs at least one account/owner.");
                 deferred.reject();
               });
           }
 
         }else{
           $scope.isOrgAddOn = false;
-          window.location = "/#/dashboard"
+          window.location = "/#/dashboard";
         }
       });
     });

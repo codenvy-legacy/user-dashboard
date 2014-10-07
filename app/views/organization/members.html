@@ -56,7 +56,7 @@
             <td style="text-align: right;">
               <ul class="breadcrumb action-button boxnav">
                 <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#updateRoleModal" ng-click="updateMember(member)">Edit</a></li>
-                <li class="active no-bdr mrg-top8" ng-click="removeMember(member.id)"><a class="new_btn">Remove</a></li>
+                <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#removeMemberConfirm" ng-click="addMemberProject(member)">Remove</a></li>
               </ul>
             </td>
           </tr>
@@ -77,7 +77,7 @@
     </div>
   </div>
 </div>
-<!---- Add New Member Modal Start--->
+<!-- Add New Member Modal Start -->
 <div class="modal-col">
   <div class="modal fade" id="addNewMember" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -167,12 +167,13 @@
     </div>
   </div>
 </div>
-<!---- Add New Member Modal end--->
+<!-- Add New Member Modal end -->
 
-<!---- Update role Modal start--->
+<!-- Update role Modal start -->
 <div class="modal-col">
   <div class="modal fade" id="updateRoleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
+      <form name="form" novalidate>
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">
@@ -184,13 +185,11 @@
         <div class="modal-body">
           <div class="update-member">
             <div class="update-ttl"><strong>Select the appropriate role for</strong> {{editMember.email}}:</div>
-            <div class="row">
+            <div class="row">              
               <div class="col-lg-11 col-lg-offset-1 col-sm-12 col-md-12 col-xs-12">
                 <div class="row mrg-btm10">
                   <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="margin-top:3px;">
-                    <input type="radio" name="member_role_update" id="member_role_update1" class="css-checkbox" checked="checked" ng-if="editMember.role=='owner'"/>
-                    <input type="radio" name="member_role_update" id="member_role_update1" class="css-checkbox" ng-if="editMember.role!='owner'"/>
-                    <label for="member_role_update1" class="css-label radGroup1">&nbsp;</label>
+                    <input type="radio" name="owner" ng-model="member_role" value="owner">                   
                   </div>
                   <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">
                     <div class="text-col">
@@ -198,12 +197,11 @@
                       <p>User is be able to manage members and projects of the organization.</p>
                     </div>
                   </div>
-                </div>
+                </div>                
+                
                 <div class="row">
                   <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="margin-top:3px;">
-                    <input type="radio" name="member_role_update" id="member_role_update2" class="css-checkbox" checked="checked" ng-if="editMember.role=='member'"/>
-                    <input type="radio" name="member_role_update" id="member_role_update2" class="css-checkbox" ng-if="editMember.role!='member'"/>
-                    <label for="member_role_update2" class="css-label radGroup1">&nbsp;</label>
+                    <input type="radio" name="member" ng-model="member_role" value="member">
                   </div>
                   <div class="col-lg-10 col-sm-10 col-md-11 col-xs-10 pad-lf10">
                     <div class="text-col">
@@ -214,14 +212,37 @@
                 </div>
               </div>
             </div>
+             <div id="updateOrgMemberError" style="display: none" class="org-errors">
+              Account should have at least 1 owner</div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Ok</button>
+          <button type="button" class="btn btn-primary" ng-click="updateMemberOrg(member_role)">Ok</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+<!-- Update role Modal end -->
+<!-- Remove Member Modal Start-->
+<div class="modal-col">
+  <div class="modal fade" id="removeMemberConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          Remove Member: <strong>{{selectedMemberForRemove.name}}</strong>
+        </div>
+        <div class="modal-body">
+          <strong>Are you sure you want to remove?</strong>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" ng-click="removeMember(selectedMemberForRemove.id)">Ok</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!---- Update role Modal end--->
+<!-- End Member Modal Start-->

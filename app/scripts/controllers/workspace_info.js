@@ -49,9 +49,17 @@ angular.module('odeskApp')
                 $http({method: 'GET', url: $.map(response.links,function(obj){if(obj.rel=="get members") return obj.href})[0]})
                   .success(function (data) {
                     angular.forEach(data, function (member) {
+                      var email, name, role;
+                      if(member['roles'].length>1)
+                          {
+                            role = member['roles'][1].split("/")[1];
+                          }
+                        else{
+                          role = member['roles'][0].split("/")[1];
+                        }
 
                       //  Get member's email and name
-                      var email, name;
+                      
                       return $q.all([
                         $http({method: 'GET', url: '/api/profile/'+member['userId']})
                           .success(function (data) {
@@ -59,9 +67,12 @@ angular.module('odeskApp')
                             name = data['attributes'].firstName +" "+ data['attributes'].lastName;
                           })
                       ]).then(function (results) {
+                        
+                        
+
                         var memberDetails = {
                           id: member['userId'],
-                          role: member['roles'][0].split("/")[1],
+                          role: role,
                           email: email,
                           name: name
                         }
@@ -234,11 +245,16 @@ angular.module('odeskApp')
               });
             };
 
+              $scope.addMemberProject = function(member){
+            $scope.selectedMemberForRemove = member;
+             };
             // Remove member related to workspace
             $scope.removeMemberFromWs = function(memberId){
               var deferred = $q.defer();
               $http.delete('/api/workspace/'+workspaceId+'/members/' + memberId )
                 .success(function (data, status) {
+
+                  $('#removeMemberConfirm').modal('toggle');
                   if(status == 204){
                     var removeMember = _.find($scope.workspace.members, function(member){ if(member.id == memberId) return member; });
                     var index = $scope.workspace.members.indexOf(removeMember)
@@ -249,13 +265,47 @@ angular.module('odeskApp')
                   deferred.resolve(data);
                 })
                 .error(function (err) {
+                  alert("It is impossible to remove this user from the organization or update his role. The organization needs at least one workspace/admin.");
                   deferred.reject();
                 });
             }
 
             $scope.updateWsMember = function(member){
               $scope.editWsMember = member;
+              $scope.member_role = $scope.editWsMember.role;              
             };
+            
+            // Update workspace member's role
+            $scope.updateMemberWs = function(member_role){
+            $('#updateWsMemberError').show();
+            $scope.member_role = member_role;
+            var wcon = { headers: { 'Content-Type': 'application/json'  }  };            
+            var memberData = {"userId": $scope.editWsMember.id,"roles": ["workspace/"+$scope.editWsMember.role] };
+            
+            $http.delete('/api/workspace/'+workspaceId+'/members/' + $scope.editWsMember.id )            
+              .success(function (data, status) {                    
+              $('#updateMemberRoleModal').modal('toggle');          
+                 if(status == 204){
+                    var removeMember = _.find($scope.workspace.members, function(member){ if(member.id == $scope.editWsMember.id) return member; });
+                    var index = $scope.workspace.members.indexOf(removeMember)
+                    if (index != -1) {
+                      $scope.workspace.members.splice(index, 1);
+                      $http.post('/api/workspace/' + workspaceId + "/members", memberData, wcon)
+                      .success(function (data) {
+                        $scope.editWsMember.role = member_role
+                        $scope.workspace.members.push($scope.editWsMember);
+                      })
+                      .error(function (err, status) { });
+                    }
+                  }
+                else if(status == 409){
+                  $('#updateWsMemberError').show();
+                  }  
+                }).error(function (err) {
+                  $('#updateWsMemberError').show();
+              });
+
+          };
 
             // For search
             $timeout(function () {
