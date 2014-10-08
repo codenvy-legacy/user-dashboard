@@ -51,7 +51,7 @@
                           <div class="col-lg-5 col-lg-offset-7 col-sm-12 col-md-12 col-xs-12">
                             <button class="btn btn-white pull-right" type="button">
                               <i class="glyphicon glyphicon-plus add-size"></i>
-                              <span class="add-admin-text">Add Administrator</span>
+                              <span class="add-admin-text" data-toggle="modal" data-target="#addWorkspaceNewMember">Add Administrator</span>
                             </button>
                           </div>
                         </div>
@@ -88,3 +88,87 @@
   </div>
 </div>
 <!-- End Member Modal Start-->
+
+<!-- Add New Admin Modal Start-->
+<div class="modal-col">
+  <div class="modal fade" id="addWorkspaceNewMember" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Add Admin(s) Into Workspace</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-field">
+            <div class="menber-col">
+              <div class="row">
+                <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
+                  Admin(s) to add:
+                </div>
+                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12 pad-0">
+                  Administrator
+               
+              </div>
+            </div>
+            <div class="menber-textarea mrg-top10">
+              <div class="row mrg-btm5" ng-repeat="member in selectedMembers">
+                <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
+                  <p>{{member.name}} ({{member.email}})</p>
+                </div>
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                   <div class="text-center">
+                    <input type="radio" name="user_role_{{$index}}" id="radio{{$index}}" class="css-checkbox" checked ng-if="member.role=='admin'"/>
+                    <input type="radio" name="user_role_{{$index}}" id="radio{{$index}}" class="css-checkbox" ng-if="member.role!='admin'"/>
+                    <label for="radio{{$index}}" class="css-label radGroup1">&nbsp;</label>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                 
+                </div>
+                <div class="col-lg-1 col-sm-1 col-md-1 col-xs-12">
+                  <a ng-click="removeMemberToList(member)"><i class="glyphicon glyphicon-trash"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="row mrg-top10">
+              <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
+                <form role="form">
+                  <div class="form-group">
+                    <label>Select Admins(s):</label>
+                   <input type="text" name="selectedMembers" id="selectedMembers" placeholder="Type email addresses separated by commas" class="form-control">
+                  </div>
+                </form>
+              </div>
+               <div class="col-lg-5 col-sm-5 col-md-5 col-xs-12">
+                <div class="row mrg-top30" style="line-height: 25px;">
+                  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 pad-0">Administrator </div>
+                  <div class="col-lg-1 col-sm-2 col-md-2 col-xs-12" style="margin-top: 2px;">
+                    <input type="radio" name="ws_member_role" id="ws_admin_radio" class="css-checkbox lft-radio" value="workspace/admin" checked="checked" />
+                    <label style="margin-left:10px;" for="ws_admin_radio" class="css-label radGroup1">&nbsp;</label>
+                  </div>
+                  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 pad-0"></div>
+                  <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                    <button type="button" class="btn btn-success" ng-click="addMemberToWsList()">ADD</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <div id="userNotFoundError" style="display: none" class="org-errors"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of this workspace. </div>
+         
+            <div id="userNotMemberList" style="display: none" class="org-errors"><strong>'{{userNotMemberList.join(", ")}}'</strong> must be Account Member(s) before being added as member(s) of this workspace. </div>
+            <div id="userAlreadyAdded" style="display: none" class="org-errors">User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </div>
+            <div id="emptyEmails" style="display: none" class="org-errors"><strong>Type email addresses separated by commas</strong></div>
+            <div id="addMemberErr" style="display: none" class="org-errors"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" ng-click="addMembersToWs(selectedMembers)">Ok</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Administration modal -->
