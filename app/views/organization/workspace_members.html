@@ -142,12 +142,12 @@
                 <div class="row mrg-top30" style="line-height: 25px;">
                   <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 pad-0">Administrator </div>
                   <div class="col-lg-1 col-sm-2 col-md-2 col-xs-12" style="margin-top: 2px;">
-                    <input type="radio" name="ws_member_role" id="ws_admin_radio" class="css-checkbox lft-radio" value="workspace/admin" />
+                    <input type="radio" name="ws_member_role" id="ws_admin_radio" class="css-checkbox lft-radio" value="workspace/admin" checked="checked"/>
                     <label for="ws_admin_radio" class="css-label radGroup1">&nbsp;</label>
                   </div>
                   <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">Developer </div>
                   <div class="col-lg-1 col-sm-2 col-md-2 col-xs-12" style="margin-top: 2px;">
-                    <input type="radio" name="ws_member_role" id="ws_dev_radio" class="css-checkbox" value="workspace/developer" checked="checked"/>
+                    <input type="radio" name="ws_member_role" id="ws_dev_radio" class="css-checkbox" value="workspace/developer"/>
                     <label for="ws_dev_radio" class="css-label radGroup1">&nbsp;</label>
                   </div>
                   <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
@@ -215,7 +215,9 @@
                 </div>
               </div>
             </div>
-            <div id="updateWsMemberError" style="display: none" class="org-errors">
+            <div id="updateCurrentWsMemberError" style="display: none" class="org-errors">
+              Cannot change role of current workspace/admin</div>
+              <div id="updateWsMemberError" style="display: none" class="org-errors">
               Cannot change role of workspace/admin</div>
           </div>
         </div>
