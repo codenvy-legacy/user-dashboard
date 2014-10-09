@@ -399,6 +399,7 @@ angular.module('odeskApp')
             var selectedUsers = $("#selected_users").val();
             var selectedUserEmails = selectedUsers.split(",");
             var role = $("input[name=member_role]:checked").val();
+            console.log(role);
 
             $("#emptyEmails").hide();
 
