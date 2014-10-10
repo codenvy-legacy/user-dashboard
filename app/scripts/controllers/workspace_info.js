@@ -272,31 +272,52 @@ angular.module('odeskApp')
 
             $scope.updateWsMember = function(member){
               $scope.editWsMember = member;
-              $scope.member_role = $scope.editWsMember.role;              
+              $scope.member_role = $scope.editWsMember.role;    
+               $('#updateWsMemberError').hide(); 
+               $('#updateCurrentWsMemberError').hide();         
             };
             
             // Update workspace member's role
             $scope.updateMemberWs = function(member_role){
-            $('#updateWsMemberError').show();
+           
+           $scope.editWsMember.role = member_role
             $scope.member_role = member_role;
             var wcon = { headers: { 'Content-Type': 'application/json'  }  };            
             var memberData = {"userId": $scope.editWsMember.id,"roles": ["workspace/"+$scope.editWsMember.role] };
-            
+            var email;
+            var userid;
+            $http.get('/api/user').success(function(data){
+                userid = data["id"];
+                email = data["email"]
+
+                console.log(userid);
+                console.log(email);
+
+            }).error(function(err){
+                console.log("error occurred");
+            });
+
             $http.delete('/api/workspace/'+workspaceId+'/members/' + $scope.editWsMember.id )            
               .success(function (data, status) {                    
               $('#updateMemberRoleModal').modal('toggle');          
                  if(status == 204){
                     var removeMember = _.find($scope.workspace.members, function(member){ if(member.id == $scope.editWsMember.id) return member; });
                     var index = $scope.workspace.members.indexOf(removeMember)
-                    if (index != -1) {
+                    if (index != -1 && $scope.editWsMember.id != userid) {
                       $scope.workspace.members.splice(index, 1);
+                      
                       $http.post('/api/workspace/' + workspaceId + "/members", memberData, wcon)
                       .success(function (data) {
+                        console.log("+++++");
                         $scope.editWsMember.role = member_role
                         $scope.workspace.members.push($scope.editWsMember);
                       })
                       .error(function (err, status) { });
                     }
+                     else
+                      {
+                        $('#updateCurrentWsMemberError').show();
+                      }
                   }
                 else if(status == 409){
                   $('#updateWsMemberError').show();

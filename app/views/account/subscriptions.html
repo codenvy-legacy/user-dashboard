@@ -7,7 +7,18 @@
     <li><a href="#/account/billing">Billing</a></li>
 -->
 </ul>
-<div class="col-md-12">
+
+<!-- Subscription Modal Start-->
+<div class="col-md-12" ng-if="!subscriptions">
+    <div class="row" style="background: none repeat scroll 0 0 #adcee8;
+    border: 1px solid #3887b6;line-height: 35px; margin: 5px 2px;text-align: center;font-size: 16px;font-weight: 800;letter-spacing: 0">
+   You have not any Subscription yet !!
+ </div><br>
+<div class="modal-footer"><button type="button" class="btn btn-primary" ng-click="#">FREE PREMIUM TRIAL</button></div>
+</div>
+<!-- End Subcription Modal Start-->
+
+<div class="col-md-12" ng-if="subscriptions.length > 0">
     <div class="row">
 <ul class="breadcrumb projectnav" style="margin-bottom:0px;border-top:0px solid #dcdcdc; border-bottom:none;">
             <li>All Subscriptions</li>
@@ -52,3 +63,6 @@
         </div>
     </div>
 </div>
+
+
+

@@ -108,7 +108,7 @@ angular.module('odeskApp')
       };
       
       //public methods   
-      $scope.selectProject = function (project) {
+      $scope.selectProject = function(project,modalNameType) {
         $scope.emailList = '';
         $scope.activeMembers = [];
 
@@ -120,8 +120,20 @@ angular.module('odeskApp')
         $scope.isAdmin = getAdmin($scope.currentWorkspace.roles);
         $scope.activeMembers = angular.copy($scope.currentWorkspace.members);
 
-
         if ($scope.isAdmin) {
+
+          if (modalNameType=='privacysetting') {
+           $('#privacyModal').modal('toggle'); 
+          }
+          else if(modalNameType=='developersetting'){
+            $('#developersModal').modal('toggle');
+          }
+          else if(modalNameType=='projectsetting'){
+            $('#projectDetailModal').modal('toggle');
+          }
+
+      
+
           Project.getPermissions(project.workspaceId, project.name).then(function (data) { // get the permissions for the current selected project
             var projectPermissions = data;
             var usersPermissions = [];
@@ -141,6 +153,18 @@ angular.module('odeskApp')
             });
           });
         } else {
+          
+          if (modalNameType=='privacysetting') {
+           $('#privacyMessageModal').modal('toggle'); 
+          }
+          else if(modalNameType=='developersetting'){
+            $('#developersModal').modal('toggle');
+          }
+          else if(modalNameType=='projectsetting'){
+            $('#projectDetailModal').modal('toggle');
+          }
+
+
           $http({ method: 'GET', url: '/api/profile' }).success(function (profile, status) {
             $scope.currentUser = {
               fullName: profile.attributes.firstName + " " + profile.attributes.lastName,
@@ -172,7 +196,7 @@ angular.module('odeskApp')
         return $q.all([
           $http({ method: 'POST', url: "/api/project/"+ $scope.selected.workspaceId+"/rename"+$scope.selected.path +"?name="+$scope.selected.name}).
               success(function (data, status, headers, config) {
-                console.log(data);
+                // console.log(data);
               })
         ]).then(function (results) {
 			$http({ method: 'GET', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name}).
@@ -198,7 +222,7 @@ angular.module('odeskApp')
       $scope.switchVisibility = function () {
         $http({ method: 'POST', url: '/api/project/' + $scope.selected.workspaceId + '/switch_visibility/' + $scope.selected.name + '?visibility=' + $scope.selected.visibility }).
             success(function (data, status) {
-              console.log(data);
+              // console.log(data);
             });
       };
 
