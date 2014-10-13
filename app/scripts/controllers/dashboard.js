@@ -106,6 +106,9 @@ angular.module('odeskApp')
         
         return member;
       };
+
+
+
       
       //public methods   
       $scope.selectProject = function(project,modalNameType) {
@@ -360,7 +363,8 @@ angular.module('odeskApp')
       return '';
 	  }
 	  
-	  
+	 
+   
       //constructor
       var init = function () {
         Workspace.all(function (resp) {
@@ -438,3 +442,5 @@ angular.module('odeskApp')
             }
           };
         });
+
+

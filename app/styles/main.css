@@ -566,7 +566,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 /* PROJECTBOX
 -----------------------------*/
 .project-box {
-  padding-top: 56px;
+  padding-top: 25px;
 }
 .project-box > .col-md-10{
   padding: 0;
@@ -1291,3 +1291,22 @@ label {margin-right:0px;}
 @media (min-width: 1200px) {
 
 }
+
+.panel-box { margin-top: -10px;}
+
+.panel-bg {  background:#adcee8;
+  text-align:center;
+
+    border: 1px solid #3887b6;
+    font-size: 11px;min-height: 30px;
+    line-height: 20px;
+    margin-bottom: 4px;
+    padding: 0 6px;}
+    a.message{
+      font-size:11px;                                                                                                                                                                                                                  
+      color:black;
+}
+    .close-btn {color: #3887b6;
+    position: relative;
+    right: 6px;
+    top: 0;}
