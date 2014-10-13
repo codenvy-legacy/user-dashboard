@@ -46,18 +46,20 @@ angular.module('odeskApp')
                 $http({method: 'GET', url:"/api/runner/"+ value.workspaceReference.id +"/processes?project="+project.path }).
                   success(function (data) {
                     if(data.length > 0){
-                      var currentRunner = data[data.length-1]
-                      if(currentRunner.status == "RUNNING"){
-                        var runnerDetails = {
-                          project: project,
-                          startTime: currentRunner.startTime,
-                          shutdownUrl: $.map(currentRunner.links,function(obj){if(obj.rel=="stop") return obj.href})[0],
-                          url: $.map(currentRunner.links,function(obj){if(obj.rel=="web url") return obj.href})[0],
-                          dockerRecipe: $.map(currentRunner.links,function(obj){if(obj.rel=="runner recipe") return obj.href})[0],
-                          terminalUrl: $.map(currentRunner.links,function(obj){if(obj.rel=="shell url") return obj.href})[0]
+                      for (var i = data.length - 1; i >= 0; i--) {
+                        var currentRunner = data[i];
+                        if(currentRunner.status == "RUNNING"){
+                          var runnerDetails = {
+                            project: project,
+                            startTime: currentRunner.startTime,
+                            shutdownUrl: $.map(currentRunner.links,function(obj){if(obj.rel=="stop") return obj.href})[0],
+                            url: $.map(currentRunner.links,function(obj){if(obj.rel=="web url") return obj.href})[0],
+                            dockerRecipe: $.map(currentRunner.links,function(obj){if(obj.rel=="runner recipe") return obj.href})[0],
+                            terminalUrl: $.map(currentRunner.links,function(obj){if(obj.rel=="shell url") return obj.href})[0]
+                          }
+                          $scope.runners.push(runnerDetails);
                         }
-                        $scope.runners.push(runnerDetails);
-                      }
+                      };
                     }
                   });
               });
