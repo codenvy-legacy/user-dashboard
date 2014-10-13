@@ -6,8 +6,8 @@
 html, 
 body  { height: 100%; }
 body  { padding-top: 45px; font-size: 11px; }
-#wrap { min-height: 100%; height: auto; margin: 0 auto -60px;padding: 0 0 60px; }
-#footer { height: 60px; }
+#wrap { min-height: 100%; height: auto; margin: 0 auto -90px;padding: 0 0 90px; }
+#footer { height: 90px; }
 h4    { color: #363636; font-size: 10px; font-weight: bold; text-transform: uppercase; }
 
 .label {

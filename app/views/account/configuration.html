@@ -1,10 +1,12 @@
 <ul class="breadcrumb boxnav">
-    <li><a href="#/account/profile">Profile</a></li>
-    <li class="active"><a href="#/account/configuration">Configuration</a></li>
+  <li style="margin-top:4px;margin-bottom:8px;"><a href="#/account/profile">Profile</a></li>
+    <li style="margin-top:4px;margin-bottom:8px;"><a href="#/account/subscriptions">Subscriptions</a></li>
+    <li style="margin-top:4px;margin-bottom:8px;" class="active"><a href="#/account/configuration">Configuration</a></li>
     <!-- <li><a href="#/account/preferences">Preferences</a></li>
     <li><a href="#/account/billing">Billing</a></li> -->
 </ul>
-<div class="container">
+
+<div class="container mainDivContainer">
     <div class="col-md-6">
         <div class="panel panel-default panel-ce">
             <div class="panel-body">
@@ -46,16 +48,19 @@
                 <div class="cerow">Builder Result Hold Time: <strong>3600 secs</strong></div>
             </div>
             <div class="panel-body">
+                <h4 class="text-center">Builder</h4>
+                    <div class="cerow">Builder Queue Type: <strong>Dedicated</strong></div>
+                    <div class="cerow">Builder Time Threshold: <strong>600 secs</strong></div>
+                    <div class="cerow">Builder RAM Allocations: <strong>1024 MB</strong></div>
+            </div>
+            <div class="panel-body">
                 <h4 class="text-center">Runner</h4>
                 {{workspaceInfo.runner}}
                 <div class="cerow">Runner Queue Type: <strong>Dedicated</strong></div>
                 <div class="cerow">Runner Time Threshold: <strong></strong></div>
                 <div class="cerow">Runner RAM Allocations: <strong></strong></div>
                 <div class="cerow">Run Image Teardown Time: <strong>3600 secs</strong></div>
-                <div class="cerow">Run Image Storage Time: <strong>365 Days</strong></div>
-                <div class="cerow">
-                    <br/>Persistent Runner URL Name: <strong><a href="http://codeenvy.com/runner/Yjrndi83NDLN">http://codeenvy.com/runner/Yjrndi83NDLN</a></strong>
-                </div>
+                <div class="cerow">Always On Runner: <strong>365 Days</strong></div>
             </div>
         </div>
     </div>
@@ -74,6 +79,14 @@
                     <div class="label label-default">{{workspace.name}}<span class="glyphicon glyphicon-remove"></span></div>
                   <!--   <div class="label label-default">IOS Application <span class="glyphicon glyphicon-remove"></span></div>
                     <div class="label label-default">Cobol <span class="glyphicon glyphicon-remove"></span></div> -->
+    <div class="col-md-6"> 
+        <div class="panel panel-default panel-ce">
+            <div class="panel-body">
+                <h4 class="text-center">Workspaces you have access</h4>
+                <div class="celist">
+                    <div class="label label-default">Java Development</div>
+                    <div class="label label-default">IOS Application</div>
+                    <div class="label label-default">Cobol</div>
                 </div>
             </div>
         </div>
