@@ -32,14 +32,14 @@ angular.module('odeskApp')
                 'title': 'Runners',
                 'link': '#/runner'
             },
-            {
+            /*{
                 'title': 'Factories',
                 'link': '#/factories'
             },
             {
                 'title': 'Stats',
                 'link': '#/stats'
-            },
+            },*/
             {
                 'title': 'Account',
                 'link': '#/account'
