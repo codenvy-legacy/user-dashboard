@@ -150,7 +150,7 @@
                     <a href="{{project.ideUrl}}" target="_blank">
                         <div class="row">
                             <div class="col-md-3 col-sm-3 col-xs-3" style="width: 54px">
-                                <img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt="">
+                                <img class="bordered" height="44" width="44" ng-src="./images/{{project.type}}.png" alt="">
                             </div>
                             <div class="col-md-9 col-sm-9 col-xs-9">
                                 <h3 class="panel-title"><strong>{{project.name}}</strong></h3>
@@ -216,7 +216,7 @@
         <tr ng-repeat="project in projects| filter: filter | orderBy:param:reverse">
             <td class="col-md-1 image">
                 <a href="{{project.ideUrl}}" target="_blank">
-                    <img class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeId}}.png" alt=""></a>
+                    <img class="bordered" height="44" width="44" ng-src="./images/{{project.type}}.png" alt=""></a>
             </td>
             <td class="col-md-1">
                 <h3 class="panel-title"><a href="{{project.ideUrl}}" target="_blank"><strong>{{project.name}}</strong></a></h3>
@@ -378,7 +378,7 @@
                         <label>Project Technology:</label>
                         <div class="row">
                             <div style="width: 54px" class="col-md-3">
-                                <img width="44" height="44" alt="" class="bordered" ng-src="./images/{{selected.projectTypeId}}.png"></div>
+                                <img width="44" height="44" alt="" class="bordered" ng-src="./images/{{selected.type}}.png"></div>
                             <div class="col-md-9">
                                 <h3 ng-if="selected.projectTypeName == 'nameless' " class="panel-title">Blank Project</h3>
                                 <h3 ng-if="selected.projectTypeName != 'nameless' " class="panel-title">{{selected.projectTypeName}}</h3>
