@@ -535,8 +535,71 @@ angular.module('odeskApp')
       $scope.userSkills = _.without($scope.userSkills, _.findWhere($scope.userSkills,  skill));
 			removeSkills.update(skill.key);
 		};
-		
-		$scope.addUsage = function () {
+
+            
+      // add workspace configuration
+            $scope.workspaces=[];
+            $scope.ramDetails =[];
+            $scope.account_id='';
+            $scope.workspace_name ='';
+            $scope.workspaceId ='';
+            $scope.runner_lifetime ='';
+             $scope.builder_execution_time ='';
+              $scope.runner_ram ='';
+              var user_id;
+
+            $http({method: 'GET', url: '/api/workspace/all'}).success(function(workspaces){
+
+                  // console.log(data);
+                  
+                  angular.forEach(workspaces, function (workspace) {
+                        // console.log(workspace);
+                        // console.log(workspace.attributes);
+                       $scope.workspaces.push(workspace.workspaceReference);
+                  });  
+                  
+                $scope.getWorkspaceInfo($scope.workspaces[0].id);
+
+            }).error(function(err){
+
+            });
+
+            $scope.getWorkspaceInfo=function(workspaceId)
+            {
+              // console.log('----');
+              // console.log(workspaceId);
+              // console.log('----');
+                $scope.workspaceInfo={'builder':{'type':'','threshold':'','ram':'','holdtime':''},
+                                      'runner':{'type':'','threshold':'','ram':'','teardowntime':'','imageStorageTime':''}
+                                  };
+                $http({method: 'GET', url: '/api/workspace/'+workspaceId}).success(function(data)
+                    {
+                        console.log('----');
+                        console.log(data.attributes);
+                        console.log('----');
+
+                        $scope.workspaceInfo.builder.type='Dedicated'
+                        $scope.workspaceInfo.builder.threshold=''
+                        $scope.workspaceInfo.builder.ram='';
+                        $scope.workspaceInfo.builder.holdtime='3600 secs';
+
+                        console.log($scope.workspaceInfo.builder);
+
+                        $scope.workspaceInfo.runner.type='Dedicated'
+                        $scope.workspaceInfo.runner.threshold=''
+                        $scope.workspaceInfo.runner.ram='';
+                        $scope.workspaceInfo.runner.teardowntime='3600 secs';
+                        $scope.workspaceInfo.runner.imageStorageTime='365 Days';
+
+                        console.log($scope.workspaceInfo.runner);
+
+                        }).error(function(err){ });
+            }
+
+            
+
+
+$scope.addUsage = function () {
 			$('#btn-preloader4').addClass('preloader');
 			$('#btn4').addClass('btn-disabled');
 			var usageData = {
