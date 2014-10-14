@@ -1,6 +1,5 @@
 <div class="breadcrumb-wrap">
     <ul class="breadcrumb projectnav breadcrumb clearfix">
-
         <li class="new-project clearfix" ng-if="!box">
             <div ng-if="workspaces.length == 1">
                 <a class="clearfix button" href="/ws/{{workspaces[0].workspaceReference.name}}?action=newProject" target="_blank">
@@ -70,13 +69,29 @@
     </ul>
 </div>
 <div class="row"></div>
-<!-- work in progress ... code may contain inline css-->
+<div class="panel panel-default panel-ce">
+      <div class="panel-body"></div></div>
+    
+
 
 <div class="col-md-12 factorylistbox" ng-show="projectselect">
     <img style="margin-left: 68px; margin-top: -37px;" src="./images/up-arrow.png" />
     <h3 ng-click="projectselect=0" class="pull-right"><a href="">x</a></h3>
     <div ng-include="'views/factory-carousal.html'"></div>
 </div>
+
+<!-- <div class="col-md-12"> -->
+
+<div class="col-md-12">
+    <div class="panel-box" style="margin-top: 10px" ng-if="c2User=='TRUE'" >
+        <div class="panel-bg">
+            <div class="row">
+                <div>Welcome to the all new Codenvy! Codenvy 2 projects will be migrated in late 2014. You may access those projects <a class="message" target="_blank" href="https://c2.codenvy.com/site/login">here</a>.
+                </div>      
+            </div>
+        </div>      
+    </div>
+    
 
 <div class="project-box clearfix" ng-if="box">
 
@@ -123,16 +138,16 @@
 
 
     </div><!-- New Project -->
-	
+    
     <!-- start help-->
-	<div ng-show="isNeedToShowHelp()" class="box-example">
-    	<div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
-        	<div class="arrow-img"><img src="./images/arrow.png" class="img-responsive"  alt=""/></div>
+    <div ng-show="isNeedToShowHelp()" class="box-example">
+        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+            <div class="arrow-img"><img src="./images/arrow.png" class="img-responsive"  alt=""/></div>
             <div class="panel panel-default">
-			  <div class="panel-heading" style="text-align:center">
-			    <div class="codenvy-rounded-logo"><img src="./images/codenvy-rounded-logo.png" class="img-responsive"  alt=""/></div>
-				<strong>Welcome to your Workspace!</strong>
-			  </div>
+              <div class="panel-heading" style="text-align:center">
+                <div class="codenvy-rounded-logo"><img src="./images/codenvy-rounded-logo.png" class="img-responsive"  alt=""/></div>
+                <strong>Welcome to your Workspace!</strong>
+              </div>
               <div class="panel-body">
                 <p>Codenvy is a Developer Environment Cloud.</p>
                 <p style="margin-top:2px">Click <b>Create New Project</b> to get started.</p>
@@ -140,9 +155,9 @@
               </div>
             </div>
         </div>
-	</div>
-	<!-- end help-->
-	
+    </div>
+    <!-- end help-->
+    
     <div class="col-md-10">
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
             <div class="panel panel-default">
@@ -178,9 +193,11 @@
                 </div><!-- panel-footer -->
             </div><!-- panel-default -->
         </div><!-- projectbox -->
-    </div>
+    
 </div>
-
+</div>
+<!-- </div>
+ -->
 <div ng-if="notification" style="width: 300px" class="col-md-3 projectbox" data-toggle="modal" data-target="#myModal">
     <div class="panel panel-primary">
         <div class="panel-heading">

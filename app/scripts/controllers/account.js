@@ -306,7 +306,9 @@ angular.module('odeskApp')
               $scope.accountType = 'PREMIUM';
             } else {
               $scope.accountType = 'FREE';
+
             }
+            console.log($scope.accountType);
 
       });
    });
@@ -535,8 +537,72 @@ angular.module('odeskApp')
       $scope.userSkills = _.without($scope.userSkills, _.findWhere($scope.userSkills,  skill));
 			removeSkills.update(skill.key);
 		};
-		
-		$scope.addUsage = function () {
+
+            
+      // add workspace configuration
+            $scope.workspaces=[];
+            $scope.ramDetails =[];
+            $scope.account_id='';
+            $scope.workspace_name ='';
+            $scope.workspaceId ='';
+            $scope.runner_lifetime ='';
+            $scope.builder_execution_time ='';
+            $scope.getWorkspaceInfoId='';
+              $scope.runner_ram ='';
+              var user_id;
+
+            $http({method: 'GET', url: '/api/workspace/all'}).success(function(workspaces){
+
+                 
+                  
+                  angular.forEach(workspaces, function (workspace) {
+                        
+                    $scope.workspaces.push(workspace.workspaceReference);
+                  });  
+                $scope.getWorkspaceInfoId=$scope.workspaces[0].id;
+                $scope.getWorkspaceInfo();
+              
+            }).error(function(err){
+
+            });
+
+            $scope.getWorkspaceInfo=function()
+            {
+               
+                $scope.workspaceId = $scope.getWorkspaceInfoId;
+                $scope.workspaceInfo={'builder':{'type':'','threshold':'','ram':'','holdtime':''},
+                                      'runner':{'type':'','threshold':'','ram':'','teardowntime':'','alwaysOn':''}
+                                  };
+                $http({method: 'GET', url: '/api/workspace/'+$scope.workspaceId}).success(function(data)
+                    {       
+    
+                        $scope.workspaceInfo.builder.type='Dedicated'
+                        $scope.workspaceInfo.builder.threshold=data.attributes['codenvy:builder_execution_time'];
+                        $scope.workspaceInfo.builder.ram=data.attributes['codenvy:runner_ram'];
+                        $scope.workspaceInfo.builder.holdtime='3600 secs';
+
+                    
+                        $scope.workspaceInfo.runner.type='Dedicated'
+                        $scope.workspaceInfo.runner.threshold=data.attributes['codenvy:runner_lifetime'];
+                        $scope.workspaceInfo.runner.ram=data.attributes['codenvy:runner_ram'];
+                        $scope.workspaceInfo.runner.teardowntime='3600 secs';
+                        $scope.workspaceInfo.runner.alwaysOn='';
+
+                        if($scope.workspaceInfo.runner.threshold==-1)
+                        {
+                            $scope.workspaceInfo.runner.alwaysOn='Yes';
+                        }
+                        else
+                        {
+                            $scope.workspaceInfo.runner.alwaysOn='No';
+                        }
+                        }).error(function(err){ });
+            }
+
+            
+
+
+$scope.addUsage = function () {
 			$('#btn-preloader4').addClass('preloader');
 			$('#btn4').addClass('btn-disabled');
 			var usageData = {

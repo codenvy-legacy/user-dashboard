@@ -188,7 +188,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .celist .label { font-weight:normal; line-height:28px; height:28px; display:block; float:left; margin-bottom:10px; margin-right:10px; color:#a3a3a3; padding:5px 5px 5px 10px ; background:#F0F0F0; }
 
 .celist .label > span.skill { float: left; line-height:1.5;}
-.celist .label > span.glyphicon-remove { float:right; background:#a8a8a8; color:#ffffff; border-radius:10px; margin-left:8px; margin-top: 0; padding:3px; cursor: pointer; }
+.celist .label > span.glyphicon-remove { float:right; background:#a8a8a8; color:#ffffff; border-radius:10px; margin-left:8px; margin-top: 0; padding:3px; cursor: pointer; position: relative; top: -40px; right: -10px; }
 
 /* Stats page and general colors */
 .sparkline { display: inline-block; position: relative; }
@@ -566,7 +566,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 /* PROJECTBOX
 -----------------------------*/
 .project-box {
-  padding-top: 56px;
+  padding-top: 25px;
 }
 .project-box > .col-md-10{
   padding: 0;
@@ -1291,3 +1291,22 @@ label {margin-right:0px;}
 @media (min-width: 1200px) {
 
 }
+
+.panel-box { margin-top: -10px;}
+
+.panel-bg {  background:#adcee8;
+  text-align:center;
+
+    border: 1px solid #3887b6;
+    font-size: 11px;min-height: 30px;
+    line-height: 20px;
+    margin-bottom: 4px;
+    padding: 0 6px;}
+    a.message{
+      font-size:11px;                                                                                                                                                                                                                  
+      color:black;
+}
+    .close-btn {color: #3887b6;
+    position: relative;
+    right: 6px;
+    top: 0;}
