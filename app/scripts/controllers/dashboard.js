@@ -369,7 +369,7 @@ angular.module('odeskApp')
           console.log(data.attributes);
           $scope.oldUser = data.attributes['codenvy:created'];
 
-          if(data.attributes['codenvy:created']!=''){$scope.c2User='FALSE';}else{$scope.c2User='TRUE';}
+          if(data.attributes['codenvy:created']!=''){$scope.c2User='TRUE';}else{$scope.c2User='FALSE';}
       }).error(function(err){
 
       });
