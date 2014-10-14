@@ -35,6 +35,17 @@
                     <div class="col-md-5">Storage Limit: <span class="cetag">Unlimited</span></div>
                     <div class="col-md-7">Developer Limit: <span class="cetag">Unlimited</span></div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12">Runner/Builder Storage Limit: <strong></strong></div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <h4 class="text-center">Builder</h4>
+                {{workspaceInfo.builder}}
+                <div class="cerow">Builder Queue Type: <strong>Dedicated</strong></div>
+                <div class="cerow">Builder Time Threshold: <strong></strong></div>
+                <div class="cerow">Builder RAM Allocations: <strong></strong></div>
+                <div class="cerow">Builder Result Hold Time: <strong>3600 secs</strong></div>
             </div>
             <div class="panel-body">
                 <h4 class="text-center">Builder</h4>
@@ -53,6 +64,21 @@
             </div>
         </div>
     </div>
+
+    <div class="col-md-6">
+        <div class="panel panel-default panel-ce" ng-if="accountType=='PREMIUM'">
+      <div class="panel-body">
+        <h4 class="text-center"  ><img height="22" src="./images/user.png"/> You are a SAAS Premium user</h4>
+        <h4 class="text-center" ng-if="accountType=='FREE'" >You are a SAAS Community user</h4>
+      </div>
+    </div> 
+        <div class="panel panel-default panel-ce">
+            <div class="panel-body">
+                <h4 class="text-center">Workspaces you have access</h4>
+                <div class="celist" ng-repeat="workspace in workspaces">
+                    <div class="label label-default">{{workspace.name}}<span class="glyphicon glyphicon-remove"></span></div>
+                  <!--   <div class="label label-default">IOS Application <span class="glyphicon glyphicon-remove"></span></div>
+                    <div class="label label-default">Cobol <span class="glyphicon glyphicon-remove"></span></div> -->
     <div class="col-md-6"> 
         <div class="panel panel-default panel-ce">
             <div class="panel-body">
@@ -61,7 +87,6 @@
                     <div class="label label-default">Java Development</div>
                     <div class="label label-default">IOS Application</div>
                     <div class="label label-default">Cobol</div>
-
                 </div>
             </div>
         </div>
