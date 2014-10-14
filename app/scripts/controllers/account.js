@@ -306,7 +306,9 @@ angular.module('odeskApp')
               $scope.accountType = 'PREMIUM';
             } else {
               $scope.accountType = 'FREE';
+
             }
+            console.log($scope.accountType);
 
       });
    });
@@ -544,55 +546,56 @@ angular.module('odeskApp')
             $scope.workspace_name ='';
             $scope.workspaceId ='';
             $scope.runner_lifetime ='';
-             $scope.builder_execution_time ='';
+            $scope.builder_execution_time ='';
+            $scope.getWorkspaceInfoId='';
               $scope.runner_ram ='';
               var user_id;
 
             $http({method: 'GET', url: '/api/workspace/all'}).success(function(workspaces){
 
-                  // console.log(data);
+                 
                   
                   angular.forEach(workspaces, function (workspace) {
-                        // console.log(workspace);
-                        // console.log(workspace.attributes);
-                       $scope.workspaces.push(workspace.workspaceReference);
+                        
+                    $scope.workspaces.push(workspace.workspaceReference);
                   });  
-                  
-                $scope.getWorkspaceInfo($scope.workspaces[0].id);
-
+                $scope.getWorkspaceInfoId=$scope.workspaces[0].id;
+                $scope.getWorkspaceInfo();
+              
             }).error(function(err){
 
             });
 
-            $scope.getWorkspaceInfo=function(workspaceId)
+            $scope.getWorkspaceInfo=function()
             {
-              // console.log('----');
-              // console.log(workspaceId);
-              // console.log('----');
+               
+                $scope.workspaceId = $scope.getWorkspaceInfoId;
                 $scope.workspaceInfo={'builder':{'type':'','threshold':'','ram':'','holdtime':''},
-                                      'runner':{'type':'','threshold':'','ram':'','teardowntime':'','imageStorageTime':''}
+                                      'runner':{'type':'','threshold':'','ram':'','teardowntime':'','alwaysOn':''}
                                   };
-                $http({method: 'GET', url: '/api/workspace/'+workspaceId}).success(function(data)
-                    {
-                        console.log('----');
-                        console.log(data.attributes);
-                        console.log('----');
-
+                $http({method: 'GET', url: '/api/workspace/'+$scope.workspaceId}).success(function(data)
+                    {       
+    
                         $scope.workspaceInfo.builder.type='Dedicated'
-                        $scope.workspaceInfo.builder.threshold=''
-                        $scope.workspaceInfo.builder.ram='';
+                        $scope.workspaceInfo.builder.threshold=data.attributes['codenvy:builder_execution_time'];
+                        $scope.workspaceInfo.builder.ram=data.attributes['codenvy:runner_ram'];
                         $scope.workspaceInfo.builder.holdtime='3600 secs';
 
-                        console.log($scope.workspaceInfo.builder);
-
+                    
                         $scope.workspaceInfo.runner.type='Dedicated'
-                        $scope.workspaceInfo.runner.threshold=''
-                        $scope.workspaceInfo.runner.ram='';
+                        $scope.workspaceInfo.runner.threshold=data.attributes['codenvy:runner_lifetime'];
+                        $scope.workspaceInfo.runner.ram=data.attributes['codenvy:runner_ram'];
                         $scope.workspaceInfo.runner.teardowntime='3600 secs';
-                        $scope.workspaceInfo.runner.imageStorageTime='365 Days';
+                        $scope.workspaceInfo.runner.alwaysOn='';
 
-                        console.log($scope.workspaceInfo.runner);
-
+                        if($scope.workspaceInfo.runner.threshold==-1)
+                        {
+                            $scope.workspaceInfo.runner.alwaysOn='Yes';
+                        }
+                        else
+                        {
+                            $scope.workspaceInfo.runner.alwaysOn='No';
+                        }
                         }).error(function(err){ });
             }
 
