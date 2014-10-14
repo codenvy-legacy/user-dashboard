@@ -21,59 +21,40 @@
                     </select>
                 </div>
                 <div class="row">
-                    <div class="col-md-5"> This Workspace has 1 dedicated queue
-                    </div>
-                    <div class="col-md-5">
-                        <p><button class="btn btn-primary simple">Upgrade(soon) to get a dedicated queue</button>
-                            </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-5">Project Limit : <span class="cetag">Unlimited</span></div>
+                    <div class="col-md-5">Project Limit: <span class="cetag">Unlimited</span></div>
                     <div class="col-md-7">Private Project Limit: <span class="cetag">Unlimited</span></div>
                 </div>
                 <div class="row">
                     <div class="col-md-5">Storage Limit: <span class="cetag">Unlimited</span></div>
                     <div class="col-md-7">Developer Limit: <span class="cetag">Unlimited</span></div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">Runner/Builder Storage Limit: <strong></strong></div>
-                </div>
             </div>
             <div class="panel-body">
                 <h4 class="text-center">Builder</h4>
                
                 <div class="cerow">Builder Queue Type: <strong>{{workspaceInfo.builder.type}}</strong></div>
-                <div class="cerow">Builder Time Threshold: <strong>{{workspaceInfo.builder.threshold}}</strong></div>
-                <div class="cerow">Builder RAM Allocations: <strong>{{workspaceInfo.runner.ram}}</strong></div>
-                <div class="cerow">Builder Result Hold Time: <strong>{{workspaceInfo.builder.holdtime}}</strong></div>
+                <div class="cerow">Builder RAM Allocations: <strong>{{workspaceInfo.runner.ram}} MB</strong></div>
+                <div class="cerow">Builder Time Threshold: <strong>{{workspaceInfo.builder.threshold}} mins</strong></div>
             </div>
             
             <div class="panel-body">
                 <h4 class="text-center">Runner</h4>
                 
                 <div class="cerow">Runner Queue Type: <strong>{{workspaceInfo.runner.type}}</strong></div>
+                <div class="cerow">Runner RAM Allocations: <strong>{{workspaceInfo.runner.ram}} MB</strong></div>
                 <div class="cerow">Runner Time Threshold: <strong>{{workspaceInfo.runner.threshold}}</strong></div>
-                <div class="cerow">Runner RAM Allocations: <strong>{{workspaceInfo.runner.ram}}</strong></div>
-                <div class="cerow">Run Image Teardown Time: <strong>{{workspaceInfo.runner.teardowntime}}</strong></div>
                 <div class="cerow">Always On: <strong>{{workspaceInfo.runner.alwaysOn}}</strong></div>
             </div>
         </div>
     </div>
 
     <div class="col-md-6">
-        <div class="panel panel-default panel-ce" ng-if="accountType=='PREMIUM'">
-      <div class="panel-body">
-        <h4 class="text-center" ><img height="22" src="./images/user.png"/> You are a SAAS Premium user</h4>
-        <h4 class="text-center" ng-if="accountType=='FREE'" >You are a SAAS Community user</h4>
-      </div>
-    </div> 
+        
         <div class="panel panel-default panel-ce">
             <div class="panel-body">
-                <h4 class="text-center">Workspaces you have access</h4>
+                <h4 class="text-center">Workspace(s) you are granted workspace/admin permission</h4>
                 <div class="celist" ng-repeat="workspace in workspaces">
-                    <div class="label label-default">{{workspace.name}}<span class="glyphicon glyphicon-remove"></span></div>
-
+                    <div class="label label-default">{{workspace.name}}</div>
                     </div>
                     </div>
 
