@@ -366,7 +366,6 @@ angular.module('odeskApp')
       $scope.c2User='FALSE';
       $http({method: 'GET', url: '/api/profile/'}).success(function(data){
           $scope.userDetails=data.attributes;
-          console.log(data.attributes);
           $scope.oldUser = data.attributes['codenvy:created'];
 
           if(data.attributes['codenvy:created']!=''){$scope.c2User='TRUE';}else{$scope.c2User='FALSE';}
