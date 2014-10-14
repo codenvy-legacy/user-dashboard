@@ -22,49 +22,52 @@ angular.module('odeskApp')
         $scope.endDates = [];
 		$scope.trialEndDates = [];
         $scope.desc = [];
-        var temp = [];
-        var temp2 = [];
-        var num = 0;
+        var nbSubscriptions=0;
         Users.query().then(function(data){
-            var ref = data[0].accountReference;
-            if(ref.id!=undefined)
-            {
-                $http.get('/api/account/'+ref.id+'/subscriptions').success(function(datab, status){
-                    temp = temp.concat(datab);
-                    for(var i=0;i<temp.length;i++)
-                    {
-                        var sub = temp[i];
-                        setData(sub,i);
+            for (var j = data.length - 1; j >= 0; j--) {
+                var ref = data[j].accountReference;
+                if(ref.id!=undefined)
+                {
+                    //Get the account's susbcription only if user = accountOwner
+                    var isAccountOwner= false;
+
+                    for (var iAccount = data[j].roles.length - 1; iAccount >= 0; iAccount--) {
+                        if (data[j].roles[iAccount] == "account/owner") isAccountOwner=true;
+                    };
+
+                    if (isAccountOwner) {
+                        $http.get('/api/account/'+ref.id+'/subscriptions').success(function(datab, status){
+                            for(var i=0;i<datab.length;i++)
+                            {
+                                setData(datab[i],nbSubscriptions);
+                                nbSubscriptions++;
+                            }
+                        });
                     }
-                });
-            }
+                }
+            };
         });
 
-        function setData(sub,i)
+        function setData(dataSub,numSubscription)
         {
-            $http.get('/api/account/subscriptions/'+sub.id+'/attributes').success(function(datac, status){
-                temp2[i] = temp[i];
-                $scope.stDates[i] = datac.startDate;
-                $scope.endDates[i] = datac.endDate;
-                $scope.desc[i] = datac.description;
+            $http.get('/api/account/subscriptions/'+dataSub.id+'/attributes').success(function(detailsSub, status){
+                $scope.subscriptions[numSubscription] = dataSub;
+                $scope.stDates[numSubscription] = detailsSub.startDate;
+                $scope.endDates[numSubscription] = detailsSub.endDate;
+                $scope.desc[numSubscription] = detailsSub.description;
 					
-				var dtStart = new Date(datac.startDate);
-				var tempTime = dtStart.getTime() + (datac.trialDuration * 86400000); // 86400000 = 24h * 3600 secs * 1000 ms
+				var dtStart = new Date(detailsSub.startDate);
+				var tempTime = dtStart.getTime() + (detailsSub.trialDuration * 86400000); // 86400000 = 24h * 3600 secs * 1000 ms
 				var dtToday = new Date();
 				if(dtToday < tempTime)
 				{
 					var dtTrialEnd = new Date(tempTime);
-					$scope.trialEndDates[i] = (dtTrialEnd.getMonth()+1) + "/" + dtTrialEnd.getDate() + "/" + dtTrialEnd.getFullYear();
+					$scope.trialEndDates[numSubscription] = (dtTrialEnd.getMonth()+1) + "/" + dtTrialEnd.getDate() + "/" + dtTrialEnd.getFullYear();
 				}
 				else
-					$scope.trialEndDates[i] = '---';
-									
-                num++;
-                if(num==temp.length)
-                {
-                    $scope.subscriptions = temp2;
-                }
-                    
+					$scope.trialEndDates[numSubscription] = '---';
+                
+
              });
         }
     });
