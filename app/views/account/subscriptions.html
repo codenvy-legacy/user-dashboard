@@ -12,7 +12,7 @@
 
 <!-- Subscription Modal Start-->
 
-    <div ng-if="subscriptions.length ==0" class="col-md-12" style="margin-left: auto; margin-right: auto; margin-top:50px">
+    <div ng-if="subscription=='FALSE'" class="col-md-12" style="margin-left: auto; margin-right: auto; margin-top:50px">
     <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12"></div>
         <div class="col-lg-5 col-sm-5 col-md-5 col-xs-12 start_margin">
             <div class="panel panel-default">
@@ -44,7 +44,7 @@
     </div>
 <!-- End Subcription Modal Start-->
 
-<div class="col-md-12" ng-if="subscriptions.length > 0">
+<div class="col-md-12" ng-if="subscription = 'TRUE'">
     <div class="row">
 <ul class="breadcrumb projectnav" style="margin-bottom:0px;border-top:0px solid #dcdcdc; border-bottom:none;">
             <li>All Subscriptions</li>
@@ -74,11 +74,21 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="subscription in subscriptions| filter: filter | orderBy:param:reverse">
+
                         <td>&nbsp;</td>
                         <td class="text-center blk_lnk" style="vertical-align:middle;"><a ng-href="#/account/subscriptions/{{subscription.id}}"><strong class="ng-binding">{{desc[$index] | uppercase}}</strong></a></td>
-                        <td  class="text-center" style="vertical-align:middle;line-height:35px;">{{stDates[$index]}}</td>
-                        <td class="text-center" style="vertical-align:middle;line-height:35px;">{{trialEndDates[$index]}}</td>
-						<td class="text-center" style="vertical-align:middle;line-height:35px;">{{endDates[$index]}}</td>
+                        <td  class="text-center" style="vertical-align:middle;line-height:35px;"><span class="label label-primary">{{stDates[$index]}}</span>
+                        </td>
+                        <td class="text-center" style="vertical-align:middle;line-height:35px;">
+                        <span class="label label-primary" ng-if="isTrialEnd=='TRUE'">{{trialEndDates[$index]}}</span>
+                        
+                        <span ng-if="isTrialEnd=='FALSE'">{{trialEndDates[$index]}}</span>
+                        </td>
+						<td class="text-center" style="vertical-align:middle;line-height:35px;">
+                        <span class="label label-primary" ng-if="isExpired(endDates[$index])=='false'">{{endDates[$index]}}</span>
+                        
+                        <span class="label label-danger" ng-if="isExpired(endDates[$index])=='true'">{{endDates[$index]}}</span>
+                        </td>
                         <td class="text-center" style="vertical-align:middle;line-height:35px;">
 							<div class="codenvybutton" style="width:150px;margin-left: auto;margin-right: auto;"><a ng-href="#/account/subscriptions/{{subscription.id}}" style="color: #8f8f8f;text-decoration:none;">Manage subscription</a></div>
                         </td>
