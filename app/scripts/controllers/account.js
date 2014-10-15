@@ -376,15 +376,18 @@ angular.module('odeskApp')
 			});
 			
 			var salesContactArray = [];
-			
-			$.each(resp.preferences, function (key, skill) {
+			$scope.salesContactOptions = salesContactArray;
+        });
+        
+		$http({method: 'GET', url: '/api/profile/prefs'}).success(function (prefs, status) {
+			$.each(prefs, function (key, skill) {
 				if(/skill_/i.test(key))
 				{
 					$scope.userSkills.push({'key':key, 'name': skill});
 				}
 			});
 			
-			$.each(resp.preferences, function (key, dat) {
+			$.each(prefs, function (key, dat) {
 				if(/usage_/i.test(key))
 				{
 					if(key=='usage_1') {
@@ -432,7 +435,7 @@ angular.module('odeskApp')
 				}
 			});
 			
-			$.each(resp.preferences, function (key, dat) {
+			$.each(prefs, function (key, dat) {
 				if(/project_/i.test(key))
 				{
 					if(key=='project_1') {
@@ -465,11 +468,8 @@ angular.module('odeskApp')
 					}
 				}
 			});
-			
-			
-				$scope.salesContactOptions = salesContactArray;
-        });
-        
+       });
+   
         $scope.updateProfile = function () {
 			if($scope.firstName!=firstNameValue || $scope.lastName!=lastNameValue || $scope.email!=emailValue || $scope.phone!=phoneValue || $scope.country!=countryValue || $scope.companyName!=companyNameValue || $scope.jobTitle!=jobTitleValue || $scope.check!=checkValue)
 			{
