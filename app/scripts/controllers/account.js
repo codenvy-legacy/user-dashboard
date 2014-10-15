@@ -306,10 +306,7 @@ angular.module('odeskApp')
               $scope.accountType = 'PREMIUM';
             } else {
               $scope.accountType = 'FREE';
-
             }
-            console.log($scope.accountType);
-
       });
    });
 
@@ -553,11 +550,15 @@ angular.module('odeskApp')
 
             $http({method: 'GET', url: '/api/workspace/all'}).success(function(workspaces){
 
-                 
-                  
                   angular.forEach(workspaces, function (workspace) {
-                        
-                    $scope.workspaces.push(workspace.workspaceReference);
+                    // only take the workspaces where the user is workspace/admin
+                    var isWorkspaceOwner = false;
+                    for (var iRoles = workspace.roles.length - 1; iRoles >= 0; iRoles--) {
+                        if (workspace.roles[iRoles] == "workspace/admin") isWorkspaceOwner=true;
+                    };
+
+                    if (isWorkspaceOwner) {$scope.workspaces.push(workspace.workspaceReference)}; 
+                    
                   });  
                 $scope.getWorkspaceInfoId=$scope.workspaces[0].id;
                 $scope.getWorkspaceInfo();
@@ -570,33 +571,46 @@ angular.module('odeskApp')
             {
                
                 $scope.workspaceId = $scope.getWorkspaceInfoId;
-                $scope.workspaceInfo={'builder':{'type':'','threshold':'','ram':'','holdtime':''},
-                                      'runner':{'type':'','threshold':'','ram':'','teardowntime':'','alwaysOn':''}
+                $scope.workspaceInfo={'builder':{'type':'','threshold':'','ram':''},
+                                      'runner':{'type':'','threshold':'','ram':'','alwaysOn':''}
                                   };
-                $http({method: 'GET', url: '/api/workspace/'+$scope.workspaceId}).success(function(data)
-                    {       
-    
-                        $scope.workspaceInfo.builder.type='Dedicated'
-                        $scope.workspaceInfo.builder.threshold=data.attributes['codenvy:builder_execution_time'];
+
+                // Add default values for Builder
+                $scope.workspaceInfo.builder.type='Global Shared';
+                $scope.workspaceInfo.builder.ram='256';
+                $scope.workspaceInfo.builder.threshold='10';
+
+
+                // Add default values for Runner
+                $scope.workspaceInfo.runner.type='Global Shared';
+                $scope.workspaceInfo.runner.type='Dedicated';
+                $scope.workspaceInfo.runner.threshold='5 mins';
+                $scope.workspaceInfo.runner.ram='256';
+                $scope.workspaceInfo.runner.alwaysOn='No';
+
+                $http({method: 'GET', url: '/api/workspace/'+$scope.workspaceId}).success(function(data) {    
+                    if (data.attributes['codenvy:runner_ram'] !== undefined) {
+
+                        $scope.workspaceInfo.builder.type='Dedicated';
+                        $scope.workspaceInfo.builder.threshold=Math.floor(data.attributes['codenvy:builder_execution_time']/60);
                         $scope.workspaceInfo.builder.ram=data.attributes['codenvy:runner_ram'];
-                        $scope.workspaceInfo.builder.holdtime='3600 secs';
 
                     
-                        $scope.workspaceInfo.runner.type='Dedicated'
-                        $scope.workspaceInfo.runner.threshold=data.attributes['codenvy:runner_lifetime'];
+                        $scope.workspaceInfo.runner.type='Dedicated';
                         $scope.workspaceInfo.runner.ram=data.attributes['codenvy:runner_ram'];
-                        $scope.workspaceInfo.runner.teardowntime='3600 secs';
                         $scope.workspaceInfo.runner.alwaysOn='';
 
-                        if($scope.workspaceInfo.runner.threshold==-1)
-                        {
+                        //If Always-On Subscription
+                        if(data.attributes['codenvy:runner_lifetime']==-1) {
                             $scope.workspaceInfo.runner.alwaysOn='Yes';
+                            $scope.workspaceInfo.runner.threshold='Unlimited';
                         }
-                        else
-                        {
+                        else {
                             $scope.workspaceInfo.runner.alwaysOn='No';
+                            $scope.workspaceInfo.runner.threshold=Math.floor(data.attributes['codenvy:runner_lifetime']/60) + ' mins';
                         }
-                        }).error(function(err){ });
+                    }
+                  }).error(function(err){ });
             }
 
             
