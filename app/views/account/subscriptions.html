@@ -11,13 +11,37 @@
 </ul>
 
 <!-- Subscription Modal Start-->
-<div class="col-md-12" ng-if="!subscriptions">
-    <div class="row" style="background: none repeat scroll 0 0 #adcee8;
-    border: 1px solid #3887b6;line-height: 35px; margin: 5px 2px;text-align: center;font-size: 16px;font-weight: 800;letter-spacing: 0">
-   You have not any Subscription yet !!
- </div><br>
-<div class="modal-footer"><button type="button" class="btn btn-primary" ng-click="#">FREE PREMIUM TRIAL</button></div>
-</div>
+
+    <div ng-if="subscriptions.length ==0" class="col-md-12" style="margin-left: auto; margin-right: auto; margin-top:50px">
+    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12"></div>
+        <div class="col-lg-5 col-sm-5 col-md-5 col-xs-12 start_margin">
+            <div class="panel panel-default">
+              <div class="panel-heading" style="text-align:center">
+                <div class="codenvy-rounded-logo"><img src="./images/codenvy-rounded-logo.png" class="img-responsive"  alt=""/></div>
+                <strong style="font-size:18px;line-height:35px;">Go Premium</strong>
+                <p style="font-size:13px;"><i>Upgrade to work smarter</i></p>
+              </div>
+              <div class="panel-body">
+              <ul class="premium-link">
+                 <li><strong>Add from 2GB to 2TB More RAM</strong><i> for mutiple and bigger Runners.</i></li>
+                   <li><strong>Always On Runners,</strong><i> to get rid of Runner Timouts and enable hosted preview.</i></li>
+                 <li><strong>Organization Add-On,</strong><i> for multiple workspaces and team management.</i></li>
+                </ul>
+
+                    <div class="text-center starting_date">
+                        <span class="textdate1"> Starting from:</span>&nbsp;
+                        <span class="textdate2">
+                            <sup>$</sup>
+                        </span>
+                        <span class="textdate3">1</span>
+                        <span class="textdate4">/mo.</span>
+                        <span class="textdate5">AFTER FREE TRIAL</span>
+                        <a type="button" class="btn btn-primary" style="margin-top:20px;margin-left: auto; margin-right: auto;padding:6px 30px;" class="clearfix" href="https://codenvy-stg.com/products/developer-environment-cloud-saas/#pricing" target="_blank">FREE PREMIUM TRIAL</a>
+                    </div>
+              </div>
+            </div>
+        </div>
+    </div>
 <!-- End Subcription Modal Start-->
 
 <div class="col-md-12" ng-if="subscriptions.length > 0">

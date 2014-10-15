@@ -47,10 +47,11 @@ angular.module('odeskApp')
                 }
             };
         });
-
+            // $scope.subscription = 'FALSE';
         function setData(dataSub,numSubscription)
-        {
+        {       
             $http.get('/api/account/subscriptions/'+dataSub.id+'/attributes').success(function(detailsSub, status){
+                // $scope.subscription = 'TRUE';                
                 $scope.subscriptions[numSubscription] = dataSub;
                 $scope.stDates[numSubscription] = detailsSub.startDate;
                 $scope.endDates[numSubscription] = detailsSub.endDate;
@@ -67,7 +68,15 @@ angular.module('odeskApp')
 				else
 					$scope.trialEndDates[numSubscription] = '---';
                 
+                    });
+             // .error(function(status)
+             // {
+             //        if(status==404)
+             //        {
+             //            $scope.subscription = 'FALSE';
+             //        }
 
-             });
+             // });
+             // console.log($scope.subscription);
         }
     });
