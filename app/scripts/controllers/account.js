@@ -557,11 +557,12 @@ angular.module('odeskApp')
                         if (workspace.roles[iRoles] == "workspace/admin") isWorkspaceOwner=true;
                     };
 
-                    if (isWorkspaceOwner) {$scope.workspaces.push(workspace.workspaceReference)}; 
+                    console.log(workspace);
+                    if (isWorkspaceOwner && (workspace.workspaceReference.temporary == false)) {$scope.workspaces.push(workspace.workspaceReference)}; 
                     
                   });  
                 $scope.getWorkspaceInfoId=$scope.workspaces[0].id;
-                $scope.getWorkspaceInfo();
+                $scope.getWorkspaceInfo ();
               
             }).error(function(err){
 
