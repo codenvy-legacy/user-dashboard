@@ -23,7 +23,7 @@ angular.module('odeskApp')
 		$scope.trialEndDates = [];
         $scope.desc = [];
         var nbSubscriptions=0;
-        $scope.subscription = 'FALSE';
+        // $scope.subscription;
         Users.query().then(function(data){
             for (var j = data.length - 1; j >= 0; j--) {
                 var ref = data[j].accountReference;
@@ -52,7 +52,7 @@ angular.module('odeskApp')
         
         function setData(dataSub,numSubscription)
         {       
-            $http.get('/api/account/subscriptions/'+dataSub.id+'/attributes').success(function(detailsSub, status){
+            $http.get('/api/account/subscriptions/'+dataSub.id+'/attributes').success(function(detailsSub, status){               
                 $scope.subscription = 'TRUE';          
                 $scope.subscriptions[numSubscription] = dataSub;
                 $scope.stDates[numSubscription] = detailsSub.startDate;
@@ -74,16 +74,14 @@ angular.module('odeskApp')
 				
                     $scope.trialEndDates[numSubscription] = '---';
                 }
-
                 }).error(function(status){
+                    $scope.subscription = 'FALSE';
                     if(status==404)
                     {
                         $scope.subscription = 'FALSE';
                     }
-
              });
         }
-
         $scope.isExpired=function(endDate)
         {
             var end = new Date(endDate).getTime();
