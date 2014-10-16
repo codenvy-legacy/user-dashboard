@@ -1336,7 +1336,7 @@ a.message{
     color:#69AAE4; /* or whatever color you prefer */
 }
 .start_margin{margin-left:40px;}
-.premium-link { padding:0; margin:0;}
+.premium-link { padding:0; margin:0; color:#595959;}
 .premium-link li { display:block; list-style:none; font-size:12px;background:url(../images/bullet-icon.png) no-repeat 0 11px; padding-left:15px; line-height:30px;}
 .starting_date{list-style:none;}
 .starting_date .textdate1{float: right;
