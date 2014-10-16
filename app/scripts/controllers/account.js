@@ -298,7 +298,7 @@ angular.module('odeskApp')
       { name: 'Zimbabwe', code: 'ZW' }
         ];
 		$scope.country = 'United States';
-		$scope.jobTitle = '';
+		
 
     $http({method: 'GET', url: '/api/account'}).success(function (account, status) {
       $http({method: 'GET', url: '/api/account/'+account[0].accountReference.id+'/subscriptions'}).success(function (subscription, status) {
@@ -486,7 +486,7 @@ angular.module('odeskApp')
                                     "phone":$scope.phone,
                                     "country":$scope.country,
                                     "employer":$scope.companyName,
-                                    "jobtitle":$scope.jobtitle,
+                                    "jobtitle":$scope.jobTitle,
                                     "sales_can_contact":$scope.check
                                     }
 
