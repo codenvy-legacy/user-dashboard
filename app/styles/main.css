@@ -188,7 +188,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .celist .label { font-weight:normal; line-height:28px; height:28px; display:block; float:left; margin-bottom:10px; margin-right:10px; color:#a3a3a3; padding:5px 5px 5px 10px ; background:#F0F0F0; }
 
 .celist .label > span.skill { float: left; line-height:1.5;}
-.celist .label > span.glyphicon-remove { float:right; background:#a8a8a8; color:#ffffff; border-radius:10px; margin-left:8px; margin-top: 0; padding:3px; cursor: pointer; position: relative; top: -40px; right: -10px; }
+.celist .label > span.glyphicon-remove { float:right; background:#a8a8a8; color:#ffffff; border-radius:10px; margin-left:8px; margin-top: 0; padding:3px; cursor: pointer; }
 
 /* Stats page and general colors */
 .sparkline { display: inline-block; position: relative; }
@@ -1267,24 +1267,34 @@ label {margin-right:0px;}
 @media (min-width: 320px) and (max-width: 480px) {
   .boxnav > li{padding: 10px;}
   .ws-button{width: 100%;}
+  .start_margin{margin-left: 0 !important;}
+  .starting_date .textdate5{padding-right: 0 !important;}
+  .starting_date { text-align: center !important;}
+  .starting_date .textdate1{ float: none !important;}
 }
 
 @media (min-width: 360px) and (max-width: 640px) {
-
+  .start_margin{margin-left: 0 !important;}
+  .starting_date .textdate5{padding-right: 0 !important;}
+  .starting_date { text-align: center !important;}
+  .starting_date .textdate1{ float: none !important;}
 }
 
 @media (min-width: 401px) and (max-width: 767px) {
-
+  .start_margin{margin-left: 0 !important;}
+  .starting_date .textdate5{padding-right: 0 !important;}
+  .starting_date { text-align: center !important;}
+  .starting_date .textdate1{ float: none !important;}
 }
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) and (max-width: 991px) {
-
+.starting_date .textdate5{padding-right: 0 !important;}
 }
 
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) and (max-width: 1199px) {
-
+.starting_date .textdate5{padding-right: 0 !important;}
 }
 
 /* Large devices (large desktops, 1200px and up) */
@@ -1294,19 +1304,51 @@ label {margin-right:0px;}
 
 .panel-box { margin-top: -10px;}
 
-.panel-bg {  background:#adcee8;
-  text-align:center;
-
-    border: 1px solid #3887b6;
-    font-size: 11px;min-height: 30px;
-    line-height: 20px;
+.panel-bg {  
+    background:#ffffff;
+    text-align:center;
+    font-weight: bold;
+    color: #3B7ABA;
+    border: 1px solid #ddd;
+    font-size: 12px;min-height: 30px;
+    line-height: 30px;
     margin-bottom: 4px;
-    padding: 0 6px;}
-    a.message{
-      font-size:11px;                                                                                                                                                                                                                  
-      color:black;
-}
-    .close-btn {color: #3887b6;
+    padding: 0 6px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  }
+
+a.message{
+    color: #3B7ABA;
+    font-size: 12px !important;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  
+.close-btn {color: #3887b6;
     position: relative;
     right: 6px;
     top: 0;}
+
+.sub li:before {
+    content: "• ";
+    list-style: none;
+    font-size: 26px;
+    color:#69AAE4; /* or whatever color you prefer */
+}
+.start_margin{margin-left:40px;}
+.premium-link { padding:0; margin:0; color:#595959;}
+.premium-link li { display:block; list-style:none; font-size:12px;background:url(../images/bullet-icon.png) no-repeat 0 11px; padding-left:15px; line-height:30px;}
+.starting_date{list-style:none;}
+.starting_date .textdate1{float: right;
+    font-size: 12px;
+    margin-top: 26px;}
+.starting_date .textdate2{color:#69AAE4;font-size: 33px;position: relative;right: -8px;}
+
+.starting_date .textdate3{font-size:38px;}
+.starting_date .textdate4{font-size:10px;}
+
+.starting_date .textdate5{display: inherit; color:#69AAE4; font-weight:bold;padding-right:58px;}
+
+.starting_date .textdate2 .sup1{top: -0.4em;}
+
+

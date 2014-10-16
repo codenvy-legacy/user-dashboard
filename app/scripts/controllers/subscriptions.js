@@ -23,6 +23,7 @@ angular.module('odeskApp')
 		$scope.trialEndDates = [];
         $scope.desc = [];
         var nbSubscriptions=0;
+        // $scope.subscription;
         Users.query().then(function(data){
             for (var j = data.length - 1; j >= 0; j--) {
                 var ref = data[j].accountReference;
@@ -47,27 +48,52 @@ angular.module('odeskApp')
                 }
             };
         });
-
+        
+        
         function setData(dataSub,numSubscription)
-        {
-            $http.get('/api/account/subscriptions/'+dataSub.id+'/attributes').success(function(detailsSub, status){
+        {       
+            $http.get('/api/account/subscriptions/'+dataSub.id+'/attributes').success(function(detailsSub, status){               
+                $scope.subscription = 'TRUE';          
                 $scope.subscriptions[numSubscription] = dataSub;
                 $scope.stDates[numSubscription] = detailsSub.startDate;
                 $scope.endDates[numSubscription] = detailsSub.endDate;
                 $scope.desc[numSubscription] = detailsSub.description;
-					
+            
 				var dtStart = new Date(detailsSub.startDate);
 				var tempTime = dtStart.getTime() + (detailsSub.trialDuration * 86400000); // 86400000 = 24h * 3600 secs * 1000 ms
 				var dtToday = new Date();
-				if(dtToday < tempTime)
+    
+                if(dtToday < tempTime)
 				{
+                   
 					var dtTrialEnd = new Date(tempTime);
 					$scope.trialEndDates[numSubscription] = (dtTrialEnd.getMonth()+1) + "/" + dtTrialEnd.getDate() + "/" + dtTrialEnd.getFullYear();
 				}
 				else
-					$scope.trialEndDates[numSubscription] = '---';
-                
-
+                {
+				
+                    $scope.trialEndDates[numSubscription] = '---';
+                }
+                }).error(function(status){
+                    $scope.subscription = 'FALSE';
+                    if(status==404)
+                    {
+                        $scope.subscription = 'FALSE';
+                    }
              });
+        }
+        $scope.isExpired=function(endDate)
+        {
+            var end = new Date(endDate).getTime();
+            var today = new Date().getTime();
+            
+            if(today > end)
+                {
+                    return 'true';
+                }
+            else{
+                    return 'false';
+                }
+
         }
     });
