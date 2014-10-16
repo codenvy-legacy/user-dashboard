@@ -24,7 +24,6 @@ angular.module('odeskApp')
         $scope.desc = [];
         var nbSubscriptions=0;
         $scope.subscription = 'FALSE';
-        $scope.isTrialEnd ='FALSE';
         Users.query().then(function(data){
             for (var j = data.length - 1; j >= 0; j--) {
                 var ref = data[j].accountReference;
@@ -66,13 +65,13 @@ angular.module('odeskApp')
     
                 if(dtToday < tempTime)
 				{
-                    $scope.isTrialEnd ='TRUE';
+                   
 					var dtTrialEnd = new Date(tempTime);
 					$scope.trialEndDates[numSubscription] = (dtTrialEnd.getMonth()+1) + "/" + dtTrialEnd.getDate() + "/" + dtTrialEnd.getFullYear();
 				}
 				else
                 {
-					$scope.isTrialEnd ='FALSE';
+				
                     $scope.trialEndDates[numSubscription] = '---';
                 }
 

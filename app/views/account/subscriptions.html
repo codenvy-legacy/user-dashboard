@@ -80,15 +80,18 @@
                         <td  class="text-center" style="vertical-align:middle;line-height:35px;"><span class="label label-primary">{{stDates[$index]}}</span>
                         </td>
                         <td class="text-center" style="vertical-align:middle;line-height:35px;">
-                        <span class="label label-primary" ng-if="isTrialEnd=='TRUE'">{{trialEndDates[$index]}}</span>
-                        
-                        <span ng-if="isTrialEnd=='FALSE'">{{trialEndDates[$index]}}</span>
+
+                        <span class="label label-primary" ng-if="isExpired(trialEndDates[$index])=='false' && trialEndDates[$index]!='---'">{{trialEndDates[$index]}}</span>
+                        <span class="label label-danger" ng-if="isExpired(trialEndDates[$index])=='true' && trialEndDates[$index]!='---'">{{trialEndDates[$index]}}</span>                        
+                        <span ng-if="trialEndDates[$index]=='---'">{{trialEndDates[$index]}}</span>                        
                         </td>
+
 						<td class="text-center" style="vertical-align:middle;line-height:35px;">
                         <span class="label label-primary" ng-if="isExpired(endDates[$index])=='false'">{{endDates[$index]}}</span>
                         
                         <span class="label label-danger" ng-if="isExpired(endDates[$index])=='true'">{{endDates[$index]}}</span>
                         </td>
+                        
                         <td class="text-center" style="vertical-align:middle;line-height:35px;">
 							<div class="codenvybutton" style="width:150px;margin-left: auto;margin-right: auto;"><a ng-href="#/account/subscriptions/{{subscription.id}}" style="color: #8f8f8f;text-decoration:none;">Manage subscription</a></div>
                         </td>
