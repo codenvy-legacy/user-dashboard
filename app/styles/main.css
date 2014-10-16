@@ -1305,18 +1305,20 @@ label {margin-right:0px;}
 .panel-box { margin-top: -10px;}
 
 .panel-bg {  background:#adcee8;
-  text-align:center;
-
+    text-align:center;
+    color: white;
     border: 1px solid #3887b6;
-    font-size: 11px;min-height: 30px;
-    line-height: 20px;
+    font-size: 12px;min-height: 30px;
+    line-height: 30px;
     margin-bottom: 4px;
     padding: 0 6px;}
-    a.message{
-      font-size:11px;                                                                                                                                                                                                                  
-      color:black;
-}
-    .close-btn {color: #3887b6;
+
+a.message{
+    color: #ffffff;
+    font-size: 14px !important;
+    font-weight: bold;}
+  
+.close-btn {color: #3887b6;
     position: relative;
     right: 6px;
     top: 0;}
@@ -1342,3 +1344,5 @@ label {margin-right:0px;}
 .starting_date .textdate5{display: inherit; color:#69AAE4; font-weight:bold;padding-right:58px;}
 
 .starting_date .textdate2 .sup1{top: -0.4em;}
+
+
