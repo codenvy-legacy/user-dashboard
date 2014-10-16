@@ -1304,19 +1304,25 @@ label {margin-right:0px;}
 
 .panel-box { margin-top: -10px;}
 
-.panel-bg {  background:#adcee8;
+.panel-bg {  
+    background:#ffffff;
     text-align:center;
-    color: white;
-    border: 1px solid #3887b6;
+    font-weight: bold;
+    color: #3B7ABA;
+    border: 1px solid #ddd;
     font-size: 12px;min-height: 30px;
     line-height: 30px;
     margin-bottom: 4px;
-    padding: 0 6px;}
+    padding: 0 6px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  }
 
 a.message{
-    color: #ffffff;
-    font-size: 14px !important;
-    font-weight: bold;}
+    color: #3B7ABA;
+    font-size: 12px !important;
+    font-weight: bold;
+    text-decoration: underline;
+  }
   
 .close-btn {color: #3887b6;
     position: relative;
