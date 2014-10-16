@@ -53,7 +53,7 @@ angular.module('odeskApp')
             },
             {
                 'title': 'Forum',
-                'link': 'https://helpdesk.codenvy.com/'
+                'link': 'http://helpdesk.codenvy.com/'
             },
             {
                 'title': 'Feedback',
@@ -61,7 +61,7 @@ angular.module('odeskApp')
             },
             {
                 'title': 'Create Support Tickets',
-                'link': 'mailto:support@codenvy.com'
+                'link': 'https://codenvy.uservoice.com/'
             }
             ];
 			
