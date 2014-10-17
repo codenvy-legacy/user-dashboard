@@ -188,7 +188,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .celist .label { font-weight:normal; line-height:28px; height:28px; display:block; float:left; margin-bottom:10px; margin-right:10px; color:#a3a3a3; padding:5px 5px 5px 10px ; background:#F0F0F0; }
 
 .celist .label > span.skill { float: left; line-height:1.5;}
-.celist .label > span.glyphicon-remove { float:right; background:#a8a8a8; color:#ffffff; border-radius:10px; margin-left:8px; margin-top: 30px; padding:3px; cursor: pointer; position: relative; top: -40px; right: -10px; }
+.celist .label > span.glyphicon-remove { float:right; background:#a8a8a8; color:#ffffff; border-radius:10px; margin-left:8px; margin-top: 0; padding:3px; cursor: pointer; }
 
 /* Stats page and general colors */
 .sparkline { display: inline-block; position: relative; }
@@ -1304,19 +1304,25 @@ label {margin-right:0px;}
 
 .panel-box { margin-top: -10px;}
 
-.panel-bg {  background:#adcee8;
+.panel-bg {  
+    background:#ffffff;
     text-align:center;
-    color: white;
-    border: 1px solid #3887b6;
+    font-weight: bold;
+    color: #3B7ABA;
+    border: 1px solid #ddd;
     font-size: 12px;min-height: 30px;
     line-height: 30px;
     margin-bottom: 4px;
-    padding: 0 6px;}
+    padding: 0 6px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  }
 
 a.message{
-    color: #ffffff;
-    font-size: 14px !important;
-    font-weight: bold;}
+    color: #3B7ABA;
+    font-size: 12px !important;
+    font-weight: bold;
+    text-decoration: underline;
+  }
   
 .close-btn {color: #3887b6;
     position: relative;
@@ -1330,11 +1336,11 @@ a.message{
     color:#69AAE4; /* or whatever color you prefer */
 }
 .start_margin{margin-left:40px;}
-.premium-link { padding:0; margin:0;}
-.premium-link li { display:block; list-style:none; font-size:9px;background:url(../images/bullet-icon.png) no-repeat 0 7px; padding-left:15px; line-height:23px;}
+.premium-link { padding:0; margin:0; color:#595959;}
+.premium-link li { display:block; list-style:none; font-size:12px;background:url(../images/bullet-icon.png) no-repeat 0 11px; padding-left:15px; line-height:30px;}
 .starting_date{list-style:none;}
 .starting_date .textdate1{float: right;
-    font-size: 10px;
+    font-size: 12px;
     margin-top: 26px;}
 .starting_date .textdate2{color:#69AAE4;font-size: 33px;position: relative;right: -8px;}
 
