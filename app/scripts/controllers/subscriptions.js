@@ -82,9 +82,9 @@ angular.module('odeskApp')
                     }
              });
         }
-        $scope.isExpired=function(endDate)
+        $scope.isExpired=function(trialDate)
         {
-            var end = new Date(endDate).getTime();
+            var end = new Date(trialDate).getTime();
             var today = new Date().getTime();
             
             if(today > end)

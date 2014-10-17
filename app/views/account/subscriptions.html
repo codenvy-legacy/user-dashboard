@@ -52,8 +52,7 @@
                      <span ng-if="trialEndDates[$index]=='---'">{{trialEndDates[$index]}}</span>                        
                   </td>
                   <td class="text-center" style="vertical-align:middle;line-height:35px;">
-                     <span class="label label-primary" ng-if="isExpired(endDates[$index])=='false'">{{endDates[$index]}}</span>
-                     <span class="label label-danger" ng-if="isExpired(endDates[$index])=='true'">{{endDates[$index]}}</span>
+                     <span class="label label-primary">{{endDates[$index]}}</span>
                   </td>
                   <td class="text-center" style="vertical-align:middle;line-height:35px;">
                      <div class="codenvybutton" style="width:150px;margin-left: auto;margin-right: auto;">
