@@ -49,19 +49,19 @@ angular.module('odeskApp')
 		$scope.helpMenu = [
             {
                 'title': 'Codenvy Help',
-                'link': 'http://docs.codenvy-next.com'
+                'link': 'http://docs.codenvy.com'
             },
             {
                 'title': 'Forum',
-                'link': 'https://helpdesk.codenvy.com/'
+                'link': 'http://helpdesk.codenvy.com/'
             },
             {
-                'title': 'Feedback',
+                'title': 'Feedback and Feature Vote',
                 'link': 'https://codenvy.uservoice.com/'
             },
             {
                 'title': 'Create Support Tickets',
-                'link': 'mailto:support@codenvy.com'
+                'link': 'https://codenvy.uservoice.com/'
             }
             ];
 			
