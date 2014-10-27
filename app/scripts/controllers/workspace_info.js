@@ -55,7 +55,7 @@ angular.module('odeskApp')
                             role = member['roles'][1].split("/")[1];
                           }
                         else{
-                          role = member['roles'][0].split("/")[0];
+                          role = member['roles'][0].split("/")[1];
                         }
 
                       //  Get member's email and name
@@ -68,8 +68,7 @@ angular.module('odeskApp')
                           })
                       ]).then(function (results) {
                         
-                        
-
+            
                         var memberDetails = {
                           id: member['userId'],
                           role: role,
@@ -202,8 +201,8 @@ angular.module('odeskApp')
               $("#emptyEmails").hide();
               $("#selectedMembers").parent().removeClass('has-error');
 
-
               var i = 0;
+
               return $q.all([
                 angular.forEach(members, function (member) {
 
@@ -217,15 +216,17 @@ angular.module('odeskApp')
 
                   var data = {
                     "userId": member.id,
-                    "roles": role.split("/")[1]// needs to be array
+                    "roles": "workspace/"+role.split("/")[1]// needs to be array
                   };
-                  cosole.log(member.role);
+               
+                  member.role = role.split("/")[1];
+
                   $http.post('/api/workspace/' + workspaceId + "/members",
                     data,
                     con)
                     .success(function (data) {
                       var memberDetails = {
-                        id: member.id,
+                        id: userId,
                         role: member.role,
                         email: member.email,
                         name: member.name
@@ -236,7 +237,7 @@ angular.module('odeskApp')
                       $("#addMemberErr").show();
                       $("#addMemberErr").html(err["message"]);
                     });
-                    
+
                     i++;
                 })
               ]).then(function (results) {

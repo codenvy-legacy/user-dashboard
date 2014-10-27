@@ -78,6 +78,7 @@ angular.module('odeskApp')
                       }
 
                       $scope.workspaces.push(workspaceDetails);
+
                     });
                 });
 
@@ -221,6 +222,7 @@ angular.module('odeskApp')
                 };
 
                 var workspaceId, workspaceName, allocatedRam;
+                
 
                 return $q.all([
                   $http.post('/api/workspace', data, con)
@@ -233,20 +235,26 @@ angular.module('odeskApp')
                     })
 
                 ]).then(function (results) {
+
+                  var i = 0;
                   return $q.all([
                     $http({method: 'GET', url:"/api/runner/"+ workspaceId +"/resources" }).
                       success(function (data) {
                         allocatedRam = data.totalMemory;
                       }),
                       angular.forEach(selectedMembers, function (member) {
+                        var role = $("input[name=user_role_"+i+"]:checked").val();
+
                         var roles = [
-                          "workspace/" + member.role
+                          "workspace/" +role.split("/")[1]
                         ];
-                          
+                        
                         var memberData = {
                           "userId": member.id,
                           "roles": roles // needs to be array
                         };
+                        member.role = role.split("/")[1];
+                     
 
                         $http.post('/api/workspace/' + workspaceId + "/members",
                           memberData,
@@ -258,6 +266,7 @@ angular.module('odeskApp')
                             $("#addMemberErr").show();
                             $("#addMemberErr").html(err["message"]);
                           });
+                          i++;
                       })
                     ]).then(function (result) {
                       var workspaceDetails = {
