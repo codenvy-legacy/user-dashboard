@@ -91,6 +91,17 @@
             </div>
         </div>      
     </div>
+
+<!-- Warning Message -->
+
+    <div class="panel-box" style="margin-top: 10px" >
+        <div class="panel-bg-warning">
+            <div class="row">
+                <div>We are experiencing technical issues with the storage layer. File operations including cloning are running slower than usual. We are investigating.
+                </div>      
+            </div>
+        </div>      
+    </div>
     
 
 <div class="project-box clearfix" ng-if="box">
@@ -474,8 +485,8 @@
       </div><!-- modal-body -->
       
       <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
-        <a  class="btn btn-danger" ng-click="deleteProject()" data-dismiss="modal">Ok</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <a  class="btn btn-danger" ng-click="deleteProject()" data-dismiss="modal">OK</a>
       </div><!-- modal-footer -->
       
     </div><!-- modal-content -->

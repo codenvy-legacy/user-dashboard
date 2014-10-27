@@ -23,11 +23,11 @@
     <parent>
         <artifactId>maven-depmgt-pom</artifactId>
         <groupId>com.codenvy</groupId>
-        <version>1.8.18-SNAPSHOT</version>
+        <version>1.8.19-SNAPSHOT</version>
     </parent>
     <groupId>com.codenvy.dashboard</groupId>
     <artifactId>user-dashboard-war</artifactId>
-    <version>0.7.0-SNAPSHOT</version>
+    <version>0.8.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>User Dashboard :: Web App</name>
     <scm>
@@ -41,6 +41,20 @@
         <maven.snapshots.repo.url>https://maven.codenvycorp.com/content/repositories/codenvy-private-snapshots/</maven.snapshots.repo.url>
         <version.license-header>codenvy-codenvy-license-resource-bundle</version.license-header>
     </properties>
+    <repositories>
+        <repository>
+            <id>codenvy-public-repo</id>
+            <name>codenvy public</name>
+            <url>https://maven.codenvycorp.com/content/groups/public/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>codenvy-public-repo</id>
+            <name>codenvy public</name>
+            <url>https://maven.codenvycorp.com/content/groups/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
     <build>
         <finalName>user-dashboard-war</finalName>
         <plugins>
