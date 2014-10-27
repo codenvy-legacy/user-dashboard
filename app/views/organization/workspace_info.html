@@ -1,9 +1,11 @@
+
   <ul class="breadcrumb boxnav">
     <li style="margin-bottom: 8px; margin-top: 4px;"><a href="#/organizations" class="all-ws"> All Workspaces </a> > &nbsp;  {{workspace.name}}</li>
     <li class="active" style="margin-bottom: 8px; margin-top: 4px;"><a href="#/organizations/workspace/{{workspace.id}}"> INFORMATION </a></li>
     <li style="margin-bottom: 8px; margin-top: 4px;"><a href="#/organizations/workspace/{{workspace.id}}/members"> MEMBERS<span class="badge">{{workspace.members.length}}</span> </a></li>
     <!--<li><a href="#"> GROUPS </a></li>-->
   </ul>
+
 
 <div class="container mainDivContainer">
     <div class="col-md-6">
@@ -23,6 +25,7 @@
         </div>
       </div>
     </div>
+
     <div class="col-md-6">
       <div class="panel panel-default panel-ce">
         <div class="panel-body">
@@ -49,9 +52,9 @@
                       <li>
                         <div class="row">
                           <div class="col-lg-5 col-lg-offset-7 col-sm-12 col-md-12 col-xs-12">
-                            <button class="btn btn-white pull-right" type="button">
+                            <button class="btn btn-white pull-right" type="button" data-toggle="modal" data-target="#addWorkspaceNewMember">
                               <i class="glyphicon glyphicon-plus add-size"></i>
-                              <span class="add-admin-text" data-toggle="modal" data-target="#addWorkspaceNewMember">Add Administrator</span>
+                              <span class="add-admin-text">Add Administrator</span>
                             </button>
                           </div>
                         </div>
@@ -67,7 +70,7 @@
     </div>
 
     </div>
-</div>
+
 <!-- Remove Member Modal Start-->
 <div class="modal-col">
   <div class="modal fade" id="removeMemberConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -80,8 +83,8 @@
           <strong>Are you sure you want to remove?</strong>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" ng-click="removeMemberFromWs(selectedMemberForRemove.id)">Ok</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" ng-click="removeMemberFromWs(selectedMemberForRemove.id)">Ok</button>
         </div>
       </div>
     </div>
@@ -164,8 +167,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" ng-click="addMembersToWs(selectedMembers)">Ok</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" ng-click="addMembersToWs(selectedMembers)">Ok</button>
         </div>
       </div>
     </div>

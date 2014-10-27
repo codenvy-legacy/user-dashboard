@@ -242,7 +242,7 @@ angular.module('odeskApp')
                         var roles = [
                           "workspace/" + member.role
                         ];
-
+                          
                         var memberData = {
                           "userId": member.id,
                           "roles": roles // needs to be array
@@ -361,10 +361,7 @@ angular.module('odeskApp')
             $http.get('/api/user').success(function(data){
                 userid = data["id"];
                 email = data["email"]
-
-                console.log(userid);
-                console.log(email);
-
+                
             }).error(function(err){
                 console.log("error occurred");
             });
@@ -399,7 +396,7 @@ angular.module('odeskApp')
             var selectedUsers = $("#selected_users").val();
             var selectedUserEmails = selectedUsers.split(",");
             var role = $("input[name=member_role]:checked").val();
-            console.log(role);
+         
 
             $("#emptyEmails").hide();
 
@@ -467,7 +464,9 @@ angular.module('odeskApp')
 
           // For add members in organization Tab
           $scope.addMembers = function(members){
+            var i = 0;
             return $q.all([
+              
               angular.forEach(members, function (member) {
                 var con = {
                   headers: {
@@ -475,16 +474,20 @@ angular.module('odeskApp')
                   }
                 };
 
+                var role = $("input[name=user_role_"+i+"]:checked").val();
                 var data = {
                   "userId": member.id,
                   "roles": [
-                    "account/"+member.role
+                    "account/"+role.split("/")[1]
                   ]
                 };
+                member.role = role.split("/")[1];
+
                 $http.post('/api/account/'+$scope.accountId[0]+'/members', data, con)
                   .success(function (data) {
                     $scope.members.push(member);
                   });
+                  i++;
               })
             ]).then(function (results) {
               $('#addNewMember').modal('toggle');

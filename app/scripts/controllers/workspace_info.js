@@ -55,7 +55,7 @@ angular.module('odeskApp')
                             role = member['roles'][1].split("/")[1];
                           }
                         else{
-                          role = member['roles'][0].split("/")[1];
+                          role = member['roles'][0].split("/")[0];
                         }
 
                       //  Get member's email and name
@@ -202,6 +202,8 @@ angular.module('odeskApp')
               $("#emptyEmails").hide();
               $("#selectedMembers").parent().removeClass('has-error');
 
+
+              var i = 0;
               return $q.all([
                 angular.forEach(members, function (member) {
 
@@ -211,15 +213,13 @@ angular.module('odeskApp')
                     }
                   };
 
-                  var roles = [
-                    "workspace/"+member.role
-                  ];
+                 var role = $("input[name=user_role_"+i+"]:checked").val();
 
                   var data = {
                     "userId": member.id,
-                    "roles": roles // needs to be array
+                    "roles": role.split("/")[1]// needs to be array
                   };
-
+                  cosole.log(member.role);
                   $http.post('/api/workspace/' + workspaceId + "/members",
                     data,
                     con)
@@ -231,11 +231,13 @@ angular.module('odeskApp')
                         name: member.name
                       }
                       $scope.workspace.members.push(memberDetails);
-                    })
-                    .error(function (err, status) {
+
+                    }).error(function (err, status) {
                       $("#addMemberErr").show();
                       $("#addMemberErr").html(err["message"]);
                     });
+                    
+                    i++;
                 })
               ]).then(function (results) {
                 $('#addWorkspaceNewMember').modal('toggle');
@@ -290,9 +292,6 @@ angular.module('odeskApp')
                 userid = data["id"];
                 email = data["email"]
 
-                console.log(userid);
-                console.log(email);
-
             }).error(function(err){
                 console.log("error occurred");
             });
@@ -308,7 +307,6 @@ angular.module('odeskApp')
                       
                       $http.post('/api/workspace/' + workspaceId + "/members", memberData, wcon)
                       .success(function (data) {
-                        console.log("+++++");
                         $scope.editWsMember.role = member_role
                         $scope.workspace.members.push($scope.editWsMember);
                       })
