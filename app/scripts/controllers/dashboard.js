@@ -362,13 +362,14 @@ angular.module('odeskApp')
 
       return '';
 	  }
-	  // for dis[playing message  
-      $scope.c2User='FALSE';
+	  // for displaying message  
+      $scope.c2User='TRUE';
       $http({method: 'GET', url: '/api/profile/'}).success(function(data){
           $scope.userDetails=data.attributes;
           $scope.oldUser = data.attributes['codenvy:created'];
 
-          if(data.attributes['codenvy:created']!=''){$scope.c2User='TRUE';}else{$scope.c2User='FALSE';}
+          if(data.attributes['codenvy:created']!=undefined){$scope.c2User='TRUE';}else{$scope.c2User='FALSE';}
+       
       }).error(function(err){
 
       });
