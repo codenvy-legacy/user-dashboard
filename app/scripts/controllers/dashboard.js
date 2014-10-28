@@ -30,6 +30,7 @@ angular.module('odeskApp')
       $scope.activeMembers = [];
       $scope.workspaces = [];
       $scope.currentUserId = '';
+      $scope.changeName ='';
 
       //private methods
       // for one user set the read write properties
@@ -185,6 +186,7 @@ angular.module('odeskApp')
 		old_projectname = project.name;
       };
       $scope.updateProject = function () {
+
 	    if($scope.selected.name && $scope.selected.name.length > 0)
 		{
 			var res = /[^0-9a-zA-Z\-._]/.test($scope.selected.name) || $scope.selected.name[0] == '-' || $scope.selected.name[0] == '.' || $scope.selected.name[0] == '_';
@@ -195,11 +197,21 @@ angular.module('odeskApp')
 				return;
 			}
 		}
+
 		$('#projectDetailModal').modal('hide');
         return $q.all([
           $http({ method: 'POST', url: "/api/project/"+ $scope.selected.workspaceId+"/rename"+$scope.selected.path +"?name="+$scope.selected.name}).
               success(function (data, status, headers, config) {
                 // console.log(data);
+                $scope.changeName=$scope.selected.name
+
+              }).error(function (err,status){
+                  if(status == 403)
+                   {
+                      $('#renameProjectError').modal('show');
+                   }
+                   $scope.changeName=$scope.selected.name
+                   $scope.selected.name=old_projectname;
               })
         ]).then(function (results) {
 			$http({ method: 'GET', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name}).
@@ -216,6 +228,7 @@ angular.module('odeskApp')
 						  projFound[0].ideUrl = data.ideUrl;
 						  projFound[0].path = data.path;
 						}
+
 					});
 			  })
           });
@@ -373,12 +386,6 @@ angular.module('odeskApp')
       }).error(function(err){
 
       });
-
-
-
-
-
-	 
    
       //constructor
       var init = function () {
