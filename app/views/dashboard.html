@@ -86,7 +86,7 @@
     <div class="panel-box" style="margin-top: 10px" ng-if="c2User=='FALSE'" >
         <div class="panel-bg">
             <div class="row">
-                <div>Welcome to the all new Codenvy! Codenvy 2 projects will be migrated in late 2014. You may access those projects <a class="message" target="_blank" href="https://c2.codenvy.com/site/login">here</a>.
+                <div class="col-md-12">Welcome to the all new Codenvy! Codenvy 2 projects will be migrated in late 2014. You may access those projects <a class="message" target="_blank" href="https://c2.codenvy.com/site/login">here</a>.
                 </div>      
             </div>
         </div>      
@@ -97,7 +97,7 @@
     <div class="panel-box" style="margin-top: 10px" >
         <div class="panel-bg-warning">
             <div class="row">
-                <div>We are experiencing technical issues with the storage layer. File operations including cloning are running slower than usual. We are investigating.
+                <div class="col-md-12">We are experiencing technical issues with the storage layer. File operations including cloning are running slower than usual. We are investigating.
                 </div>      
             </div>
         </div>      
@@ -106,7 +106,7 @@
 
 <div class="project-box clearfix" ng-if="box">
 
-    <div class="new-project col-md-2">
+    <div class="new-project col-md-2 col-sm-4 col-lg-2 col-xs-12">
 
         <div class="box box-two" ng-if="workspaces.length == 1">
             <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=newProject" target="_blank">
@@ -168,7 +168,7 @@
     </div>
     <!-- end help-->
     
-    <div class="col-md-10">
+    <div class="col-md-10 col-sm-8 col-lg-10 col-xs-12">
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -422,7 +422,7 @@
             </div>
             <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
                 <button type="button" class="btn btn-default" ng-click="cancelProject()" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" ng-click="updateProject()">Ok</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#renameProject" ng-click="updateProject()">Ok</button>
                 <button type="button" class="btn btn-danger pull-left" data-toggle="modal" ng-click="deleteProjectConfirm()" data-dismiss="modal"><i class="fa fa-trash-o"></i></i> Delete Project</button>
             </div>
         </div>
