@@ -373,7 +373,7 @@
                   </div>
                 </form>
                 <p id="showInviteError" ng-show="showInviteError" >{{errors}} must be Codenvy user<span ng-if="errors.indexOf(',') > 0">s</span> before being added as developer<span ng-if="errors.indexOf(',') > 0">s</span> of your workspace.</p>
-                <p ng-show="!showInviteError">These developers will be added to the workspace and be granted permissions accross all projects of the workspace.</p>
+                <p ng-show="!showInviteError">Developers become workspace/members and granted permissions across <u>all</u> projects.</p>
               </div>
                 <div class="invitation " ng-show="!isAdmin">
                     <p class="darkBlack">Invitation require Administrator permissions to the project's workspace.</p>
