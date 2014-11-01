@@ -107,9 +107,6 @@ angular.module('odeskApp')
         
         return member;
       };
-
-
-
       
       //public methods   
       $scope.selectProject = function(project,modalNameType) {
@@ -135,8 +132,6 @@ angular.module('odeskApp')
           else if(modalNameType=='projectsetting'){
             $('#projectDetailModal').modal('toggle');
           }
-
-      
 
           Project.getPermissions(project.workspaceId, project.name).then(function (data) { // get the permissions for the current selected project
             var projectPermissions = data;
@@ -183,12 +178,14 @@ angular.module('odeskApp')
         $scope.activeProject = project; // used in setRead setWrite
         $scope.selected = project;
         old_description = project.description;
-		old_projectname = project.name;
+		    old_projectname = project.name;
+       
       };
       $scope.updateProject = function () {
 
+      
 	    if($scope.selected.name && $scope.selected.name.length > 0)
-		{
+	  {
 			var res = /[^0-9a-zA-Z\-._]/.test($scope.selected.name) || $scope.selected.name[0] == '-' || $scope.selected.name[0] == '.' || $scope.selected.name[0] == '_';
 			if(res)
 			{
@@ -197,21 +194,28 @@ angular.module('odeskApp')
 				return;
 			}
 		}
-
 		$('#projectDetailModal').modal('hide');
+     // $('#renameProjectError').modal('hide');
+     $scope.errorvar = '';
         return $q.all([
           $http({ method: 'POST', url: "/api/project/"+ $scope.selected.workspaceId+"/rename"+$scope.selected.path +"?name="+$scope.selected.name}).
               success(function (data, status, headers, config) {
-                // console.log(data);
-                $scope.changeName=$scope.selected.name
-
-              }).error(function (err,status){
-                  if(status == 403)
-                   {
+                $('#renameProjectError').modal('show');
+                  if(status == 201)
+                    {
+                      $scope.errorvar = 'False';
                       $('#renameProjectError').modal('show');
-                   }
-                   $scope.changeName=$scope.selected.name
-                   $scope.selected.name=old_projectname;
+                      $scope.changeName=$scope.selected.name
+                    }
+                 
+              }).error(function (err,status){
+                $('#renameProjectError').modal('show');
+                  if(status == 403 || status == 409)
+                    {
+                      $scope.errorvar = 'True';
+                      $scope.changeName = $scope.selected.name
+                      $scope.selected.name = old_projectname; 
+                    }
               })
         ]).then(function (results) {
 			$http({ method: 'GET', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name}).
@@ -419,6 +423,7 @@ angular.module('odeskApp')
                 success(function (data, status) {
 				  $scope.isProjectDataFetched = true;
                   $scope.projects = $scope.projects.concat(data);
+                 
                 })
 				.error(function (data, status) {
 				  $scope.isProjectDataFetched = true;
