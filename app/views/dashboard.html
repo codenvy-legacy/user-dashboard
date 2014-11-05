@@ -71,7 +71,7 @@
 <div class="row"></div>
 <div class="panel panel-default panel-ce">
       <div class="panel-body"></div></div>
-    
+
 
 
 <div class="col-md-12 factorylistbox" ng-show="projectselect">
@@ -87,22 +87,22 @@
         <div class="panel-bg">
             <div class="row">
                 <div>Welcome to the all new Codenvy! Codenvy 2 projects will be migrated in late 2014. You may access those projects <a class="message" target="_blank" href="https://c2.codenvy.com/site/login">here</a>.
-                </div>      
+                </div>
             </div>
-        </div>      
+        </div>
     </div>
 
 <!-- Warning Message -->
-
+<!--
     <div class="panel-box" style="margin-top: 10px" >
         <div class="panel-bg-warning">
             <div class="row">
-                <div>We are experiencing technical issues with the storage layer. File operations including cloning are running slower than usual. We are investigating.
-                </div>      
+                <div>We are experiencing performance issues with the storage layer. File operations, especially cloning, are running slower than expected. We are investigating the situation.
+                </div>
             </div>
-        </div>      
+        </div>
     </div>
-    
+-->    
 
 <div class="project-box clearfix" ng-if="box">
 
@@ -149,7 +149,7 @@
 
 
     </div><!-- New Project -->
-    
+
     <!-- start help-->
     <div ng-show="isNeedToShowHelp()" class="box-example">
         <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
@@ -167,7 +167,7 @@
         </div>
     </div>
     <!-- end help-->
-    
+
     <div class="col-md-10">
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
             <div class="panel panel-default">
@@ -184,11 +184,11 @@
                         </div><!-- .row -->
                     </a>
                 </div><!-- panel-heading -->
-                
+
                 <div class="panel-body" ng-if="project.description != null ">{{project.description}}</div>
                 <div class="panel-body pointer" ng-if="project.description == null " ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><a href="">Add description...</a></div>
-                
-                <div class="panel-footer">               
+
+                <div class="panel-footer">
                     <div class="row">
                         <div class="col-md-4 col-sm-4 col-xs-4" ng-click="selectProject(project,'privacysetting')">
                             <div class="row"><i class="fa fa-fw" ng-class="{'fa-lock':project.visibility == 'private', 'fa-unlock':project.visibility == 'public'}"></i><small>{{project.visibility}}</small></div>
@@ -203,7 +203,7 @@
                 </div><!-- panel-footer -->
             </div><!-- panel-default -->
         </div><!-- projectbox -->
-    
+
 </div>
 </div>
 <!-- </div>
@@ -317,7 +317,7 @@
                             <tr>
                               <th ng-show="isAdmin">
                                 <strong >Developers Permissions:</strong>
-                                <p>List of Workspace's developers</p>
+                                <p>List of workspace's developers</p>
                               </th>
                               <th ng-show="!isAdmin">
                                   <strong>User Permissions:</strong>
@@ -328,7 +328,7 @@
                                 <th>&nbsp;</th>
                             </tr>
                         </thead>
-                        
+
                         <tbody>
                             <tr ng-if="isAdmin==false" >
                                 <td>{{currentUser.fullName}} ({{currentUser.email}})</td>
@@ -354,7 +354,7 @@
                 </div>
                 </form>
               <div class="invitation" ng-show="isAdmin">
-                <strong>Invite other Developers</strong>
+                <strong>Invite other developers</strong>
                 <p ng-show="showInviteError">These developers will be added to the workspace and be granted permissions accross all projects of the workspace.</p>
 
                 <form class="form-inline">
@@ -373,7 +373,7 @@
                   </div>
                 </form>
                 <p id="showInviteError" ng-show="showInviteError" >{{errors}} must be Codenvy user<span ng-if="errors.indexOf(',') > 0">s</span> before being added as developer<span ng-if="errors.indexOf(',') > 0">s</span> of your workspace.</p>
-                <p ng-show="!showInviteError">These developers will be added to the workspace and be granted permissions accross all projects of the workspace.</p>
+                <p ng-show="!showInviteError">Developers become workspace/members and granted permissions across <u>all</u> projects.</p>
               </div>
                 <div class="invitation " ng-show="!isAdmin">
                     <p class="darkBlack">Invitation require Administrator permissions to the project's workspace.</p>
@@ -381,7 +381,7 @@
             </div>
             <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-                
+
             </div>
         </div>
     </div>
@@ -450,22 +450,22 @@
 <div class="modal modal-user fade" id="warning-user" tabindex="-1" role="dialog" aria-labelledby="WarningUserLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-    
+
       <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="WarningUserLabel">Warning</h4>
       </div><!-- modal-header -->
-      
+
       <div class="modal-body">
         <p>You are going to remove <b>{{selectMemberToBeDeleted.fullName}} ({{selectMemberToBeDeleted.email}})</b> from the workspace/developer of <b>{{selected.workspaceName}}</b>. This developer will be removed permissions to all projects of the workspace. </p>
         <p>Are you sure you want to continue?</p>
       </div><!-- modal-body -->
-      
+
       <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
         <a ng-click="removeMember(selectMemberToBeDeleted)" class="btn btn-danger" data-dismiss="modal">Ok</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
       </div><!-- modal-footer -->
-      
+
     </div><!-- modal-content -->
   </div><!-- modal-dialog -->
 </div><!-- Warning-user Modal -->
@@ -474,21 +474,21 @@
 <div class="modal modal-project fade" id="warning-project" tabindex="-1" role="dialog" aria-labelledby="WarningProjectLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-    
+
       <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="WarningProjectLabel">Warning</h4>
       </div><!-- modal-header -->
-      
+
       <div class="modal-body">
         <p>Removing a project can't be undone, are you sure you want to continue?</p>
       </div><!-- modal-body -->
-      
+
       <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <a  class="btn btn-danger" ng-click="deleteProject()" data-dismiss="modal">OK</a>
       </div><!-- modal-footer -->
-      
+
     </div><!-- modal-content -->
   </div><!-- modal-dialog -->
 </div><!-- Warning-project Modal -->
