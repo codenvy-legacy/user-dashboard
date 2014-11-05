@@ -1308,7 +1308,20 @@ label {margin-right:0px;}
     background:#ffffff;
     text-align:center;
     font-weight: bold;
-    color: #3B7ABA;
+    color: #3b73af;
+    border: 1px solid #ddd;
+    font-size: 12px;min-height: 30px;
+    line-height: 30px;
+    margin-bottom: 4px;
+    padding: 0 6px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  }
+
+.panel-bg-warning {  
+    background:#ffffff;
+    text-align:center;
+    font-weight: bold;
+    color: #DD901A;
     border: 1px solid #ddd;
     font-size: 12px;min-height: 30px;
     line-height: 30px;

@@ -40,7 +40,8 @@ test-output/
 *.war
 *.ear
 
-
+#Sass cache
+.sass-cache
 
 # Logs and databases #
 ######################
