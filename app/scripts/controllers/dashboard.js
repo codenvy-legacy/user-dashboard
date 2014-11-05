@@ -202,22 +202,24 @@ angular.module('odeskApp')
                 // console.log(data);
               })
         ]).then(function (results) {
-			$http({ method: 'GET', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name}).
-				success(function (data, status) {
-				  data.description = $scope.selected.description;
-				  $scope.updated = data;
-				
-				  $http({ method: 'PUT', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name, data: $scope.updated }).
-					  success(function (data, status) {
-						//Change Project URL & Path
-						var projFound = $scope.projects.filter(function(p) {return p.name==data.name;})
-						if(projFound.length > 0)
-						{
-						  projFound[0].ideUrl = data.ideUrl;
-						  projFound[0].path = data.path;
-						}
-					});
-			  })
+            if($scope.selected.misconfigured == undefined || $scope.selected.misconfigured == false) {
+                $http({ method: 'GET', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name}).
+                    success(function (data, status) {
+                      data.description = $scope.selected.description;
+                      $scope.updated = data;
+                    
+                      $http({ method: 'PUT', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name, data: $scope.updated }).
+                          success(function (data, status) {
+                            //Change Project URL & Path
+                            var projFound = $scope.projects.filter(function(p) {return p.name==data.name;})
+                            if(projFound.length > 0)
+                            {
+                              projFound[0].ideUrl = data.ideUrl;
+                              projFound[0].path = data.path;
+                            }
+                        });
+                  })
+              }
           });
 
       };
@@ -411,6 +413,18 @@ angular.module('odeskApp')
                 success(function (data, status) {
 				  $scope.isProjectDataFetched = true;
                   $scope.projects = $scope.projects.concat(data);
+                  
+                  angular.forEach($scope.projects , function (project){
+                      if(project.problems.length>0){
+                         angular.forEach(project.problems,function(problem){
+                                if(problem.code == 1) {
+                                    project.description = 'This project does not have its language type and environment set yet. Open the project to configure it properly.';
+                                    project.type='mis-configured';
+                                    project.misconfigured = true;
+                                }
+                            });   
+                        }
+                    });
                 })
 				.error(function (data, status) {
 				  $scope.isProjectDataFetched = true;
