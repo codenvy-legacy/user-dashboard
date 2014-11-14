@@ -50,14 +50,14 @@
 
             <tr ng-repeat="workspace in workspaces| filter: filter | orderBy:'name'" class="v-center">
               <td style="width: 1%;"><!--<i class="glyphicon glyphicon-lock"></i>--></td>
-              <td><a ng-href="#/organizations/workspace/{{workspace.id}}" class="ws-name">{{workspace.name}}</a></td>
+              <td><a ng-href="#/organizations/workspace/{{workspace.id}}/members" class="ws-name">{{workspace.name}}</a></td>
               <td class="text-center">{{workspace.allocatedRam}}</td>
               <td class="text-center">{{workspace.developers}}</td>
               <td class="text-center">{{workspace.projects}}</td>
               <td></td>
               <td style="text-align: right;">
                 <ul class="breadcrumb action-button boxnav">
-                  <li class="active no-bdr mrg-top8"><a ng-href="#/organizations/workspace/{{workspace.id}}" class="new_btn">Edit</a></li>
+                  <li class="active no-bdr mrg-top8"><a ng-href="#/organizations/workspace/{{workspace.id}}/members" class="new_btn">Edit</a></li>
                   <li class="active no-bdr mrg-top8" ng-click="addWsProject(workspace)" data-toggle="modal" data-target="#removeWorkspaceConfirm"><a class="new_btn">Remove</a></li>
                   <!--<li class="active no-bdr mrg-top8" ng-click="removeWorkspace(workspace.id)"><a class="new_btn">Remove</a></li>-->
                 </ul>
