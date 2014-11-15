@@ -290,9 +290,6 @@ angular.module('odeskApp')
                 userid = data["id"];
                 email = data["email"]
 
-                console.log(userid);
-                console.log(email);
-
             }).error(function(err){
                 console.log("error occurred");
             });

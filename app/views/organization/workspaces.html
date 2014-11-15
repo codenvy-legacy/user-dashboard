@@ -1,7 +1,7 @@
 <div ng-if="isOrgAddOn">
   <ul class="breadcrumb boxnav">
     <li class="active"><a href="#/organizations"> WORKSPACES <span class="badge">{{workspaces.length}}</span></a></li>
-    <li><a href="#/organizations/members"> MEMBERS <span class="badge">{{members.length}}</span> </a></li>
+    <li><a href="#/organizations/members"> ORG MEMBERS <span class="badge">{{members.length}}</span> </a></li>
     <!--<li><a href="#"> GROUPS <span class="badge">10</span> </a></li>-->
   </ul>
 
@@ -168,7 +168,7 @@
               </div>
             </div>
             <div id="userNotFoundError" style="display: none" class="org-errors"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of this workspace. </div>
-            <div id="userNotMemberList" style="display: none" class="org-errors"><strong>'{{userNotMemberList.join(", ")}}'</strong> must be Account Member(s) before being added as member(s) of this workspace. </div>
+            <div id="userNotMemberList" style="display: none" class="org-errors"><strong>'{{userNotMemberList.join(", ")}}'</strong> must be added as an Organization Member first before they are added to this workspace. </div>
             <div id="userAlreadyAdded" style="display: none" class="org-errors">User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </div>
             <div id="emptyEmails" style="display: none" class="org-errors"><strong>Type email addresses separated by commas</strong></div>
             <div id="emptyWs" style="display: none" class="org-errors"></div>
