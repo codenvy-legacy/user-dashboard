@@ -151,24 +151,11 @@
     </div><!-- New Project -->
 
     <!-- start help-->
-    <div ng-show="isNeedToShowHelp()" class="box-example">
-        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
-            <div class="arrow-img"><img src="./images/arrow.png" class="img-responsive"  alt=""/></div>
-            <div class="panel panel-default">
-              <div class="panel-heading" style="text-align:center">
-                <div class="codenvy-rounded-logo"><img src="./images/codenvy-rounded-logo.png" class="img-responsive"  alt=""/></div>
-                <strong>Welcome to your Workspace!</strong>
-              </div>
-              <div class="panel-body">
-                <p style="margin-top:2px">Click <b>Create New Project</b> to get started.</p>
-                <p style="margin-top:2px">Want to learn more? Check out our <a href="http://docs.codenvy.com" style="color: #52ade1;">docs for use cases, explanations and tips</a>.</p>
-              </div>
-            </div>
-        </div>
-    </div>
-    <!-- end help-->
+   <!--  <div ng-show="isNeedToShowHelp()" class="box-example" ng-if="isProjectDataFetched"> -->
+   
 
-    <div class="col-md-10">
+    <!-- end help-->
+    <div class="col-md-10" ng-show="projects.length > 0">
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -197,7 +184,7 @@
                         <div class="col-md-4 col-sm-4 col-xs-4" ng-click="selectProject(project,'developersetting')">
                             <div class="row"><i class="fa fa-fw fa-users"></i><small>Developers</small></div>
                         </div>
-                        <div class="col-md-4 col-sm-4 col-xs-4"ng-click="selectProject(project,'projectsetting')">
+                        <div class="col-md-4 col-sm-4 col-xs-4" ng-click="selectProject(project,'projectsetting')">
                             <div class="row"><i class="fa fa-fw fa-cog"></i></div>
                         </div>
                     </div><!-- .row -->
@@ -206,9 +193,26 @@
         </div><!-- projectbox -->
 
 </div>
+
+         <div ng-show="projects.length == 0" class="box-example">
+        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+            <div class="arrow-img"><img src="./images/arrow.png" class="img-responsive"  alt=""/></div>
+            <div class="panel panel-default">
+              <div class="panel-heading" style="text-align:center">
+                <div class="codenvy-rounded-logo"><img src="./images/codenvy-rounded-logo.png" class="img-responsive"  alt=""/></div>
+                <strong>Welcome to your Workspace!</strong>
+              </div>
+              <div class="panel-body">
+                <p style="margin-top:2px">Click <b>Create New Project</b> to get started.</p>
+                <p style="margin-top:2px">Want to learn more? Check out our <a href="http://docs.codenvy.com" style="color: #52ade1;">docs for use cases, explanations and tips</a>.</p>
+              </div>
+            </div>
+        </div>
+        </div>
 </div>
-<!-- </div>
- -->
+
+
+ 
 <div ng-if="notification" style="width: 300px" class="col-md-3 projectbox" data-toggle="modal" data-target="#myModal">
     <div class="panel panel-primary">
         <div class="panel-heading">
@@ -420,6 +424,8 @@
                         <textarea ng-model="selected.description" class="form-control" style="max-width:100%" placeholder="Add a Description..."></textarea>
                     </div>
                 </div>
+                <br><br>
+                <div id="renameProjectError" style="display: none" class="org-errors"> Impossible to rename the project. The name <strong>"{{changeName}}"</strong> is already used in your projects. </div>
             </div>
             <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
                 <button type="button" class="btn btn-default" ng-click="cancelProject()" data-dismiss="modal">Cancel</button>

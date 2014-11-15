@@ -112,6 +112,7 @@ angular.module('odeskApp')
       
       //public methods   
       $scope.selectProject = function(project,modalNameType) {
+        $("#renameProjectError").hide();
         $scope.emailList = '';
         $scope.activeMembers = [];
 
@@ -182,23 +183,37 @@ angular.module('odeskApp')
         $scope.activeProject = project; // used in setRead setWrite
         $scope.selected = project;
         old_description = project.description;
-		old_projectname = project.name;
+		    old_projectname = project.name;
       };
+
+
       $scope.updateProject = function () {
-	    if($scope.selected.name && $scope.selected.name.length > 0)
-		{
-			var res = /[^0-9a-zA-Z\-._]/.test($scope.selected.name) || $scope.selected.name[0] == '-' || $scope.selected.name[0] == '.' || $scope.selected.name[0] == '_';
-			if(res)
-			{
-				alert('Project name must contain only Latin letters, digits or these following special characters -._');
-				$scope.selected.name = old_projectname;
-				return;
-			}
-		}
-		$('#projectDetailModal').modal('hide');
+      $scope.changeName = '' ;
+      if($scope.selected.name && $scope.selected.name.length > 0)
+      {
+      var res = /[^0-9a-zA-Z\-._]/.test($scope.selected.name) || $scope.selected.name[0] == '-' || $scope.selected.name[0] == '.' || $scope.selected.name[0] == '_';
+      if(res)
+      {
+        alert('Project name must contain only Latin letters, digits or these following special characters -._');
+        $scope.selected.name = old_projectname;
+        return;
+      }
+      $scope.projectName = null ;
+      angular.forEach($scope.projects , function (project){
+        $scope.projectName = project.name ;
+      });
+      
+      if($scope.selected.name == $scope.projectName){
+      
+          $("#renameProjectError").show();
+          $scope.changeName = $scope.selected.name;
+          $scope.selected.name = old_projectname;
+        }
+        
+      }
         return $q.all([
           $http({ method: 'POST', url: "/api/project/"+ $scope.selected.workspaceId+"/rename"+$scope.selected.path +"?name="+$scope.selected.name}).
-              success(function (data, status, headers, config) {
+              success(function (data, status, headers, config) { 
                 // console.log(data);
               })
         ]).then(function (results) {
@@ -211,6 +226,7 @@ angular.module('odeskApp')
                       $http({ method: 'PUT', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name, data: $scope.updated }).
                           success(function (data, status) {
                             //Change Project URL & Path
+                            $('#projectDetailModal').modal('hide'); 
                             var projFound = $scope.projects.filter(function(p) {return p.name==data.name;})
                             if(projFound.length > 0)
                             {
@@ -221,8 +237,10 @@ angular.module('odeskApp')
                   })
               }
           });
+        
 
       };
+
 
       $scope.switchVisibility = function () {
         $http({ method: 'POST', url: '/api/project/' + $scope.selected.workspaceId + '/switch_visibility/' + $scope.selected.name + '?visibility=' + $scope.selected.visibility }).
@@ -259,11 +277,11 @@ angular.module('odeskApp')
           console.log("Successfully set permisions!");
         });
       };
-
-	  $scope.isProjectDataFetched = false;
-	  $scope.isNeedToShowHelp = function() {
+      
+     $scope.isProjectDataFetched = false;
+     $scope.isNeedToShowHelp = function() {
 			if($scope.isProjectDataFetched)
-				return $scope.projects==null || $scope.projects.length==0;
+				return $scope.projects.length==0;
 			else
 				return false;
 	  }
@@ -375,12 +393,12 @@ angular.module('odeskApp')
 
       });
 
+ 
 
 
 
 
-	 
-   
+
       //constructor
       var init = function () {
         Workspace.all(function (resp) {
@@ -413,9 +431,9 @@ angular.module('odeskApp')
                 success(function (data, status) {
 				  $scope.isProjectDataFetched = true;
                   $scope.projects = $scope.projects.concat(data);
-                  
+
                   angular.forEach($scope.projects , function (project){
-                      if(project.problems.length>0){
+                          if(project.problems.length>0){
                          angular.forEach(project.problems,function(problem){
                                 if(problem.code == 1) {
                                     project.description = 'This project does not have its language type and environment set yet. Open the project to configure it properly.';
