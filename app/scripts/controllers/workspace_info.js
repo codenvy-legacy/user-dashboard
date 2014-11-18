@@ -68,8 +68,7 @@ angular.module('odeskApp')
                           })
                       ]).then(function (results) {
                         
-                        
-
+            
                         var memberDetails = {
                           id: member['userId'],
                           role: role,
@@ -202,6 +201,8 @@ angular.module('odeskApp')
               $("#emptyEmails").hide();
               $("#selectedMembers").parent().removeClass('has-error');
 
+              var i = 0;
+
               return $q.all([
                 angular.forEach(members, function (member) {
 
@@ -211,31 +212,33 @@ angular.module('odeskApp')
                     }
                   };
 
-                  var roles = [
-                    "workspace/"+member.role
-                  ];
+                 var role = $("input[name=user_role_"+i+"]:checked").val();
 
                   var data = {
                     "userId": member.id,
-                    "roles": roles // needs to be array
+                    "roles": "workspace/"+role.split("/")[1]// needs to be array
                   };
+               
+                  member.role = role.split("/")[1];
 
                   $http.post('/api/workspace/' + workspaceId + "/members",
                     data,
                     con)
                     .success(function (data) {
                       var memberDetails = {
-                        id: member.id,
+                        id: userId,
                         role: member.role,
                         email: member.email,
                         name: member.name
                       }
                       $scope.workspace.members.push(memberDetails);
-                    })
-                    .error(function (err, status) {
+
+                    }).error(function (err, status) {
                       $("#addMemberErr").show();
                       $("#addMemberErr").html(err["message"]);
                     });
+
+                    i++;
                 })
               ]).then(function (results) {
                 $('#addWorkspaceNewMember').modal('toggle');
@@ -305,7 +308,6 @@ angular.module('odeskApp')
                       
                       $http.post('/api/workspace/' + workspaceId + "/members", memberData, wcon)
                       .success(function (data) {
-                        console.log("+++++");
                         $scope.editWsMember.role = member_role
                         $scope.workspace.members.push($scope.editWsMember);
                       })

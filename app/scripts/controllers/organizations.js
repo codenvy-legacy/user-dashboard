@@ -78,6 +78,7 @@ angular.module('odeskApp')
                       }
 
                       $scope.workspaces.push(workspaceDetails);
+
                     });
                 });
 
@@ -222,6 +223,7 @@ angular.module('odeskApp')
 
                 var workspaceId, workspaceName, allocatedRam;
 
+
                 return $q.all([
                   $http.post('/api/workspace', data, con)
                     .success(function (data) {
@@ -233,20 +235,26 @@ angular.module('odeskApp')
                     })
 
                 ]).then(function (results) {
+
+                  var i = 0;
                   return $q.all([
                     $http({method: 'GET', url:"/api/runner/"+ workspaceId +"/resources" }).
                       success(function (data) {
                         allocatedRam = data.totalMemory;
                       }),
                       angular.forEach(selectedMembers, function (member) {
+                        var role = $("input[name=user_role_"+i+"]:checked").val();
+
                         var roles = [
-                          "workspace/" + member.role
+                          "workspace/" +role.split("/")[1]
                         ];
-                          
+
                         var memberData = {
                           "userId": member.id,
                           "roles": roles // needs to be array
                         };
+                        member.role = role.split("/")[1];
+
 
                         $http.post('/api/workspace/' + workspaceId + "/members",
                           memberData,
@@ -258,6 +266,7 @@ angular.module('odeskApp')
                             $("#addMemberErr").show();
                             $("#addMemberErr").html(err["message"]);
                           });
+                          i++;
                       })
                     ]).then(function (result) {
                       var workspaceDetails = {
@@ -344,19 +353,19 @@ angular.module('odeskApp')
             .error(function (err) {  });
 
           $scope.updateMember = function(member){
-            $scope.editMember = member;       
+            $scope.editMember = member;
             $scope.member_role = $scope.editMember.role;
             $('#updateOrgMemberError').hide();
             $('#updateCurrentWsMemberError').hide();
           };
           //Update organization's member's role
           $scope.updateMemberOrg = function(member_role){
-            $scope.member_role = member_role;            
+            $scope.member_role = member_role;
             $scope.editMember.role = member_role;
             var mcon = { headers: { 'Content-Type': 'application/json'  }  };
-            var memberData = {"userId": $scope.editMember.id, "roles": ["account/"+member_role] }; 
+            var memberData = {"userId": $scope.editMember.id, "roles": ["account/"+member_role] };
 
-             var email;
+            var email;
             var userid;
             $http.get('/api/user').success(function(data){
                 userid = data["id"];
@@ -367,14 +376,14 @@ angular.module('odeskApp')
             });
 
             $http.delete('/api/account/'+$scope.accountId[0]+'/members/' + $scope.editMember.id)
-              .success(function (data, status) {                
+              .success(function (data, status) {
                  if(status == 204){
                   $('#updateRoleModal').modal('toggle');
                   var removeMember = _.find($scope.members, function(member){ if(member.id == $scope.editMember.id) return member; });
                   var index = $scope.members.indexOf(removeMember)
                   if (index != -1 && $scope.editMember.id != userid) {
 
-                    $scope.members.splice(index, 1);                    
+                    $scope.members.splice(index, 1);
                     $http.post('/api/account/'+$scope.accountId[0]+'/members', memberData, mcon)
                     .success(function (data) {
                       $scope.members.push($scope.editMember);
@@ -384,7 +393,7 @@ angular.module('odeskApp')
                       {
                         $('#updateCurrentWsMemberError').show();
                       }
-                } 
+                }
                 }).error(function (err) {
                   $('#updateOrgMemberError').show();
               });
@@ -396,7 +405,6 @@ angular.module('odeskApp')
             var selectedUsers = $("#selected_users").val();
             var selectedUserEmails = selectedUsers.split(",");
             var role = $("input[name=member_role]:checked").val();
-           // console.log(role);
 
             $("#emptyEmails").hide();
 
@@ -466,7 +474,7 @@ angular.module('odeskApp')
           $scope.addMembers = function(members){
             var i = 0;
             return $q.all([
-              
+
               angular.forEach(members, function (member) {
                 var con = {
                   headers: {
