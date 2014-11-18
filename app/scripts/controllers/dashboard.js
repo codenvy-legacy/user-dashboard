@@ -30,9 +30,11 @@ angular.module('odeskApp')
       $scope.activeMembers = [];
       $scope.workspaces = [];
       $scope.currentUserId = '';
+  
 
       //private methods
       // for one user set the read write properties
+  
       var setPermissions = function (projectPermissions, member) {
         angular.forEach(projectPermissions, function (perm) {
           if (perm.principal.type === "USER" && perm.principal.name === member.userId) {
@@ -265,7 +267,7 @@ angular.module('odeskApp')
 
       $scope.cancelProject = function () {
         $scope.selected.description = old_description;
-		$scope.selected.name = old_projectname;
+		    $scope.selected.name = old_projectname;
       };
 
       // used to save permissions to server
@@ -278,18 +280,18 @@ angular.module('odeskApp')
         });
       };
       
-     $scope.isProjectDataFetched = false;
-     $scope.isNeedToShowHelp = function() {
-			if($scope.isProjectDataFetched)
-				return $scope.projects.length==0;
-			else
-				return false;
-	  }
-	    
-	  $scope.selectMemberToBeDeleted = null;
-	  $scope.setMemberToBeDeleted = function(member) {
-		$scope.selectMemberToBeDeleted = member;
-	  }
+      $scope.isProjectDataFetched = false;
+      $scope.isNeedToShowHelp = function() {
+      if($scope.isProjectDataFetched=='true')
+        return $scope.projects==null || $scope.projects.length==0;
+      else
+        return false;
+      }
+
+	   $scope.selectMemberToBeDeleted = null;
+	   $scope.setMemberToBeDeleted = function(member) {
+		  $scope.selectMemberToBeDeleted = member;
+	   }
       $scope.removeMember = function (member) {
         Workspace.removeMember($scope.activeProject.workspaceId, member.userId).then(function (data) {
           var removedMemberIndex = -1;
@@ -311,7 +313,7 @@ angular.module('odeskApp')
             $scope.currentWorkspace.members.splice(removedMemberIndex, 1);
           }
         }, function (error) {
-          console.log(error);
+          //console.log(error);
         });
       };
 
@@ -393,30 +395,32 @@ angular.module('odeskApp')
 
       });
 
- 
-
 
 
 
 
       //constructor
-      var init = function () {
+            var init = function () {
         Workspace.all(function (resp) {
-		  $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceReference.temporary; });
-		
-		  if($scope.workspaces.length==0) {
-			  var tempWorkspaces = _.filter(resp, function (workspace) { return workspace.workspaceReference.temporary; });
-			  if(tempWorkspaces.length > 0)
-					$window.location.href = '/site/login';
-					
-			  $scope.isProjectDataFetched = true;
-		  }
+      $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceReference.temporary; });
+      //console.log($scope.workspaces);
+      if($scope.workspaces.length==0) {
+        var tempWorkspaces = _.filter(resp, function (workspace) { return workspace.workspaceReference.temporary; });
+        //console.log(tempWorkspaces);
+       
+        if(tempWorkspaces.length > 0)
+          $window.location.href = '/site/login';
+          
+        $scope.isProjectDataFetched = true;
+        // $scope.isNeedToShowHelp = false;
         
-		  $scope.projects = []; //clear the project list
-		  
+                     
+      }
+
+      $scope.projects = []; //clear the project list
+      
           angular.forEach($scope.workspaces, function (workspace) {
             workspace.members = [];
-
             Workspace.getMembersForWorkspace(workspace.workspaceReference.id).then(function (workspaceMembers) {
               angular.forEach(workspaceMembers, function (workspaceMember) {
                 Profile.getById(workspaceMember.userId).then(function (data) {
@@ -427,11 +431,19 @@ angular.module('odeskApp')
               });
             });
 
-            $http({ method: 'GET', url: $.map(workspace.workspaceReference.links, function (obj) { if (obj.rel == "get projects") return obj.href })[0] }).
-                success(function (data, status) {
-				  $scope.isProjectDataFetched = true;
-                  $scope.projects = $scope.projects.concat(data);
 
+              $http({ method: 'GET', url: $.map(workspace.workspaceReference.links, function (obj) { if (obj.rel == "get projects") return obj.href })[0] })
+              .success(function (data, status) {
+                $scope.isProjectDataFetched = true;
+                 //  $scope.isNeedToShowHelp = false;
+                  $scope.projects = $scope.projects.concat(data);
+                  //console.log($scope.projects);
+                    
+                    // if($scope.projects.length == 0){$scope.isNeedToShowHelp = true;}
+                    // else{$scope.isNeedToShowHelp = false;}
+                    // console.log($scope.projects.length);
+                    //  console.log($scope.isNeedToShowHelp);
+                      
                   angular.forEach($scope.projects , function (project){
                           if(project.problems.length>0){
                          angular.forEach(project.problems,function(problem){
@@ -444,11 +456,14 @@ angular.module('odeskApp')
                         }
                     });
                 })
-				.error(function (data, status) {
-				  $scope.isProjectDataFetched = true;
-                });
-          });
+            .error(function (data, status) {
+                    $scope.isProjectDataFetched = true;
+                    });
+              });
+        
         });
+        
+
 
         $http({ method: 'GET', url: '/api/account' }).success(function (account, status) {
           $scope.ownerWorkspace = _.pluck(_.pluck(account, 'accountReference'), 'name');
@@ -472,9 +487,9 @@ angular.module('odeskApp')
             });
           });
         });
-		
+    
       };
-      init(); // all code starts here
+       init();// all code starts here
     });
 
 angular.module('odeskApp')

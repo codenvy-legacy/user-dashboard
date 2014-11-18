@@ -150,14 +150,9 @@
 
     </div><!-- New Project -->
 
-    <!-- start help-->
-   <!--  <div ng-show="isNeedToShowHelp()" class="box-example" ng-if="isProjectDataFetched"> -->
-   
-
-    <!-- end help-->
-    <div class="col-md-10" ng-show="projects.length > 0">
+    <div class="col-md-10">
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
-            <div class="panel panel-default">
+            <div class="panel panel-default" ng-if="projects.length > 0">
                 <div class="panel-heading">
                     <a href="{{project.ideUrl}}" target="_blank">
                         <div class="row">
@@ -190,11 +185,13 @@
                     </div><!-- .row -->
                 </div><!-- panel-footer -->
             </div><!-- panel-default -->
+          
         </div><!-- projectbox -->
 
-</div>
+</div> 
 
-         <div ng-show="projects.length == 0" class="box-example">
+  <!-- start help-->
+    <div ng-show="isNeedToShowHelp()" class="box-example">
         <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
             <div class="arrow-img"><img src="./images/arrow.png" class="img-responsive"  alt=""/></div>
             <div class="panel panel-default">
@@ -209,9 +206,8 @@
             </div>
         </div>
         </div>
-</div>
-
-
+    <!-- end help-->
+    </div>
  
 <div ng-if="notification" style="width: 300px" class="col-md-3 projectbox" data-toggle="modal" data-target="#myModal">
     <div class="panel panel-primary">
