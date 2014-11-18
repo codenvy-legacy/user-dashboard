@@ -85,7 +85,7 @@
 <div class="col-md-12">
     <div class="panel-box" style="margin-top: 10px" ng-if="c2User=='FALSE'" >
         <div class="panel-bg">
-            <div class="row">      
+            <div class="row">
 
                 <div>Welcome to the all new Codenvy! Codenvy 2 projects will be migrated in late 2014. You may access those projects <a class="message" target="_blank" href="https://c2.codenvy.com/site/login">here</a>.
                 </div>
@@ -104,7 +104,7 @@
             </div>
         </div>
     </div>
--->    
+-->
 
 <div class="project-box clearfix" ng-if="box">
 
@@ -169,13 +169,9 @@
         </div>
     </div>
     <!-- end help-->
-<<<<<<< HEAD
-    
-    <div class="col-md-10 col-sm-8 col-lg-10 col-xs-12">
-=======
+
 
     <div class="col-md-10">
->>>>>>> 2155a1ccc23607fd31c4d95c15746c2c656beaf9
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -192,7 +188,8 @@
                     </a>
                 </div><!-- panel-heading -->
 
-                <div class="panel-body" ng-if="project.description != null ">{{project.description}}</div>
+                <div class="panel-body" ng-if="project.description != null && project.misconfigured==true"><span style="color:#b42020">{{project.description}}</span></div>
+                <div class="panel-body" ng-if="project.description != null && project.misconfigured==undefined">{{project.description}}</div>
                 <div class="panel-body pointer" ng-if="project.description == null " ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><a href="">Add description...</a></div>
 
                 <div class="panel-footer">
@@ -505,7 +502,7 @@
 <div class="modal modal-project fade" id="renameProjectError" tabindex="-1" role="dialog" aria-labelledby="renameProjectErrorLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-    
+
       <div class="modal-header" style="padding: 10px 5px 20px 5px; background: #f0f0f0;">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
        <!--  <h4 class="modal-title" id="renameProjectErrorLabel">Warning !</h4>-->
@@ -516,10 +513,10 @@
        <div class="modal-body" ng-if="errorvar=='False'">
         <p>Your Project Name updated by <strong>"{{changeName}}"</strong>.</p>
       </div>
-      
+
       <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
         <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
-       
+
       </div>
     </div>
   </div>
