@@ -47,10 +47,10 @@ angular.module('odeskApp')
               angular.forEach(workspaces, function (workspace) {
                 //  Get workspace's projects and developers using workspace id
                 WorkspaceInfo.getDetail(workspace.id).then(function (response){
-                  var projectsLength;
-                  var projectsName;
-                  var membersLength;
-                  var allocatedRam;
+                 var projectsLength;
+                 var projectsName;
+                 var membersLength;
+                 var allocatedRam;
 
                   return $q.all([
                     $http({method: 'GET', url: $.map(response.links,function(obj){if(obj.rel=="get projects") return obj.href})[0]})
@@ -71,9 +71,9 @@ angular.module('odeskApp')
                       var workspaceDetails = {
                         id: workspace.id,
                         name: workspace.name,
-                        allocatedRam:allocatedRam,
-                        projects: projectsLength,
-                        projectsName: projectsName,
+                       allocatedRam:allocatedRam,
+                       projects: projectsLength,
+                       projectsName: projectsName,
                         developers: membersLength
                       }
 
@@ -86,7 +86,7 @@ angular.module('odeskApp')
             })
             .error(function (err) {  });
 
-          // Add members to workspace list
+          //Add members to workspace list
           $scope.addMemberToWsList = function(){
             var selectedMembers = $("#selectedMembers").val();
             var selectedMemberEmails = selectedMembers.split(",");
@@ -176,24 +176,7 @@ angular.module('odeskApp')
               $scope.selectedWsMembers.splice(index, 1);
             }
           };
-          // For search
-          $timeout(function () {
-            $("[rel=tooltip]").tooltip({ placement: 'bottom' });
-            $(document).on("click", ".searchfield", function () {
-              $('.searchfull').show();
-              $('.detail').animate({ opacity: 0 }, 400);
-              $('.searchfull').animate({ width: "100%" }, 400, function () { $(".closeBtn").show(); });
-              $('.searchfield').focus();
-            });
-            $(document).on("click", ".closeBtn", function () {
-              $(".closeBtn").hide();
-              $('.detail').animate({ opacity: 1 }, 400);
-              $('.searchfull').animate({ width: "43px" }, 400, function () {
-                $('.searchfield').val('');
-                $('.searchfull').hide();
-              });
-            });
-          });
+          
 
           // Create workspace related to account
           $scope.createWorkspace = function(accountId, selectedMembers){
@@ -235,7 +218,6 @@ angular.module('odeskApp')
                     })
 
                 ]).then(function (results) {
-
                   var i = 0;
                   return $q.all([
                     $http({method: 'GET', url:"/api/runner/"+ workspaceId +"/resources" }).
@@ -246,7 +228,7 @@ angular.module('odeskApp')
                         var role = $("input[name=user_role_"+i+"]:checked").val();
 
                         var roles = [
-                          "workspace/" +role.split("/")[1]
+                          "workspace/"+role.split("/")[1]
                         ];
 
                         var memberData = {
@@ -256,7 +238,7 @@ angular.module('odeskApp')
                         member.role = role.split("/")[1];
 
 
-                        $http.post('/api/workspace/' + workspaceId + "/members",
+                        $http.post('/api/workspace/'+workspaceId+'/members',
                           memberData,
                           con)
                           .success(function (data) {
@@ -297,7 +279,7 @@ angular.module('odeskApp')
               $("#emptyWs").show();
               $("#emptyWs").html("<strong>Define the name of the workspace</strong>");
             }
-          }
+          };
 
           // Add project lists while removing workspace
           $scope.addWsProject = function(workspace){
@@ -528,6 +510,25 @@ angular.module('odeskApp')
                 deferred.reject();
               });
           }
+
+          // For search
+          $timeout(function () {
+            $("[rel=tooltip]").tooltip({ placement: 'bottom' });
+            $(document).on("click", ".searchfield", function () {
+              $('.searchfull').show();
+              $('.detail').animate({ opacity: 0 }, 400);
+              $('.searchfull').animate({ width: "100%" }, 400, function () { $(".closeBtn").show(); });
+              $('.searchfield').focus();
+            });
+            $(document).on("click", ".closeBtn", function () {
+              $(".closeBtn").hide();
+              $('.detail').animate({ opacity: 1 }, 400);
+              $('.searchfull').animate({ width: "43px" }, 400, function () {
+                $('.searchfield').val('');
+                $('.searchfull').hide();
+              });
+            });
+          });
 
         }else{
           $scope.isOrgAddOn = false;
