@@ -86,6 +86,7 @@
     <div class="panel-box" style="margin-top: 10px" ng-if="c2User=='FALSE'" >
         <div class="panel-bg">
             <div class="row">
+
                 <div>Welcome to the all new Codenvy! Codenvy 2 projects will be migrated in late 2014. You may access those projects <a class="message" target="_blank" href="https://c2.codenvy.com/site/login">here</a>.
                 </div>
             </div>
@@ -99,6 +100,7 @@
             <div class="row">
                 <div>We are experiencing performance issues with the storage layer. File operations, especially cloning, are running slower than expected. We are investigating the situation.
                 </div>
+
             </div>
         </div>
     </div>
@@ -106,7 +108,7 @@
 
 <div class="project-box clearfix" ng-if="box">
 
-    <div class="new-project col-md-2">
+    <div class="new-project col-md-2 col-sm-4 col-lg-2 col-xs-12">
 
         <div class="box box-two" ng-if="workspaces.length == 1">
             <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=newProject" target="_blank">
@@ -150,7 +152,8 @@
 
     </div><!-- New Project -->
 
-    <div class="col-md-10">
+
+        <div class="col-md-10">
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
             <div class="panel panel-default" ng-if="projects.length > 0">
                 <div class="panel-heading">
@@ -206,8 +209,9 @@
             </div>
         </div>
         </div>
-    <!-- end help-->
+     <!-- end help-->
     </div>
+
  
 <div ng-if="notification" style="width: 300px" class="col-md-3 projectbox" data-toggle="modal" data-target="#myModal">
     <div class="panel panel-primary">
@@ -425,11 +429,12 @@
             </div>
             <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
                 <button type="button" class="btn btn-default" ng-click="cancelProject()" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" ng-click="updateProject()">Ok</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#renameProjectError" ng-click="updateProject()">Ok</button>
                 <button type="button" class="btn btn-danger pull-left" data-toggle="modal" ng-click="deleteProjectConfirm()" data-dismiss="modal"><i class="fa fa-trash-o"></i></i> Delete Project</button>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <!-- Modal -->
@@ -495,3 +500,28 @@
     </div><!-- modal-content -->
   </div><!-- modal-dialog -->
 </div><!-- Warning-project Modal -->
+
+<!--Renaming a project name error model -->
+<div class="modal modal-project fade" id="renameProjectError" tabindex="-1" role="dialog" aria-labelledby="renameProjectErrorLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header" style="padding: 10px 5px 20px 5px; background: #f0f0f0;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+       <!--  <h4 class="modal-title" id="renameProjectErrorLabel">Warning !</h4>-->
+      </div>
+      <div class="modal-body" ng-if="errorvar=='True'">
+        <p>Impossible to rename the project. The name <strong>"{{changeName}}"</strong> is already used in your projects.</p>
+      </div>
+       <div class="modal-body" ng-if="errorvar=='False'">
+        <p>Your Project Name updated by <strong>"{{changeName}}"</strong>.</p>
+      </div>
+
+      <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!--error model end   -->

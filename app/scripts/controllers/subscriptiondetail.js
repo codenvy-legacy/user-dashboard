@@ -25,23 +25,26 @@ angular.module('odeskApp')
             $scope.subscription = data;
                 $http.get(data.links[2].href).success(function(datab, status){
                     $scope.subscriptionAttributes = datab;
+                    $scope.contractperiod = datab.billingDescriptor.contractTerm 
                     $scope.contractStartDate = datab.billingDescriptor.startDate;
+                  
                     if(datab.billingDescriptor.cycleTypeDescriptor.id==1)
                         $scope.autoRenewal = true;
                     
                     var dt = new Date($scope.contractStartDate);
-                    var d = new Date(dt.getFullYear(), dt.getMonth(), dt.getDay());
-                    d.setMonth(d.getMonth() + 12);
-                    $scope.contractRenewalDate = d.getMonth() + "/" + d.getDay() + "/" + d.getFullYear();
-                    // console.log($scope.contractEndDate);
-					
+                    //var d = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
+        
+                    dt.setMonth(dt.getMonth() + $scope.contractperiod);
+                    $scope.contractRenewalDate = (dt.getMonth()+1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+				    
+                  
 					//Figure out trial end date = start date + trialDuration (in days)
 					// if trial expired then display "---"
 					var dtStart = new Date(datab.startDate);
 					var temp = dtStart.getTime() + datab.trialDuration * 86400000; // 86400000 = 24h * 3600 secs * 1000 ms
 					var dtToday = new Date();
 					if(dtToday < temp)
-					{
+					{   
 						var dtTrialEnd = new Date(temp);
 						$scope.trialEndDate = (dtTrialEnd.getMonth()+1) + "/" + dtTrialEnd.getDate() + "/" + dtTrialEnd.getFullYear();
 					}
