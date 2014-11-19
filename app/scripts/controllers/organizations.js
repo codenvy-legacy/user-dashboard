@@ -47,27 +47,37 @@ angular.module('odeskApp')
               angular.forEach(workspaces, function (workspace) {
                 //  Get workspace's projects and developers using workspace id
                 WorkspaceInfo.getDetail(workspace.id).then(function (response){
-                 var projectsLength;
-                 var projectsName;
-                 var membersLength;
-                 var allocatedRam;
 
-                  return $q.all([
-                    $http({method: 'GET', url: $.map(response.links,function(obj){if(obj.rel=="get projects") return obj.href})[0]})
-                      .success(function (data) {
-                        projectsName = _.pluck(data,'name');
-                        projectsLength = data.length;
-                      }),
+                  var projectsLength = 0;
+                  var projectsName;
+                  var membersLength = 0;
+                  var allocatedRam;
+                  
+                  var promises = [];
+                  var getProjectsURL = _.find(response.links, function(obj){ return obj.rel=="get projects"});
+                    if(getProjectsURL!==undefined) {
+                        promises.push(
+                        $http({method: getProjectsURL.method, url: getProjectsURL.href})
+                          .success(function (data) {
+                            projectsName = _.pluck(data,'name');
+                            projectsLength = data.length;
+                          }));
+                    }
 
-                    $http({method: 'GET', url: $.map(response.links,function(obj){if(obj.rel=="get members") return obj.href})[0]})
-                      .success(function (data) {
-                        membersLength = data.length;
-                      }),
-                    $http({method: 'GET', url:"/api/runner/"+ workspace.id +"/resources" }).
-                      success(function (data) {
-                        allocatedRam = data.totalMemory;
-                      })
-                  ]).then(function (results) {
+                    var getMembersURL = _.find(response.links, function(obj){ return obj.rel=="get members"});
+                    if(getMembersURL!==undefined) {
+                        promises.push(
+                        $http({method: getMembersURL.method, url: getMembersURL.href})
+                          .success(function (data) {
+                            membersLength = data.length;
+                          }));
+                    }
+                    
+                    promises.push(
+                        $http({method: 'GET', url:"/api/runner/"+ workspace.id +"/resources" })
+                        .success(function (data) { allocatedRam = data.totalMemory; }));
+                        
+                  return $q.all(promises).then(function (results) {
                       var workspaceDetails = {
                         id: workspace.id,
                         name: workspace.name,
