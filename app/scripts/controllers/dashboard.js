@@ -280,8 +280,8 @@ angular.module('odeskApp')
       
       $scope.isProjectDataFetched = false;
       $scope.isNeedToShowHelp = function() {
-      if($scope.isProjectDataFetched=='true')
-        return $scope.projects==null || $scope.projects.length==0;
+      if($scope.isProjectDataFetched)
+        return $scope.projects.length==0;
       else
         return false;
       }
@@ -427,7 +427,7 @@ angular.module('odeskApp')
 
               $http({ method: 'GET', url: $.map(workspace.workspaceReference.links, function (obj) { if (obj.rel == "get projects") return obj.href })[0] })
               .success(function (data, status) {
-               // $scope.isProjectDataFetched = true;
+               $scope.isProjectDataFetched = true;
                   $scope.projects = $scope.projects.concat(data);
                   
                       
