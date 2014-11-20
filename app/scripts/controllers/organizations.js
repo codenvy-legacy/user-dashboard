@@ -47,37 +47,48 @@ angular.module('odeskApp')
               angular.forEach(workspaces, function (workspace) {
                 //  Get workspace's projects and developers using workspace id
                 WorkspaceInfo.getDetail(workspace.id).then(function (response){
-                  var projectsLength;
+
+                  var projectsLength = 0;
                   var projectsName;
-                  var membersLength;
+                  var membersLength = 0;
                   var allocatedRam;
+                  
+                  var promises = [];
+                  var getProjectsURL = _.find(response.links, function(obj){ return obj.rel=="get projects"});
+                    if(getProjectsURL!==undefined) {
+                        promises.push(
+                        $http({method: getProjectsURL.method, url: getProjectsURL.href})
+                          .success(function (data) {
+                            projectsName = _.pluck(data,'name');
+                            projectsLength = data.length;
+                          }));
+                    }
 
-                  return $q.all([
-                    $http({method: 'GET', url: $.map(response.links,function(obj){if(obj.rel=="get projects") return obj.href})[0]})
-                      .success(function (data) {
-                        projectsName = _.pluck(data,'name');
-                        projectsLength = data.length;
-                      }),
-
-                    $http({method: 'GET', url: $.map(response.links,function(obj){if(obj.rel=="get members") return obj.href})[0]})
-                      .success(function (data) {
-                        membersLength = data.length;
-                      }),
-                    $http({method: 'GET', url:"/api/runner/"+ workspace.id +"/resources" }).
-                      success(function (data) {
-                        allocatedRam = data.totalMemory;
-                      })
-                  ]).then(function (results) {
+                    var getMembersURL = _.find(response.links, function(obj){ return obj.rel=="get members"});
+                    if(getMembersURL!==undefined) {
+                        promises.push(
+                        $http({method: getMembersURL.method, url: getMembersURL.href})
+                          .success(function (data) {
+                            membersLength = data.length;
+                          }));
+                    }
+                    
+                    promises.push(
+                        $http({method: 'GET', url:"/api/runner/"+ workspace.id +"/resources" })
+                        .success(function (data) { allocatedRam = data.totalMemory; }));
+                        
+                  return $q.all(promises).then(function (results) {
                       var workspaceDetails = {
                         id: workspace.id,
                         name: workspace.name,
-                        allocatedRam:allocatedRam,
-                        projects: projectsLength,
-                        projectsName: projectsName,
+                       allocatedRam:allocatedRam,
+                       projects: projectsLength,
+                       projectsName: projectsName,
                         developers: membersLength
                       }
 
                       $scope.workspaces.push(workspaceDetails);
+
                     });
                 });
 
@@ -85,7 +96,7 @@ angular.module('odeskApp')
             })
             .error(function (err) {  });
 
-          // Add members to workspace list
+          //Add members to workspace list
           $scope.addMemberToWsList = function(){
             var selectedMembers = $("#selectedMembers").val();
             var selectedMemberEmails = selectedMembers.split(",");
@@ -175,24 +186,7 @@ angular.module('odeskApp')
               $scope.selectedWsMembers.splice(index, 1);
             }
           };
-          // For search
-          $timeout(function () {
-            $("[rel=tooltip]").tooltip({ placement: 'bottom' });
-            $(document).on("click", ".searchfield", function () {
-              $('.searchfull').show();
-              $('.detail').animate({ opacity: 0 }, 400);
-              $('.searchfull').animate({ width: "100%" }, 400, function () { $(".closeBtn").show(); });
-              $('.searchfield').focus();
-            });
-            $(document).on("click", ".closeBtn", function () {
-              $(".closeBtn").hide();
-              $('.detail').animate({ opacity: 1 }, 400);
-              $('.searchfull').animate({ width: "43px" }, 400, function () {
-                $('.searchfield').val('');
-                $('.searchfull').hide();
-              });
-            });
-          });
+          
 
           // Create workspace related to account
           $scope.createWorkspace = function(accountId, selectedMembers){
@@ -222,6 +216,7 @@ angular.module('odeskApp')
 
                 var workspaceId, workspaceName, allocatedRam;
 
+
                 return $q.all([
                   $http.post('/api/workspace', data, con)
                     .success(function (data) {
@@ -233,22 +228,27 @@ angular.module('odeskApp')
                     })
 
                 ]).then(function (results) {
+                  var i = 0;
                   return $q.all([
                     $http({method: 'GET', url:"/api/runner/"+ workspaceId +"/resources" }).
                       success(function (data) {
                         allocatedRam = data.totalMemory;
                       }),
                       angular.forEach(selectedMembers, function (member) {
+                        var role = $("input[name=user_role_"+i+"]:checked").val();
+
                         var roles = [
-                          "workspace/" + member.role
+                          "workspace/"+role.split("/")[1]
                         ];
 
                         var memberData = {
                           "userId": member.id,
                           "roles": roles // needs to be array
                         };
+                        member.role = role.split("/")[1];
 
-                        $http.post('/api/workspace/' + workspaceId + "/members",
+
+                        $http.post('/api/workspace/'+workspaceId+'/members',
                           memberData,
                           con)
                           .success(function (data) {
@@ -258,6 +258,7 @@ angular.module('odeskApp')
                             $("#addMemberErr").show();
                             $("#addMemberErr").html(err["message"]);
                           });
+                          i++;
                       })
                     ]).then(function (result) {
                       var workspaceDetails = {
@@ -288,7 +289,7 @@ angular.module('odeskApp')
               $("#emptyWs").show();
               $("#emptyWs").html("<strong>Define the name of the workspace</strong>");
             }
-          }
+          };
 
           // Add project lists while removing workspace
           $scope.addWsProject = function(workspace){
@@ -344,40 +345,37 @@ angular.module('odeskApp')
             .error(function (err) {  });
 
           $scope.updateMember = function(member){
-            $scope.editMember = member;       
+            $scope.editMember = member;
             $scope.member_role = $scope.editMember.role;
             $('#updateOrgMemberError').hide();
             $('#updateCurrentWsMemberError').hide();
           };
           //Update organization's member's role
           $scope.updateMemberOrg = function(member_role){
-            $scope.member_role = member_role;            
+            $scope.member_role = member_role;
             $scope.editMember.role = member_role;
             var mcon = { headers: { 'Content-Type': 'application/json'  }  };
-            var memberData = {"userId": $scope.editMember.id, "roles": ["account/"+member_role] }; 
+            var memberData = {"userId": $scope.editMember.id, "roles": ["account/"+member_role] };
 
-             var email;
+            var email;
             var userid;
             $http.get('/api/user').success(function(data){
                 userid = data["id"];
                 email = data["email"]
-
-                console.log(userid);
-                console.log(email);
 
             }).error(function(err){
                 console.log("error occurred");
             });
 
             $http.delete('/api/account/'+$scope.accountId[0]+'/members/' + $scope.editMember.id)
-              .success(function (data, status) {                
+              .success(function (data, status) {
                  if(status == 204){
                   $('#updateRoleModal').modal('toggle');
                   var removeMember = _.find($scope.members, function(member){ if(member.id == $scope.editMember.id) return member; });
                   var index = $scope.members.indexOf(removeMember)
                   if (index != -1 && $scope.editMember.id != userid) {
 
-                    $scope.members.splice(index, 1);                    
+                    $scope.members.splice(index, 1);
                     $http.post('/api/account/'+$scope.accountId[0]+'/members', memberData, mcon)
                     .success(function (data) {
                       $scope.members.push($scope.editMember);
@@ -387,7 +385,7 @@ angular.module('odeskApp')
                       {
                         $('#updateCurrentWsMemberError').show();
                       }
-                } 
+                }
                 }).error(function (err) {
                   $('#updateOrgMemberError').show();
               });
@@ -399,7 +397,6 @@ angular.module('odeskApp')
             var selectedUsers = $("#selected_users").val();
             var selectedUserEmails = selectedUsers.split(",");
             var role = $("input[name=member_role]:checked").val();
-            console.log(role);
 
             $("#emptyEmails").hide();
 
@@ -467,7 +464,9 @@ angular.module('odeskApp')
 
           // For add members in organization Tab
           $scope.addMembers = function(members){
+            var i = 0;
             return $q.all([
+
               angular.forEach(members, function (member) {
                 var con = {
                   headers: {
@@ -475,16 +474,20 @@ angular.module('odeskApp')
                   }
                 };
 
+                var role = $("input[name=user_role_"+i+"]:checked").val();
                 var data = {
                   "userId": member.id,
                   "roles": [
-                    "account/"+member.role
+                    "account/"+role.split("/")[1]
                   ]
                 };
+                member.role = role.split("/")[1];
+
                 $http.post('/api/account/'+$scope.accountId[0]+'/members', data, con)
                   .success(function (data) {
                     $scope.members.push(member);
                   });
+                  i++;
               })
             ]).then(function (results) {
               $('#addNewMember').modal('toggle');
@@ -517,6 +520,25 @@ angular.module('odeskApp')
                 deferred.reject();
               });
           }
+
+          // For search
+          $timeout(function () {
+            $("[rel=tooltip]").tooltip({ placement: 'bottom' });
+            $(document).on("click", ".searchfield", function () {
+              $('.searchfull').show();
+              $('.detail').animate({ opacity: 0 }, 400);
+              $('.searchfull').animate({ width: "100%" }, 400, function () { $(".closeBtn").show(); });
+              $('.searchfield').focus();
+            });
+            $(document).on("click", ".closeBtn", function () {
+              $(".closeBtn").hide();
+              $('.detail').animate({ opacity: 1 }, 400);
+              $('.searchfull').animate({ width: "43px" }, 400, function () {
+                $('.searchfield').val('');
+                $('.searchfull').hide();
+              });
+            });
+          });
 
         }else{
           $scope.isOrgAddOn = false;

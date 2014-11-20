@@ -30,9 +30,19 @@ angular.module('odeskApp', [
   return {
     request: function(config) {
       //remove prefix url
-      if (config.url.indexOf("https://codenvy.com/api") == 0) {
-         config.url = config.url.substring("https://codenvy.com".length);
+      
+      if (config.url.indexOf("http://a3.codenvy-dev.com/api") == 0) {
+         config.url = config.url.substring("http://a3.codenvy-dev.com".length);
       }
+      
+      
+      //Uncomment to use accross condevy-stg (and comment before)
+      /*
+      if (config.url.indexOf("https://codenvy-stg.com/api") == 0) {
+        config.url = config.url.substring("https://codenvy-stg.com/api".length);
+      }
+      */
+
 
       //Do not add token on auth login
       if (config.url.indexOf("/api/auth/login") == -1 && $cookies.token) {
@@ -93,10 +103,10 @@ angular.module('odeskApp', [
           templateUrl: BASE_URL + 'views/organization/members.html',
           controller: 'OrganizationsCtrl'
       })
-      .when('/organizations/workspace/:id', {
-        templateUrl: BASE_URL + 'views/organization/workspace_info.html',
-        controller: 'workspaceInfoCtrl'
-      })
+      // .when('/organizations/workspace/:id', {
+      //   templateUrl: BASE_URL + 'views/organization/workspace_info.html',
+      //   controller: 'workspaceInfoCtrl'
+      // })
       .when('/organizations/workspace/:id/members', {
         templateUrl: BASE_URL + 'views/organization/workspace_members.html',
         controller: 'workspaceInfoCtrl'
