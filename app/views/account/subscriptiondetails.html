@@ -1,7 +1,9 @@
 <ul class="breadcrumb boxnav">
   <li style="margin-top:4px;margin-bottom:8px;"><a href="#/account/profile">Profile</a></li>
   <li style="margin-top:4px;margin-bottom:8px;" class="active"><a href="#/account/subscriptions">Subscriptions</a></li>
-  <!-- 
+  <li style="margin-top:4px;margin-bottom:8px;"><a href="#/account/configuration">Configuration</a></li>
+
+  <!--
     <li><a href="#/account/configuration">Configuration</a></li>
     <li><a href="#/account/preferences">Preferences</a></li>
     <li><a href="#/account/billing">Billing</a></li>
@@ -36,7 +38,7 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-              <label for="workspaceid">Your subscription expired on: <b>{{subscriptionAttributes.endDate}}</b></label>
+              <label for="workspaceid">Your subscription expires on: <b>{{subscriptionAttributes.endDate}}</b></label>
           </div>
         </div>
         <div class="row">
@@ -64,11 +66,11 @@
     </div>
     <div class="panel panel-default panel-ce">
       <div class="panel-body">
-        <h4 class="text-center">RENEWAL INFORMATIONS</h4>
+        <h4 class="text-center">RENEWAL INFORMATION</h4>
         <div class="row">
           <div class="col-md-12">
               <label>Automatic Renewal:</label>&nbsp;&nbsp;&nbsp;&nbsp;
-              <input type="checkbox" name="autorenew" ng-model="autoRenewal" value="1">
+              <input type="checkbox" name="autorenew" ng-model="autoRenewal" value="1" disabled>
               &nbsp;&nbsp;<label>Yes</label>
           </div>
         </div>
@@ -79,29 +81,29 @@
         </div>
       </div>
     </div>
-         
+
   </div>
- 
+
 </div>
 
 <div class="modal modal-project fade" id="message-deletesub" tabindex="-1" role="dialog" aria-labelledby="WarningProjectLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-    
+
       <div class="modal-header" style="padding: 10px 5px 20px 5px; background: #f0f0f0;">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title"></h4>
       </div><!-- modal-header -->
-      
+
       <div class="modal-body">
         <p>We'd hate to see you go, but if you ever need to cancel, just contact our Customer Support at <a href="mailto:cancellation@codenvy.com">cancellation@codenvy.com</a>.</p>
       </div><!-- modal-body -->
-      
+
       <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
         <a  class="btn btn-danger" data-dismiss="modal">Ok</a>
         <!--<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>-->
       </div><!-- modal-footer -->
-      
+
     </div><!-- modal-content -->
   </div><!-- modal-dialog -->
 </div><!-- Warning-project Modal -->
