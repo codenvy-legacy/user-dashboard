@@ -46,7 +46,7 @@ angular.module('odeskApp')
               var members = [];
               return $q.all([
 
-                $http({method: 'GET', url: $.map(response.links,function(obj){if(obj.rel=="get members") return obj.href})[0]})
+                $http({method: 'GET', url:"/api/workspace/"+ workspaceId +"/members" })
                   .success(function (data) {
                     angular.forEach(data, function (member) {
                       var email, name, role;
@@ -216,7 +216,7 @@ angular.module('odeskApp')
 
                   var data = {
                     "userId": member.id,
-                    "roles": "workspace/"+role.split("/")[1]// needs to be array
+                    "roles": ["workspace/"+role.split("/")[1]]// needs to be array
                   };
                
                   member.role = role.split("/")[1];
@@ -226,11 +226,11 @@ angular.module('odeskApp')
                     con)
                     .success(function (data) {
                       var memberDetails = {
-                        id: userId,
+                        id: data.userId,
                         role: member.role,
                         email: member.email,
                         name: member.name
-                      }
+                      };
                       $scope.workspace.members.push(memberDetails);
 
                     }).error(function (err, status) {
