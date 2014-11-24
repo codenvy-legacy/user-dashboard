@@ -396,7 +396,7 @@ angular.module('odeskApp')
       });
     // to show scheduled maintenance message from statuspage.io (Path-to service)
       $scope.scheduled='FALSE';
-      $http({method: 'GET', url: 'http://dev.box.com/dashboard/scheduled.jsp'})
+      $http({method: 'GET', url: 'http://dev.box.com/dashboard/scheduled'})
         .success(function(data){
           if (Array.isArray(data)){
             if(data.length){
