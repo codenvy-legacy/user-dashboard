@@ -56,7 +56,7 @@
             <td style="text-align: right;">
               <ul class="breadcrumb action-button boxnav">
                 <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#updateRoleModal" ng-click="updateMember(member)">Edit</a></li>
-                <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#removeMemberConfirm" ng-click="addMemberProject(member)">Remove</a></li>
+                <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#removeMemberConfirm" ng-click="addMemberProject(member)" ng-style="{visibility: member.role!='owner' && 'visible' || 'hidden'}">Remove</a></li>
               </ul>
             </td>
           </tr>
