@@ -64,15 +64,10 @@ angular.module('odeskApp')
                           }));
                     }
 
-                    var getMembersURL = _.find(response.links, function(obj){ return obj.rel=="get members"});
-                    if(getMembersURL!==undefined) {
-                        promises.push(
-                        $http({method: getMembersURL.method, url: getMembersURL.href})
-                          .success(function (data) {
-                            membersLength = data.length;
-                          }));
-                    }
-                    
+                    promises.push(
+                        $http({method: 'GET', url:"/api/workspace/"+ workspace.id +"/members" })
+                        .success(function (data) { membersLength = data.length; }));
+
                     promises.push(
                         $http({method: 'GET', url:"/api/runner/"+ workspace.id +"/resources" })
                         .success(function (data) { allocatedRam = data.totalMemory; }));

@@ -394,7 +394,19 @@ angular.module('odeskApp')
       }).error(function(err){
 
       });
+    // to show scheduled maintenance message from statuspage.io (Path-to service)
+      $scope.scheduled='FALSE';
+      $http({method: 'GET', url: 'http://dev.box.com/dashboard/scheduled.jsp'})
+        .success(function(data){
+          if (Array.isArray(data)){
+            if(data.length){
+              $scope.data=data;
+              $scope.scheduled='TRUE';
+            }
+          }
+      }).error(function(err){
 
+      });
  
       //constructor
       var init = function () {
