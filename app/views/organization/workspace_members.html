@@ -35,7 +35,6 @@
         </div>
       </li>
     </ul>
-
     <div class="projectnav table-responsive">
       <table class="table table-hover" style="background:#f9f9f9;">
         <thead>
@@ -62,8 +61,8 @@
             </ul>
           </td>
         </tr>
-
       </table>
+      <p ng-show="(workspace.members).length == 0" style="text-align: center;">This workspace does not have any developer. Click "Add Developer"</p>
     </div>
     <!--<div class="text-center">
       <ul class="pagination pagination-sm">
