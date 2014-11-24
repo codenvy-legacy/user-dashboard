@@ -44,51 +44,48 @@ angular.module('odeskApp')
             // Display workspace details in workspace
             WorkspaceInfo.getDetail(workspaceId).then(function (response){
               var members = [];
-              return $q.all([
+              $scope.workspace = {
+                    id: workspaceId,
+                    name: response.name,
+                    members: members
+              }
 
-                $http({method: 'GET', url: $.map(response.links,function(obj){if(obj.rel=="get members") return obj.href})[0]})
-                  .success(function (data) {
-                    angular.forEach(data, function (member) {
-                      var email, name, role;
-                      if(member['roles'].length>1)
-                          {
-                            role = member['roles'][1].split("/")[1];
-                          }
-                        else{
-                          role = member['roles'][0].split("/")[1];
-                        }
-
-                      //  Get member's email and name
-                      
-                      return $q.all([
-                        $http({method: 'GET', url: '/api/profile/'+member['userId']})
+              var url = $.map(response.links,function(obj){if(obj.rel=="get members") return obj.href})[0];
+              if (url) {
+                      $http({method: 'GET', url: url})
                           .success(function (data) {
-                            email = data['attributes'].email;
-                            name = data['attributes'].firstName +" "+ data['attributes'].lastName;
+                              angular.forEach(data, function (member) {
+                                  var email, name, role;
+                                  if (member['roles'].length > 1) {
+                                      role = member['roles'][1].split("/")[1];
+                                  }
+                                  else {
+                                      role = member['roles'][0].split("/")[1];
+                                  }
+
+                                  //  Get member's email and name
+
+                                  return $q.all([
+                                      $http({method: 'GET', url: '/api/profile/' + member['userId']})
+                                          .success(function (data) {
+                                              email = data['attributes'].email;
+                                              name = data['attributes'].firstName + " " + data['attributes'].lastName;
+                                          })
+                                  ]).then(function (results) {
+                                      var memberDetails = {
+                                          id: member['userId'],
+                                          role: role,
+                                          email: email,
+                                          name: name
+                                      }
+
+                                      members.push(memberDetails);
+                                  });
+
+                              });
+                              $scope.workspace.members = members;
                           })
-                      ]).then(function (results) {
-                        
-            
-                        var memberDetails = {
-                          id: member['userId'],
-                          role: role,
-                          email: email,
-                          name: name
-                        }
-
-                        members.push(memberDetails);
-                      });
-
-                    });
-                  })
-
-              ]).then(function (results) {
-                $scope.workspace = {
-                  id: workspaceId,
-                  name: response.name,
-                  members: members
-                }
-              });
+              }
             });
 
             // Get all members of the current workspace
