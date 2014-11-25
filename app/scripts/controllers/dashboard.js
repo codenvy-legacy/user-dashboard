@@ -196,17 +196,18 @@ angular.module('odeskApp')
         $scope.selected.name = old_projectname;
         return;
       }
-      $scope.projectName = null ;
-      angular.forEach($scope.projects , function (project){
-        $scope.projectName = project.name ;
+      var keepGoing = true;
+      angular.forEach($scope.projects , function (project) {
+          if($scope.selected != project && $scope.selected.name == project.name) {
+              keepGoing = false;
+          }
       });
-
-      if($scope.selected.name == $scope.projectName){
-
+      if(!keepGoing) {
           $("#renameProjectError").show();
           $scope.changeName = $scope.selected.name;
           $scope.selected.name = old_projectname;
-        }
+          return;
+      }
 
       }
         return $q.all([
