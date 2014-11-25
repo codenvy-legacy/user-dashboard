@@ -111,15 +111,13 @@
                 </div>
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
                   <div class="text-center">
-                    <input type="radio" name="user_role_{{$index}}" id="radio{{$index}}" class="css-checkbox" value="workspace/admin" checked ng-if="member.role=='admin'"/>
-                    <input type="radio" name="user_role_{{$index}}" id="radio{{$index}}" class="css-checkbox" value="workspace/admin" ng-if="member.role!='admin'"/>
+                    <input type="radio" name="user_role_{{$index}}" id="radio{{$index}}" class="css-checkbox" value="workspace/admin" ng-checked="member.role=='admin'"/>
                     <label for="radio{{$index}}" class="css-label radGroup1">&nbsp;</label>
                   </div>
                 </div>
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
                   <div class="text-center">
-                    <input type="radio" name="user_role_{{$index}}" id="radio_{{$index}}" class="css-checkbox" value="workspace/developer" checked ng-if="member.role=='developer'"/>
-                    <input type="radio" name="user_role_{{$index}}" id="radio_{{$index}}" class="css-checkbox" value="workspace/developer" ng-if="member.role!='developer'"/>
+                    <input type="radio" name="user_role_{{$index}}" id="radio_{{$index}}" class="css-checkbox" value="workspace/developer" ng-checked="member.role=='developer'"/>
                     <label for="radio_{{$index}}" class="css-label radGroup1">&nbsp;</label>
                   </div>
                 </div>
