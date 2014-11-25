@@ -232,28 +232,28 @@ angular.module('odeskApp')
                       angular.forEach(selectedMembers, function (member) {
                         var role = $("input[name=user_role_"+i+"]:checked").val();
 
-                        var roles = [
-                          "workspace/"+role.split("/")[1]
-                        ];
+                        var roles = [role];
+
+                        // var roles = [
+                        //   "workspace/"+member.role
+                        // ];
 
                         var memberData = {
                           "userId": member.id,
                           "roles": roles // needs to be array
                         };
-                        member.role = role.split("/")[1];
-
-
+                   
                         $http.post('/api/workspace/'+workspaceId+'/members',
                           memberData,
                           con)
                           .success(function (data) {
-
+                              console.log(member.role);
                           })
                           .error(function (err, status) {
                             $("#addMemberErr").show();
                             $("#addMemberErr").html(err["message"]);
                           });
-                          i++;
+                         i++;
                       })
                     ]).then(function (result) {
                       var workspaceDetails = {
