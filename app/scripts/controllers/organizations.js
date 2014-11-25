@@ -232,17 +232,15 @@ angular.module('odeskApp')
                       angular.forEach(selectedMembers, function (member) {
                         var role = $("input[name=user_role_"+i+"]:checked").val();
 
-                        var roles = [role];
-
-                        // var roles = [
-                        //   "workspace/"+member.role
-                        // ];
+                        var roles = [
+                          "workspace/"+role.split("/")[1]
+                        ];
 
                         var memberData = {
                           "userId": member.id,
                           "roles": roles // needs to be array
                         };
-                   
+
                         $http.post('/api/workspace/'+workspaceId+'/members',
                           memberData,
                           con)
