@@ -240,20 +240,18 @@ angular.module('odeskApp')
                           "userId": member.id,
                           "roles": roles // needs to be array
                         };
-                        member.role = role.split("/")[1];
-
 
                         $http.post('/api/workspace/'+workspaceId+'/members',
                           memberData,
                           con)
                           .success(function (data) {
-
+          
                           })
                           .error(function (err, status) {
                             $("#addMemberErr").show();
                             $("#addMemberErr").html(err["message"]);
                           });
-                          i++;
+                         i++;
                       })
                     ]).then(function (result) {
                       var workspaceDetails = {
