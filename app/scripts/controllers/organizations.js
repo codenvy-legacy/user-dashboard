@@ -245,7 +245,7 @@ angular.module('odeskApp')
                           memberData,
                           con)
                           .success(function (data) {
-                              console.log(member.role);
+          
                           })
                           .error(function (err, status) {
                             $("#addMemberErr").show();
