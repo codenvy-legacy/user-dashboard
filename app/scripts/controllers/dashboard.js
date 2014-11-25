@@ -15,6 +15,16 @@
 /*global angular, $, _*/
 
 'use strict';
+// angular.module('odeskApp')
+//     .run(function(interval){
+//         $scope.start = function() {
+//         interval = setInterval(init, 3000);
+//     };
+
+//     $scope.stop = function() {
+//         clearInterval(interval);
+//     };
+//     });
 
 angular.module('odeskApp')
     .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, Profile, $http, $q, $window, $location) {
@@ -112,6 +122,7 @@ angular.module('odeskApp')
 
       //public methods
       $scope.selectProject = function(project,modalNameType) {
+        clearInterval($scope.timer);
         $("#renameProjectError").hide();
         $scope.emailList = '';
         $scope.activeMembers = [];
@@ -186,6 +197,8 @@ angular.module('odeskApp')
 
 
       $scope.updateProject = function () {
+      
+      clearInterval($scope.timer);
       $scope.changeName = '' ;
       if($scope.selected.name && $scope.selected.name.length > 0)
       {
@@ -196,16 +209,19 @@ angular.module('odeskApp')
         $scope.selected.name = old_projectname;
         return;
       }
-      $scope.projectName = null ;
+      $scope.projectName = '' ;
       angular.forEach($scope.projects , function (project){
         $scope.projectName = project.name ;
       });
 
       if($scope.selected.name == $scope.projectName){
-
+          console.log("hello")
           $("#renameProjectError").show();
           $scope.changeName = $scope.selected.name;
           $scope.selected.name = old_projectname;
+        }
+        else{
+          $("#renameProjectError").hide();
         }
 
       }
@@ -226,6 +242,7 @@ angular.module('odeskApp')
                           success(function (data, status) {
                             //Change Project URL & Path
                             $('#projectDetailModal').modal('hide');
+                            $('.modal-backdrop').remove();
                             var projFound = $scope.projects.filter(function(p) {return p.name==data.name;})
                             if(projFound.length > 0)
                             {
@@ -242,6 +259,7 @@ angular.module('odeskApp')
 
 
       $scope.switchVisibility = function () {
+         clearInterval($scope.timer);
         $http({ method: 'POST', url: '/api/project/' + $scope.selected.workspaceId + '/switch_visibility/' + $scope.selected.name + '?visibility=' + $scope.selected.visibility }).
             success(function (data, status) {
               // console.log(data);
@@ -249,6 +267,7 @@ angular.module('odeskApp')
       };
 
 	  $scope.deleteProjectConfirm = function() {
+       clearInterval($scope.timer);
 			if($scope.isAdmin)
 				$('#warning-project').modal('show');
 			else
@@ -256,6 +275,7 @@ angular.module('odeskApp')
 	  };
 
       $scope.deleteProject = function () {
+         clearInterval($scope.timer);
         $http({ method: 'DELETE', url: $scope.selected.url }).
           success(function (status) {
             $scope.projects = _.without($scope.projects, _.findWhere($scope.projects, $scope.selected));
@@ -263,6 +283,7 @@ angular.module('odeskApp')
       };
 
       $scope.cancelProject = function () {
+         clearInterval($scope.timer);
         $scope.selected.description = old_description;
 		    $scope.selected.name = old_projectname;
       };
@@ -292,6 +313,7 @@ angular.module('odeskApp')
 	   }
  
       $scope.removeMember = function (member) {
+         clearInterval($scope.timer);
         Workspace.removeMember($scope.activeProject.workspaceId, member.userId).then(function (data) {
           var removedMemberIndex = -1;
           angular.forEach($scope.activeMembers, function (singleMember, index) {
@@ -312,7 +334,7 @@ angular.module('odeskApp')
             $scope.currentWorkspace.members.splice(removedMemberIndex, 1);
           }
         }, function (error) {
-          //console.log(error);
+          
         });
       };
 
@@ -394,11 +416,13 @@ angular.module('odeskApp')
       }).error(function(err){
 
       });
+      
+      
 
- 
       //constructor
       var init = function () {
-        Workspace.all(function (resp) {
+      
+      Workspace.all(function (resp) {
  
 		  $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceReference.temporary; });
 
@@ -430,7 +454,7 @@ angular.module('odeskApp')
                $scope.isProjectDataFetched = true;
                   $scope.projects = $scope.projects.concat(data);
                   
-                      
+                      console.log($scope.projects);
                   angular.forEach($scope.projects , function (project){
                           if(project.problems.length>0){
                          angular.forEach(project.problems,function(problem){
@@ -474,10 +498,17 @@ angular.module('odeskApp')
             });
           });
         });
- 
+        
+        
       };
-       init();// all code starts here
-    });
+      init();// all code starts here
+      $scope.timer = setInterval(function() {
+        $scope.isProjectDataFetched = false;
+          $scope.$apply(init);
+      }, 15000);
+          
+      
+     });
 
 angular.module('odeskApp')
         .directive('stopEvent', function () {
