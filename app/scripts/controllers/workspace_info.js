@@ -52,7 +52,7 @@ angular.module('odeskApp')
                       var email, name, role;
                       if(member['roles'].length>1)
                           {
-                            role = member['roles'][1].split("/")[1];
+                            role = member['roles'][0].split("/")[1];
                           }
                         else{
                           role = member['roles'][0].split("/")[1];

@@ -196,17 +196,18 @@ angular.module('odeskApp')
         $scope.selected.name = old_projectname;
         return;
       }
-      $scope.projectName = null ;
-      angular.forEach($scope.projects , function (project){
-        $scope.projectName = project.name ;
+      var keepGoing = true;
+      angular.forEach($scope.projects , function (project) {
+          if($scope.selected != project && $scope.selected.name == project.name) {
+              keepGoing = false;
+          }
       });
-
-      if($scope.selected.name == $scope.projectName){
-
+      if(!keepGoing) {
           $("#renameProjectError").show();
           $scope.changeName = $scope.selected.name;
           $scope.selected.name = old_projectname;
-        }
+          return;
+      }
 
       }
         return $q.all([
@@ -396,7 +397,7 @@ angular.module('odeskApp')
       });
     // to show scheduled maintenance message from statuspage.io (Path-to service)
       $scope.scheduled='FALSE';
-      $http({method: 'GET', url: 'http://dev.box.com/dashboard/scheduled'})
+      $http({method: 'GET', url: '/dashboard/scheduled'})
         .success(function(data){
           if (Array.isArray(data)){
             if(data.length){
