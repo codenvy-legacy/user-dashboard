@@ -106,7 +106,7 @@
             <div class="menber-textarea mrg-top10">
               <div class="row mrg-btm5" ng-repeat="member in selectedMembers">
                 <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
-                  <p>{{member.name}} ({{member.email}})</p>
+                  <p>{{member.name ? member.name : member.email.split("@")[0]}} ({{member.email}})</p>
                 </div>
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
                   <div class="text-center">
@@ -233,7 +233,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          Remove Member: <strong>{{selectedMemberForRemove.name}}</strong>
+          Remove Member: <strong>{{selectedMemberForRemove.name ? selectedMemberForRemove.name : selectedMemberForRemove.email}}</strong>
         </div>
         <div class="modal-body">
           <strong>Are you sure you want to remove?</strong>
