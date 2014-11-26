@@ -209,19 +209,20 @@ angular.module('odeskApp')
         $scope.selected.name = old_projectname;
         return;
       }
-      $scope.projectName = '' ;
-      angular.forEach($scope.projects , function (project){
-        $scope.projectName = project.name ;
-      });
+    //  $scope.projectName = '' ;
+      $scope.profound = 0;
 
-      if($scope.selected.name == $scope.projectName){
-          console.log("hello")
-          $("#renameProjectError").show();
+      angular.forEach($scope.projects , function (project){
+        if($scope.selected.name==project.name){
+          $scope.profound+=1;   
+        }
+      });
+     
+
+        if($scope.profound>1){
+          
           $scope.changeName = $scope.selected.name;
           $scope.selected.name = old_projectname;
-        }
-        else{
-          $("#renameProjectError").hide();
         }
 
       }
@@ -278,7 +279,7 @@ angular.module('odeskApp')
          clearInterval($scope.timer);
         $http({ method: 'DELETE', url: $scope.selected.url }).
           success(function (status) {
-            $scope.projects = _.without($scope.projects, _.findWhere($scope.projects, $scope.selected));
+            $scope.projects = _.without($scope.projects, _.findWhere($scope.projects, $scope.selected));        
           });
       };
 
@@ -454,7 +455,6 @@ angular.module('odeskApp')
                $scope.isProjectDataFetched = true;
                   $scope.projects = $scope.projects.concat(data);
                   
-                      console.log($scope.projects);
                   angular.forEach($scope.projects , function (project){
                           if(project.problems.length>0){
                          angular.forEach(project.problems,function(problem){
@@ -505,7 +505,7 @@ angular.module('odeskApp')
       $scope.timer = setInterval(function() {
         $scope.isProjectDataFetched = false;
           $scope.$apply(init);
-      }, 15000);
+      }, 12000);
           
       
      });

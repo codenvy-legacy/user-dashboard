@@ -425,7 +425,7 @@
                     </div>
                 </div>
                 <br><br>
-                <div id="renameProjectError" style="display: none" class="org-errors"> Impossible to rename the project. The name <strong>"{{changeName}}"</strong> is already used in your projects. </div>
+                <div id="renameProjectError" style="display: none" class="org-errors" ng-if="profound>1"> Impossible to rename the project. The name <strong>"{{changeName}}"</strong> is already used in your projects. </div>
             </div>
             <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
                 <button type="button" class="btn btn-default" ng-click="cancelProject()" data-dismiss="modal">Cancel</button>
