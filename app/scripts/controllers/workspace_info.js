@@ -64,7 +64,9 @@ angular.module('odeskApp')
                         $http({method: 'GET', url: '/api/profile/'+member['userId']})
                           .success(function (data) {
                             email = data['attributes'].email;
-                            name = data['attributes'].firstName +" "+ data['attributes'].lastName;
+                                var firstName = data['attributes'].firstName || "";
+                                var lastName = data['attributes'].lastName || "";
+                                name = (firstName && lastName)? firstName +" "+ lastName : firstName + lastName;
                           })
                       ]).then(function (results) {
                         
@@ -153,7 +155,9 @@ angular.module('odeskApp')
                         $http({method: 'GET', url: '/api/profile/'+userId})
                           .success(function (data) {
                             email = data['attributes'].email;
-                            name = data['attributes'].firstName +" "+ data['attributes'].lastName;
+                            var firstName = data['attributes'].firstName || "";
+                            var lastName = data['attributes'].lastName || "";
+                            name = (firstName && lastName)? firstName +" "+ lastName : firstName + lastName;
                             var memberDetails = {
                               id: userId,
                               role: role.split("/")[1],
