@@ -15,16 +15,6 @@
 /*global angular, $, _*/
 
 'use strict';
-// angular.module('odeskApp')
-//     .run(function(interval){
-//         $scope.start = function() {
-//         interval = setInterval(init, 3000);
-//     };
-
-//     $scope.stop = function() {
-//         clearInterval(interval);
-//     };
-//     });
 
 angular.module('odeskApp')
     .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, Profile, $http, $q, $window, $location) {
@@ -267,13 +257,13 @@ angular.module('odeskApp')
             });
       };
 
-	  $scope.deleteProjectConfirm = function() {
+	    $scope.deleteProjectConfirm = function() {
        clearInterval($scope.timer);
 			if($scope.isAdmin)
 				$('#warning-project').modal('show');
 			else
 				alert("Deleting the project requires Administrator permissions to the project's workspace. Contact the workspace's Administrator or Owner.");
-	  };
+	    };
 
       $scope.deleteProject = function () {
          clearInterval($scope.timer);
@@ -306,12 +296,13 @@ angular.module('odeskApp')
         return $scope.projects.length==0;
       else
         return false;
+      init();
       }
 
-	   $scope.selectMemberToBeDeleted = null;
-	   $scope.setMemberToBeDeleted = function(member) {
+	    $scope.selectMemberToBeDeleted = null;
+	    $scope.setMemberToBeDeleted = function(member) {
 		  $scope.selectMemberToBeDeleted = member;
-	   }
+	    }
  
       $scope.removeMember = function (member) {
          clearInterval($scope.timer);
@@ -501,12 +492,12 @@ angular.module('odeskApp')
         
         
       };
-      init();// all code starts here
+     // all code starts here
       $scope.timer = setInterval(function() {
         $scope.isProjectDataFetched = false;
           $scope.$apply(init);
       }, 12000);
-          
+      init();   
       
      });
 

@@ -32,14 +32,14 @@ angular.module('odeskApp')
                 'title': 'Runners',
                 'link': '#/runner'
             },
-            /*{
+            {
                 'title': 'Factories',
                 'link': '#/factories'
             },
             {
                 'title': 'Stats',
                 'link': '#/stats'
-            },*/
+            },
             {
                 'title': 'Account',
                 'link': '#/account'
@@ -79,6 +79,7 @@ angular.module('odeskApp')
     
         $scope.isActive = function (route) {
             //return route === '#' + $location.path(); //here # is added because of location html5 mode        
+            
             var str = '#' + $location.path(),
                 str2 = route;
             
@@ -98,7 +99,13 @@ angular.module('odeskApp')
                 $window.location.href = '/site/login';
             });
         };
-		
+        $("#navbar-collapse").click(function(){
+            $(".navbar-collapse").toggle();   
+        });
+        $("#navbar-collapse-btn").click(function(){
+            $(".navbar-collapse").toggle();   
+        });
+        
 		return $q.all([
           Account.getAccountId().then(function (response){
             accountId.push(_.pluck(_.pluck(response, 'accountReference'), 'id')[0]);

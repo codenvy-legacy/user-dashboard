@@ -108,7 +108,7 @@
 
 <div class="project-box clearfix" ng-if="box">
 
-    <div class="new-project col-md-2 col-sm-4 col-lg-2 col-xs-12">
+    <div class="new-project col-md-2 col-sm-4 col-lg-2 col-xs-6">
 
         <div class="box box-two" ng-if="workspaces.length == 1">
             <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=newProject" target="_blank">
@@ -152,6 +152,24 @@
 
     </div><!-- New Project -->
 
+    <!-- start help-->
+    <div ng-show="isNeedToShowHelp()" class="box-example">
+        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-6">
+            <div class="arrow-img"><img src="./images/arrow.png" class="img-responsive"  alt=""/></div>
+            <div class="panel panel-default">
+              <div class="panel-heading" style="text-align:center">
+                <div class="codenvy-rounded-logo"><img src="./images/codenvy-rounded-logo.png" class="img-responsive"  alt=""/></div>
+                <strong>Welcome to your Workspace!</strong>
+              </div>
+              <div class="panel-body">
+                <p style="margin-top:2px">Click <b>Create New Project</b> to get started.</p>
+                <p style="margin-top:2px">Want to learn more? Check out our <a href="http://docs.codenvy.com" style="color: #52ade1;">docs for use cases, explanations and tips</a>.</p>
+              </div>
+            </div>
+        </div>
+        </div>
+     <!-- end help-->
+
 
         <div class="col-md-10">
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
@@ -193,23 +211,7 @@
 
 </div> 
 
-  <!-- start help-->
-    <div ng-show="isNeedToShowHelp()" class="box-example">
-        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
-            <div class="arrow-img"><img src="./images/arrow.png" class="img-responsive"  alt=""/></div>
-            <div class="panel panel-default">
-              <div class="panel-heading" style="text-align:center">
-                <div class="codenvy-rounded-logo"><img src="./images/codenvy-rounded-logo.png" class="img-responsive"  alt=""/></div>
-                <strong>Welcome to your Workspace!</strong>
-              </div>
-              <div class="panel-body">
-                <p style="margin-top:2px">Click <b>Create New Project</b> to get started.</p>
-                <p style="margin-top:2px">Want to learn more? Check out our <a href="http://docs.codenvy.com" style="color: #52ade1;">docs for use cases, explanations and tips</a>.</p>
-              </div>
-            </div>
-        </div>
-        </div>
-     <!-- end help-->
+  
     </div>
 
  
@@ -424,7 +426,7 @@
                         <textarea ng-model="selected.description" class="form-control" style="max-width:100%" placeholder="Add a Description..."></textarea>
                     </div>
                 </div>
-                <br><br>
+                <br><br><br>
                 <div id="renameProjectError" style="display: none" class="org-errors" ng-if="profound>1"> Impossible to rename the project. The name <strong>"{{changeName}}"</strong> is already used in your projects. </div>
             </div>
             <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">

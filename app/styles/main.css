@@ -1290,11 +1290,21 @@ label {margin-right:0px;}
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) and (max-width: 991px) {
 .starting_date .textdate5{padding-right: 0 !important;}
+.navbar-inverse .navbar-nav > li > a {
+    font-size: 14px;
+    margin: 12px;
+    padding: 1px 0;
+}
 }
 
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) and (max-width: 1199px) {
 .starting_date .textdate5{padding-right: 0 !important;}
+.navbar-inverse .navbar-nav > li > a {
+    font-size: 14px;
+    margin: 12px;
+    padding: 1px 0;
+}
 }
 
 /* Large devices (large desktops, 1200px and up) */
@@ -1313,7 +1323,7 @@ label {margin-right:0px;}
     font-size: 12px;min-height: 30px;
     line-height: 30px;
     margin-bottom: 4px;
-    padding: 0 6px;
+    padding: 0 10px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
   }
 
