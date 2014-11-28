@@ -28,10 +28,18 @@ angular.module('odeskApp')
                     $scope.contractperiod = datab.billingDescriptor.contractTerm 
                     $scope.contractStartDate = datab.billingDescriptor.startDate;
                   
-                    if(datab.billingDescriptor.cycleTypeDescriptor.id==1)
+                    if(datab.billingDescriptor.cycleTypeDescriptor.id==1){
                         $scope.autoRenewal = true;
+                        var dt = new Date($scope.contractStartDate);
+                        dt.setMonth(dt.getMonth() + $scope.contractperiod);
+                        $scope.contractRenewalDate = (dt.getMonth()+1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                    }
+                    else{
+                        $scope.autoRenewal = false;
+                        $scope.contractRenewalDate = '---';
+                    }
                     
-                    var dt = new Date($scope.contractStartDate);
+                    
                     //var d = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
         
                     dt.setMonth(dt.getMonth() + $scope.contractperiod);
