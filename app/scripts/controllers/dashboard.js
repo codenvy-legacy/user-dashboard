@@ -19,7 +19,8 @@
 angular.module('odeskApp')
     .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, Profile, $http, $q, $window, $location) {
       var old_description = '';
-	  var old_projectname = '';
+	    var old_projectname = '';
+ 
       $scope.box = 1;
       $scope.search = 0;
       $scope.projects = [];
@@ -31,7 +32,7 @@ angular.module('odeskApp')
       $scope.workspaces = [];
       $scope.currentUserId = '';
       $scope.changeName ='';
-
+      $scope.timer = '';    
 
       //private methods
       // for one user set the read write properties
@@ -125,10 +126,10 @@ angular.module('odeskApp')
         $scope.isAdmin = getAdmin($scope.currentWorkspace.roles);
         $scope.activeMembers = angular.copy($scope.currentWorkspace.members);
 
-        if ($scope.isAdmin) {
+        if($scope.isAdmin) {
 
-          if (modalNameType=='privacysetting') {
-           $('#privacyModal').modal('toggle');
+          if (modalNameType=='privacysetting'){
+            $('#privacyModal').modal('toggle');
           }
           else if(modalNameType=='developersetting'){
             $('#developersModal').modal('toggle');
@@ -145,7 +146,8 @@ angular.module('odeskApp')
             angular.forEach(projectPermissions, function (permission) {
               if (permission.principal.type === 'USER') {
                 usersPermissions.push(permission);
-              } else if (permission.principal.type === 'GROUP') {
+              } 
+              else if (permission.principal.type === 'GROUP') {
                 groupsPermissions.push(permission);
               }
             });
@@ -157,15 +159,15 @@ angular.module('odeskApp')
           });
         } else {
 
-          if (modalNameType=='privacysetting') {
-           $('#privacyMessageModal').modal('toggle');
-          }
-          else if(modalNameType=='developersetting'){
-            $('#developersModal').modal('toggle');
-          }
-          else if(modalNameType=='projectsetting'){
+            if (modalNameType=='privacysetting') {
+              $('#privacyMessageModal').modal('toggle');
+            }
+            else if(modalNameType=='developersetting'){
+              $('#developersModal').modal('toggle');
+            }
+            else if(modalNameType=='projectsetting'){
             $('#projectDetailModal').modal('toggle');
-          }
+            }
 
 
           $http({ method: 'GET', url: '/api/profile' }).success(function (profile, status) {
@@ -183,100 +185,107 @@ angular.module('odeskApp')
         $scope.selected = project;
         old_description = project.description;
 		    old_projectname = project.name;
+      
       };
 
 
       $scope.updateProject = function () {
-      
-      clearInterval($scope.timer);
-      $scope.changeName = '' ;
-      if($scope.selected.name && $scope.selected.name.length > 0)
-      {
-      var res = /[^0-9a-zA-Z\-._]/.test($scope.selected.name) || $scope.selected.name[0] == '-' || $scope.selected.name[0] == '.' || $scope.selected.name[0] == '_';
-      if(res)
-      {
-        alert('Project name must contain only Latin letters, digits or these following special characters -._');
-        $scope.selected.name = old_projectname;
-        return;
-      }
-    //  $scope.projectName = '' ;
-      $scope.profound = 0;
-
-      angular.forEach($scope.projects , function (project){
-        if($scope.selected.name==project.name){
-          $scope.profound+=1;   
-        }
-      });
-     
-
-        if($scope.profound>1){
-          
-          $scope.changeName = $scope.selected.name;
+        intervalReload();
+        if($scope.selected.name && $scope.selected.name.length > 0)
+        {
+        var res = /[^0-9a-zA-Z\-._]/.test($scope.selected.name) || $scope.selected.name[0] == '-' || $scope.selected.name[0] == '.' || $scope.selected.name[0] == '_';
+          if(res)
+          {  
+          alert('Project name must contain only Latin letters, digits or these following special characters -._');
           $scope.selected.name = old_projectname;
-        }
+          return;
+          }
+          $scope.profound = 0;
+          angular.forEach($scope.projects , function (project) {
+            if($scope.selected.name==project.name) {
+              $scope.profound+=1;   
+          }
+         });
+     
+          if($scope.profound>1) {
+            $scope.changeName = $scope.selected.name;
+            $scope.selected.name = old_projectname;
+          }
 
-      }
+        }
         return $q.all([
           $http({ method: 'POST', url: "/api/project/"+ $scope.selected.workspaceId+"/rename"+$scope.selected.path +"?name="+$scope.selected.name}).
-              success(function (data, status, headers, config) {
-                // console.log(data);
+            success(function (data, status, headers, config) {
+               
+              }).error(function (err) {
+                  $('.modal-backdrop').remove();
+                  alert(err.message);
               })
         ]).then(function (results) {
 
-            if($scope.selected.misconfigured == undefined || $scope.selected.misconfigured == false) {
-                $http({ method: 'GET', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name}).
+           if($scope.selected.misconfigured == undefined || $scope.selected.misconfigured == false) {
+              $http({ method: 'GET', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name}).
+                success(function (data, status) {
+                  data.description = $scope.selected.description;
+                  $scope.updated = data;
+
+                  $http({ method: 'PUT', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name, data: $scope.updated }).
                     success(function (data, status) {
-                      data.description = $scope.selected.description;
-                      $scope.updated = data;
+                                  //Change Project URL & Path
+                      $('#projectDetailModal').modal('hide');
+                      $('.modal-backdrop').remove();
+                      var projFound = $scope.projects.filter(function(p) {return p.name==data.name;})
+                      if(projFound.length > 0)
+                        {
+                          projFound[0].ideUrl = data.ideUrl;
+                          projFound[0].path = data.path;
+                        }
 
-                      $http({ method: 'PUT', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name, data: $scope.updated }).
-                          success(function (data, status) {
-                            //Change Project URL & Path
-                            $('#projectDetailModal').modal('hide');
-                            $('.modal-backdrop').remove();
-                            var projFound = $scope.projects.filter(function(p) {return p.name==data.name;})
-                            if(projFound.length > 0)
-                            {
-                              projFound[0].ideUrl = data.ideUrl;
-                              projFound[0].path = data.path;
-                            }
-                        });
-                  })
-              }
-          });
-
+                      });
+                    })
+            }
+           });
 
       };
 
+      $scope.cancelPopup = function () {
+        intervalReload();
+      };
 
       $scope.switchVisibility = function () {
-         clearInterval($scope.timer);
+        intervalReload();
         $http({ method: 'POST', url: '/api/project/' + $scope.selected.workspaceId + '/switch_visibility/' + $scope.selected.name + '?visibility=' + $scope.selected.visibility }).
-            success(function (data, status) {
-              // console.log(data);
-            });
+          success(function (data, status) {
+  
+          });
+     
       };
 
 	    $scope.deleteProjectConfirm = function() {
-       clearInterval($scope.timer);
-			if($scope.isAdmin)
+        intervalReload();
+			  if($scope.isAdmin)
 				$('#warning-project').modal('show');
-			else
+			  else
 				alert("Deleting the project requires Administrator permissions to the project's workspace. Contact the workspace's Administrator or Owner.");
-	    };
+	      
+       };
 
       $scope.deleteProject = function () {
-         clearInterval($scope.timer);
+        intervalReload();
         $http({ method: 'DELETE', url: $scope.selected.url }).
           success(function (status) {
             $scope.projects = _.without($scope.projects, _.findWhere($scope.projects, $scope.selected));        
+            if($scope.projects.length==0){
+                    $scope.isProjectDataFetched = true;
+                  }          
           });
+          
       };
 
       $scope.cancelProject = function () {
-         clearInterval($scope.timer);
         $scope.selected.description = old_description;
 		    $scope.selected.name = old_projectname;
+        intervalReload();
       };
 
       // used to save permissions to server
@@ -296,16 +305,15 @@ angular.module('odeskApp')
         return $scope.projects.length==0;
       else
         return false;
-      init();
       }
 
 	    $scope.selectMemberToBeDeleted = null;
-	    $scope.setMemberToBeDeleted = function(member) {
-		  $scope.selectMemberToBeDeleted = member;
+	    $scope.setMemberToBeDeleted = function(member) {		    
+        $scope.selectMemberToBeDeleted = member;
 	    }
  
       $scope.removeMember = function (member) {
-         clearInterval($scope.timer);
+        clearInterval($scope.timer);
         Workspace.removeMember($scope.activeProject.workspaceId, member.userId).then(function (data) {
           var removedMemberIndex = -1;
           angular.forEach($scope.activeMembers, function (singleMember, index) {
@@ -328,12 +336,14 @@ angular.module('odeskApp')
         }, function (error) {
           
         });
+      
       };
 
       $scope.showLoadingInvite = false;
       $scope.showInviteError = false;
 
       $scope.invite = function () {
+        clearInterval($scope.timer);
         $scope.showLoadingInvite = true;
         $scope.errors = "";
         var tempEmailList = $scope.emailList;
@@ -408,11 +418,12 @@ angular.module('odeskApp')
       }).error(function(err){
 
       });
-      
-      
+
+
 
       //constructor
       var init = function () {
+
       
       Workspace.all(function (resp) {
  
@@ -425,9 +436,8 @@ angular.module('odeskApp')
 
 			  $scope.isProjectDataFetched = true;
 		  }
-
 		  $scope.projects = []; //clear the project list
- 
+       
           angular.forEach($scope.workspaces, function (workspace) {
             workspace.members = [];
             Workspace.getMembersForWorkspace(workspace.workspaceReference.id).then(function (workspaceMembers) {
@@ -440,12 +450,15 @@ angular.module('odeskApp')
               });
             });
 
-
               $http({ method: 'GET', url: $.map(workspace.workspaceReference.links, function (obj) { if (obj.rel == "get projects") return obj.href })[0] })
               .success(function (data, status) {
-               $scope.isProjectDataFetched = true;
                   $scope.projects = $scope.projects.concat(data);
-                  
+                  if($scope.projects.length==0) {
+                    $scope.isProjectDataFetched = true;
+                  }
+                  else {
+                    $scope.isProjectDataFetched = false; 
+                  }
                   angular.forEach($scope.projects , function (project){
                           if(project.problems.length>0){
                          angular.forEach(project.problems,function(problem){
@@ -488,19 +501,20 @@ angular.module('odeskApp')
               $('.searchfull').hide();
             });
           });
-        });
-        
-        
+          });
+       
       };
-     // all code starts here
-      $scope.timer = setInterval(function() {
+      var intervalReload = function() {
+        clearInterval($scope.timer);
         $scope.isProjectDataFetched = false;
-          $scope.$apply(init);
-      }, 12000);
-      init();   
-      
-     });
+        $scope.timer = setInterval(function() {$scope.$apply(init);},20000);
+        };
 
+
+      init();// all code starts here 
+      intervalReload(); // automatic refresh of project list
+     });
+      
 angular.module('odeskApp')
         .directive('stopEvent', function () {
           return {

@@ -301,7 +301,7 @@
             </div>
             <!-- .modal-body -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelPopup()">Cancel</button>
                 <button type="button" class="btn btn-primary" ng-click="switchVisibility()" data-dismiss="modal">Ok</button>
             </div>
         </div>
@@ -387,7 +387,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="cancelPopup">Ok</button>
 
             </div>
         </div>
@@ -451,7 +451,7 @@
               As a developer of the workspace, <b>{{selected.workspaceName}}</b>, you are not permitted to change privacy of the project. This action is only permitted for users with workspace/admin role designation. This workspace's administrator {{getAllAdminListToDisplay()}}.
             </div>
             <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="cancelPopup()">Ok</button>
             </div>
         </div>
     </div>
@@ -473,7 +473,7 @@
 
       <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
         <a ng-click="removeMember(selectMemberToBeDeleted)" class="btn btn-danger" data-dismiss="modal">Ok</a>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelPopup()">Cancel</button>
       </div><!-- modal-footer -->
 
     </div><!-- modal-content -->
@@ -495,7 +495,7 @@
       </div><!-- modal-body -->
 
       <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelPopup()">Cancel</button>
         <a  class="btn btn-danger" ng-click="deleteProject()" data-dismiss="modal">OK</a>
       </div><!-- modal-footer -->
 
