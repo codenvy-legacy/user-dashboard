@@ -60,11 +60,11 @@ angular.module('odeskApp')
                 'link': 'https://codenvy.uservoice.com/'
             },
             {
-                'title': 'Create Support Tickets',
+                'title': 'Create Support Ticket',
                 'link': 'https://codenvy.uservoice.com/'
             }
             ];
-			
+
         var accountId = [];
         var serviceIds = ["Saas", "OnPremises"];
         var packages = ["Team", "Enterprise"];
@@ -76,19 +76,19 @@ angular.module('odeskApp')
             $scope.fullUserName = profile.attributes.email;
           }
         });
-    
+
         $scope.isActive = function (route) {
-            //return route === '#' + $location.path(); //here # is added because of location html5 mode        
+            //return route === '#' + $location.path(); //here # is added because of location html5 mode
             var str = '#' + $location.path(),
                 str2 = route;
-            
+
             if (str.indexOf(str2) > -1) {
                 return true;
             } else {
                 return false;
             }
         };
-                
+
         $scope.logout = function () {
             $http({
                 url: "/api/auth/logout",
@@ -98,7 +98,7 @@ angular.module('odeskApp')
                 $window.location.href = '/site/login';
             });
         };
-		
+
 		return $q.all([
           Account.getAccountId().then(function (response){
             accountId.push(_.pluck(_.pluck(response, 'accountReference'), 'id')[0]);
