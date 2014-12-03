@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, Profile, $http, $q, $window, $location) {
+    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, Profile, Password, $cookieStore, $http, $q, $window) {
       var old_description = '';
 	  var old_projectname = '';
       $scope.box = 1;
@@ -277,8 +277,8 @@ angular.module('odeskApp')
           console.log("Successfully set permisions!");
         });
       };
- 
-      
+
+
       $scope.isProjectDataFetched = false;
       $scope.isNeedToShowHelp = function() {
       if($scope.isProjectDataFetched)
@@ -291,7 +291,7 @@ angular.module('odeskApp')
 	   $scope.setMemberToBeDeleted = function(member) {
 		  $scope.selectMemberToBeDeleted = member;
 	   }
- 
+
       $scope.removeMember = function (member) {
         Workspace.removeMember($scope.activeProject.workspaceId, member.userId).then(function (data) {
           var removedMemberIndex = -1;
@@ -408,7 +408,34 @@ angular.module('odeskApp')
       }).error(function(err){
 
       });
- 
+
+      $scope.definePassword = function () {
+          var password = $('#newPassword').val();
+          if (password === $('#newPasswordVerify').val()) {
+              $('#defineUserPassword #doesNotMatch').hide();
+              $('#newPassword').css('border', '1px solid #e5e5e5');
+              $('#newPasswordVerify').css('border', '1px solid #e5e5e5');
+              Password.update(password).then(function (data) {
+                  setTimeout(function () {
+                      $('#defineUserPassword').modal('hide');
+                  }, 1500);
+              });
+              Profile.query().then(function (data) {
+                  if (data.attributes.resetPassword && data.attributes.resetPassword == "true") {
+                      Profile.update({"resetPassword": 'false'});
+                      $cookieStore.remove('resetPassword');
+                  }
+              });
+          } else {
+              $('#defineUserPassword #doesNotMatch').show();
+              $('#defineUserPassword #doesNotMatch').mouseout(function () {
+                  $(this).fadeOut('slow');
+              });
+              $('#newPassword').css('border', '1px solid #a94442');
+              $('#newPasswordVerify').css('border', '1px solid #a94442');
+          }
+      };
+
       //constructor
       var init = function () {
         Workspace.all(function (resp) {
@@ -433,6 +460,13 @@ angular.module('odeskApp')
                   var member = createMember(data.attributes, workspaceMember.userId,false,false, workspaceMember.roles)
 
                   workspace.members.push(member); // load the members for the workspace,
+
+                  if(data.attributes.resetPassword && data.attributes.resetPassword == 'true'){
+                      if($cookieStore.get('resetPassword') != true){
+                          $cookieStore.put('resetPassword', true);
+                          $('#defineUserPassword').modal('toggle'); // show once per session
+                      }
+                  }
                 });
               });
             });
@@ -462,7 +496,7 @@ angular.module('odeskApp')
               });
         
         });
-        
+
 
 
         $http({ method: 'GET', url: '/api/account' }).success(function (account, status) {
@@ -487,7 +521,7 @@ angular.module('odeskApp')
             });
           });
         });
- 
+
       };
        init();// all code starts here
     });
