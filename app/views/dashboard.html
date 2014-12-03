@@ -400,6 +400,57 @@
 </div>
 
 <!-- Modal -->
+<div class="modal fade" id="defineUserPassword" tabindex="-1" role="dialog" aria-labelledby="defineUserPasswordLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" accept-charset="utf-8" role="form" ng-submit="definePassword()">
+                <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="defineUserPasswordLabel">Define your Password</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label><b>Define your account's Password:</b></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label>New Password:</label>
+                            <input class="form-control" id="newPassword" placeholder="" type="password" required autofocus/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label>Repeat New Password:</label>
+                            <input class="form-control" id="newPasswordVerify" placeholder="" type="password" required autofocus/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12  form-group">
+                            <div id="changePasswordAlert">
+                                <div class="alert alert-success" style="display: none;">
+                                    <b>Successfully Done!</b> Change password process completed.
+                                </div>
+                                <div class="alert alert-danger" style="display: none;">
+                                    <b>Failed!</b> Change password process failed.</div>
+                            </div>
+                            <div class="alert alert-danger" id="doesNotMatch" style="display: none;">
+                                <b>Failed!</b> New Password and Repeat New Password do not match.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
+                    <button type="submit" class="btn btn-primary">Ok</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
 <div class="modal fade" id="projectDetailModal" tabindex="-1" role="dialog" aria-labelledby="projectDetailModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
