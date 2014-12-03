@@ -511,7 +511,7 @@ angular.module('odeskApp')
                 Profile.query().then(function (data) {
                     if (data.attributes.resetPassword && data.attributes.resetPassword == "true") {
                         $http.post('/api/profile', {
-                                "resetPassword": 'false'
+                                'resetPassword': 'false'
                             },
                             {
                                 headers: {
