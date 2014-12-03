@@ -510,8 +510,18 @@ angular.module('odeskApp')
                 Password.update($scope.password);
                 Profile.query().then(function (data) {
                     if (data.attributes.resetPassword && data.attributes.resetPassword == "true") {
-                        Profile.update({"resetPassword": 'false'});
-                        $cookieStore.remove('resetPassword');
+                        $http.post('/api/profile', {
+                                "resetPassword": 'false'
+                            },
+                            {
+                                headers: {
+                                    'Content-Type': 'application/json; charset=UTF-8',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            })
+                            .success(function (data) {
+                                $cookieStore.remove('resetPassword');
+                            });
                     }
                 });
             } else {

@@ -19,7 +19,7 @@
 
         <li class="new-project import clearfix" ng-if="!box">
             <div ng-if="workspaces.length > 1">
-                <a class="clearfix button" href="/ws/{{workspaces[0].workspaceReference.name}}?action=importProject" target="_blank">
+                <a class="clearfix button" href="/ws/{{workspaces[0].workspaceReference.name}}?action=importProjectFromLocation" target="_blank">
                     <strong>Import Project</strong>
                 </a>
             </div>
@@ -29,7 +29,7 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li><span>Select Destination Workspace:</span></li>
-                    <li ng-repeat="workspace in workspaces"><a href="/ws/{{workspace.workspaceReference.name}}?action=importProject" target="_blank">{{workspace.workspaceReference.name}}</a></li>
+                    <li ng-repeat="workspace in workspaces"><a href="/ws/{{workspace.workspaceReference.name}}?action=importProjectFromLocation" target="_blank">{{workspace.workspaceReference.name}}</a></li>
                 </ul>
             </div>
         </li>
