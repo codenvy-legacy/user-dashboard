@@ -181,66 +181,68 @@ angular.module('odeskApp')
         $scope.activeProject = project; // used in setRead setWrite
         $scope.selected = project;
         old_description = project.description;
-		    old_projectname = project.name;
+		old_projectname = project.name;
       };
-
 
       $scope.updateProject = function () {
-      $scope.changeName = '' ;
-      if($scope.selected.name && $scope.selected.name.length > 0)
-      {
-      var res = /[^0-9a-zA-Z\-._]/.test($scope.selected.name) || $scope.selected.name[0] == '-' || $scope.selected.name[0] == '.' || $scope.selected.name[0] == '_';
-      if(res)
-      {
-        alert('Project name must contain only Latin letters, digits or these following special characters -._');
-        $scope.selected.name = old_projectname;
-        return;
-      }
-      var keepGoing = true;
-      angular.forEach($scope.projects , function (project) {
-          if($scope.selected != project && $scope.selected.name == project.name) {
-              keepGoing = false;
-          }
-      });
-      if(!keepGoing) {
-          $("#renameProjectError").show();
-          $scope.changeName = $scope.selected.name;
-          $scope.selected.name = old_projectname;
-          return;
-      }
-
-      }
-        return $q.all([
-          $http({ method: 'POST', url: "/api/project/"+ $scope.selected.workspaceId+"/rename"+$scope.selected.path +"?name="+$scope.selected.name}).
-              success(function (data, status, headers, config) {
-                // console.log(data);
-              })
-        ]).then(function (results) {
-
-            if($scope.selected.misconfigured == undefined || $scope.selected.misconfigured == false) {
-                $http({ method: 'GET', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name}).
-                    success(function (data, status) {
-                      data.description = $scope.selected.description;
-                      $scope.updated = data;
-
-                      $http({ method: 'PUT', url: "/api/project/"+ $scope.selected.workspaceId+"/"+$scope.selected.name, data: $scope.updated }).
-                          success(function (data, status) {
-                            //Change Project URL & Path
-                            $('#projectDetailModal').modal('hide');
-                            var projFound = $scope.projects.filter(function(p) {return p.name==data.name;})
-                            if(projFound.length > 0)
-                            {
-                              projFound[0].ideUrl = data.ideUrl;
-                              projFound[0].path = data.path;
-                            }
-                        });
-                  })
+          $scope.changeName = '' ;
+          if($scope.selected.name && $scope.selected.name.length > 0) {
+              var res = /[^0-9a-zA-Z\-._]/.test($scope.selected.name) || $scope.selected.name[0] == '-' || $scope.selected.name[0] == '.' || $scope.selected.name[0] == '_';
+              if(res) {
+                  alert('Project name must contain only Latin letters, digits or these following special characters -._');
+                  $scope.selected.name = old_projectname;
+                  return;
               }
-          });
-
-
+              var keepGoing = true;
+              angular.forEach($scope.projects , function (project) {
+                  if($scope.selected != project && $scope.selected.name == project.name) {
+                      keepGoing = false;
+                  }
+              });
+              if(!keepGoing) {
+                  $('#alreadyExist').show();
+                  $scope.changeName = $scope.selected.name;
+                  $scope.selected.name = old_projectname;
+                  $('#alreadyExist').mouseout(function () { $(this).fadeOut('slow'); });
+                  return;
+              }
+              if ($scope.selected.name != old_projectname || $scope.selected.description != old_description) {
+                  return $q.all([
+                      $http({ method: 'POST', url: "/api/project/" + $scope.selected.workspaceId + "/rename" + $scope.selected.path + "?name=" + $scope.selected.name }).
+                          success(function (data, status, headers, config) {
+                                  $http({ method: 'GET', url: "/api/project/" + $scope.selected.workspaceId + "/" + $scope.selected.name}).
+                                      success(function (data, status) {
+                                          $http({ method: 'PUT', url: "/api/project/" + $scope.selected.workspaceId + "/" + $scope.selected.name, data: data })
+                                              .success(function (data, status) {
+                                                  $('#changeProjectDetailAlert .alert-danger').hide();
+                                                  $('#changeProjectDetailAlert .alert-success').show();
+                                                  setTimeout(function () {
+                                                      $('#changeProjectDetailAlert .alert-success').hide();
+                                                      $('#projectDetailModal').modal('hide');
+                                                  }, 1500);
+                                                  //Change Project URL & Path
+                                                  var projFound = $scope.projects.filter(function (p) {
+                                                      return p.name == data.name;
+                                                  })
+                                                  if (projFound.length > 0) {
+                                                      projFound[0].ideUrl = data.ideUrl;
+                                                      projFound[0].path = data.path;
+                                                  }
+                                              })
+                                              .error(function (err) {
+                                                  $('#changeProjectDetailAlert .alert-success').hide();
+                                                  $('#changeProjectDetailAlert .alert-danger').show();
+                                                  $('#changePasswordAlert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
+                                              });
+                                      })
+                          })
+                  ]);
+              }
+              $('#alreadyExist').hide();
+              $('#changePasswordAlert .alert').hide();
+              $("#projectDetailModal").modal('hide');
+          }
       };
-
 
       $scope.switchVisibility = function () {
         $http({ method: 'POST', url: '/api/project/' + $scope.selected.workspaceId + '/switch_visibility/' + $scope.selected.name + '?visibility=' + $scope.selected.visibility }).
