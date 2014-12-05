@@ -31,6 +31,7 @@ angular.module('odeskApp')
       $scope.workspaces = [];
       $scope.currentUserId = '';
       $scope.changeName ='';
+      $scope.activeProjectVisibility = '';
 
 
       //private methods
@@ -112,11 +113,11 @@ angular.module('odeskApp')
 
       //public methods
       $scope.selectProject = function(project,modalNameType) {
-        $("#renameProjectError").hide();
         $scope.emailList = '';
         $scope.activeMembers = [];
 
         $scope.showInviteError = false;
+        $scope.activeProjectVisibility = project.visibility;
         $scope.currentWorkspace = _.find($scope.workspaces, function (workspace) {
           return workspace.workspaceReference.id == project.workspaceId;
         });
@@ -245,8 +246,9 @@ angular.module('odeskApp')
       };
 
       $scope.switchVisibility = function () {
-        $http({ method: 'POST', url: '/api/project/' + $scope.selected.workspaceId + '/switch_visibility/' + $scope.selected.name + '?visibility=' + $scope.selected.visibility }).
+        $http({ method: 'POST', url: '/api/project/' + $scope.selected.workspaceId + '/switch_visibility/' + $scope.selected.name + '?visibility=' +  $scope.activeProjectVisibility }).
             success(function (data, status) {
+              $scope.selected.visibility = $scope.activeProjectVisibility;
               // console.log(data);
             });
       };
