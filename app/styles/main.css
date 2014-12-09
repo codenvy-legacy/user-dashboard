@@ -936,6 +936,15 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   padding: 5px;
   margin: 5px;
 }
+
+.font-success{
+    color: #3B8C37;
+}
+
+.font-error{
+    color: #B35B59;
+}
+
 #developersModal .invitation p.darkBlack {
   color: black;
   font-weight: bold;

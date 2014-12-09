@@ -30,11 +30,9 @@ angular.module('odeskApp', [
   return {
     request: function(config) {
       //remove prefix url
-      
       if (config.url.indexOf("https://codenvy.com/api") == 0) {
          config.url = config.url.substring("https://codenvy.com".length);
       }
-      
 
       //Do not add token on auth login
       if (config.url.indexOf("/api/auth/login") == -1 && $cookies.token) {
@@ -145,4 +143,22 @@ angular.module('odeskApp', [
 
 	//while uncommenting line below fix # in navbar.js
     //$locationProvider.html5Mode(true);
+}).directive('numbersOnly', function(){
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, modelCtrl) {
+            modelCtrl.$parsers.push(function (inputValue) {
+                // this next if is necessary for when using ng-required on your input.
+                // In such cases, when a letter is typed first, this parser will be called
+                // again, and the 2nd time, the value will be undefined
+                if (!inputValue) return ''
+                var transformedInput = inputValue.replace(/[^0-9+.]/g, '');
+                if (transformedInput!=inputValue) {
+                    modelCtrl.$setViewValue(transformedInput);
+                    modelCtrl.$render();
+                }
+                return transformedInput;
+            });
+        }
+    };
 });
