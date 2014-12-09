@@ -25,13 +25,19 @@
           </div>
         </li>
         <li class="ws-button pad0 pull-right mrg-rht5">
+              <div>
+                  <a href="" class="new_btn" data-toggle="modal" data-target="#ramAllocation">
+                      </i>RAM Allocation
+                  </a>
+              </div>
+        </li>
+        <li class="ws-button pad0 pull-right mrg-rht5">
           <div>
             <a href="" class="new_btn" data-toggle="modal" data-target="#addNewWorkspace" >
               <i class="glyphicon glyphicon-plus add-size"></i>New Workspace
             </a>
           </div>
         </li>
-
       </ul>
 
       <div class="projectnav table-responsive">
@@ -224,3 +230,44 @@
   </div>
 </div>
 <!---- End Workspace Modal Start--->
+
+<!-- RAM Allocation Modal Start -->
+<div class="modal-col">
+    <div class="modal fade" id="ramAllocation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog" width="350px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Workspace RAM Allocation</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="projectnav table-responsive">
+                        <h5><span style="margin-right: 20px">Account RAM: <b>{{allowedRAM}}</b></span>
+                        <span>RAM Available: <b ng-class="{'font-error': leftMemory < 0, 'font-success': leftMemory > 0}">{{leftMemory}}</b></span></h5>
+                        <table class="table table-hover" style="background:#f9f9f9;">
+                            <thead>
+                            <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
+                                <th><h4>NAME</h4></th>
+                                <th class="text-center"><h4>MB</h4></th>
+                            </tr>
+                            </thead>
+                            <tr ng-repeat="workspace in infoForRAMAllocation| filter: filter | orderBy:'name'" class="v-center">
+                                <td>{{workspace.name}}</td>
+                                <td class="text-center" width="90px"><input ng-model="workspace.allocatedRam" style="text-align: center;" class="form-control" numbers-only="numbers-only" ng-change="getFreeMemoryAfterAllocation()"/></td>
+                            </tr>
+                        </table>
+                        <div ng-show="leftMemory < 0" class="org-errors"><strong>Not enough memory for such RAM allocation.</strong></div>
+                        <div id="allocationError" style="display: none" class="org-errors"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="('#allocationError').hide();">Cancel</button>
+                    <button type="button" ng-disabled="leftMemory < 0" class="btn btn-primary" ng-click="redistributeResources();">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- RAM Allocation Modal end -->

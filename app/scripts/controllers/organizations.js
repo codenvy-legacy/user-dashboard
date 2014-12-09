@@ -39,6 +39,9 @@ angular.module('odeskApp')
           $scope.members = [];
           $scope.selectedMembers = [];
           $scope.selectedWsMembers = [];
+          $scope.allowedRAM = 0;
+          $scope.infoForRAMAllocation = [];
+          $scope.leftMemory = 0;
 
           // Display workspace details in workspace
           $http({method: 'GET', url: '/api/workspace/find/account?id='+$scope.accountId[0]})
@@ -76,14 +79,14 @@ angular.module('odeskApp')
                       var workspaceDetails = {
                         id: workspace.id,
                         name: workspace.name,
-                       allocatedRam:allocatedRam,
-                       projects: projectsLength,
-                       projectsName: projectsName,
+                        allocatedRam:allocatedRam,
+                        projects: projectsLength,
+                        projectsName: projectsName,
                         developers: membersLength
                       }
-
+                      $scope.allowedRAM += parseInt(allocatedRam, 0);
                       $scope.workspaces.push(workspaceDetails);
-
+                      $scope.infoForRAMAllocation.push({id:  workspace.id, name: workspace.name, allocatedRam: allocatedRam });
                     });
                 });
 
@@ -519,6 +522,58 @@ angular.module('odeskApp')
                 alert("It is impossible to remove this user from the organization or update his role. The organization needs at least one account/owner.");
                 deferred.reject();
               });
+          }
+
+
+
+          //Check Memory allocation and count left memory.
+          $scope.getFreeMemoryAfterAllocation = function() {
+            var sumMemory = 0;
+            angular.forEach($scope.infoForRAMAllocation, function(w){
+                var value = parseInt(w.allocatedRam);
+                sumMemory += value || 0;
+            });
+            $scope.leftMemory = $scope.allowedRAM - sumMemory;
+            $("#allocationError").hide();
+          };
+
+          //Redistribute resources:
+          $scope.redistributeResources = function() {
+              $("#allocationError").hide();
+              var data = [];
+              angular.forEach($scope.infoForRAMAllocation, function(w){
+                  var updateResourcesDescriptor = {
+                      workspaceId: w.id,
+                      resources: {"RAM" : w.allocatedRam}
+                  };
+                  data.push(updateResourcesDescriptor);
+              });
+
+              var context = { headers: { 'Content-Type': 'application/json'  }  };
+              $http.post('/api/account/' + $scope.accountId[0] + '/resources/', data, context)
+                  .success(function () {
+                      $('#ramAllocation').modal('toggle');
+                      $scope.leftMemory = 0;
+                      $scope.allowedRAM = 0;
+                      $scope.infoForRAMAllocation = [];
+                      angular.forEach($scope.workspaces, function (workspace) {
+                          //  Get workspace's projects and developers using workspace id
+                          $http({method: 'GET', url: "/api/runner/" + workspace.id + "/resources" })
+                              .success(function (data) {
+                                  workspace.allocatedRam = data.totalMemory;
+                                  $scope.allowedRAM += parseInt(workspace.allocatedRam, 0);
+                                  $scope.infoForRAMAllocation.push({id:  workspace.id, name: workspace.name, allocatedRam: workspace.allocatedRam});
+                              })
+                              .error(processError);
+                      });
+                  })
+                  .error(processError);
+
+                function processError(err) {
+                    $("#allocationError").show();
+                    $("#allocationError").html("<strong> Workspace characters should be between 3 to 20 characters and must have digit, letters and - . _ and must start with digits or letters</strong>");
+                }
+
           }
 
           // For search
