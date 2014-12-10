@@ -35,7 +35,6 @@
         </div>
       </li>
     </ul>
-
     <div class="projectnav table-responsive">
       <table class="table table-hover" style="background:#f9f9f9;">
         <thead>
@@ -62,8 +61,8 @@
             </ul>
           </td>
         </tr>
-
       </table>
+      <p ng-show="(workspace.members).length == 0" style="text-align: center;">This workspace does not have any developer. Click "Add Developer"</p>
     </div>
     <!--<div class="text-center">
       <ul class="pagination pagination-sm">
@@ -112,15 +111,13 @@
                 </div>
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
                   <div class="text-center">
-                    <input type="radio" name="user_role_{{$index}}" id="radio{{$index}}" class="css-checkbox" value="workspace/admin" checked ng-if="member.role=='admin'"/>
-                    <input type="radio" name="user_role_{{$index}}" id="radio{{$index}}" class="css-checkbox" value="workspace/admin" ng-if="member.role!='admin'"/>
+                    <input type="radio" name="user_role_{{$index}}" id="radio{{$index}}" class="css-checkbox" value="workspace/admin" ng-checked="member.role=='admin'"/>
                     <label for="radio{{$index}}" class="css-label radGroup1">&nbsp;</label>
                   </div>
                 </div>
                 <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
                   <div class="text-center">
-                    <input type="radio" name="user_role_{{$index}}" id="radio_{{$index}}" class="css-checkbox" value="workspace/developer" checked ng-if="member.role=='developer'"/>
-                    <input type="radio" name="user_role_{{$index}}" id="radio_{{$index}}" class="css-checkbox" value="workspace/developer" ng-if="member.role!='developer'"/>
+                    <input type="radio" name="user_role_{{$index}}" id="radio_{{$index}}" class="css-checkbox" value="workspace/developer" ng-checked="member.role=='developer'"/>
                     <label for="radio_{{$index}}" class="css-label radGroup1">&nbsp;</label>
                   </div>
                 </div>
@@ -240,7 +237,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          Remove Member: <strong>{{selectedMemberForRemove.name}}</strong>
+          Remove Member: <strong>{{selectedMemberForRemove.name ? selectedMemberForRemove.name : selectedMemberForRemove.email}}</strong>
         </div>
         <div class="modal-body">
 

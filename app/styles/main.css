@@ -22,7 +22,7 @@ h4    { color: #363636; font-size: 10px; font-weight: bold; text-transform: uppe
 .navbar-nav > li > a {
   line-height: 18px;
 }
-.navbar-inverse .navbar-nav > li > a { padding:2px 3px; margin:10px 15px; font-size:14px;}
+.navbar-inverse .navbar-nav > li > a { padding:2px 3px; margin:10px 15px; font-size:14px; border-bottom:2px solid transparent; transition:border-bottom 0.1s linear; }
 .navbar-inverse .navbar-right > li > a.user {
   display: inline-block;
   margin: 5px 0;
@@ -40,7 +40,7 @@ h4    { color: #363636; font-size: 10px; font-weight: bold; text-transform: uppe
   text-align: center;
   display: block;
 }
-.navbar-inverse .navbar-nav > li > a.logout { font-size: 25px; margin: 10px 0; padding: 0; }
+.navbar-inverse .navbar-nav > li > a.logout { font-size: 25px; margin-top:12px; margin-bottom:10px; margin-left:0px; margin-right:0px; padding: 0; }
 .navbar-inverse .navbar-nav > .active > a, 
 .navbar-inverse .navbar-nav > .active > a:hover, 
 .navbar-inverse .navbar-nav > .active > a:focus, 
@@ -48,14 +48,7 @@ h4    { color: #363636; font-size: 10px; font-weight: bold; text-transform: uppe
 .blk_lnk .ng-binding{color:#3c3c3c; font-size: 12px; }
 .blk_lnk a:hover{color:#3c3c3c;}
 /*.td_hover .table-hover{background: #e6e6e6 !important}*/
-a.new_btn{margin-top:7px;
-min-height: 28px;
-padding: 6px 20px !important;
-color: #8f8f8f;
-background-color: #fff;
-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
-cursor: pointer;
-border:0px; border-radius: 0px !important}
+a.new_btn{ margin-top:7px; min-height: 28px; padding: 6px 20px !important; color: #8f8f8f; background-color: #fff; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075); cursor: pointer; border:0px; border-radius: 0px !important; }
 a.new_btn:hover{background-color: #e6e6e6;}
 li.no-bdr{border: 0px !important; background: none !important} 
 
@@ -111,7 +104,9 @@ th h4 { font-weight:normal; }
 }
 .panel-title  { font-size:12px; color:#3c3c3c; margin:5px 0px; }
 .bordered { border:1px solid #bcbcbc; background: #FFFFFF; padding:2px}
-.projectbox .panel:hover  { box-shadow: 0px 7px 5px 0px rgba(0, 0, 0, 0.2); }
+/*.projectbox .panel:hover  { box-shadow: 0px 7px 5px 0px rgba(0, 0, 0, 0.2); } */
+.projectbox .panel  { transition: box-shadow 0.1s linear; }
+.projectbox .panel:hover  { box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3); }
 .projectbox .panel-default > .panel-heading { padding: 0; }
 .projectbox .panel-default > .panel-heading a{ color:#787878; background:#ebebeb; min-height:54px; padding:5px; font-size: 11px; display: block; padding: 5px 6px 5px 5px;}
 .projectbox .panel-footer { background: #fafafa; padding-top:0px; padding-bottom:0px; height:23px; }
@@ -589,13 +584,16 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   background-color: #fff;
   border: 1px solid #ddd;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.1s linear;
 }
 
 .new-project .box > button:hover,
 .new-project .box > a:hover{
   text-decoration: none;
-  box-shadow: 0 7px 5px 0 rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 7px 5px 0 rgba(0, 0, 0, 0.2); */
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
+
 .new-project button{
   background: none;
   border: none;
@@ -938,6 +936,15 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   padding: 5px;
   margin: 5px;
 }
+
+.font-success{
+    color: #3B8C37;
+}
+
+.font-error{
+    color: #B35B59;
+}
+
 #developersModal .invitation p.darkBlack {
   color: black;
   font-weight: bold;

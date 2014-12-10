@@ -55,8 +55,9 @@
                      <span class="label label-primary">{{endDates[$index]}}</span>
                   </td>
                   <td class="text-center" style="vertical-align:middle;line-height:35px;">
-                     <div class="codenvybutton" style="width:150px;margin-left: auto;margin-right: auto;">
-                        <a ng-href="#/account/subscriptions/{{subscription.id}}" style="color: #8f8f8f;text-decoration:none;">Manage subscription</a>
+                     <div class="codenvybutton" style="width:150px;margin-left: auto;margin-right: auto; height:35px; position:relative; overflow:hidden;">
+                        <div style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; line-height: 35px; color: #8f8f8f;">Manage subscription</div>
+                        <a ng-href="#/account/subscriptions/{{subscription.id}}" style="color: #8f8f8f;text-decoration:none; position:relative; left:0px; top:0px; font-size:500px; opacity:0;">Manage subscription</a>
                      </div>
                   </td>                  
                </tr>

@@ -46,7 +46,7 @@ var allSkillIds = [];
 
 'use strict';
 angular.module('odeskApp')
-    .controller('AccountConfigCtrl', function ($scope, $http, Profile, Password, addSkill, removeSkills, addUsage, Users, Account) {        
+    .controller('AccountConfigCtrl', function ($scope, $http, Profile, Password, $cookieStore, addSkill, removeSkills, addUsage, Users, Account) {
         /*Profile.query(function (resp) {
             $scope.attributes = resp.attributes;
         });*/
@@ -469,7 +469,7 @@ angular.module('odeskApp')
 				}
 			});
        });
-   
+
         $scope.updateProfile = function () {
 			if($scope.firstName!=firstNameValue || $scope.lastName!=lastNameValue || $scope.email!=emailValue || $scope.phone!=phoneValue || $scope.country!=countryValue || $scope.companyName!=companyNameValue || $scope.jobTitle!=jobTitleValue || $scope.check!=checkValue)
 			{
@@ -499,7 +499,7 @@ angular.module('odeskApp')
 				
 			}
         };
-            
+
         $scope.updatePassword = function () {
             if ($scope.password === $scope.password_verify) {
             			$('#btn-preloader2').addClass('preloader');
@@ -508,6 +508,22 @@ angular.module('odeskApp')
 				$('#password1').css('border', '1px solid #e5e5e5');
 				$('#password2').css('border', '1px solid #e5e5e5');
                 Password.update($scope.password);
+                Profile.query().then(function (data) {
+                    if (data.attributes.resetPassword && data.attributes.resetPassword == "true") {
+                        $http.post('/api/profile', {
+                                'resetPassword': 'false'
+                            },
+                            {
+                                headers: {
+                                    'Content-Type': 'application/json; charset=UTF-8',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            })
+                            .success(function (data) {
+                                $cookieStore.remove('resetPassword');
+                            });
+                    }
+                });
             } else {
                 $('#doesNotMatch').show();
 				$('#doesNotMatch').mouseout(function(){ $(this).fadeOut('slow'); });

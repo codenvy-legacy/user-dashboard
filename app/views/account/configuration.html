@@ -15,9 +15,6 @@
                     <label for="workspaceid">Workspace:</label>
                     <select id="workspaceid" ng-model="getWorkspaceInfoId" class="form-control" ng-change="getWorkspaceInfo()">
                         <option value="{{workspace.id}}" ng-repeat="workspace in workspaces">{{workspace.name}}</option>
-                    
-                    
-                    
                     </select>
                 </div>
                 <div class="row">
@@ -54,7 +51,7 @@
             <div class="panel-body">
                 <h4 class="text-center">Workspace(s) where you are granted workspace/admin permission</h4>
                 <div class="celist" ng-repeat="workspace in workspaces">
-                    <div class="label label-default">{{workspace.name}}</div>
+                    <div class="label label-default" style="padding: 0px 10px;">{{workspace.name}}</div>
                     </div>
                     </div>
 
