@@ -351,10 +351,9 @@ angular.module('odeskApp')
             $('#updateOrgMemberError').hide();
             $('#updateCurrentWsMemberError').hide();
           };
+
           //Update organization's member's role
           $scope.updateMemberOrg = function(member_role){
-            $scope.member_role = member_role;
-            $scope.editMember.role = member_role;
             var mcon = { headers: { 'Content-Type': 'application/json'  }  };
             var memberData = {"userId": $scope.editMember.id, "roles": ["account/"+member_role] };
 
@@ -375,10 +374,10 @@ angular.module('odeskApp')
                   var removeMember = _.find($scope.members, function(member){ if(member.id == $scope.editMember.id) return member; });
                   var index = $scope.members.indexOf(removeMember)
                   if (index != -1 && $scope.editMember.id != userid) {
-
                     $scope.members.splice(index, 1);
                     $http.post('/api/account/'+$scope.accountId[0]+'/members', memberData, mcon)
                     .success(function (data) {
+                      $scope.editMember.role = member_role;
                       $scope.members.push($scope.editMember);
                     });
                   }
