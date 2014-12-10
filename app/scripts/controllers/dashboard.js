@@ -19,7 +19,8 @@
 angular.module('odeskApp')
     .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, Profile, Password, $cookieStore, $http, $q, $window) {
       var old_description = '';
-	  var old_projectname = '';
+	    var old_projectname = '';
+ 
       $scope.box = 1;
       $scope.search = 0;
       $scope.projects = [];
@@ -31,6 +32,7 @@ angular.module('odeskApp')
       $scope.workspaces = [];
       $scope.currentUserId = '';
       $scope.changeName ='';
+      $scope.timer = '';    
       $scope.activeProjectVisibility = '';
 
 
@@ -113,6 +115,10 @@ angular.module('odeskApp')
 
       //public methods
       $scope.selectProject = function(project,modalNameType) {
+
+      clearInterval($scope.timer);
+        $("#renameProjectError").hide();
+
         $scope.emailList = '';
         $scope.activeMembers = [];
 
@@ -125,10 +131,10 @@ angular.module('odeskApp')
         $scope.isAdmin = getAdmin($scope.currentWorkspace.roles);
         $scope.activeMembers = angular.copy($scope.currentWorkspace.members);
 
-        if ($scope.isAdmin) {
+        if($scope.isAdmin) {
 
-          if (modalNameType=='privacysetting') {
-           $('#privacyModal').modal('toggle');
+          if (modalNameType=='privacysetting'){
+            $('#privacyModal').modal('toggle');
           }
           else if(modalNameType=='developersetting'){
             $('#developersModal').modal('toggle');
@@ -145,7 +151,8 @@ angular.module('odeskApp')
             angular.forEach(projectPermissions, function (permission) {
               if (permission.principal.type === 'USER') {
                 usersPermissions.push(permission);
-              } else if (permission.principal.type === 'GROUP') {
+              } 
+              else if (permission.principal.type === 'GROUP') {
                 groupsPermissions.push(permission);
               }
             });
@@ -157,15 +164,15 @@ angular.module('odeskApp')
           });
         } else {
 
-          if (modalNameType=='privacysetting') {
-           $('#privacyMessageModal').modal('toggle');
-          }
-          else if(modalNameType=='developersetting'){
-            $('#developersModal').modal('toggle');
-          }
-          else if(modalNameType=='projectsetting'){
+            if (modalNameType=='privacysetting') {
+              $('#privacyMessageModal').modal('toggle');
+            }
+            else if(modalNameType=='developersetting'){
+              $('#developersModal').modal('toggle');
+            }
+            else if(modalNameType=='projectsetting'){
             $('#projectDetailModal').modal('toggle');
-          }
+            }
 
 
           $http({ method: 'GET', url: '/api/profile' }).success(function (profile, status) {
@@ -186,6 +193,8 @@ angular.module('odeskApp')
       };
 
       $scope.updateProject = function () {
+        intervalReload();
+       
           $scope.changeName = '' ;
           if($scope.selected.name && $scope.selected.name.length > 0) {
               var res = /[^0-9a-zA-Z\-._]/.test($scope.selected.name) || $scope.selected.name[0] == '-' || $scope.selected.name[0] == '.' || $scope.selected.name[0] == '_';
@@ -253,23 +262,31 @@ angular.module('odeskApp')
             });
       };
 
-	  $scope.deleteProjectConfirm = function() {
-			if($scope.isAdmin)
+	    $scope.deleteProjectConfirm = function() {
+        intervalReload();
+			  if($scope.isAdmin)
 				$('#warning-project').modal('show');
-			else
+			  else
 				alert("Deleting the project requires Administrator permissions to the project's workspace. Contact the workspace's Administrator or Owner.");
-	  };
+	      
+       };
 
       $scope.deleteProject = function () {
+        intervalReload();
         $http({ method: 'DELETE', url: $scope.selected.url }).
           success(function (status) {
-            $scope.projects = _.without($scope.projects, _.findWhere($scope.projects, $scope.selected));
+            $scope.projects = _.without($scope.projects, _.findWhere($scope.projects, $scope.selected));        
+            if($scope.projects.length==0){
+                    $scope.isProjectDataFetched = true;
+                  }          
           });
+          
       };
 
       $scope.cancelProject = function () {
         $scope.selected.description = old_description;
 		    $scope.selected.name = old_projectname;
+        intervalReload();
       };
 
       // used to save permissions to server
@@ -291,12 +308,14 @@ angular.module('odeskApp')
         return false;
       }
 
-	   $scope.selectMemberToBeDeleted = null;
-	   $scope.setMemberToBeDeleted = function(member) {
-		  $scope.selectMemberToBeDeleted = member;
-	   }
+	    $scope.selectMemberToBeDeleted = null;
+	    $scope.setMemberToBeDeleted = function(member) {		    
+            $scope.selectMemberToBeDeleted = member;
+	    }
+
 
       $scope.removeMember = function (member) {
+        clearInterval($scope.timer);
         Workspace.removeMember($scope.activeProject.workspaceId, member.userId).then(function (data) {
           var removedMemberIndex = -1;
           angular.forEach($scope.activeMembers, function (singleMember, index) {
@@ -317,14 +336,16 @@ angular.module('odeskApp')
             $scope.currentWorkspace.members.splice(removedMemberIndex, 1);
           }
         }, function (error) {
-          //console.log(error);
+          
         });
+      
       };
 
       $scope.showLoadingInvite = false;
       $scope.showInviteError = false;
 
       $scope.invite = function () {
+        clearInterval($scope.timer);
         $scope.showLoadingInvite = true;
         $scope.errors = "";
         var tempEmailList = $scope.emailList;
@@ -442,7 +463,9 @@ angular.module('odeskApp')
 
       //constructor
       var init = function () {
-        Workspace.all(function (resp) {
+
+      
+      Workspace.all(function (resp) {
  
 		  $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceReference.temporary; });
 
@@ -453,9 +476,8 @@ angular.module('odeskApp')
 
 			  $scope.isProjectDataFetched = true;
 		  }
-
 		  $scope.projects = []; //clear the project list
- 
+       
           angular.forEach($scope.workspaces, function (workspace) {
             workspace.members = [];
             Workspace.getMembersForWorkspace(workspace.workspaceReference.id).then(function (workspaceMembers) {
@@ -475,13 +497,15 @@ angular.module('odeskApp')
               });
             });
 
-
               $http({ method: 'GET', url: $.map(workspace.workspaceReference.links, function (obj) { if (obj.rel == "get projects") return obj.href })[0] })
               .success(function (data, status) {
-               $scope.isProjectDataFetched = true;
                   $scope.projects = $scope.projects.concat(data);
-                  
-                      
+                  if($scope.projects.length==0) {
+                    $scope.isProjectDataFetched = true;
+                  }
+                  else {
+                    $scope.isProjectDataFetched = false; 
+                  }
                   angular.forEach($scope.projects , function (project){
                           if(project.problems.length>0){
                          angular.forEach(project.problems,function(problem){
@@ -524,12 +548,20 @@ angular.module('odeskApp')
               $('.searchfull').hide();
             });
           });
-        });
+          });
 
       };
-       init();// all code starts here
-    });
+      var intervalReload = function() {
+        clearInterval($scope.timer);
+        $scope.isProjectDataFetched = false;
+        $scope.timer = setInterval(function() {$scope.$apply(init);},20000);
+        };
 
+
+      init();// all code starts here 
+      intervalReload(); // automatic refresh of project list
+     });
+      
 angular.module('odeskApp')
         .directive('stopEvent', function () {
           return {

@@ -78,7 +78,9 @@ angular.module('odeskApp')
         });
 
         $scope.isActive = function (route) {
-            //return route === '#' + $location.path(); //here # is added because of location html5 mode
+
+        //return route === '#' + $location.path(); //here # is added because of location html5 mode
+
             var str = '#' + $location.path(),
                 str2 = route;
 
@@ -98,6 +100,12 @@ angular.module('odeskApp')
                 $window.location.href = '/site/login';
             });
         };
+        $("#navbar-collapse").click(function(){
+            $(".navbar-collapse").toggle();
+        });
+        $("#navbar-collapse-btn").click(function(){
+            $(".navbar-collapse").toggle();
+        });
 
 		return $q.all([
           Account.getAccountId().then(function (response){
