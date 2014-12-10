@@ -54,9 +54,17 @@ angular.module('odeskApp')
                   var projectsLength = 0;
                   var projectsName;
                   var membersLength = 0;
-                  var allocatedRam;
-                  
+                  var allocatedRam; 
                   var promises = [];
+                  var isDisableButton=false;
+            
+                  if(workspace.attributes != null && workspace.attributes['codenvy:runner_ram'] > 0){
+                    isDisableButton =true;
+                  }
+                  else{
+                    isDisableButton =false;
+                  }
+                      
                   var getProjectsURL = _.find(response.links, function(obj){ return obj.rel=="get projects"});
                     if(getProjectsURL!==undefined) {
                         promises.push(
@@ -82,6 +90,7 @@ angular.module('odeskApp')
                         allocatedRam:allocatedRam,
                         projects: projectsLength,
                         projectsName: projectsName,
+                        disableButton: isDisableButton,
                         developers: membersLength
                       }
                       $scope.allowedRAM += parseInt(allocatedRam, 0);
@@ -91,6 +100,7 @@ angular.module('odeskApp')
                 });
 
               });
+
             })
             .error(function (err) {  });
 
@@ -354,6 +364,7 @@ angular.module('odeskApp')
 
           //Update organization's member's role
           $scope.updateMemberOrg = function(member_role){
+      
             var mcon = { headers: { 'Content-Type': 'application/json'  }  };
             var memberData = {"userId": $scope.editMember.id, "roles": ["account/"+member_role] };
 
