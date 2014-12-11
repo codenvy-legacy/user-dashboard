@@ -63,8 +63,9 @@
               <td></td>
               <td style="text-align: right;">
                 <ul class="breadcrumb action-button boxnav">
-                  <li class="active no-bdr mrg-top8"><a ng-href="#/organizations/workspace/{{workspace.id}}/members" class="new_btn">Edit</a></li>
-                  <li class="active no-bdr mrg-top8"><a href="" class="new_btn" data-toggle="modal" data-target="#removeWorkspaceConfirm" ng-click="addWsProject(workspace)" ng-style="{visibility: workspaces.length!= 1 && 'visible' || 'hidden'}">Remove</a></li>
+                 <!--  <li class="active no-bdr mrg-top8"><a ng-href="#/organizations/workspace/{{workspace.id}}/members" class="new_btn">Edit</a></li> -->
+                   <li class="active no-bdr mrg-top8"><a href="#/organizations/workspace/{{workspace.id}}/members"><button type="button" class="new_btn">Edit</button></a></li>
+                    <li class="active no-bdr mrg-top8"><a><button type="button" class="new_btn" data-toggle="modal" data-target="#removeWorkspaceConfirm" ng-click="addWsProject(workspace)" ng-disabled="workspace.isPrimary || workspaces.length == 1">Remove</button></a></li>
                 </ul>
               </td>
             </tr>

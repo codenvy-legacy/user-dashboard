@@ -56,7 +56,14 @@ angular.module('odeskApp')
                   var membersLength = 0;
                   var allocatedRam; 
                   var promises = [];
-        
+                  var isDisableButton=false;
+                  
+                  if(workspace.attributes != null && workspace.attributes['codenvy:runner_ram'] > 0){
+                    isDisableButton =true;
+                  }
+                  else{
+                    isDisableButton =false;
+                  }
                   var getProjectsURL = _.find(response.links, function(obj){ return obj.rel=="get projects"});
                     if(getProjectsURL!==undefined) {
                         promises.push(
@@ -82,6 +89,7 @@ angular.module('odeskApp')
                         allocatedRam:allocatedRam,
                         projects: projectsLength,
                         projectsName: projectsName,
+                        isPrimary: isDisableButton,
                         developers: membersLength
                       }
                       $scope.allowedRAM += parseInt(allocatedRam, 0);
