@@ -281,7 +281,7 @@ angular.module('odeskApp')
               else{
                 $("#ws_name").parent().addClass('has-error');
                 $("#emptyWs").show();
-                $("#emptyWs").html("<strong> Workspace characters should be between 3 to 20 characters and must have digit, letters and - . _ and must start with digits or letters</strong>");
+                $("#emptyWs").html("<strong> Workspace characters should be between 3 to 20 characters and may have digit, letters and - . _ and may start with digits or letters</strong>");
               }
             }else{
               $("#ws_name").parent().addClass('has-error');
@@ -570,7 +570,7 @@ angular.module('odeskApp')
 
                 function processError(err) {
                     $("#allocationError").show();
-                    $("#allocationError").html("<strong> Workspace characters should be between 3 to 20 characters and must have digit, letters and - . _ and must start with digits or letters</strong>");
+                    $("#allocationError").html("<strong> Workspace characters should be between 3 to 20 characters and may have digit, letters and - . _ and may start with digits or letters</strong>");
                 }
 
           }
