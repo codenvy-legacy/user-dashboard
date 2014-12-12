@@ -56,14 +56,7 @@ angular.module('odeskApp')
                   var membersLength = 0;
                   var allocatedRam; 
                   var promises = [];
-                  var isDisableButton=false;
-                  
-                  if(workspace.attributes != null && workspace.attributes['codenvy:role'] != 'extra'){
-                    isDisableButton =true;
-                  }
-                  else{
-                    isDisableButton =false;
-                  }
+          
                   var getProjectsURL = _.find(response.links, function(obj){ return obj.rel=="get projects"});
                     if(getProjectsURL!==undefined) {
                         promises.push(
@@ -89,7 +82,6 @@ angular.module('odeskApp')
                         allocatedRam:allocatedRam,
                         projects: projectsLength,
                         projectsName: projectsName,
-                        isPrimary: isDisableButton,
                         developers: membersLength
                       }
                       $scope.allowedRAM += parseInt(allocatedRam, 0);
@@ -290,7 +282,7 @@ angular.module('odeskApp')
               else{
                 $("#ws_name").parent().addClass('has-error');
                 $("#emptyWs").show();
-                $("#emptyWs").html("<strong> Workspace characters should be between 3 to 20 characters and may have digit, letters and - . _ and may start with digits or letters</strong>");
+                $("#emptyWs").html("<strong> Workspace characters should be between 3 to 20 characters and must have digit, letters and - . _ and must start with digits or letters</strong>");
               }
             }else{
               $("#ws_name").parent().addClass('has-error');
@@ -582,7 +574,7 @@ angular.module('odeskApp')
 
                 function processError(err) {
                     $("#allocationError").show();
-                    $("#allocationError").html("<strong> Workspace characters should be between 3 to 20 characters and may have digit, letters and - . _ and may start with digits or letters</strong>");
+                    $("#allocationError").html("<strong> Workspace characters should be between 3 to 20 characters and must have digit, letters and - . _ and must start with digits or letters</strong>");
                 }
 
           }
