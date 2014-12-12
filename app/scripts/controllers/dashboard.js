@@ -189,7 +189,13 @@ angular.module('odeskApp')
         $scope.activeProject = project; // used in setRead setWrite
         $scope.selected = project;
         old_description = project.description;
-		old_projectname = project.name;
+		    old_projectname = project.name;
+      };
+
+
+      $scope.cancelRename = function () {
+        intervalReload();
+        $scope.selected.name = old_projectname;
       };
 
       $scope.updateProject = function () {
