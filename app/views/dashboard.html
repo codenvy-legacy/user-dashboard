@@ -115,7 +115,7 @@
 
 <div class="project-box clearfix" ng-if="box">
 
-    <div class="new-project col-md-2 col-sm-4 col-lg-2 col-xs-6">
+    <div class="new-project col-md-2 col-sm-4 col-lg-2 col-xs-12">
 
         <div class="box box-two" ng-if="workspaces.length == 1">
             <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=newProject" target="_blank">
@@ -161,8 +161,8 @@
 
     <!-- start help-->
     <div ng-show="isNeedToShowHelp()" class="box-example">
-        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-6">
-            <div class="arrow-img"><img src="./images/arrow.png" class="img-responsive"  alt=""/></div>
+        <div class="col-lg-3 col-sm-6 col-md-3 col-xs-12">
+            <div class="arrow-img hidden-xs"><img src="./images/arrow.png" class="img-responsive"  alt=""/></div>
             <div class="panel panel-default">
               <div class="panel-heading" style="text-align:center">
                 <div class="codenvy-rounded-logo"><img src="./images/codenvy-rounded-logo.png" class="img-responsive"  alt=""/></div>
