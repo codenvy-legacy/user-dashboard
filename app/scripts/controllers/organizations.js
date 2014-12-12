@@ -58,7 +58,7 @@ angular.module('odeskApp')
                   var promises = [];
                   var isDisableButton=false;
                   
-                  if(workspace.attributes != null && workspace.attributes['codenvy:runner_ram'] > 0){
+                  if(workspace.attributes != null && workspace.attributes['codenvy:role'] != 'extra'){
                     isDisableButton =true;
                   }
                   else{
