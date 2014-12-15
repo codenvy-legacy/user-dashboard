@@ -161,7 +161,7 @@
 
     <!-- start help-->
     <div ng-show="isNeedToShowHelp()" class="box-example">
-        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+        <div class="col-lg-3 col-sm-6 col-md-3 col-xs-12">
             <div class="arrow-img hidden-xs"><img src="./images/arrow.png" class="img-responsive"  alt=""/></div>
             <div class="panel panel-default">
               <div class="panel-heading" style="text-align:center">
@@ -197,7 +197,7 @@
 
                 <div class="panel-body" ng-if="project.description != null && project.misconfigured==true"><span style="color:#b42020">{{project.description}}</span></div>
                 <div class="panel-body" ng-if="project.description != null && project.misconfigured==undefined">{{project.description}}</div>
-                <div class="panel-body pointer" ng-if="project.description == null " ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><a href=""></a></div>
+                <div class="panel-body pointer" ng-if="project.description == null " ng-click="selectProject(project)" data-toggle="modal" data-target="#projectDetailModal"><a href="">Add description...</a></div>
 
                 <div class="panel-footer">
                     <div class="row">
