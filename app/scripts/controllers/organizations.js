@@ -54,9 +54,9 @@ angular.module('odeskApp')
                   var projectsLength = 0;
                   var projectsName;
                   var membersLength = 0;
-                  var allocatedRam;
-                  
+                  var allocatedRam; 
                   var promises = [];
+          
                   var getProjectsURL = _.find(response.links, function(obj){ return obj.rel=="get projects"});
                     if(getProjectsURL!==undefined) {
                         promises.push(
@@ -91,6 +91,7 @@ angular.module('odeskApp')
                 });
 
               });
+
             })
             .error(function (err) {  });
 
@@ -289,7 +290,14 @@ angular.module('odeskApp')
                           $("#userAlreadyAdded").hide();
                           $("#wsAlreadyExist").hide();
                       })
-                  });
+
+                });
+              }
+              else{
+                $("#ws_name").parent().addClass('has-error');
+                $("#emptyWs").show();
+                $("#emptyWs").html("<strong> Workspace characters should be between 3 to 20 characters and must have digit, letters and - . _ and must start with digits or letters</strong>");
+
               }
 
           };
@@ -315,7 +323,9 @@ angular.module('odeskApp')
                 deferred.resolve(data);
               })
               .error(function (err) {
+                alert(err.message);
                 deferred.reject();
+                $('#removeWorkspaceConfirm').modal('hide');
               });
           }
 
@@ -358,6 +368,7 @@ angular.module('odeskApp')
 
           //Update organization's member's role
           $scope.updateMemberOrg = function(member_role){
+      
             var mcon = { headers: { 'Content-Type': 'application/json'  }  };
             var memberData = {"userId": $scope.editMember.id, "roles": ["account/"+member_role] };
 
@@ -574,7 +585,7 @@ angular.module('odeskApp')
 
                 function processError(err) {
                     $("#allocationError").show();
-                    $("#allocationError").html("<strong> Workspace characters should be between 3 to 20 characters and may have digit, letters and - . _ and may start with digits or letters</strong>");
+                    $("#allocationError").html("<strong> Workspace characters should be between 3 to 20 characters and must have digit, letters and - . _ and must start with digits or letters</strong>");
                 }
 
           }

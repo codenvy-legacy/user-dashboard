@@ -42,8 +42,8 @@ angular.module('odeskApp')
                     
                     //var d = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
         
-                    dt.setMonth(dt.getMonth() + $scope.contractperiod);
-                    $scope.contractRenewalDate = (dt.getMonth()+1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                    // dt.setMonth(dt.getMonth() + $scope.contractperiod);
+                    // $scope.contractRenewalDate = (dt.getMonth()+1) + "/" + dt.getDate() + "/" + dt.getFullYear();
 				    
                   
 					//Figure out trial end date = start date + trialDuration (in days)
