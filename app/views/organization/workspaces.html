@@ -104,7 +104,8 @@
                 <form role="form">
                   <div class="form-group">
                     <label>Define Workspace Name:</label>
-                    <input type="text" placeholder="Workspace Name" class="form-control" id="ws_name">
+                    <input type="text" placeholder="Workspace Name" class="form-control" id="ws_name"
+                           ng-model="confirmed" ng-change="workspaceNameValidity()">
                   </div>
                 </form>
               </div>
@@ -167,7 +168,7 @@
                     <label for="ws_dev_radio" class="css-label radGroup1">&nbsp;</label>
                   </div>
                   <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
-                    <button type="button" class="btn btn-success" ng-click="addMemberToWsList()">ADD</button>
+                    <button type="button" class="btn btn-success" id="ws_user_add" ng-click="addMemberToWsList()" disabled>ADD</button>
                   </div>
                 </div>
               </div>
