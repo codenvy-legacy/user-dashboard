@@ -116,9 +116,21 @@ angular.module('odeskApp')
       //public methods
       $scope.selectProject = function(project,modalNameType) {
 
-      clearInterval($scope.timer);
-        $("#renameProjectError").hide();
+        clearInterval($scope.timer);
+        $(document).bind('keyup', function (evt) {
+          if(evt.which === 27) {
+            $scope.$apply(function () {
+              $scope.cancelRename();
+            });
+          }
+        });
+        $(document).bind('click', function () {
+          $scope.$apply(function () {
+            $scope.cancelRename();
+            });
+        });
 
+        $("#renameProjectError").hide();
         $scope.emailList = '';
         $scope.activeMembers = [];
 
@@ -162,7 +174,7 @@ angular.module('odeskApp')
               setPermissions(usersPermissions, member);
             });
           });
-        } else {
+          } else {
 
             if (modalNameType=='privacysetting') {
               $('#privacyMessageModal').modal('toggle');
@@ -190,12 +202,13 @@ angular.module('odeskApp')
         $scope.selected = project;
         old_description = project.description;
 		    old_projectname = project.name;
+    
       };
-
 
       $scope.cancelRename = function () {
         intervalReload();
         $scope.selected.name = old_projectname;
+        $scope.selected.description = old_description;
       };
 
       $scope.updateProject = function () {
