@@ -65,10 +65,10 @@ module.exports = function (grunt) {
         livereload: false
       },
      proxies: [{
-       context: '/api', // the context of the data service
+       context: ['/api', '/ws', '/datasource', '/java-ca'], // the context of the data service
        host: 'codenvy.com', // wherever the data service is running
        port: 443, // the port that the data service is running on
-       https:true,
+       https: true,
        changeOrigin: true,
        xforward: false
     }],

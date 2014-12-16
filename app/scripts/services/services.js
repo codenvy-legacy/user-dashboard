@@ -394,7 +394,8 @@ angular.module('odeskApp')
         var item = $resource('/api/project/:workspaceID', {}, {
             create: { method: 'POST', params: {}, isArray: false },
             query: { method: 'GET', params: {}, isArray: true },
-            put: { method: 'PUT', params: { workspaceID: 'workspaceimb0rqn76p2euvn4' }, isArray: false }
+            put: { method: 'PUT', params: { workspaceID: 'workspaceimb0rqn76p2euvn4' }, isArray: false },
+            import: { method: 'POST', url: '/api/project/:workspaceID/import/:path' }
         });
         
         item.getPermissions = function (workspaceId, projectName) { // custom function added to the resource object

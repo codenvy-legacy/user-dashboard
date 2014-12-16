@@ -512,6 +512,10 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 
 /* Privacy Modal related.
 ----------------------------------------------*/
+.modal-header {
+  padding: 10px;
+  background: #f0f0f0;
+}
 .modal-header button.close {
   line-height: 16px;
 }
@@ -593,11 +597,6 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   /* box-shadow: 0 7px 5px 0 rgba(0, 0, 0, 0.2); */
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
-
-.new-project button{
-  background: none;
-  border: none;
-}
 .new-project .dropdown-menu{
   margin: 0;
   min-width: 70px;
@@ -649,7 +648,39 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   color: #8d8d8d;
 }
 .box {
-  margin-bottom: 34px;
+  margin-bottom: 10px;
+}
+.import-button-speech {
+  text-align: left;
+  width: 100%;
+  display: block;
+  font-style: italic;
+  margin-bottom: 10px;
+}
+.import-button-speech button {
+  color: #54aee0;
+  border: none;
+  font-style: italic;
+  background: none;
+  padding: 0;
+  font-weight: bold;
+}
+.import-button-box {
+  display: block;
+  padding: 5px 0;
+  margin-bottom: 15px;
+  width: 100%;
+  border-radius: 0;
+  color: #919191;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.1s linear;
+  display: block;
+  font-weight: bold;
+}
+.import-button-box:hover {
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
 .projectlist .new-project .box-one .glyphicon{
   margin-right: 3px;
@@ -661,6 +692,18 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   margin-bottom: 20px;
   min-width: 189px;
   width: 100%;
+}
+.git-hub-repositories-list {
+    height: 350px;
+    overflow-y: auto;
+    background-image: linear-gradient(#FFF 30%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), #FFF 70%), radial-gradient(farthest-side at 50% 0px , rgba(0, 0, 0, 0.2), transparent), radial-gradient(farthest-side at 50% 100% , rgba(0, 0, 0, 0.2), transparent);
+    background-position: 0% 0%, 0px 100%, 0% 0%, 0px 100%;
+    background-clip: border-box, border-box, border-box, border-box;
+    background-origin: padding-box, padding-box, padding-box, padding-box;
+    background-repeat: no-repeat;
+    background-color: #FFF;
+    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+    background-attachment: local, local, scroll, scroll;
 }
 .table > thead > tr > th,
 .table > tbody > tr > th,
@@ -1382,3 +1425,6 @@ a.message{
 .starting_date .textdate2 .sup1{top: -0.4em;}
 
 
+#new-project-dialog .tab-content {
+    padding: 15px;
+}
