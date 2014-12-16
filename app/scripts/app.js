@@ -77,10 +77,10 @@ angular.module('odeskApp', [
             templateUrl: BASE_URL + 'views/stats.html',
             controller: 'StatsCtrl'
         })
-      .when('/runner', {
-        templateUrl: BASE_URL + 'views/runner.html',
-        controller: 'RunnerCtrl'
-      })
+        .when('/runner', {
+            templateUrl: BASE_URL + 'views/runner.html',
+            controller: 'RunnerCtrl'
+        })
         .when('/admin', {
             templateUrl: BASE_URL + 'views/admin.html',
             controller: 'AdminCtrl'
@@ -93,10 +93,10 @@ angular.module('odeskApp', [
             templateUrl: BASE_URL + 'views/organization/members.html',
             controller: 'OrganizationsCtrl'
         })
-        //.when('/organizations/workspace/:id', {
-        //    templateUrl: BASE_URL + 'views/organization/workspace_info.html',
-        //    controller: 'workspaceInfoCtrl'
-        //})
+        .when('/organizations/workspace/:id', {
+            templateUrl: BASE_URL + 'views/organization/workspace_info.html',
+            controller: 'workspaceInfoCtrl'
+        })
         .when('/organizations/workspace/:id/members', {
             templateUrl: BASE_URL + 'views/organization/workspace_members.html',
             controller: 'workspaceInfoCtrl'
@@ -161,4 +161,16 @@ angular.module('odeskApp', [
             });
         }
     };
-});
+}).run(['$rootScope', function($rootScope) {
+    if (DEV) {
+        $rootScope.$on('$routeChangeStart', function (event, next, current) {
+            console.log('$routeChangeStart', event, next, current);
+        });
+        $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+            console.log('$routeChangeSuccess', event, current, previous);
+        });
+        $rootScope.$on('$routeChangeError', function (event, current, previous, rejection) {
+            console.log('$routeChangeError', event, current, previous, rejection);
+        });
+    }
+}]);
