@@ -109,14 +109,16 @@ angular.module('odeskApp')
 
 		return $q.all([
           Account.getAccountId().then(function (response) {
-            var userRole = _.pluck(response, 'roles')[0];
-            console.log(userRole);
-            if(userRole == 'account/owner'){
+            angular.forEach(response, function(resp) {
+            $scope.userRole = resp.roles[0];
+            if($scope.userRole == 'account/owner'){
               accountId.push(_.pluck(_.pluck(response, 'accountReference'), 'id')[0]);
             }
+            })
           })
         ]).then(function () {
-          Account.getSubscription(accountId[0]).then(function (response){
+          Account.getSubscription(accountId).then(function (response){
+            angular.forEach(response, function(resp) {
             var serviceId = _.pluck(response, 'serviceId')[0];
             var packageName = _.pluck(_.pluck(response, 'properties'),'Package')[0];
             if(_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
@@ -126,7 +128,7 @@ angular.module('odeskApp')
               };
               $scope.menu.push(organizationLink);
             }
-
+            });
           });
         });
 
