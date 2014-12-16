@@ -108,8 +108,12 @@ angular.module('odeskApp')
         });
 
 		return $q.all([
-          Account.getAccountId().then(function (response){
-            accountId.push(_.pluck(_.pluck(response, 'accountReference'), 'id')[0]);
+          Account.getAccountId().then(function (response) {
+            var userRole = _.pluck(response, 'roles')[0];
+            console.log(userRole);
+            if(userRole == 'account/owner'){
+              accountId.push(_.pluck(_.pluck(response, 'accountReference'), 'id')[0]);
+            }
           })
         ]).then(function () {
           Account.getSubscription(accountId[0]).then(function (response){
