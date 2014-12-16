@@ -35,16 +35,16 @@ angular.module('odeskApp', [
       }
 
       //Do not add token on auth login
-      if (config.url.indexOf("/api/auth/login") == -1 && $cookies.token) {
-        config.params = config.params || {};
-        angular.extend(config.params, {token: $cookies.token});
-
+      if (config.url.indexOf("/api/auth/login") == -1 && config.url.indexOf("api/") != -1 && $cookies.token) {
+          config.params = config.params || {};
+          angular.extend(config.params, {token: $cookies.token});
       }
       return config || $q.when(config);
     },
     response: function(response) {
-      if (response.status === 401) {
-        // TODO: Redirect user to login page.
+      if (response.status === 401 || response.status == 403) {
+          $log.info('Redirect to login page.')
+          $location.path('/login');
       }
       return response || $q.when(response);
     }
