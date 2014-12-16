@@ -23,6 +23,7 @@ angular.module('odeskApp', [
     'ngSanitize',
     'ngRoute',
     'ngAnimate',
+    'ui.bootstrap',
     'chieffancypants.loadingBar'
 ]).config(function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeBar = false;
