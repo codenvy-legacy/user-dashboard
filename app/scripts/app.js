@@ -61,9 +61,9 @@ angular.module('odeskApp', [
         BASE_URL = '/dashboard/';
     }
 
-   if (DEV) {
-      $httpProvider.interceptors.push('AuthInterceptor');
-   }
+    if (DEV) {
+        $httpProvider.interceptors.push('AuthInterceptor');
+    }
     $routeProvider
 	    .when('/dashboard', {
             templateUrl: BASE_URL + 'views/dashboard.html',
@@ -86,21 +86,21 @@ angular.module('odeskApp', [
             controller: 'AdminCtrl'
         })
 	    .when('/organizations', {
-          templateUrl: BASE_URL + 'views/organization/workspaces.html',
-          controller: 'OrganizationsCtrl'
-      })
-      .when('/organizations/members', {
-          templateUrl: BASE_URL + 'views/organization/members.html',
-          controller: 'OrganizationsCtrl'
-      })
-      // .when('/organizations/workspace/:id', {
-      //   templateUrl: BASE_URL + 'views/organization/workspace_info.html',
-      //   controller: 'workspaceInfoCtrl'
-      // })
-      .when('/organizations/workspace/:id/members', {
-        templateUrl: BASE_URL + 'views/organization/workspace_members.html',
-        controller: 'workspaceInfoCtrl'
-      })
+            templateUrl: BASE_URL + 'views/organization/workspaces.html',
+            controller: 'OrganizationsCtrl'
+        })
+        .when('/organizations/members', {
+            templateUrl: BASE_URL + 'views/organization/members.html',
+            controller: 'OrganizationsCtrl'
+        })
+        //.when('/organizations/workspace/:id', {
+        //    templateUrl: BASE_URL + 'views/organization/workspace_info.html',
+        //    controller: 'workspaceInfoCtrl'
+        //})
+        .when('/organizations/workspace/:id/members', {
+            templateUrl: BASE_URL + 'views/organization/workspace_members.html',
+            controller: 'workspaceInfoCtrl'
+        })
 	    .when('/organizations/:name', {
             templateUrl: BASE_URL + 'views/orgdetail.html',
             controller: 'OrgdetailCtrl'
