@@ -457,6 +457,7 @@ angular.module('odeskApp')
                         $('#btn2').removeClass('btn-disabled');
                         $('#changePasswordAlert .alert-danger').show();
                         $('#changePasswordAlert .alert-success').hide();
+			$('#changePasswordAlert .alert-danger').text(err.message);
                         deferred.reject();
                         $('#changePasswordAlert .alert').mouseout(function () { $(this).fadeOut('slow'); });
                     });

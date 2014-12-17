@@ -49,15 +49,8 @@ angular.module('odeskApp')
                 $http({method: 'GET', url:"/api/workspace/"+ workspaceId +"/members" })
                   .success(function (data) {
                     angular.forEach(data, function (member) {
-                      var email, name, role;
-                      if(member['roles'].length>1)
-                          {
-                            role = member['roles'][0].split("/")[1];
-                          }
-                        else{
-                          role = member['roles'][0].split("/")[1];
-                        }
-
+                      var email, name;
+                      var role = $scope.userRolesToStr(member['roles']);
                       //  Get member's email and name
                       
                       return $q.all([
@@ -105,6 +98,15 @@ angular.module('odeskApp')
               })
               .error(function(error){
             });
+
+            $scope.userRolesToStr = function(roles){
+                var str = "";
+                angular.forEach(roles, function(r) {
+                    str += r.split("/")[1];
+                    str += roles.indexOf(r) < (roles.length - 1) ? ", " : "";
+                });
+                return str;
+            }
 
             // Add members to workspace list
             $scope.addMemberToWsList = function(){
@@ -217,21 +219,19 @@ angular.module('odeskApp')
                   };
 
                  var role = $("input[name=user_role_"+i+"]:checked").val();
-
-                  var data = {
+                 var rolesArray = eval("(function(){return " + role + ";})()");
+                 var data = {
                     "userId": member.id,
-                    "roles": ["workspace/"+role.split("/")[1]]// needs to be array
+                    "roles": rolesArray
                   };
                
-                  member.role = role.split("/")[1];
-
                   $http.post('/api/workspace/' + workspaceId + "/members",
                     data,
                     con)
                     .success(function (data) {
                       var memberDetails = {
                         id: data.userId,
-                        role: member.role,
+                        role: $scope.userRolesToStr(rolesArray),
                         email: member.email,
                         name: member.name
                       };
