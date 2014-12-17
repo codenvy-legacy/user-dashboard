@@ -106,30 +106,34 @@ angular.module('odeskApp')
         $("#navbar-collapse-btn").click(function(){
             $(".navbar-collapse").toggle();
         });
-
-		return $q.all([
+ 
+ 	return $q.all([
           Account.getAccountId().then(function (response) {
             angular.forEach(response, function(resp) {
-            $scope.userRole = resp.roles[0];
-            if($scope.userRole == 'account/owner'){
-              accountId.push(_.pluck(_.pluck(response, 'accountReference'), 'id')[0]);
-            }
+               $scope.userRole = resp.roles[0];
+               $scope.account_id = resp.accountReference.id;
+               if($scope.userRole == 'account/owner'){
+                 accountId.push($scope.account_id);
+               }
             })
           })
         ]).then(function () {
-          Account.getSubscription(accountId).then(function (response){
-            angular.forEach(response, function(resp) {
-            var serviceId = _.pluck(response, 'serviceId')[0];
-            var packageName = _.pluck(_.pluck(response, 'properties'),'Package')[0];
-            if(_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
-              var organizationLink = {
-                'title': 'Organization',
-                'link': '#/organizations'
-              };
-              $scope.menu.push(organizationLink);
-            }
+            angular.forEach(accountId , function (acc_id){
+              Account.getSubscription(acc_id).then(function (response){ 
+                var serviceId = _.pluck(response, 'serviceId')[0];
+                var packageName = _.pluck(_.pluck(response, 'properties'),'Package')[0];
+                if(_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
+                  var organizationLink = {
+                    'title': 'Organization',
+                    'link': '#/organizations'
+                  };
+                  var already= _.find($scope.menu, function(menu){ if(menu.title == organizationLink.title && menu.link == organizationLink.link) return menu; });
+                    if((typeof(already)=="undefined")){
+                      $scope.menu.push(organizationLink);
+                      }
+                }
+              });
             });
-          });
         });
-
     });
+ 
