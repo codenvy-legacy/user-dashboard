@@ -255,8 +255,7 @@ angular.module('odeskApp')
                               }),
                           angular.forEach(selectedMembers, function (member) {
                               var role = $("input[name=user_role_" + i + "]:checked").val();
-
-                              var roles = ["workspace/" + role.split("/")[1]];
+                              var roles = eval("(function(){return " + role + ";})()");
 
                               var memberData = {
                                   "userId": member.id,
