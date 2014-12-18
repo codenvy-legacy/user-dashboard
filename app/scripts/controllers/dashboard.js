@@ -19,7 +19,7 @@
 angular.module('odeskApp')
     .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, Profile, Password, $cookieStore, $http, $q, $window) {
       var old_description = '';
-	    var old_projectname = '';
+	  var old_projectName = '';
  
       $scope.box = 1;
       $scope.search = 0;
@@ -118,10 +118,8 @@ angular.module('odeskApp')
       //public methods
       $scope.selectProject = function(project,modalNameType) {
 
-        clearInterval($scope.timer);
         $scope.tempProject.name = project.name;
         $scope.tempProject.description = project.description;
-        $("#renameProjectError").hide();
         $scope.emailList = '';
         $scope.activeMembers = [];
 
@@ -192,11 +190,10 @@ angular.module('odeskApp')
         $scope.activeProject = project; // used in setRead setWrite
         $scope.selected = project;
         old_description = project.description;
-        old_projectname = project.name;
+        old_projectName = project.name;
       };
 
       $scope.updateProject = function () {
-        intervalReload();
         $scope.selected.name = $scope.tempProject.name; 
         $scope.selected.description = $scope.tempProject.description;
         $scope.changeName = '' ;
@@ -204,7 +201,7 @@ angular.module('odeskApp')
             var res = /[^0-9a-zA-Z\-._]/.test($scope.selected.name) || $scope.selected.name[0] == '-' || $scope.selected.name[0] == '.' || $scope.selected.name[0] == '_';
             if(res) {
                 alert('Project name must contain only Latin letters, digits or these following special characters -._');
-                $scope.selected.name = old_projectname;
+                $scope.selected.name = old_projectName;
                 return;
             }
             var keepGoing = true;
@@ -216,11 +213,11 @@ angular.module('odeskApp')
             if(!keepGoing) {
                 $('#alreadyExist').show();
                 $scope.changeName = $scope.selected.name;
-                $scope.selected.name = old_projectname;
+                $scope.selected.name = old_projectName;
                 $('#alreadyExist').mouseout(function () { $(this).fadeOut('slow'); });
                 return;
             }
-            if ($scope.selected.name != old_projectname || $scope.selected.description != old_description) {
+            if ($scope.selected.name != old_projectName || $scope.selected.description != old_description) {
                 return $q.all([
                     $http({ method: 'POST', url: "/api/project/" + $scope.selected.workspaceId + "/rename" + $scope.selected.path + "?name=" + $scope.selected.name }).
                         success(function (data, status, headers, config) {
@@ -260,8 +257,6 @@ angular.module('odeskApp')
 
       $scope.switchVisibility = function () {
 
-		    intervalReload();
-
         $http({ method: 'POST', url: '/api/project/' + $scope.selected.workspaceId + '/switch_visibility/' + $scope.selected.name + '?visibility=' +  $scope.activeProjectVisibility }).
             success(function (data, status) {
               $scope.selected.visibility = $scope.activeProjectVisibility;
@@ -270,7 +265,6 @@ angular.module('odeskApp')
       };
 
 	    $scope.deleteProjectConfirm = function() {
-        intervalReload();
 			  if($scope.isAdmin)
 				$('#warning-project').modal('show');
 			  else
@@ -279,7 +273,6 @@ angular.module('odeskApp')
        };
 
       $scope.deleteProject = function () {
-        intervalReload();
         $http({ method: 'DELETE', url: $scope.selected.url }).
           success(function (status) {
             $scope.projects = _.without($scope.projects, _.findWhere($scope.projects, $scope.selected));        
@@ -292,8 +285,7 @@ angular.module('odeskApp')
 
       $scope.cancelProject = function () {
         $scope.selected.description = old_description;
-		    $scope.selected.name = old_projectname;
-        intervalReload();
+		    $scope.selected.name = old_projectName;
       };
 
       // used to save permissions to server
@@ -302,7 +294,7 @@ angular.module('odeskApp')
         var permissions = [{ "permissions": getPermisions(member), "principal": { "name": member.userId, "type": "USER" } }];
 
         Project.setPermissions($scope.activeProject.workspaceId, $scope.activeProject.name, permissions).then(function (data) {
-          console.log("Successfully set permisions!");
+          console.log("Successfully set permissions!");
         });
       };
 
@@ -322,7 +314,6 @@ angular.module('odeskApp')
 
 
       $scope.removeMember = function (member) {
-        clearInterval($scope.timer);
         Workspace.removeMember($scope.activeProject.workspaceId, member.userId).then(function (data) {
           var removedMemberIndex = -1;
           angular.forEach($scope.activeMembers, function (singleMember, index) {
@@ -352,7 +343,6 @@ angular.module('odeskApp')
       $scope.showInviteError = false;
 
       $scope.invite = function () {
-        clearInterval($scope.timer);
         $scope.showLoadingInvite = true;
         $scope.errors = "";
         var tempEmailList = $scope.emailList;
@@ -558,15 +548,7 @@ angular.module('odeskApp')
           });
 
       };
-      var intervalReload = function() {
-        clearInterval($scope.timer);
-        $scope.isProjectDataFetched = false;
-        $scope.timer = setInterval(function() {$scope.$apply(init);},20000);
-        };
-
-
-      init();// all code starts here 
-      intervalReload(); // automatic refresh of project list
+      init();// all code starts here
      });
       
 angular.module('odeskApp')
