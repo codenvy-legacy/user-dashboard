@@ -225,7 +225,7 @@ angular.module('odeskApp')
 	            return deferred.promise;
 	        },
 
-          getAccountId: function (){
+          getAccounts: function (){
             var deferred = $q.defer();
             var con = {
               headers: {
@@ -258,6 +258,53 @@ angular.module('odeskApp')
           }
       };
 	});
+
+angular.module('odeskApp')
+    .factory('OrgAddon', function ($rootScope, Account, $q) {
+        var serviceIds = ["Saas", "OnPremises"];
+        var packages = ["Team", "Enterprise"];
+        var orgAddonData = {};
+        orgAddonData.isOrgAddOn = false;
+        orgAddonData.accounts = [];
+
+        orgAddonData.update = function(accounts) {
+            orgAddonData.isOrgAddOn = accounts.length > 0;
+            orgAddonData.accounts = accounts;
+            $rootScope.$broadcast('orgAddonDataUpdated');
+        };
+
+        orgAddonData.getOrgAccounts = function() {
+            var accounts = [];
+            return $q.all([
+                Account.getAccounts().then(function (response){
+                    angular.forEach(response, function(membership) {
+                        if (membership.roles.indexOf("account/owner") >= 0){
+                            accounts.push(membership.accountReference.id);
+                        }
+                    });
+                })
+            ]).then(function () {
+                var promises = [];
+                var orgAccounts = [];
+                angular.forEach(accounts, function(account){
+                    promises.push(
+                    Account.getSubscription(account).then(function (response){
+                        var serviceId = _.pluck(response, 'serviceId')[0];
+                        var packageName = _.pluck(_.pluck(response, 'properties'),'Package')[0];
+                        if(_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
+                            orgAccounts.push(account);
+                        }
+                    }));
+                    $q.all(promises).then(function (){
+                        orgAddonData.update(orgAccounts);
+                    })
+                });
+            });
+        };
+
+
+        return orgAddonData;
+    });
 
 angular.module('odeskApp')
 	.factory('addSkill', function ($http, $q) {

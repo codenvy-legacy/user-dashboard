@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('NavbarCtrl', function ($scope, $location, $http, $cookies, $window, Account, $q) {
+    .controller('NavbarCtrl', function ($scope, $rootScope, $location, $http, $cookies, $window, Account, OrgAddon, $q) {
 
         $scope.menu = [
             /*//{
@@ -64,10 +64,12 @@ angular.module('odeskApp')
                 'link': 'https://codenvy.uservoice.com/'
             }
             ];
+        $scope.organizationLink = {
+            'title': 'Organization',
+            'link': '#/organizations'
+        };
 
-        var accountId = [];
-        var serviceIds = ["Saas", "OnPremises"];
-        var packages = ["Team", "Enterprise"];
+
 
         $http({method: 'GET', url: '/api/profile'}).success(function (profile, status) {
           if (profile.attributes.firstName && profile.attributes.lastName) {
@@ -123,7 +125,19 @@ angular.module('odeskApp')
               $scope.menu.push(organizationLink);
             }
 
-          });
+
+        $scope.$on('orgAddonDataUpdated', function() {
+            var index = $scope.menu.indexOf($scope.organizationLink);
+            if (OrgAddon.isOrgAddOn){
+                if (index == -1) {
+                    $scope.menu.push($scope.organizationLink);
+                }
+            } else {
+                if(index != -1) {
+                    $scope.menu.splice(index, 1);
+                }
+            }
         });
+		OrgAddon.getOrgAccounts();
 
     });
