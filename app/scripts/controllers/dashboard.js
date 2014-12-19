@@ -238,6 +238,7 @@ angular.module('odeskApp')
                                                 if (projFound.length > 0) {
                                                     projFound[0].ideUrl = data.ideUrl;
                                                     projFound[0].path = data.path;
+                                                    projFound[0].url = data.baseUrl;
                                                 }
                                             })
                                             .error(function (err) {
@@ -265,27 +266,33 @@ angular.module('odeskApp')
       };
 
 	    $scope.deleteProjectConfirm = function() {
-			  if($scope.isAdmin)
-				$('#warning-project').modal('show');
-			  else
-				alert("Deleting the project requires Administrator permissions to the project's workspace. Contact the workspace's Administrator or Owner.");
-	      
+            $('#warning-project-alert .alert-success').hide();
+            $('#warning-project-alert .alert-danger').hide();
+            $('#warning-project').modal('show');
+			  if($scope.isAdmin) {
+                  $('#warning-project-message').html("Removing a project can't be undone, are you sure you want to continue?");
+              } else {
+                  $('#warning-project-message').html("Deleting the project requires Administrator permissions to the project's workspace. Contact Workspace Administrator or Owner.")
+              }
        };
 
       $scope.deleteProject = function () {
-        $http({ method: 'DELETE', url: $scope.selected.url }).
-          success(function (status) {
+        $http({ method: 'DELETE', url: $scope.selected.url })
+          .success(function (status) {
+            $('#warning-project-alert .alert-success').show();
             $scope.projects = _.without($scope.projects, _.findWhere($scope.projects, $scope.selected));        
             if($scope.projects.length==0){
-                    $scope.isProjectDataFetched = true;
-                  }          
+                 $scope.isProjectDataFetched = true;
+            }
+            setTimeout(function () {
+                $('#warning-project').modal('hide');
+            }, 1500);
+          })
+          .error(function (err) {
+                $('#warning-project-alert .alert-danger').show();
+                $('#warning-project-alert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
           });
           
-      };
-
-      $scope.cancelProject = function () {
-        $scope.selected.description = old_description;
-		    $scope.selected.name = old_projectName;
       };
 
       // used to save permissions to server
