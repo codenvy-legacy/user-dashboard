@@ -46,7 +46,7 @@ angular.module('odeskApp')
             }
         ];
 
-		$scope.helpMenu = [
+        $scope.helpMenu = [
             {
                 'title': 'Codenvy Help',
                 'link': 'http://docs.codenvy.com'
@@ -109,8 +109,6 @@ angular.module('odeskApp')
             $(".navbar-collapse").toggle();
         });
 
-
-
         $scope.$on('orgAddonDataUpdated', function() {
             var index = $scope.menu.indexOf($scope.organizationLink);
             if (OrgAddon.isOrgAddOn){
@@ -123,6 +121,6 @@ angular.module('odeskApp')
                 }
             }
         });
-		OrgAddon.getOrgAccounts();
+		OrgAddon.getOrgAccounts();  
+});
 
-    });
