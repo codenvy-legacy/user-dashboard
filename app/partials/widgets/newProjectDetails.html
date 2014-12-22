@@ -1,0 +1,24 @@
+<div class="form-group" style="margin-left: 0; margin-bottom: 15px; overflow: auto">
+    <label for="targetWorkspace" class="control-label">Target workspace</label>
+    <select id="targetWorkspace"
+            name="targetWorkspace"
+            class="form-control"
+            ng-model="newProjectData.workspaceSelected"
+            ng-options="workspace.workspaceReference.name for workspace in workspaces">
+    </select>
+    <label for="projectName" class="control-label">Project name</label>
+    <input type="text"
+           name="projectName"
+           id="projectName"
+           class="form-control"
+           ng-model="newProjectData.projectName"
+           placeholder="The name of your new project" />
+    <label for="projectDescription" class="control-label">Project description</label>
+    <textarea id="projectDescription"
+              name="projectDescription"
+              class="form-control"
+              ng-model="newProjectData.projectDescription"
+              placeholder="The description of your new project"
+              rows="3">
+    </textarea>
+</div>

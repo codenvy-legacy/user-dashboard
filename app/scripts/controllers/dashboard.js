@@ -17,9 +17,9 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, Profile, Password, $cookieStore, $http, $q, $window) {
+    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, Profile, Password, $cookieStore, $http, $q, $window, newProject, ProjectFactory) {
       var old_description = '';
-	  var old_projectName = '';
+      var old_projectName = '';
  
       $scope.box = 1;
       $scope.search = 0;
@@ -268,7 +268,7 @@ angular.module('odeskApp')
 	    $scope.deleteProjectConfirm = function() {
             $('#warning-project-alert .alert-success').hide();
             $('#warning-project-alert .alert-danger').hide();
-            $('#warning-project').modal('show');
+				$('#warning-project').modal('show');
 			  if($scope.isAdmin) {
                   $('#warning-project-message').html("Removing a project can't be undone, are you sure you want to continue?");
               } else {
@@ -282,7 +282,7 @@ angular.module('odeskApp')
             $('#warning-project-alert .alert-success').show();
             $scope.projects = _.without($scope.projects, _.findWhere($scope.projects, $scope.selected));        
             if($scope.projects.length==0){
-                 $scope.isProjectDataFetched = true;
+                    $scope.isProjectDataFetched = true;
             }
             setTimeout(function () {
                 $('#warning-project').modal('hide');
@@ -293,6 +293,11 @@ angular.module('odeskApp')
                 $('#warning-project-alert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
           });
           
+      };
+
+      $scope.cancelProject = function () {
+        $scope.selected.description = old_description;
+		    $scope.selected.name = old_projectName;
       };
 
       // used to save permissions to server
@@ -412,7 +417,7 @@ angular.module('odeskApp')
       }
 
       return '';
-	  }
+	  };
 	  // for displaying message
       $scope.c2User='TRUE';
       $http({method: 'GET', url: '/api/profile/'}).success(function(data){
@@ -465,71 +470,50 @@ angular.module('odeskApp')
           }
       };
 
+      $scope.importNewProject = function (type) {
+          var promise = newProject.open($scope.currentUserId, $scope.workspaces, type);
+      };
+   
       //constructor
       var init = function () {
 
-      
       Workspace.all(function (resp) {
- 
-		  $scope.workspaces = _.filter(resp, function (workspace) { return !workspace.workspaceReference.temporary; });
-
-		  if($scope.workspaces.length==0) {
-			  var tempWorkspaces = _.filter(resp, function (workspace) { return workspace.workspaceReference.temporary; });
-			  if(tempWorkspaces.length > 0)
-					$window.location.href = '/site/login';
-
-			  $scope.isProjectDataFetched = true;
-		  }
-		  $scope.projects = []; //clear the project list
-       
-          angular.forEach($scope.workspaces, function (workspace) {
-            workspace.members = [];
-            Workspace.getMembersForWorkspace(workspace.workspaceReference.id).then(function (workspaceMembers) {
-              angular.forEach(workspaceMembers, function (workspaceMember) {
-                Profile.getById(workspaceMember.userId).then(function (data) {
-                  var member = createMember(data.attributes, workspaceMember.userId,false,false, workspaceMember.roles)
-
-                  workspace.members.push(member); // load the members for the workspace,
-
-                  if(data.attributes.resetPassword && data.attributes.resetPassword == 'true'){
-                      if($cookieStore.get('resetPassword') != true){
-                          $cookieStore.put('resetPassword', true);
-                          $('#defineUserPassword').modal('toggle'); // show once per session
-                      }
-                  }
-                });
-              });
-            });
-
-              $http({ method: 'GET', url: $.map(workspace.workspaceReference.links, function (obj) { if (obj.rel == "get projects") return obj.href })[0] })
-              .success(function (data, status) {
-                  $scope.projects = $scope.projects.concat(data);
-                  if($scope.projects.length==0) {
-                    $scope.isProjectDataFetched = true;
-                  }
-                  else {
-                    $scope.isProjectDataFetched = false; 
-                  }
-                  angular.forEach($scope.projects , function (project){
-                          if(project.problems.length>0){
-                         angular.forEach(project.problems,function(problem){
-                                if(problem.code == 1) {
-                                    project.description = 'This project does not have its language type and environment set yet. Open the project to configure it properly.';
-                                    project.type='mis-configured';
-                                    project.misconfigured = true;
-                                }
-                            });
-                        }
-                    });
-                })
-            .error(function (data, status) {
-                    $scope.isProjectDataFetched = true;
-                    });
-              });
-        
+        $scope.workspaces = _.filter(resp, function (workspace) {
+          return !workspace.workspaceReference.temporary;
         });
 
+        if(!$scope.workspaces.length) {
+          var tempWorkspaces = _.filter(resp, function (workspace) {
+            return workspace.workspaceReference.temporary;
+          });
+          if (tempWorkspaces.length) {
+            $window.location.href = '/site/login';
+            $scope.isProjectDataFetched = true;
+          }
+        }
+        $scope.projects = ProjectFactory.projects;
+        ProjectFactory.fetchProjects($scope.workspaces);
 
+        angular.forEach($scope.workspaces, function (workspace) {
+          workspace.members = [];
+          Workspace.getMembersForWorkspace(workspace.workspaceReference.id).then(function (workspaceMembers) {
+            angular.forEach(workspaceMembers, function (workspaceMember) {
+              Profile.getById(workspaceMember.userId).then(function (data) {
+                var member = createMember(data.attributes, workspaceMember.userId, false, false, workspaceMember.roles)
+
+                workspace.members.push(member); // load the members for the workspace,
+
+                if (data.attributes.resetPassword && data.attributes.resetPassword == 'true') {
+                  if ($cookieStore.get('resetPassword') != true) {
+                    $cookieStore.put('resetPassword', true);
+                    $('#defineUserPassword').modal('toggle'); // show once per session
+                  }
+                }
+              });
+            });
+          });
+        });
+        });
 
         $http({ method: 'GET', url: '/api/account' }).success(function (account, status) {
           $scope.ownerWorkspace = _.pluck(_.pluck(account, 'accountReference'), 'name');
@@ -552,8 +536,7 @@ angular.module('odeskApp')
               $('.searchfull').hide();
             });
           });
-          });
-
+        });
       };
       init();// all code starts here
      });

@@ -1,0 +1,23 @@
+<form id="new-project-dialog" name="newProjectForm" novalidate class="simple-form">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$close()" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Import a new project into your Codenvy workspace</h4>
+    </div>
+    <div class="modal-body" style="padding: 0">
+        <tabset justified="true">
+            <tab heading="From your GitHub account" active="newProjectCtrl.tabActivated['GitHub']" select="newProjectCtrl.setProjectType('GitHub')">
+                <ud-import-github workspaces="newProjectCtrl.workspaces" user="newProjectCtrl.user" new-project-data="newProjectCtrl.newProjectData" />
+            </tab>
+            <tab heading="From a Git repository" active="newProjectCtrl.tabActivated['Git']" select="newProjectCtrl.setProjectType('Git')">
+                <ud-import-git-repository workspaces="newProjectCtrl.workspaces" new-project-data="newProjectCtrl.newProjectData" />
+            </tab>
+            <tab heading="From a Zip URL" active="newProjectCtrl.tabActivated['Zip']" select="newProjectCtrl.setProjectType('Zip')">
+                <ud-import-zip workspaces="newProjectCtrl.workspaces" new-project-data="newProjectCtrl.newProjectData" />
+            </tab>
+        </tabset>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" ng-click="$close()">Cancel</button>
+        <button class="btn btn-primary" ng-click="newProjectCtrl.import()">Import</button>
+    </div>
+</form>

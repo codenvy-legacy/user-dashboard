@@ -23,6 +23,7 @@ angular.module('odeskApp', [
     'ngSanitize',
     'ngRoute',
     'ngAnimate',
+    'ui.bootstrap',
     'chieffancypants.loadingBar'
 ]).config(function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeBar = false;
@@ -35,16 +36,16 @@ angular.module('odeskApp', [
       }
 
       //Do not add token on auth login
-      if (config.url.indexOf("/api/auth/login") == -1 && $cookies.token) {
-        config.params = config.params || {};
-        angular.extend(config.params, {token: $cookies.token});
-
+      if (config.url.indexOf("/api/auth/login") == -1 && config.url.indexOf("api/") != -1 && $cookies.token) {
+          config.params = config.params || {};
+          angular.extend(config.params, {token: $cookies.token});
       }
       return config || $q.when(config);
     },
     response: function(response) {
-      if (response.status === 401) {
-        // TODO: Redirect user to login page.
+      if (response.status === 401 || response.status == 403) {
+          $log.info('Redirect to login page.')
+          $location.path('/login');
       }
       return response || $q.when(response);
     }
@@ -61,9 +62,9 @@ angular.module('odeskApp', [
         BASE_URL = '/dashboard/';
     }
 
-   if (DEV) {
-      $httpProvider.interceptors.push('AuthInterceptor');
-   }
+    if (DEV) {
+        $httpProvider.interceptors.push('AuthInterceptor');
+    }
     $routeProvider
 	    .when('/dashboard', {
             templateUrl: BASE_URL + 'views/dashboard.html',
@@ -77,30 +78,30 @@ angular.module('odeskApp', [
             templateUrl: BASE_URL + 'views/stats.html',
             controller: 'StatsCtrl'
         })
-      .when('/runner', {
-        templateUrl: BASE_URL + 'views/runner.html',
-        controller: 'RunnerCtrl'
-      })
+        .when('/runner', {
+            templateUrl: BASE_URL + 'views/runner.html',
+            controller: 'RunnerCtrl'
+        })
         .when('/admin', {
             templateUrl: BASE_URL + 'views/admin.html',
             controller: 'AdminCtrl'
         })
 	    .when('/organizations', {
-          templateUrl: BASE_URL + 'views/organization/workspaces.html',
-          controller: 'OrganizationsCtrl'
-      })
-      .when('/organizations/members', {
-          templateUrl: BASE_URL + 'views/organization/members.html',
-          controller: 'OrganizationsCtrl'
-      })
-      // .when('/organizations/workspace/:id', {
-      //   templateUrl: BASE_URL + 'views/organization/workspace_info.html',
-      //   controller: 'workspaceInfoCtrl'
-      // })
-      .when('/organizations/workspace/:id/members', {
-        templateUrl: BASE_URL + 'views/organization/workspace_members.html',
-        controller: 'workspaceInfoCtrl'
-      })
+            templateUrl: BASE_URL + 'views/organization/workspaces.html',
+            controller: 'OrganizationsCtrl'
+        })
+        .when('/organizations/members', {
+            templateUrl: BASE_URL + 'views/organization/members.html',
+            controller: 'OrganizationsCtrl'
+        })
+        .when('/organizations/workspace/:id', {
+            templateUrl: BASE_URL + 'views/organization/workspace_info.html',
+            controller: 'workspaceInfoCtrl'
+        })
+        .when('/organizations/workspace/:id/members', {
+            templateUrl: BASE_URL + 'views/organization/workspace_members.html',
+            controller: 'workspaceInfoCtrl'
+        })
 	    .when('/organizations/:name', {
             templateUrl: BASE_URL + 'views/orgdetail.html',
             controller: 'OrgdetailCtrl'
@@ -161,4 +162,22 @@ angular.module('odeskApp', [
             });
         }
     };
-});
+}).run(['$rootScope', function($rootScope) {
+    if (DEV) {
+        $rootScope.$on('$routeChangeStart', function (event, next, current) {
+            console.log('$routeChangeStart', event, next, current);
+        });
+        $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+            console.log('$routeChangeSuccess', event, current, previous);
+        });
+        $rootScope.$on('$routeChangeError', function (event, current, previous, rejection) {
+            console.log('$routeChangeError', event, current, previous, rejection);
+        });
+    }
+}]);
+
+angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
+    .controller('CarouselController', ['$scope', '$timeout', '$transition', '$q', function ($scope, $timeout, $transition, $q) {
+    }]).directive('carousel', [function() {
+        return { }
+    }]);
