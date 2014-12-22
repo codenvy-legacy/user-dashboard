@@ -26,6 +26,10 @@ angular.module('odeskApp')
             },
             link: function ($scope) {
                 $scope.workspaceSelected = $scope.workspaces[0];
+
+                $scope.setGitRepositoryUrl = function() {
+                  $scope.newProjectData.remoteUrl = $scope.gitRepositoryUrl;
+                };
             },
             templateUrl: 'partials/widgets/importGitRepository.html'
         }

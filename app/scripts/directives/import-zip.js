@@ -26,6 +26,11 @@ angular.module('odeskApp')
             },
             link: function ($scope) {
                 $scope.workspaceSelected = $scope.workspaces[0];
+
+                $scope.setRemoteZipUrl = function() {
+                  $scope.newProjectData.remoteUrl = $scope.remoteZipUrl;
+                };
+;
             },
             templateUrl: 'partials/widgets/importZip.html'
         }

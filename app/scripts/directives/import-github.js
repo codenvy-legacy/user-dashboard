@@ -256,6 +256,7 @@ angular.module('odeskApp')
 
                     $scope.workspaceSelected = $scope.workspaces[0];
                     $scope.organizations = [];
+                    $scope.loadRepositories();
                 },
                 templateUrl: 'partials/widgets/importGitHub.html'
             };
