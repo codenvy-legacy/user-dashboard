@@ -279,9 +279,8 @@ angular.module('odeskApp')
 
                 // Update workspace member's role
                 $scope.updateMemberWs = function(member_role){
-                    $scope.member_role = member_role;
                     var wcon = { headers: { 'Content-Type': 'application/json'  }  };
-                    var memberData = {"userId": $scope.editWsMember.id,"roles": ["workspace/"+$scope.editWsMember.role] };
+                    var memberData = {"userId": $scope.editWsMember.id,"roles": ["workspace/"+$scope.member_role] };
                     var email;
                     var userid;
                     $http.get('/api/user').success(function(data){
