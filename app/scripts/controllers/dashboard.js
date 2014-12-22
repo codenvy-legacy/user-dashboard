@@ -418,17 +418,7 @@ angular.module('odeskApp')
 
       return '';
 	  };
-	  // for displaying message
-      $scope.c2User='TRUE';
-      $http({method: 'GET', url: '/api/profile/'}).success(function(data){
-          $scope.userDetails=data.attributes;
-          $scope.oldUser = data.attributes['codenvy:created'];
 
-          if(data.attributes['codenvy:created']!=undefined){$scope.c2User='TRUE';}else{$scope.c2User='FALSE';}
-
-      }).error(function(err){
-
-      });
     // to show scheduled maintenance message from statuspage.io (Path-to service)
       $scope.scheduled='FALSE';
       $http({method: 'GET', url: '/dashboard/scheduled'})

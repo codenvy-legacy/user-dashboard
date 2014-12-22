@@ -83,15 +83,6 @@
 <!-- <div class="col-md-12"> -->
 
 <div class="col-md-12">
-    <div class="panel-box" style="margin-top: 10px" ng-if="c2User=='FALSE'" >
-        <div class="panel-bg">
-            <div class="row">
-
-                <div>Welcome to the all new Codenvy! Codenvy 2 projects will be migrated in late 2014. You may access those projects <a class="message" target="_blank" href="https://c2.codenvy.com/site/login">here</a>.
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="panel-box" style="margin-top: 10px" ng-if="scheduled">
         <div class="panel-bg" ng-repeat="maintenance in data">
             <a class="message" ng-href="{{maintenance.shortlink}}" target="_blank">
