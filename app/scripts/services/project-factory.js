@@ -24,7 +24,6 @@
 angular.module('odeskApp')
     .factory('ProjectFactory', ['$http', function($http) {
         var ProjectFactory = {};
-        var projectsJSON = null;
 
         ProjectFactory.isProjectDataFetched = false;
         ProjectFactory.projects = [];
@@ -40,6 +39,7 @@ angular.module('odeskApp')
                         if(currentIndex == lastIndex){
                             updateProjectsData(projects);
                         }
+                        ProjectFactory.isProjectDataFetched = !!projects.length;
                     })
                     .error(function (data, status) {
                         ProjectFactory.isProjectDataFetched = true;
@@ -50,22 +50,19 @@ angular.module('odeskApp')
             });
 
             var updateProjectsData = function (projects) {
-                if (projectsJSON == null || projectsJSON != JSON.stringify(projects)) {
-                    projectsJSON = JSON.stringify(projects);
-                    if(!ProjectFactory.isProjectDataFetched) {
-                        ProjectFactory.isProjectDataFetched = !!projects.length;
+                angular.forEach(projects , function (project){
+                    if(project.problems.length){
+                        angular.forEach(project.problems, function(problem){
+                            if(problem.code == 1) {
+                                project.description = 'This project does not have its language type and environment set yet. Open the project to configure it properly.';
+                                project.type='mis-configured';
+                                project.misconfigured = true;
+                            }
+                        });
                     }
-                    angular.forEach(projects , function (project){
-                        if(project.problems.length){
-                            angular.forEach(project.problems, function(problem){
-                                if(problem.code == 1) {
-                                    project.description = 'This project does not have its language type and environment set yet. Open the project to configure it properly.';
-                                    project.type='mis-configured';
-                                    project.misconfigured = true;
-                                }
-                            });
-                        }
-                    });
+                });
+                if (!angular.equals(projects, ProjectFactory.projects)) {
+                    // Empty the array keeping its reference (reason why = [] is not used).
                     while (ProjectFactory.projects.length) ProjectFactory.projects.pop();
                     ProjectFactory.projects.push.apply(ProjectFactory.projects, projects);
                 }
