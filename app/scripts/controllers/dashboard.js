@@ -23,7 +23,7 @@ angular.module('odeskApp')
  
       $scope.box = 1;
       $scope.search = 0;
-      $scope.projects = [];
+      $scope.projects = ProjectFactory.projects;
       $scope.ownerWorkspace = '';
       $scope.members = [];
       $scope.filter = {};
@@ -280,7 +280,7 @@ angular.module('odeskApp')
         $http({ method: 'DELETE', url: $scope.selected.url })
           .success(function (status) {
             $('#warning-project-alert .alert-success').show();
-            $scope.projects = _.without($scope.projects, _.findWhere($scope.projects, $scope.selected));        
+            ProjectFactory.fetchProjects($scope.workspaces);
             if($scope.projects.length==0){
                     $scope.isProjectDataFetched = true;
             }

@@ -1,11 +1,16 @@
 <div>
     <ud-new-project-details workspaces="workspaces" new-project-data="newProjectData"></ud-new-project-details>
 
-    <button type="button" class="btn btn-primary" ng-click="loadRepositories()" ng-if="!gitHubRepositories">Load your GitHub repositories</button>
+    <p ng-if="gitHubError" class="alert alert-danger" >
+        We get problem authenticating you to GitHub. You can retry by pushing again the button below.
+        If the problem persists, please contact support on our <a href="https://groups.google.com/a/codenvy.com/forum/#!forum/codenvy" target="_blank">Google forum</a>.
+    </p>
 
-    <div ng-if="gitHubRepositories">
+    <button type="button" class="btn btn-primary" ng-click="loadRepositories()" ng-if="shouldDisplayLoadButton && !loadingRepos">Load your GitHub repositories</button>
+
+    <div ng-if="!shouldDisplayLoadButton && !loadingRepos">
         <div class="form-group" style="margin-left: 0; margin-bottom: 15px; overflow: auto">
-            <label for="organizationFilter" class="control-label">Filter your GitHub repositories</label>
+            <label for="organizationFilter" class="control-label">Filter GitHub repositories</label>
             <select id="organizationFilter" class="form-control col-md-8" ng-model="organizationName" ng-options="resolveOrganizationName(organization) group by resolveOrganizationType(organization) for organization in organizations">
                 <option value="">All your organizations</option>
             </select>
@@ -14,19 +19,15 @@
             <div class="list-group">
                 <a class="list-group-item" ng-class="{'active': selectedRepository == gitHubRepository}" ng-repeat="gitHubRepository in gitHubRepositories | filterRepositories:organizationName"
                     ng-click="selectRepository(gitHubRepository)">
-                    <div class="row">
-                        <div class="col-md-9">
-                            <h3 class="list-group-item-heading">
-                                <span ng-if="!gitHubRepository.fork" class="octicon octicon-repo"></span>
-                                <span ng-if="gitHubRepository.fork" class="octicon octicon-repo-forked"></span>
-                                {{gitHubRepository.name}} <i class="pull-right glyphicon" ng-class="{'glyphicon-ok': status.open}"></i>
-                                <span ng-if="gitHubRepository.private" class="fa fa-lock"></span>
-                            </h3>
-                            <p>
-                                {{gitHubRepository.description}}
-                            </p>
-                        </div>
-                    </div>
+                    <h3 class="list-group-item-heading">
+                        <span ng-if="!gitHubRepository.fork" class="octicon octicon-repo"></span>
+                        <span ng-if="gitHubRepository.fork" class="octicon octicon-repo-forked"></span>
+                        {{gitHubRepository.name}}
+                        <span ng-if="gitHubRepository.private" class="fa fa-lock"></span>
+                    </h3>
+                    <p>
+                        {{gitHubRepository.description}}
+                    </p>
                 </a>
             </div>
         </div>

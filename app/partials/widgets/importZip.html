@@ -5,6 +5,7 @@
     <input type="text"
            id="remoteZipURL"
            class="form-control"
-           ng-model="gitRepositoryUrl"
+           ng-model="remoteZipUrl"
+           ng-change="setRemoteZipUrl()"
            placeholder="The URL of the remote Zip repository you want to import from"/>
 </div>

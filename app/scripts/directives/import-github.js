@@ -148,19 +148,19 @@ angular.module('odeskApp')
             return organization.name ? organization.name : organization.login;
         }
     }).filter('filterRepositories', function() {
-        return function(repositories, organizationFilter) {
-            if (!repositories) {
-                return [];
-            }
-            var filtered = [];
-            for (var i = 0; i < repositories.length; i++) {
-                var repository = repositories[i];
-                if (!organizationFilter || repository.owner.login == organizationFilter.login) {
-                    filtered.push(repository);
-                }
-            }
-            return filtered;
+      return function (repositories, organizationFilter) {
+        if (!repositories) {
+          return [];
         }
+        var filtered = [];
+        for (var i = 0; i < repositories.length; i++) {
+          var repository = repositories[i];
+          if (!organizationFilter || repository.owner.login == organizationFilter.login) {
+            filtered.push(repository);
+          }
+        }
+        return filtered;
+      }
     }).directive('udImportGithub', [
         '$http',
         '$q',
@@ -170,7 +170,8 @@ angular.module('odeskApp')
         'organizationNameResolver',
         'popup',
         'gitHubTokenStore',
-        function($http, $q, $window, GitHub, Project, organizationNameResolver, popup, gitHubTokenStore) {
+        '$log',
+        function($http, $q, $window, GitHub, Project, organizationNameResolver, popup, gitHubTokenStore, $log) {
             return {
                 restrict: 'E',
                 scope: {
@@ -204,17 +205,33 @@ angular.module('odeskApp')
                             return true;
                         });
                     };
-                    $scope.isTokenValid = function() {
-                        return GitHub.user().get().$promise;
+
+                    var currentTokenCheck = null;
+                    $scope.checkTokenValidity = function() {
+                        if (currentTokenCheck) {
+                            return currentTokenCheck;
+                        }
+                        currentTokenCheck = GitHub.user().get(function() {
+                            currentTokenCheck = null;
+                            return $q.defer().resolve(true);
+                        }, function() {
+                            currentTokenCheck = null;
+                            return $q.defer().reject(false);
+                        }).$promise;
+                        return currentTokenCheck;
                     };
+
                     $scope.checkGitHubAuthentication = function() {
-                        return $scope.isTokenValid().then(function() {
+                        return $scope.checkTokenValidity().then(function() {
                             return $q.defer().resolve('true');
                         }, function() {
                             return $scope.authenticateWithGitHub();
                         });
                     };
                     $scope.loadRepositories = function() {
+                        $scope.loadingRepos = true;
+                        $scope.gitHubError = false;
+
                         $scope.checkGitHubAuthentication().then(function() {
                             var user = GitHub.user().get();
                             $scope.organizations.push(user);
@@ -230,8 +247,13 @@ angular.module('odeskApp')
                                     });
                                 }
                             });
+
+                            $scope.loadingRepos = false;
+                            $scope.shouldDisplayLoadButton = false;
                         }, function() {
-                            $window.alert('Error');
+                            $scope.loadingRepos = false;
+                            $scope.shouldDisplayLoadButton = true;
+                            $scope.gitHubError = true;
                         });
                     };
 
@@ -256,6 +278,10 @@ angular.module('odeskApp')
 
                     $scope.workspaceSelected = $scope.workspaces[0];
                     $scope.organizations = [];
+                    $scope.shouldDisplayLoadButton = true;
+                    $scope.checkTokenValidity().then(function() {
+                        $scope.loadRepositories();
+                    });
                 },
                 templateUrl: 'partials/widgets/importGitHub.html'
             };
