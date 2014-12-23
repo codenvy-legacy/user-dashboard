@@ -82,9 +82,11 @@ angular.module('odeskApp')
                             });
 
                         });
-
+console.log($scope.workspaces.length);
                     })
                     .error(function (err) {  });
+                    console.log($scope.workspaces.length);
+
 
                 //Add members to workspace list
                 $scope.addMemberToWsList = function(){
@@ -103,7 +105,8 @@ angular.module('odeskApp')
                     $scope.userNotMemberList = [];
                     $scope.userAlreadyAdded =[];
 
-                    if (selectedMembers.length>0){
+                    if (selected
+                        .length>0){
                         $("#ws_name").parent().removeClass('has-error');
                         $("#emptyWs").hide();
                         $("#selectedMembers").parent().removeClass('has-error');
@@ -575,7 +578,7 @@ angular.module('odeskApp')
 
                     function processError(err) {
                         $("#allocationError").show();
-                        $("#allocationError").html("<strong> Workspace characters should be between 3 to 20 characters and must have digit, letters and - . _ and must start with digits or letters</strong>");
+                        $("#allocationError").html("<strong> Memory size value must contain only digits </strong>");
                     }
 
                 }
