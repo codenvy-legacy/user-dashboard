@@ -130,6 +130,7 @@ angular.module('odeskApp')
                                     .error(function (err) {
                                         $scope.userNotFoundList.push(memberEmail);
                                         $("#userNotFoundError").show();
+                                        $("#userNotFoundError").mouseout(function () { $(this).fadeOut('slow'); });
                                         $("#selectedMembers").parent().addClass('has-error');
                                     })
 
@@ -142,6 +143,7 @@ angular.module('odeskApp')
                                     if((typeof(alreadyAddedMember)!="undefined") || (typeof(alreadyWsMember)!="undefined")){
                                         $scope.userAlreadyAdded.push(memberEmail);
                                         $("#userAlreadyAdded").show();
+                                        $("#userAlreadyAdded").mouseout(function () { $(this).fadeOut('slow'); });
                                         $("#selectedMembers").parent().addClass('has-error');
                                     }
                                     else
@@ -194,55 +196,54 @@ angular.module('odeskApp')
 
                 // For add members in workspace for organization Tab
                 $scope.addMembersToWs = function(members){
-                    $("#userNotFoundError").hide();
-                    $("#userNotMemberList").hide();
-                    $("#userAlreadyAdded").hide();
-                    $("#emptyEmails").hide();
-                    $("#selectedMembers").parent().removeClass('has-error');
-
-                    var i = 0;
-
-                    return $q.all([
-                        angular.forEach(members, function (member) {
-
-                            var con = {
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            };
-
-                            var role = $("input[name=user_role_"+i+"]:checked").val();
-                            var rolesArray = eval("(function(){return " + role + ";})()");
-                            var data = {
-                                "userId": member.id,
-                                "roles": rolesArray
-                            };
-
-                            $http.post('/api/workspace/' + workspaceId + "/members",
-                                data,
-                                con)
-                                .success(function (data) {
-                                    var memberDetails = {
-                                        id: data.userId,
-                                        role: $scope.userRolesToStr(rolesArray),
-                                        email: member.email,
-                                        name: member.name
-                                    };
-                                    $scope.workspace.members.push(memberDetails);
-
-                                }).error(function (err, status) {
-                                    $("#addMemberErr").show();
-                                    $("#addMemberErr").html(err["message"]);
-                                });
-
-                            i++;
-                        })
-                    ]).then(function (results) {
-                        $('#addWorkspaceNewMember').modal('toggle');
-                        $scope.selectedMembers = [];
+                    var selectedMembers = $("#selectedMembers");
+                    if(selectedMembers.val().length > 0) {
+                        $scope.addMemberToWsList();
+                    } else {
                         $("#userNotFoundError").hide();
                         $("#userAlreadyAdded").hide();
-                    });
+                        $("#emptyEmails").hide();
+                        selectedMembers.parent().removeClass('has-error');
+                        var i = 0;
+                        return $q.all([
+                            angular.forEach(members, function (member) {
+                                var con = {
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    }
+                                };
+                                var role = $("input[name=user_role_" + i + "]:checked").val();
+                                var rolesArray = eval("(function(){return " + role + ";})()");
+                                var data = {
+                                    "userId": member.id,
+                                    "roles": rolesArray
+                                };
+                                $http.post('/api/workspace/' + workspaceId + "/members",
+                                    data,
+                                    con)
+                                    .success(function (data) {
+                                        var memberDetails = {
+                                            id: data.userId,
+                                            role: $scope.userRolesToStr(rolesArray),
+                                            email: member.email,
+                                            name: member.name
+                                        };
+                                        $scope.workspace.members.push(memberDetails);
+
+                                    }).error(function (err, status) {
+                                        $("#addMemberErr").show();
+                                        $("#addMemberErr").html(err["message"]);
+                                    });
+
+                                i++;
+                            })
+                        ]).then(function (results) {
+                            $('#addWorkspaceNewMember').modal('toggle');
+                            $scope.selectedMembers = [];
+                            $("#userNotFoundError").hide();
+                            $("#userAlreadyAdded").hide();
+                        });
+                    }
                 };
 
                 $scope.addMemberProject = function(member){

@@ -420,6 +420,7 @@ angular.module('odeskApp')
                                     .error(function (err) {
                                         $scope.userNotFoundList.push(memberEmail);
                                         $("#userNotFoundError").show();
+                                        $("#userNotFoundError").mouseout(function () { $(this).fadeOut('slow'); });
                                     })
 
                             ]).then(function (results) {
@@ -429,6 +430,7 @@ angular.module('odeskApp')
                                 if((typeof(alreadyAddedMember)!="undefined") || (typeof(alreadyListedMember)!="undefined")){
                                     $scope.userAlreadyAdded.push(memberEmail);
                                     $("#userAlreadyAdded").show();
+                                    $("#userAlreadyAdded").mouseout(function () { $(this).fadeOut('slow'); });
                                 }else{
                                     $http({method: 'GET', url: '/api/profile/'+userId})
                                         .success(function (data) {
@@ -471,37 +473,41 @@ angular.module('odeskApp')
 
                 // For add members in organization Tab
                 $scope.addMembers = function(members){
-                    var i = 0;
-                    return $q.all([
+                    if($("#selected_users").val().length > 0) {
+                        $scope.addUserToList();
+                    } else {
+                        var i = 0;
+                        return $q.all([
 
-                        angular.forEach(members, function (member) {
-                            var con = {
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            };
+                            angular.forEach(members, function (member) {
+                                var con = {
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    }
+                                };
 
-                            var role = $("input[name=user_role_"+i+"]:checked").val();
-                            var data = {
-                                "userId": member.id,
-                                "roles": [
-                                        "account/"+role.split("/")[1]
-                                ]
-                            };
-                            member.role = role.split("/")[1];
+                                var role = $("input[name=user_role_" + i + "]:checked").val();
+                                var data = {
+                                    "userId": member.id,
+                                    "roles": [
+                                            "account/" + role.split("/")[1]
+                                    ]
+                                };
+                                member.role = role.split("/")[1];
 
-                            $http.post('/api/account/'+$scope.accountId[0]+'/members', data, con)
-                                .success(function (data) {
-                                    $scope.members.push(member);
-                                });
-                            i++;
-                        })
-                    ]).then(function (results) {
-                        $('#addNewMember').modal('toggle');
-                        $scope.selectedMembers = [];
-                        $("#userNotFoundError").hide();
-                        $("#userAlreadyAdded").hide();
-                    });
+                                $http.post('/api/account/' + $scope.accountId[0] + '/members', data, con)
+                                    .success(function (data) {
+                                        $scope.members.push(member);
+                                    });
+                                i++;
+                            })
+                        ]).then(function (results) {
+                            $('#addNewMember').modal('toggle');
+                            $scope.selectedMembers = [];
+                            $("#userNotFoundError").hide();
+                            $("#userAlreadyAdded").hide();
+                        });
+                    }
                 };
 
                 $scope.addMemberProject = function(member){
