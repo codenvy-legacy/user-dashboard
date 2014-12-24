@@ -255,7 +255,7 @@
                             </thead>
                             <tr ng-repeat="workspace in infoForRAMAllocation| filter: filter | orderBy:'name'" class="v-center">
                                 <td>{{workspace.name}}</td>
-                                <td class="text-center" width="90px"><input ng-model="workspace.allocatedRam" style="text-align: center;" class="form-control" numbers-only="numbers-only" ng-change="getFreeMemoryAfterAllocation()"/></td>
+                                <td class="text-center" width="90px"><input type="text" ng-model="workspace.allocatedRam" style="text-align: center;" class="form-control" id="allocate_ram_{{$index}}" ng-change="getFreeMemoryAfterAllocation($index)"/></td>
                             </tr>
                         </table>
                         <div ng-show="leftMemory < 0" class="org-errors"><strong>Not enough memory for such RAM allocation.</strong></div>

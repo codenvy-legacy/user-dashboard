@@ -82,7 +82,6 @@ angular.module('odeskApp')
                             });
 
                         });
-console.log($scope.workspaces.length);
                     })
                     .error(function (err) {  });
                     console.log($scope.workspaces.length);
@@ -534,14 +533,28 @@ console.log($scope.workspaces.length);
 
 
                 //Check Memory allocation and count left memory.
-                $scope.getFreeMemoryAfterAllocation = function() {
+                $scope.getFreeMemoryAfterAllocation = function(id) {
+                    var allocated_ram = $("#allocate_ram_"+id).val();
                     var sumMemory = 0;
-                    angular.forEach($scope.infoForRAMAllocation, function(w){
-                        var value = parseInt(w.allocatedRam);
-                        sumMemory += value || 0;
-                    });
-                    $scope.leftMemory = $scope.allowedRAM - sumMemory;
-                    $("#allocationError").hide();
+                    
+                    if (allocated_ram.length>0) {
+                        if ((allocated_ram.match(/^\d{0,5}$/) != null)) {
+                            $("#allocationError").hide();
+                            $("#allocate_ram_"+id).parent().removeClass('has-error');
+                            angular.forEach($scope.infoForRAMAllocation, function(w){
+                              var value = parseInt(w.allocatedRam);
+                              sumMemory += value || 0;
+                            });
+                            $scope.leftMemory = $scope.allowedRAM - sumMemory;
+                            $("#allocationError").hide();
+                            return true;
+                    }else{
+                        $("#allocate_ram_"+id).parent().addClass('has-error');
+                        $("#allocationError").show();
+                        $("#allocationError").html("<strong> Memory Size should have only positive integers and and may start with digits only </strong>");
+                       }
+                    }
+                    return false;
                 };
 
                 //Redistribute resources:
@@ -578,7 +591,7 @@ console.log($scope.workspaces.length);
 
                     function processError(err) {
                         $("#allocationError").show();
-                        $("#allocationError").html("<strong> Memory size value must contain only digits </strong>");
+                        $("#allocationError").html("<strong> Define the value for allocation</strong>");
                     }
 
                 }
