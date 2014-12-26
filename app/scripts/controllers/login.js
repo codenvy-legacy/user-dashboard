@@ -16,7 +16,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('LoginCtrl', function ($scope, $timeout, $http, $location, $cookies, $window) {
+    .controller('LoginCtrl', function ($scope, $rootScope, $timeout, $http, $location, $cookies, $window, Profile) {
       $scope.username = 'test';
       $scope.password = 'test';
         $scope.submit = function () {
@@ -25,6 +25,15 @@ angular.module('odeskApp')
                 method: "POST",
                 data: { "username": $scope.username, "password": $scope.password}
             }).then(function (response) { // success
+                Profile.query().then(function (profile, status) {
+                    var fullUserName;
+                    if (profile.attributes.firstName && profile.attributes.lastName) {
+                        fullUserName = profile.attributes.firstName + ' ' + profile.attributes.lastName;
+                    } else {
+                        fullUserName = profile.attributes.email;
+                    }
+                    $rootScope.$broadcast('update_fullUserName', fullUserName);// update User name at top
+                });
                 $cookies.token = response.data.value;
                 $cookies.refreshStatus = "DISABLED";
                 $location.path("/dashboard");

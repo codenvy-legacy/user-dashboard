@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('NavbarCtrl', function ($scope, $rootScope, $location, $http, $cookies, $window, Account, OrgAddon, $q) {
+    .controller('NavbarCtrl', function ($scope, $rootScope, $location, $http, $cookies, $window, Account, OrgAddon, Profile, $q) {
 
         $scope.menu = [
             /*//{
@@ -68,15 +68,18 @@ angular.module('odeskApp')
             'title': 'Organization',
             'link': '#/organizations'
         };
+        $rootScope.$on('update_fullUserName', function(event, fullUserName){
+            $scope.fullUserName = fullUserName;
+            });
 
-
-
-        $http({method: 'GET', url: '/api/profile'}).success(function (profile, status) {
-          if (profile.attributes.firstName && profile.attributes.lastName) {
-            $scope.fullUserName = profile.attributes.firstName + ' ' + profile.attributes.lastName;
-          } else {
-            $scope.fullUserName = profile.attributes.email;
-          }
+        Profile.query().then(function (profile, status) {
+            var fullUserName;
+            if (profile.attributes.firstName && profile.attributes.lastName) {
+                fullUserName = profile.attributes.firstName + ' ' + profile.attributes.lastName;
+            } else {
+                fullUserName = profile.attributes.email;
+            }
+            $rootScope.$broadcast('update_fullUserName', fullUserName);// update User name at top
         });
 
         $scope.isActive = function (route) {
