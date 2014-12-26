@@ -538,6 +538,7 @@ angular.module('odeskApp')
                     var sumMemory = 0;
                     
                     if (allocated_ram.length>0) {
+
                         if ((allocated_ram.match(/^\d{0,5}$/) != null)) {
                             $("#allocationError").hide();
                             $("#allocate_ram_"+id).parent().removeClass('has-error');
@@ -551,8 +552,12 @@ angular.module('odeskApp')
                     }else{
                         $("#allocate_ram_"+id).parent().addClass('has-error');
                         $("#allocationError").show();
-                        $("#allocationError").html("<strong> Memory Size should have only positive integers and and may start with digits only </strong>");
+                        $("#allocationError").html("<strong> Memory Size should have only positive integers and may start with digits only </strong>");
                        }
+                    }else{
+                        $("#allocate_ram_"+id).parent().addClass('has-error');
+                        $("#allocationError").show();
+                        $("#allocationError").html("<strong> Define the value for allocation</strong>");
                     }
                     return false;
                 };
@@ -591,7 +596,7 @@ angular.module('odeskApp')
 
                     function processError(err) {
                         $("#allocationError").show();
-                        $("#allocationError").html("<strong> Define the value for allocation</strong>");
+                        $("#allocationError").html("<strong> You're restricted to allocate memory size for this workspace </strong>");
                     }
 
                 }
