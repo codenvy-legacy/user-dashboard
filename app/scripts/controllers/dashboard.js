@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $timeout, Workspace, Project, Users, Profile, Password, $cookieStore, $http, $q, $window, newProject, ProjectFactory) {
+    .controller('DashboardCtrl', function ($scope, $interval, $timeout, Workspace, Project, Users, Profile, Password, $cookieStore, $http, $q, $window, newProject, ProjectFactory) {
       var old_description = '';
       var old_projectName = '';
  
@@ -227,7 +227,7 @@ angular.module('odeskApp')
                                             .success(function (data, status) {
                                                 $('#changeProjectDetailAlert .alert-danger').hide();
                                                 $('#changeProjectDetailAlert .alert-success').show();
-                                                setTimeout(function () {
+                                                $timeout(function () {
                                                     $('#changeProjectDetailAlert .alert-success').hide();
                                                     $('#projectDetailModal').modal('hide');
                                                 }, 1500);
@@ -284,7 +284,7 @@ angular.module('odeskApp')
             if($scope.projects.length==0){
                     $scope.isProjectDataFetched = true;
             }
-            setTimeout(function () {
+            $timeout(function () {
                 $('#warning-project').modal('hide');
             }, 1500);
           })
@@ -293,11 +293,6 @@ angular.module('odeskApp')
                 $('#warning-project-alert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
           });
           
-      };
-
-      $scope.cancelProject = function () {
-        $scope.selected.description = old_description;
-		    $scope.selected.name = old_projectName;
       };
 
       // used to save permissions to server
@@ -440,15 +435,13 @@ angular.module('odeskApp')
               $('#newPassword').css('border', '1px solid #e5e5e5');
               $('#newPasswordVerify').css('border', '1px solid #e5e5e5');
               Password.update(password).then(function (data) {
-                  setTimeout(function () {
+                  $timeout(function () {
                       $('#defineUserPassword').modal('hide');
                   }, 1500);
               });
               Profile.query().then(function (data) {
-                  if (data.attributes.resetPassword && data.attributes.resetPassword == "true") {
                       Profile.update({"resetPassword": 'false'});
                       $cookieStore.remove('resetPassword');
-                  }
               });
           } else {
               $('#defineUserPassword #doesNotMatch').show();
@@ -463,7 +456,7 @@ angular.module('odeskApp')
       $scope.importNewProject = function (type) {
           var promise = newProject.open($scope.currentUserId, $scope.workspaces, type);
       };
-   
+
       //constructor
       var init = function () {
 
@@ -490,19 +483,20 @@ angular.module('odeskApp')
             angular.forEach(workspaceMembers, function (workspaceMember) {
               Profile.getById(workspaceMember.userId).then(function (data) {
                 var member = createMember(data.attributes, workspaceMember.userId, false, false, workspaceMember.roles)
-
                 workspace.members.push(member); // load the members for the workspace,
-
-                if (data.attributes.resetPassword && data.attributes.resetPassword == 'true') {
-                  if ($cookieStore.get('resetPassword') != true) {
-                    $cookieStore.put('resetPassword', true);
-                    $('#defineUserPassword').modal('toggle'); // show once per session
-                  }
-                }
               });
             });
           });
         });
+        });
+
+        Profile.query().then(function (data) {
+            if (data.attributes.resetPassword && data.attributes.resetPassword == 'true') {
+                if ($cookieStore.get('resetPassword') != true) {
+                    $cookieStore.put('resetPassword', true);
+                    $('#defineUserPassword').modal('toggle'); // show once per session
+                }
+            }
         });
 
         $http({ method: 'GET', url: '/api/account' }).success(function (account, status) {
@@ -527,10 +521,14 @@ angular.module('odeskApp')
             });
           });
         });
+
+        $interval(function () {
+            ProjectFactory.fetchProjects($scope.workspaces);
+        }, 30000);// update the projects once in every 30 seconds
       };
       init();// all code starts here
      });
-      
+
 angular.module('odeskApp')
         .directive('stopEvent', function () {
           return {
