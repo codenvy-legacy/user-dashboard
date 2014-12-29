@@ -245,7 +245,8 @@
                 <div class="modal-body">
                     <div class="projectnav table-responsive">
                         <h5><span style="margin-right: 20px">Account RAM: <b>{{allowedRAM}}</b></span>
-                        <span>RAM Available: <b ng-class="{'font-error': leftMemory < 0, 'font-success': leftMemory > 0}">{{leftMemory}}</b></span></h5>
+                        <span>RAM Available: <b ng-class="{'font-error': leftMemory < 0, 'font-success': leftMemory > 0}">{{leftMemory}}</b></span>
+                        <span class="label label-success" style="margin-left: 155px" ng-if="leftMemory > 0">RAM Available!!</span></h5>
                         <table class="table table-hover" style="background:#f9f9f9;">
                             <thead>
                             <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
