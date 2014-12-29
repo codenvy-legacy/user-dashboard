@@ -33,6 +33,7 @@ angular.module('odeskApp')
                 $scope.leftMemory = 0;
                 $scope.accountId = OrgAddon.accounts;
                 $scope.isOrgAddOn = OrgAddon.isOrgAddOn;
+                $scope.defineProperValue = false;
 
                 // Display workspace details in workspace
                 $http({method: 'GET', url: '/api/workspace/find/account?id='+$scope.accountId[0]})
@@ -84,7 +85,6 @@ angular.module('odeskApp')
                         });
                     })
                     .error(function (err) {  });
-                    console.log($scope.workspaces.length);
 
 
                 //Add members to workspace list
@@ -531,16 +531,15 @@ angular.module('odeskApp')
                 }
 
 
-
+               
                 //Check Memory allocation and count left memory.
                 $scope.getFreeMemoryAfterAllocation = function(id) {
                     var allocated_ram = $("#allocate_ram_"+id).val();
                     var sumMemory = 0;
                     
-                    if (allocated_ram.length>0) {
-
-                        if ((allocated_ram.match(/^\d{0,5}$/) != null)) {
+                    if (allocated_ram.length>0 && (allocated_ram.match(/^\d{0,5}$/) != null)) {
                             $("#allocationError").hide();
+                            $scope.defineProperValue = true;
                             $("#allocate_ram_"+id).parent().removeClass('has-error');
                             angular.forEach($scope.infoForRAMAllocation, function(w){
                               var value = parseInt(w.allocatedRam);
@@ -550,15 +549,11 @@ angular.module('odeskApp')
                             $("#allocationError").hide();
                             return true;
                     }else{
-                        $("#allocate_ram_"+id).parent().addClass('has-error');
-                        $("#allocationError").show();
-                        $("#allocationError").html("<strong> Memory Size should have only positive integers and may start with digits only </strong>");
+                            $scope.defineProperValue = false;
+                            $("#allocate_ram_"+id).parent().addClass('has-error');
+                            $("#allocationError").show();
+                            $("#allocationError").html("<strong> Input value is invalid </strong>");
                        }
-                    }else{
-                        $("#allocate_ram_"+id).parent().addClass('has-error');
-                        $("#allocationError").show();
-                        $("#allocationError").html("<strong> Define the value for allocation</strong>");
-                    }
                     return false;
                 };
 
@@ -595,8 +590,7 @@ angular.module('odeskApp')
                         .error(processError);
 
                     function processError(err) {
-                        $("#allocationError").show();
-                        $("#allocationError").html("<strong> You're restricted to allocate memory size for this workspace </strong>");
+                        alert(err.message);
                     }
 
                 }

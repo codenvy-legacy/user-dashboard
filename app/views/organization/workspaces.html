@@ -264,7 +264,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="('#allocationError').hide();">Cancel</button>
-                    <button type="button" ng-disabled="leftMemory < 0" class="btn btn-primary" ng-click="redistributeResources();">Ok</button>
+                    <button type="button" ng-disabled="leftMemory < 0 || !defineProperValue" class="btn btn-primary" ng-click="redistributeResources();">Ok</button>
                 </div>
             </div>
         </div>
