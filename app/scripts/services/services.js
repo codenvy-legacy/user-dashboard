@@ -104,7 +104,7 @@ angular.module('odeskApp')
     });
 
 angular.module('odeskApp')
-	.factory('Profile', function ($http, $q) {
+	.factory('Profile', ['$http', '$q', function ($http, $q) {
 	    return {
 	        query: function () {
 	            var deferred = $q.defer();
@@ -167,7 +167,7 @@ angular.module('odeskApp')
 	            return deferred.promise;
 	        }
 	    };
-	});
+	}]);
 
 angular.module('odeskApp')
 	.factory('Users', function ($http, $q) {

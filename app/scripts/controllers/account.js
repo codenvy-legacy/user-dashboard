@@ -46,7 +46,7 @@ var allSkillIds = [];
 
 'use strict';
 angular.module('odeskApp')
-    .controller('AccountConfigCtrl', function ($scope, $http, Profile, Password, $cookieStore, addSkill, removeSkills, addUsage, Users, Account) {
+    .controller('AccountConfigCtrl', function ($scope, $rootScope, $http, Profile, Password, $cookieStore, addSkill, removeSkills, addUsage, Users, Account) {
         /*Profile.query(function (resp) {
             $scope.attributes = resp.attributes;
         });*/
@@ -490,7 +490,16 @@ angular.module('odeskApp')
                                     "sales_can_contact":$scope.check
                                     }
 
-				Profile.update(appValue);
+				Profile.update(appValue)
+                        .then(function (profile, status) {
+                              var fullUserName;
+                              if (profile.attributes.firstName && profile.attributes.lastName) {
+                                  fullUserName = profile.attributes.firstName + ' ' + profile.attributes.lastName;
+                              } else {
+                                  fullUserName = profile.attributes.email;
+                              }
+                              $rootScope.$broadcast('update_fullUserName', fullUserName);// update User name at top
+                          });
 				}
 				else {
 					$('#phone').css('border', '1px solid #a94442');
