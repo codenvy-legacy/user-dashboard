@@ -34,6 +34,7 @@ angular.module('odeskApp')
                 $scope.accountId = OrgAddon.accounts;
                 $scope.isOrgAddOn = OrgAddon.isOrgAddOn;
                 $scope.defineProperValue = false;
+                $scope.primaryWorkspace = {'name':''};
 
                 // Display workspace details in workspace
                 $http({method: 'GET', url: '/api/workspace/find/account?id='+$scope.accountId[0]})
@@ -48,7 +49,9 @@ angular.module('odeskApp')
                                 var membersLength = 0;
                                 var allocatedRam;
                                 var promises = [];
-
+                                if(workspace.attributes['codenvy:role'] != 'extra'){
+                                 $scope.primaryWorkspace.name = workspace.name;
+                                }
                                 var getProjectsURL = _.find(response.links, function(obj){ return obj.rel=="get projects"});
                                 if(getProjectsURL!==undefined) {
                                     promises.push(
@@ -536,7 +539,6 @@ angular.module('odeskApp')
                 $scope.getFreeMemoryAfterAllocation = function(id) {
                     var allocated_ram = $("#allocate_ram_"+id).val();
                     var sumMemory = 0;
-                    
                     if (allocated_ram.length>0 && (allocated_ram.match(/^\d{0,5}$/) != null)) {
                             $("#allocationError").hide();
                             $scope.defineProperValue = true;
@@ -559,6 +561,7 @@ angular.module('odeskApp')
 
                 //Redistribute resources:
                 $scope.redistributeResources = function() {
+                  console.log($scope.primaryWorkspace.name);
                     $("#allocationError").hide();
                     var data = [];
                     angular.forEach($scope.infoForRAMAllocation, function(w){
