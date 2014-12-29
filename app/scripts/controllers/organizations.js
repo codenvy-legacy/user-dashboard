@@ -590,7 +590,8 @@ angular.module('odeskApp')
                         .error(processError);
 
                     function processError(err) {
-                        alert(err.message);
+                        $("#allocationError").show();
+                        $("#allocationError").html("<strong>"+err.message+ "</strong>");
                     }
 
                 }
