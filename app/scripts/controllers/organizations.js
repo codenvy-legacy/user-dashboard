@@ -22,7 +22,7 @@ angular.module('odeskApp')
             $scope.isOrgAddOn = OrgAddon.isOrgAddOn;
         });
 
-        return OrgAddon.getOrgAccounts().then(function(){
+        $scope.init = function(){
             if(OrgAddon.isOrgAddOn) {
                 $scope.workspaces = [];
                 $scope.members = [];
@@ -621,7 +621,14 @@ angular.module('odeskApp')
             }else{
                 window.location = "/#/dashboard";
             }
-        });
+        }
 
 
+        if (OrgAddon.accounts.length > 0){
+            $scope.init();
+        } else {
+            return OrgAddon.getOrgAccounts().then(function() {
+                $scope.init();
+            });
+        }
   });
