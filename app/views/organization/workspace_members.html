@@ -129,10 +129,12 @@
             <div class="row mrg-top10">
               <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
                 <form role="form">
-                  <div class="form-group">
-                    <label>Select User(s):</label>
-                    <input type="text" name="selectedMembers" id="selectedMembers" placeholder="Type email addresses separated by commas" class="form-control">
-                  </div>
+                    <div class="form-group">
+                        <label>Select User(s):</label>
+                        <select multiple id="selectedMembers" class="form-control"  style="padding: 0; border: 0;">
+                            <option ng-repeat="member in account_members" ng-if="usedEmails.indexOf(member.email) == -1">{{member.email}}</option>
+                        </select>
+                    </div>
                 </form>
               </div>
               <div class="col-lg-5 col-sm-5 col-md-5 col-xs-12">
@@ -154,19 +156,17 @@
               </div>
             </div>
 
-            <div id="userNotFoundError" style="display: none" class="org-errors"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of this workspace. </div>
-            <div id="userNotMemberList" style="display: none" class="org-errors">
-            <span ng-if="userNotMemberList.length > 1"><strong>'{{userNotMemberList.join(", ")}}'</strong> must be added as an Organization Member first before they are added to this workspace.</span> 
-            <span ng-if="userNotMemberList.length == 1"><strong>'{{userNotMemberList.join(", ")}}'</strong> must be added as an Organization Member first before he is added to this workspace.</span>
+            <div class="org-errors" ng-if="members.length == 0">
+                <span >Users must be added as an Organization Member first before they are added to this workspace.</span>
             </div>
             <div id="userAlreadyAdded" style="display: none" class="org-errors">User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </div>
-            <div id="emptyEmails" style="display: none" class="org-errors"><strong>Type email addresses separated by commas</strong></div>
+            <div id="emptyEmails" style="display: none" class="org-errors"><strong>Select email addresses</strong></div>
             <div id="addMemberErr" style="display: none" class="org-errors"></div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" ng-click="addMembersToWs(selectedMembers)">Ok</button>
+          <button type="button" class="btn btn-primary"  id="addMembers" ng-click="addMembersToWs(selectedMembers)" disabled>Ok</button>
         </div>
       </div>
     </div>
