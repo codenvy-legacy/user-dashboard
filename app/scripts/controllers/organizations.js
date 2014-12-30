@@ -33,6 +33,8 @@ angular.module('odeskApp')
                 $scope.leftMemory = 0;
                 $scope.accountId = OrgAddon.accounts;
                 $scope.isOrgAddOn = OrgAddon.isOrgAddOn;
+                $scope.defineProperValue = false;
+                $scope.primaryWorkspace = {'name':''};
 
                 // Display workspace details in workspace
                 $http({method: 'GET', url: '/api/workspace/find/account?id='+$scope.accountId[0]})
@@ -47,7 +49,9 @@ angular.module('odeskApp')
                                 var membersLength = 0;
                                 var allocatedRam;
                                 var promises = [];
-
+                                if(workspace.attributes['codenvy:role'] != 'extra'){
+                                 $scope.primaryWorkspace.name = workspace.name;
+                                }
                                 var getProjectsURL = _.find(response.links, function(obj){ return obj.rel=="get projects"});
                                 if(getProjectsURL!==undefined) {
                                     promises.push(
@@ -82,9 +86,9 @@ angular.module('odeskApp')
                             });
 
                         });
-
                     })
                     .error(function (err) {  });
+
 
                 //Add members to workspace list
                 $scope.addMemberToWsList = function(){
@@ -103,7 +107,8 @@ angular.module('odeskApp')
                     $scope.userNotMemberList = [];
                     $scope.userAlreadyAdded =[];
 
-                    if (selectedMembers.length>0){
+                    if (selected
+                        .length>0){
                         $("#ws_name").parent().removeClass('has-error');
                         $("#emptyWs").hide();
                         $("#selectedMembers").parent().removeClass('has-error');
@@ -529,20 +534,34 @@ angular.module('odeskApp')
                 }
 
 
-
+               
                 //Check Memory allocation and count left memory.
-                $scope.getFreeMemoryAfterAllocation = function() {
+                $scope.getFreeMemoryAfterAllocation = function(id) {
+                    var allocated_ram = $("#allocate_ram_"+id).val();
                     var sumMemory = 0;
-                    angular.forEach($scope.infoForRAMAllocation, function(w){
-                        var value = parseInt(w.allocatedRam);
-                        sumMemory += value || 0;
-                    });
-                    $scope.leftMemory = $scope.allowedRAM - sumMemory;
-                    $("#allocationError").hide();
+                    if (allocated_ram.length>0 && (allocated_ram.match(/^\d{0,5}$/) != null)) {
+                            $("#allocationError").hide();
+                            $scope.defineProperValue = true;
+                            $("#allocate_ram_"+id).parent().removeClass('has-error');
+                            angular.forEach($scope.infoForRAMAllocation, function(w){
+                              var value = parseInt(w.allocatedRam);
+                              sumMemory += value || 0;
+                            });
+                            $scope.leftMemory = $scope.allowedRAM - sumMemory;
+                            $("#allocationError").hide();
+                            return true;
+                    }else{
+                            $scope.defineProperValue = false;
+                            $("#allocate_ram_"+id).parent().addClass('has-error');
+                            $("#allocationError").show();
+                            $("#allocationError").html("<strong> Input value is invalid </strong>");
+                       }
+                    return false;
                 };
 
                 //Redistribute resources:
                 $scope.redistributeResources = function() {
+                  console.log($scope.primaryWorkspace.name);
                     $("#allocationError").hide();
                     var data = [];
                     angular.forEach($scope.infoForRAMAllocation, function(w){
@@ -575,7 +594,7 @@ angular.module('odeskApp')
 
                     function processError(err) {
                         $("#allocationError").show();
-                        $("#allocationError").html("<strong> Workspace characters should be between 3 to 20 characters and must have digit, letters and - . _ and must start with digits or letters</strong>");
+                        $("#allocationError").html("<strong>"+err.message+ "</strong>");
                     }
 
                 }
