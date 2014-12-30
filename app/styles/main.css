@@ -981,7 +981,14 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   padding: 5px;
   margin: 5px;
 }
-
+.success-errors{
+  background-color: #3B8C37;
+  color: #ffffff;
+  font-weight: bold;
+  border: 1px solid #3B8C37;
+  padding: 5px;
+  margin: 5px;
+}
 .font-success{
     color: #3B8C37;
 }
