@@ -30,7 +30,7 @@ angular.module('odeskApp')
                 var workspaceId = $route.current.params.id;
                 $scope.workspace = {};
                 $scope.account_members = [];
-                $scope.ws_members = [];
+                $scope.usedEmails = [];
                 $scope.selectedMembers = [];
                 $scope.accountId = OrgAddon.accounts;
 
@@ -38,7 +38,7 @@ angular.module('odeskApp')
                 WorkspaceInfo.getDetail(workspaceId).then(function (response){
                     var members = [];
                     return $q.all([
-
+                        // Get all members of the current workspace
                         $http({method: 'GET', url:"/api/workspace/"+ workspaceId +"/members" })
                             .success(function (data) {
                                 angular.forEach(data, function (member) {
@@ -65,6 +65,7 @@ angular.module('odeskApp')
                                         }
 
                                         members.push(memberDetails);
+                                        updateUsedEmails();
                                     });
 
                                 });
@@ -79,15 +80,47 @@ angular.module('odeskApp')
                     });
                 });
 
-                // Get all members of the current workspace
-                Workspace.getMembersForWorkspace(workspaceId).then(function (response){
-                    $scope.ws_members = response;
-                });
+                var updateUsedEmails = function(){
+                    $scope.usedEmails = [];
+
+                    angular.forEach($scope.workspace.members, function (member) {
+                        $scope.usedEmails.push(member.email);
+                    });
+                    angular.forEach($scope.selectedMembers, function (member) {
+                        $scope.usedEmails.push(member.email);
+                    });
+                    $scope.usedEmails = $scope.usedEmails.concat($scope.userAlreadyAdded);
+                    //update selected fields
+                    $("#selectedMembers").select2({ placeholder: "User(s) email"});
+                }
 
                 // Get all members of the current organization/account
                 $http({method: 'GET', url: '/api/account/'+$scope.accountId[0]+'/members'})
                     .success(function(members){
-                        $scope.account_members = members;
+                        angular.forEach(members, function (member) {
+                            //  Get member's email and name
+                            var email;
+                            var name;
+                            return $q.all([
+                                $http({method: 'GET', url: '/api/profile/'+member['userId']})
+                                    .success(function (data) {
+                                        email = data['attributes'].email;
+                                        var firstName = data['attributes'].firstName || "";
+                                        var lastName = data['attributes'].lastName || "";
+                                        name = (firstName && lastName)? firstName +" "+ lastName : firstName + lastName;
+                                    })
+                            ]).then(function (results) {
+                                var memberDetails = {
+                                    id: member['userId'],
+                                    role: member['roles'][0].split("/")[1],
+                                    email: email,
+                                    name: name
+                                }
+                                $scope.account_members.push(memberDetails);
+                                updateUsedEmails();
+                            });
+
+                        });
                     })
                     .error(function(error){
                     });
@@ -103,8 +136,7 @@ angular.module('odeskApp')
 
                 // Add members to workspace list
                 $scope.addMemberToWsList = function(){
-                    var selectedMembers = $("#selectedMembers").val();
-                    var selectedMemberEmails = selectedMembers.split(",");
+                    var selectedMemberEmails = $("#selectedMembers").val();
                     var role = $("input[name=ws_member_role]:checked").val();
 
                     $("#userNotFoundError").hide();
@@ -117,7 +149,7 @@ angular.module('odeskApp')
                     $scope.userNotMemberList = [];
                     $scope.userAlreadyAdded =[];
 
-                    if (selectedMembers.length>0){
+                    if (selectedMemberEmails != null){
                         $("#selectedMembers").parent().removeClass('has-error');
                         $("#emptyEmails").hide();
                         angular.forEach(selectedMemberEmails, function (memberEmail) {
@@ -129,18 +161,17 @@ angular.module('odeskApp')
                                     })
                                     .error(function (err) {
                                         $scope.userNotFoundList.push(memberEmail);
-                                        $("#userNotFoundError").show();
-                                        $("#selectedMembers").parent().addClass('has-error');
                                     })
 
                             ]).then(function (results) {
-                                var foundMember = _.find($scope.account_members, function(member){ if(member.userId == userId) return member; });
+                                var foundMember = _.find($scope.account_members, function(member){ if(member.id == userId) return member; });
                                 var index = $scope.account_members.indexOf(foundMember);
                                 if (index != -1) {
                                     var alreadyAddedMember = _.find($scope.selectedMembers, function(member){ if(member.id == userId) return member; });
-                                    var alreadyWsMember = _.find($scope.ws_members, function(member){ if(member.userId == userId) return member; });
+                                    var alreadyWsMember = _.find($scope.workspace.members, function(member){ if(member.id == userId) return member; });
                                     if((typeof(alreadyAddedMember)!="undefined") || (typeof(alreadyWsMember)!="undefined")){
                                         $scope.userAlreadyAdded.push(memberEmail);
+                                        updateUsedEmails();
                                         $("#userAlreadyAdded").show();
                                         $("#selectedMembers").parent().addClass('has-error');
                                     }
@@ -160,19 +191,18 @@ angular.module('odeskApp')
                                                     name: name
                                                 }
                                                 $scope.selectedMembers.push(memberDetails);
+                                                $("#addMembers").removeAttr('disabled');
+                                                updateUsedEmails();
                                             });
                                     }
                                 }
                                 else{
                                     $scope.userNotMemberList.push(memberEmail);
-                                    $("#userNotMemberList").show();
                                     $("#userAlreadyAdded").hide();
-                                    $("#selectedMembers").parent().addClass('has-error');
                                 }
                             });
                         });
                         $("#selectedMembers").val("");
-                        $("#userNotFoundError").hide();
                         $("#userAlreadyAdded").hide();
                     }
                     else
@@ -180,6 +210,7 @@ angular.module('odeskApp')
                         $("#userAlreadyAdded").hide();
                         $("#selectedMembers").parent().addClass('has-error');
                         $("#emptyEmails").show();
+                        updateUsedEmails();
                     }
                 };
 
@@ -190,6 +221,10 @@ angular.module('odeskApp')
                     if (index != -1) {
                         $scope.selectedMembers.splice(index, 1);
                     }
+                    if (index == 0){
+                        $("#addMembers").attr('disabled','disabled');
+                    }
+                    updateUsedEmails();
                 };
 
                 // For add members in workspace for organization Tab
@@ -257,9 +292,10 @@ angular.module('odeskApp')
                             $('#removeMemberConfirm').modal('toggle');
                             if(status == 204){
                                 var removeMember = _.find($scope.workspace.members, function(member){ if(member.id == memberId) return member; });
-                                var index = $scope.workspace.members.indexOf(removeMember)
+                                var index = $scope.workspace.members.indexOf(removeMember);
                                 if (index != -1) {
                                     $scope.workspace.members.splice(index, 1);
+                                    updateUsedEmails();
                                 }
                             }
                             deferred.resolve(data);
@@ -304,6 +340,7 @@ angular.module('odeskApp')
                                         .success(function (data) {
                                             $scope.editWsMember.role = member_role
                                             $scope.workspace.members.push($scope.editWsMember);
+                                            updateUsedEmails();
                                         })
                                         .error(function (err, status) { });
                                 }

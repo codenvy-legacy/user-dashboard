@@ -26,6 +26,7 @@ angular.module('odeskApp')
             if(OrgAddon.isOrgAddOn) {
                 $scope.workspaces = [];
                 $scope.members = [];
+                $scope.usedEmails = [];
                 $scope.selectedMembers = [];
                 $scope.selectedWsMembers = [];
                 $scope.allowedRAM = 0;
@@ -86,14 +87,21 @@ angular.module('odeskApp')
                     })
                     .error(function (err) {  });
 
+                var updateUsedEmails = function(){
+                    $scope.usedEmails = [];
+                    angular.forEach($scope.selectedWsMembers, function (member) {
+                        $scope.usedEmails.push(member.email);
+                    });
+                    $scope.usedEmails = $scope.usedEmails.concat($scope.userAlreadyAdded);
+                    //update selected fields
+                    $("#selectedMembers").select2({ placeholder: "User(s) email"});
+                }
+
                 //Add members to workspace list
                 $scope.addMemberToWsList = function(){
-                    var selectedMembers = $("#selectedMembers").val();
-                    var selectedMemberEmails = selectedMembers.split(",");
+                    var selectedMemberEmails = $("#selectedMembers").val();
                     var role = $("input[name=ws_member_role]:checked").val();
 
-                    $("#userNotFoundError").hide();
-                    $("#userNotMemberList").hide();
                     $("#userAlreadyAdded").hide();
                     $("#emptyEmails").hide();
                     $("#addMemberErr").hide();
@@ -103,7 +111,7 @@ angular.module('odeskApp')
                     $scope.userNotMemberList = [];
                     $scope.userAlreadyAdded =[];
 
-                    if (selectedMembers.length>0){
+                    if (selectedMemberEmails != null){
                         $("#ws_name").parent().removeClass('has-error');
                         $("#emptyWs").hide();
                         $("#selectedMembers").parent().removeClass('has-error');
@@ -117,8 +125,6 @@ angular.module('odeskApp')
                                     })
                                     .error(function (err) {
                                         $scope.userNotFoundList.push(memberEmail);
-                                        $("#userNotFoundError").show();
-                                        $("#selectedMembers").parent().addClass('has-error');
                                     })
 
                             ]).then(function (results) {
@@ -129,6 +135,7 @@ angular.module('odeskApp')
                                     var alreadyAddedMember = _.find($scope.selectedWsMembers, function(member){ if(member.id == userId) return member; });
                                     if(typeof(alreadyAddedMember)!="undefined"){
                                         $scope.userAlreadyAdded.push(memberEmail);
+                                        updateUsedEmails();
                                         $("#userAlreadyAdded").show();
                                         $("#selectedMembers").parent().addClass('has-error');
                                     }
@@ -149,19 +156,18 @@ angular.module('odeskApp')
                                                     name: name
                                                 }
                                                 $scope.selectedWsMembers.push(memberDetails);
+                                                $("#createWs").removeAttr('disabled');
+                                                updateUsedEmails();
                                             });
                                     }
                                 }
                                 else{
                                     $scope.userNotMemberList.push(memberEmail);
-                                    $("#userNotMemberList").show();
                                     $("#userAlreadyAdded").hide();
-                                    $("#selectedMembers").parent().addClass('has-error');
                                 }
                             });
                         });
                         $("#selectedMembers").val("");
-                        $("#userNotFoundError").hide();
                         $("#userAlreadyAdded").hide();
                     }
                     else
@@ -169,6 +175,7 @@ angular.module('odeskApp')
                         $("#userAlreadyAdded").hide();
                         $("#selectedMembers").parent().addClass('has-error');
                         $("#emptyEmails").show();
+                        updateUsedEmails();
                     }
                 };
 
@@ -177,12 +184,14 @@ angular.module('odeskApp')
                     var index = $scope.selectedWsMembers.indexOf(removedMember)
                     if (index != -1) {
                         $scope.selectedWsMembers.splice(index, 1);
+                        if (index == 0){
+                            $("#createWs").attr('disabled','disabled');
+                        }
+                        updateUsedEmails();
                     }
                 };
 
                 $scope.workspaceNameValidity = function(){
-                    $("#userNotFoundError").hide();
-                    $("#userNotMemberList").hide();
                     $("#userAlreadyAdded").hide();
                     $("#emptyEmails").hide();
                     $("#wsAlreadyExist").hide();
@@ -193,7 +202,7 @@ angular.module('odeskApp')
                         if ((wsName.match(/^[0-9a-zA-Z-._]+$/) != null) && (wsName.length>3) && (wsName.length < 20) && (wsName[0].match(/^[0-9a-zA-Z]+$/) != null)) {
                             $("#ws_name").parent().removeClass('has-error');
                             $("#emptyWs").hide();
-                            $("#ws_user_add").removeAttr('disabled');
+                            $("#wsUserAdd").removeAttr('disabled');
                             return true;
                         }else{
                             $("#ws_name").parent().addClass('has-error');
@@ -205,7 +214,7 @@ angular.module('odeskApp')
                         $("#emptyWs").show();
                         $("#emptyWs").html("<strong>Define the name of the workspace</strong>");
                     }
-                    $("#ws_user_add").attr('disabled','disabled')
+                    $("#wsUserAdd").attr('disabled','disabled');
                     return false;
                 }
 
@@ -276,7 +285,6 @@ angular.module('odeskApp')
                                 $('#addNewWorkspace').modal('toggle');
                                 $("#ws_name").val("")
                                 $scope.selectedMembers = [];
-                                $("#userNotFoundError").hide();
                                 $("#userAlreadyAdded").hide();
                                 $("#wsAlreadyExist").hide();
                             })
@@ -343,6 +351,7 @@ angular.module('odeskApp')
                                     name: name
                                 }
                                 $scope.members.push(memberDetails);
+                                updateUsedEmails();
                             });
 
                         });
@@ -443,6 +452,7 @@ angular.module('odeskApp')
                                                 name: name
                                             }
                                             $scope.selectedMembers.push(memberDetails);
+                                            $("#addMembers").removeAttr('disabled');
                                         });
                                 }
 
@@ -466,6 +476,9 @@ angular.module('odeskApp')
                     var index = $scope.selectedMembers.indexOf(removedMember)
                     if (index != -1) {
                         $scope.selectedMembers.splice(index, 1);
+                        if (index == 0){
+                            $("#addMembers").attr('disabled','disabled');
+                        }
                     }
                 };
 
