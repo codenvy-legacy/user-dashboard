@@ -512,10 +512,6 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 
 /* Privacy Modal related.
 ----------------------------------------------*/
-.modal-header {
-  padding: 10px;
-  background: #f0f0f0;
-}
 .modal-header button.close {
   line-height: 16px;
 }
@@ -597,6 +593,11 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   /* box-shadow: 0 7px 5px 0 rgba(0, 0, 0, 0.2); */
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
+
+.new-project button{
+  background: none;
+  border: none;
+}
 .new-project .dropdown-menu{
   margin: 0;
   min-width: 70px;
@@ -648,30 +649,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   color: #8d8d8d;
 }
 .box {
-  margin-bottom: 35px;
-}
-.import-button-box {
-  display: block;
-  padding: 5px 0;
-  margin-bottom: 15px;
-  width: 100%;
-  border-radius: 0;
-  color: #919191;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.1s linear;
-  display: block;
-  font-weight: bold;
-}
-.import-button-box:hover {
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-}
-.import-button-box .import-source {
-  color: #54aee0;
-}
-.import-button-box .import-icon {
-  vertical-align: text-top;
+  margin-bottom: 34px;
 }
 .projectlist .new-project .box-one .glyphicon{
   margin-right: 3px;
@@ -683,29 +661,6 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   margin-bottom: 20px;
   min-width: 189px;
   width: 100%;
-}
-.list-group {
-  border: 1px solid #e5e5e5;
-  height: 350px;
-  overflow-y: auto;
-  background: linear-gradient(to bottom, #fff, #fff),
-    linear-gradient(to top, #fff, #fff),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.1), transparent),
-    linear-gradient(to top, rgba(0, 0, 0, 0.1), transparent);
-  background-position: 0% 0%, 0px 100%, 0% 0%, 0px 100%;
-  background-clip: border-box, border-box, border-box, border-box;
-  background-origin: padding-box, padding-box, padding-box, padding-box;
-  background-repeat: no-repeat;
-  background-color: #FFF;
-  background-size: 100% 20px, 100% 20px, 100% 20px, 100% 20px;
-  background-attachment: local, local, scroll, scroll;
-}
-.list-group .list-group-item:first-child, .list-group .list-group-item:last-child {
-  border-top: none;
-}
-.list-group-item {
-  background-color: transparent;
-  border-left: none;
 }
 .table > thead > tr > th,
 .table > tbody > tr > th,
@@ -953,7 +908,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   padding: 5px;
   width: 10px;}
 .Workspace-text {}
-
+99c493
 .font-11{
   font-size: 11px !important;
 }
@@ -1432,29 +1387,27 @@ a.message{
 .starting_date .textdate5{display: inherit; color:#69AAE4; font-weight:bold;padding-right:58px;}
 
 .starting_date .textdate2 .sup1{top: -0.4em;}
+.panel-primary > .panel-heading {
+    background-color: #404040;
+    border-color: #404040;
+    color: #ffffff !important;
+}
 
+.panel-ttl {
+    color: #fff;
+    font-size: 15px !important;
+    margin: 5px 0; text-align: center;;
+}
+.panel-primary {
+    border-color: #404040;
+}
 
-#new-project-dialog .tab-content {
-  padding: 15px;
+.hello-world {}
+.hello-world .panel {
+    margin-bottom: 10px !important;
 }
-#new-project-dialog .import-icon {
-  vertical-align: text-top;
-}
-#new-project-dialog .nav-tabs > li a {
-  color: #555555;
-  background-color: #f9f9f9;
-  padding: 10px 10px 7px;
-}
-#new-project-dialog .nav-tabs > li.active a {
-  background-color: White;
-  padding-bottom: 8px;
-  border-bottom: none;
-}
-#new-project-dialog .nav-tabs > li a .tab-title {
-  display: inline-block;
-  padding: 0 5px 1px;
-  border-bottom: solid 3px transparent;
-}
-#new-project-dialog .nav-tabs > li.active a .tab-title {
-  border-bottom-color: #69AAE4;
+.hello-world p { margin:0px;}
+
+.hello-world .panel-body {
+    padding: 8px !important;
 }

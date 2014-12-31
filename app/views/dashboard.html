@@ -83,6 +83,15 @@
 <!-- <div class="col-md-12"> -->
 
 <div class="col-md-12">
+    <div class="panel-box" style="margin-top: 10px" ng-if="c2User=='FALSE'" >
+        <div class="panel-bg">
+            <div class="row">
+
+                <div>Welcome to the all new Codenvy! Codenvy 2 projects will be migrated in late 2014. You may access those projects <a class="message" target="_blank" href="https://c2.codenvy.com/site/login">here</a>.
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="panel-box" style="margin-top: 10px" ng-if="scheduled">
         <div class="panel-bg" ng-repeat="maintenance in data">
             <a class="message" ng-href="{{maintenance.shortlink}}" target="_blank">
@@ -108,7 +117,7 @@
 
     <div class="new-project col-md-2 col-sm-4 col-lg-2 col-xs-12">
 
-        <div class="box box-two" ng-if="workspaces.length == 1">
+        <div class="box box-two " ng-if="workspaces.length == 1">
             <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=newProject" target="_blank">
                 <span class="glyphicon white glyphicon-plus"></span>
                 <br />
@@ -127,13 +136,31 @@
             </ul>
         </div><!-- Box -->
 
-        <button class="import-button-box" type="button" ng-click="importNewProject('GitHub')">Import from <span class="import-source"><i class="import-icon fa fa-github fa-lg"></i> GitHub</span></button>
-        <button class="import-button-box" type="button" ng-click="importNewProject('Git')">Import from <span class="import-source"><i class="import-icon fa fa-git-square fa-lg"></i> Git</span></button>
-        <button class="import-button-box" type="button" ng-click="importNewProject('Zip')">Import from <span class="import-source"><i class="import-icon fa fa-file-archive-o fa-lg"></i> Zip</span></button>
+
+        <div class="box box-two" ng-if="workspaces.length == 1 && docboxes.length == 0">
+            <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=importProjectFromLocation" target="_blank">
+                <span class="glyphicon white glyphicon-import"></span>
+                <br />
+                <div class="text-center" style="color: #919191"><strong>Import Project</strong></div>
+            </a>
+        </div><!-- Box -->
+        <div class="box box-one" ng-if="workspaces.length > 1">
+            <button type="button" class="dropdown-toggle" data-toggle="dropdown">
+                <span class="glyphicon white glyphicon-import"></span>
+                <br>
+                <strong>Import Project <span class="caret"></span></strong>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><span>Select Destination Workspace:</span></li>
+                <li ng-repeat="workspace in workspaces"><a href="/ws/{{workspace.workspaceReference.name}}?action=importProjectFromLocation" target="_blank">{{workspace.workspaceReference.name}}</a></li>
+            </ul>
+        </div><!-- Box -->
+
+
     </div><!-- New Project -->
 
     <!-- start help-->
-    <div ng-show="isNeedToShowHelp()" class="box-example">
+    <div ng-show="isNeedToShowHelp()" class="box-example" ng-if="docboxes.length == 0">
         <div class="col-lg-3 col-sm-6 col-md-3 col-xs-12">
             <div class="arrow-img hidden-xs"><img src="./images/arrow.png" class="img-responsive"  alt=""/></div>
             <div class="panel panel-default">
@@ -150,8 +177,27 @@
         </div>
      <!-- end help-->
 
+    <!-- start displaying doc-boxes -->
+    <div class="col-lg-10" ng-if="docboxes.length > 0">
+        <div class="row">
+            
+             <div class="col-lg-4 col-lg-offset-8 hello-world" ng-repeat="docbox in docboxes">
+                 <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-ttl">{{docbox.title}}</h3>
+                    </div>
+                    <div class="panel-body">
+                      <p>{{docbox.content}}</p>
+                      <a style="color: #52ade1;float:right" href="" ng-click="hideDocBox(docbox)">Hide</a>
+                    </div>
+                  </div>
 
-        <div class="col-md-10">
+             </div>
+        </div>
+    </div>
+    <!-- end doc-boxes -->
+
+    <div class="col-md-10" ng-if="docboxes.length == 0">
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
             <div class="panel panel-default" ng-if="projects.length > 0">
                 <div class="panel-heading">
@@ -186,15 +232,15 @@
                     </div><!-- .row -->
                 </div><!-- panel-footer -->
             </div><!-- panel-default -->
-
+          
         </div><!-- projectbox -->
 
-</div>
+</div> 
 
-
+  
     </div>
 
-
+ 
 <div ng-if="notification" style="width: 300px" class="col-md-3 projectbox" data-toggle="modal" data-target="#myModal">
     <div class="panel panel-primary">
         <div class="panel-heading">
