@@ -34,7 +34,6 @@ angular.module('odeskApp')
       $scope.changeName ='';
       $scope.timer = '';    
       $scope.activeProjectVisibility = '';
-      $scope.docboxes = [];
 
       // for hiding doc-boxes
       $rootScope.docboxes = [{'id':'0','title':'Hello World!','content':'Learn how to start first Codenvy project,Versioning,Building and Running it.'},{'id':'1','title':'Getting Your Projects on Codenvy','content':'Start importing your existing projects on Codenvy from GitHub, BitBucket or other desktop environments and getting them building and running.'},{'id':'2','title':'Understanding Custom Build and Run Codenvy Environments','content':'Learn how to create a Custom Build and Run Codenvy Environments for your Project.'}, {'id':'3','title':'Contribute to Eclipse Che','content':'Get more information about how to contribute to Eclipse Che- the Open Source version of Codenvy and create plugins,extensions and new tooling applications.'}];
@@ -43,7 +42,6 @@ angular.module('odeskApp')
         var index = $rootScope.docboxes.indexOf(removeBox) ; 
         if (index != -1) {
           $rootScope.docboxes.splice(index, 1);
-          $scope.docboxes = $rootScope.docboxes;
         }
       };
 
