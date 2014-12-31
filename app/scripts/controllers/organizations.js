@@ -293,6 +293,7 @@ angular.module('odeskApp')
                                     developers: (selectedMembers.length)
                                 }
                                 $scope.workspaces.push(workspaceDetails);
+                                $scope.infoForRAMAllocation.push({id:  workspaceId, name: workspaceName, allocatedRam: allocatedRam });
                                 $('#addNewWorkspace').modal('toggle');
                                 $("#ws_name").val("")
                                 $scope.selectedMembers = [];
@@ -323,9 +324,12 @@ angular.module('odeskApp')
                         .success(function (data, status) {
                             if(status == 204){
                                 var removeWS = _.find($scope.workspaces, function(ws){ if(ws.id == workspaceId) return ws; });
-                                var index = $scope.workspaces.indexOf(removeWS)
-                                if (index != -1) {
+                                var removeWsInfo = _.find($scope.infoForRAMAllocation, function(iRam){ if(iRam.id == workspaceId) return iRam; });
+                                var index = $scope.workspaces.indexOf(removeWS);
+                                var index2 = $scope.infoForRAMAllocation.indexOf(removeWsInfo);
+                                if (index != -1 || index2 != -1) {
                                     $scope.workspaces.splice(index, 1);
+                                    $scope.infoForRAMAllocation.splice(index, 1);
                                     $('#removeWorkspaceConfirm').modal('toggle');
                                 }
                             }
