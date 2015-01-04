@@ -270,7 +270,15 @@ angular.module('odeskApp')
         orgAddonData.update = function(accounts) {
             orgAddonData.isOrgAddOn = accounts.length > 0;
             orgAddonData.accounts = accounts;
+            orgAddonData.currentAccount = accounts.length > 0 ? accounts[0] : null;
             $rootScope.$broadcast('orgAddonDataUpdated');
+        };
+
+        orgAddonData.updateCurrentAccount = function(account) {
+            if (account != orgAddonData.currentAccount) {
+                orgAddonData.currentAccount = account;
+                $rootScope.$broadcast('orgAddonUpdateCurrentAccount');
+            }
         };
 
         orgAddonData.getOrgAccounts = function() {
@@ -279,7 +287,7 @@ angular.module('odeskApp')
                 Account.getAccounts().then(function (response){
                     angular.forEach(response, function(membership) {
                         if (membership.roles.indexOf("account/owner") >= 0){
-                            accounts.push(membership.accountReference.id);
+                            accounts.push(membership.accountReference);
                         }
                     });
                 })
@@ -288,7 +296,7 @@ angular.module('odeskApp')
                 var orgAccounts = [];
                 angular.forEach(accounts, function(account){
                     promises.push(
-                    Account.getSubscription(account).then(function (response){
+                    Account.getSubscription(account.id).then(function (response){
                         var serviceId = _.pluck(response, 'serviceId')[0];
                         var packageName = _.pluck(_.pluck(response, 'properties'),'Package')[0];
                         if(_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
