@@ -1458,3 +1458,42 @@ a.message{
 #new-project-dialog .nav-tabs > li.active a .tab-title {
   border-bottom-color: #69AAE4;
 }
+.git-hub-repositories-list .list-group-item {
+  position: relative;
+  display: block;
+  padding: 6px 30px 6px 30px;
+  font-size: 14px;
+  height: 52px;
+}
+.git-hub-repositories-list .list-group-item.no-desc {
+  padding-top: 17px;
+  padding-bottom: 16px;
+}
+.git-hub-repositories-list .list-group-item.active span {
+  color: #fff;
+}
+.git-hub-repositories-list .repo-icon {
+  float: left;
+  margin-top: 2px;
+  margin-left: -20px;
+  color: #666;
+}
+.git-hub-repositories-list .repo-name {
+  font-weight: bold;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.git-hub-repositories-list .repo-private {
+  color: #a1882b;
+}
+.git-hub-repositories-list .repo-description {
+  display: block;
+  max-width: 100%;
+  font-size: 12px;
+  color: #777;
+  line-height: 21px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

@@ -165,13 +165,14 @@ angular.module('odeskApp')
         '$http',
         '$q',
         '$window',
+        '$location',
+        '$browser',
         'GitHub',
         'Project',
         'organizationNameResolver',
         'popup',
         'gitHubTokenStore',
-        '$log',
-        function($http, $q, $window, GitHub, Project, organizationNameResolver, popup, gitHubTokenStore, $log) {
+        function($http, $q, $window, $location, $browser, GitHub, Project, organizationNameResolver, popup, gitHubTokenStore) {
             return {
                 restrict: 'E',
                 scope: {
@@ -181,11 +182,17 @@ angular.module('odeskApp')
                 },
                 link: function($scope, element, attrs) {
                     $scope.authenticateWithGitHub = function() {
-                        return popup.open('http://localhost:9000/api/oauth/authenticate'
+                        var redirectUrl = $location.protocol() + '://'
+                            + $location.host() + ':'
+                            + $location.port() + '/'
+                            + $browser.baseHref()
+                            + 'gitHubCallback.html';
+                        return popup.open('/api/oauth/authenticate'
                                 + '?oauth_provider=github'
                                 + '&scope=' + ['user','repo','write:public_key'].join(',')
                                 + '&userId=' + $scope.currentUserId
-                                + '&redirect_after_login=http://localhost:9000/' + 'gitHubCallback.html',
+                                + '&redirect_after_login='
+                                  + redirectUrl,
                             {
                                 width: 1020,
                                 height: 618

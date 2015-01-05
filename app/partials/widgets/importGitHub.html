@@ -17,17 +17,14 @@
         </div>
         <div class="git-hub-repositories-list">
             <div class="list-group">
-                <a class="list-group-item" ng-class="{'active': selectedRepository == gitHubRepository}" ng-repeat="gitHubRepository in gitHubRepositories | filterRepositories:organizationName"
+                <a class="list-group-item" ng-class="{'active': selectedRepository == gitHubRepository, 'no-desc': !gitHubRepository.description}"
+                    ng-repeat="gitHubRepository in gitHubRepositories | filterRepositories:organizationName"
                     ng-click="selectRepository(gitHubRepository)">
-                    <h3 class="list-group-item-heading">
-                        <span ng-if="!gitHubRepository.fork" class="octicon octicon-repo"></span>
-                        <span ng-if="gitHubRepository.fork" class="octicon octicon-repo-forked"></span>
-                        {{gitHubRepository.name}}
-                        <span ng-if="gitHubRepository.private" class="fa fa-lock"></span>
-                    </h3>
-                    <p>
-                        {{gitHubRepository.description}}
-                    </p>
+                    <span ng-if="!gitHubRepository.fork" class="repo-icon octicon octicon-repo"></span>
+                    <span ng-if="gitHubRepository.fork" class="repo-icon octicon octicon-repo-forked" title="forked"></span>
+                    <span class="repo-name">{{gitHubRepository.name}}</span>
+                    <span ng-if="gitHubRepository.private" class="repo-private fa fa-lock" title="private"></span>
+                    <span class="repo-description">{{gitHubRepository.description}}</span>
                 </a>
             </div>
         </div>
