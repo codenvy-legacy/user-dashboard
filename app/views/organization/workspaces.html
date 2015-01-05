@@ -2,7 +2,13 @@
   <ul class="breadcrumb boxnav">
     <li class="active"><a href="#/organizations"> WORKSPACES <span class="badge">{{workspaces.length}}</span></a></li>
     <li><a href="#/organizations/members"> ORG MEMBERS <span class="badge">{{members.length}}</span> </a></li>
-    <!--<li><a href="#"> GROUPS <span class="badge">10</span> </a></li>-->
+    <li class="dropdown user-dropdown" ng-if="accounts.length > 1">ORGANIZATION:
+        <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down garrow"></i><b>{{currentAccount.name}}</b></a>
+        <ul class="dropdown-menu">
+
+            <li ng-repeat="account in accounts" ng-click="changeAccount(account);"><a href="">{{account.name}}</a></li>
+        </ul>
+    </li>
   </ul>
 
   <div class="col-md-12">
