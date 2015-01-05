@@ -297,6 +297,7 @@ angular.module('odeskApp')
             }, 1500);
           })
           .error(function (err) {
+                $('#warning-project-alert .alert-success').hide();
                 $('#warning-project-alert .alert-danger').show();
                 $('#warning-project-alert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
           });
