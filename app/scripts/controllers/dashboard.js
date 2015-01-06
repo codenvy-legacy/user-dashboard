@@ -17,9 +17,9 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $rootScope, $timeout, Workspace, Project, Users, Profile, Password, $cookieStore, $http, $q, $window) {
+    .controller('DashboardCtrl', function ($scope, $cookies, $rootScope, $timeout, Workspace, Project, Users, Profile, Password, $cookieStore, $http, $q, $window) {
       var old_description = '';
-	  var old_projectName = '';
+	    var old_projectName = '';
  
       $scope.box = 1;
       $scope.search = 0;
@@ -477,9 +477,28 @@ angular.module('odeskApp')
       //constructor
       var init = function () {
 
-      
-      
+      // for hiding doc-boxes
+      var docboxes = [{'id':'0','title':'Hello World!','content':'Learn how to start first Codenvy project,Versioning,Building and Running it.'},
+        {'id':'1','title':'Getting Your Projects on Codenvy','content':'Start importing your existing projects on Codenvy from GitHub, BitBucket or other desktop environments and getting them building and running.'},
+        {'id':'2','title':'Understanding Custom Build and Run Codenvy Environments','content':'Learn how to create a Custom Build and Run Codenvy Environments for your Project.'}, 
+        {'id':'3','title':'Contribute to Eclipse Che','content':'Get more information about how to contribute to Eclipse Che- the Open Source version of Codenvy and create plugins,extensions and new tooling applications.'}
+        ];
 
+      if($cookieStore.get('notificationsSet'))
+      {             
+        $scope.docboxes = $cookieStore.get('notifications');               
+      }
+      else{                  
+        $cookieStore.put('notifications',docboxes);
+        $scope.docboxes = $cookieStore.get('notifications');       
+        $cookieStore.put('notificationsSet',true) ;        
+      }
+
+      $scope.hideDocBox = function(index) {
+        $scope.docboxes.splice(index, 1);
+        $cookieStore.put('notifications',$scope.docboxes);
+      };
+      
 
       Workspace.all(function (resp) {
  
