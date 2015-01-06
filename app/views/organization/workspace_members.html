@@ -131,9 +131,7 @@
                 <form role="form">
                     <div class="form-group">
                         <label>Select User(s):</label>
-                        <select multiple id="selectedMembers" class="form-control"  style="padding: 0; border: 0;">
-                            <option ng-repeat="member in account_members" ng-if="usedEmails.indexOf(member.email) == -1">{{member.email}}</option>
-                        </select>
+                        <input id="selectedMembers" class="form-control"  style="padding: 0; border: 0;"/>
                     </div>
                 </form>
               </div>
