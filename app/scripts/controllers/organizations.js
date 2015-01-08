@@ -333,7 +333,7 @@ angular.module('odeskApp')
                 };
 
                 var data = {
-                    "accountId": accountId,
+                    "accountId": $scope.currentAccount.id,
                     "name": $("#ws_name").val() // needs to be array
                 };
 

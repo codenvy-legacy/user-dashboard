@@ -64,7 +64,7 @@ angular.module('odeskApp')
         }
 
         $scope.refreshWorkspaceInfo = function () {
-            var workspaceId = $route.current.params.id;
+            $scope.workspaceId = $route.current.params.id;
             $scope.workspace = {};
             $scope.account_members = [];
             $scope.usedEmails = [];
