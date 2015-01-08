@@ -38,12 +38,25 @@ angular.module('odeskApp')
             ProjectFactory) {
 
           this.workspaces = workspaces;
+          this.workspaceSelected = workspaces[0];
           this.currentUserId = currentUserId;
           this.tabActivated = {};
           this.tabActivated[type] = true;
           this.alerts = [];
 
           this.newProjectData = {
+            source: {
+              project: {
+                location: '',
+                type: ''
+              }
+            },
+            project: {
+              name: '',
+              description: '',
+              type: 'blank',
+              visibility: 'public'
+            }
           };
 
           this.closeAlert = function(index) {
@@ -51,64 +64,47 @@ angular.module('odeskApp')
           };
 
           this.setProjectType = function(type) {
-            if (this.newProjectData.remoteUrl) {
+            if (this.newProjectData.source.project.location) {
               if (type == 'Zip') {
-                if (this.newProjectData.remoteUrl.match(new RegExp('^https?://github.com/.*$'))) {
-                  this.newProjectData.remoteUrl = this.newProjectData.remoteUrl.replace(new RegExp('^(.*)\.git$'), '$1/archive/master.zip');
+                if (this.newProjectData.source.project.location.match(new RegExp('^https?://github.com/.*$'))) {
+                  this.newProjectData.source.project.location = this.newProjectData.source.project.location.replace(new RegExp('^(.*)\.git$'), '$1/archive/master.zip');
                 }
               }
               if (type == 'GitHub' || type == 'Git') {
-                if (this.newProjectData.remoteUrl.match(new RegExp('^https?://github.com/.*/archive/.*\.zip$'))) {
-                  this.newProjectData.remoteUrl = this.newProjectData.remoteUrl.replace(new RegExp('^(.*)/archive/.*\.zip$'), '$1.git');
+                if (this.newProjectData.source.project.location.match(new RegExp('^https?://github.com/.*/archive/.*\.zip$'))) {
+                  this.newProjectData.source.project.location = this.newProjectData.source.project.location.replace(new RegExp('^(.*)/archive/.*\.zip$'), '$1.git');
                 }
               }
             }
-            this.newProjectData.importType = type;
+            $scope.importType=type;
+
+            switch (type) {
+              case 'GitHub':
+              case 'Git':
+                this.newProjectData.source.project.type = 'git';
+                break;
+              case 'Zip':
+                this.newProjectData.source.project.type = 'zip';
+                break;
+              default:
+                break;
+            }
           };
 
           this.import = function() {
             this.alerts = [];
 
-            var factory = {
-              v: '2.0',
-              source: {
-                project: {
-                  type: 'blank',
-                  visibility: 'public'
-                }
-              }
-            };
-
-            switch (this.newProjectData.importType) {
-              case 'GitHub':
-                if (this.newProjectData.remoteUrl) {
-                  factory.source.project.location = this.newProjectData.remoteUrl;
-                }
-                factory.source.project.type = 'git';
-                break;
-              case 'Git':
-                if (this.newProjectData.remoteUrl) {
-                  factory.source.project.location = this.newProjectData.remoteUrl;
-                }
-                factory.source.project.type = 'git';
-                break;
-              case 'Zip':
-                if (this.newProjectData.remoteUrl) {
-                  factory.source.project.location = this.newProjectData.remoteUrl;
-                }
-                factory.source.project.type = 'zip';
-                break;
-              case 'default':
-                return;
+            if (!this.newProjectData.v) {
+              this.newProjectData.v = '2.0';
             }
 
             var that = this;
             var response = Project.import(
               {
-                workspaceID: this.newProjectData.workspaceSelected.workspaceReference.id,
-                path: this.newProjectData.projectName
+                workspaceID: this.workspaceSelected.workspaceReference.id,
+                path: this.newProjectData.project.name
               },
-              factory,
+              this.newProjectData,
               function() {
                 that.alerts.push({type: 'success', msg: 'Successfully Done! Import process completed.'});
 

@@ -10,6 +10,9 @@ body  { padding-top: 45px; font-size: 11px; }
 #footer { height: 90px; }
 h4    { color: #363636; font-size: 10px; font-weight: bold; text-transform: uppercase; }
 
+a.documentation {
+  text-decoration: underline;
+}
 .label {
 	font-size: 12px !important;
 }
@@ -1126,6 +1129,9 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   padding:8px 10px;
   text-align: right;
 }
+.modal-content {
+  font-size: 12px;
+}
 
 .menber-textarea { border:#e5e5e5 1px solid; height: 125px; padding:8px; overflow-x: hidden; overflow-y: scroll;}
 .menber-textarea p { font-size:12px; margin:0px 0px 5px 0px;color:#8b8b8b;}
@@ -1658,6 +1664,29 @@ html[dir="rtl"] .select2-search input {
     font-size: 12px;
     background-color: Black;
     color: White;
+}
+
+.import-config-dialog label[for=jsonConfig] {
+  padding: 6px 0;
+}
+.import-config-dialog .upload-config-file {
+    position: relative;
+    overflow: hidden;
+    float: right;
+    font-size: 12px;
+    font-weight: bold;
+}
+.import-config-dialog .upload-config-file input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    font-size: 40px;
 }
 
 /* Factory page */

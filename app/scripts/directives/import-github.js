@@ -153,11 +153,12 @@ angular.module('odeskApp')
         function($http, $q, $window, $location, $browser, $modal, GitHub, Project, organizationNameResolver, popup, gitHubTokenStore) {
           return {
             restrict: 'E',
+            require: '^form',
             scope: {
               workspaces: '=',
+              workspaceSelected: '=',
               currentUserId: '=',
-              newProjectData: '=',
-              parentForm: '='
+              newProjectData: '='
             },
             link: function($scope, element, attrs, ctrl) {
               $scope.authenticateWithGitHub = function() {
@@ -246,9 +247,9 @@ angular.module('odeskApp')
 
               $scope.selectRepository = function(gitHubRepository) {
                 $scope.selectedRepository = gitHubRepository;
-                $scope.newProjectData.projectName = gitHubRepository.name;
-                $scope.newProjectData.projectDescription = gitHubRepository.description;
-                $scope.newProjectData.remoteUrl = gitHubRepository.clone_url ;
+                $scope.newProjectData.project.name = gitHubRepository.name;
+                $scope.newProjectData.project.description = gitHubRepository.description;
+                $scope.newProjectData.source.project.location = gitHubRepository.clone_url ;
               };
 
               $scope.resolveOrganizationName = organizationNameResolver.resolve;
@@ -257,7 +258,6 @@ angular.module('odeskApp')
                 return organization.name ? "Your account" : "Your organization's account";
               };
 
-              $scope.workspaceSelected = $scope.workspaces[0];
               $scope.organizations = [];
               $scope.gitHubRepositories = [];
 

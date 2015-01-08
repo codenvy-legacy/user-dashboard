@@ -1,0 +1,37 @@
+<div class="import-config-dialog">
+    <ud-new-project-details workspaces="workspaces"
+                            new-project-data="newProjectData"
+                            workspace-selected="workspaceSelected">
+    </ud-new-project-details>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-6">
+                <label for="jsonConfig" class="control-label">Project JSON configuration</label>
+            </div>
+            <div class="col-md-6">
+                <div class="btn btn-default upload-config-file">
+                    <span><i class="fa fa-hdd-o fa-lg"></i> Load configuration file from your computer</span>
+                    <input type="file"
+                           class="upload"
+                           nv-file-select
+                           uploader="uploader"
+                           name="file"
+                           accept="application/json" />
+                </div>
+            </div>
+        </div>
+        <textarea ui-codemirror="{onLoad: initCodeMirrorInstance}"
+                  ui-refresh="importType"
+                  id="jsonConfig"
+                  name="jsonConfig"
+                  class="form-control"
+                  ng-model="jsonConfig"
+                  ng-change="update()"
+                  rows="15">
+        </textarea>
+    </div>
+    <p>
+        <a class="documentation" href="http://docs.codenvy.com/user/project-lifecycle/#configuration-reference" target="_blank">Project configuration reference and documentation</a>
+    </p>
+</div>

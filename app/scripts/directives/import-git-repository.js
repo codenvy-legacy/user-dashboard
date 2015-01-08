@@ -19,15 +19,13 @@
 angular.module('odeskApp')
     .directive('udImportGitRepository', function() {
         return {
-            restrict: 'E',
-            scope: {
-                workspaces: '=',
-                newProjectData: '=',
-                parentForm: '='
-            },
-            link: function ($scope) {
-                $scope.workspaceSelected = $scope.workspaces[0];
-            },
-            templateUrl: 'partials/widgets/importGitRepository.html'
+          restrict: 'E',
+          require: '^form',
+          scope: {
+            workspaces: '=',
+            workspaceSelected: '=',
+            newProjectData: '='
+          },
+          templateUrl: 'partials/widgets/importGitRepository.html'
         }
     });
