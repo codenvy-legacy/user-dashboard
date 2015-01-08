@@ -226,11 +226,7 @@ angular.module('odeskApp')
                                         $http({ method: 'PUT', url: "/api/project/" + $scope.selected.workspaceId + "/" + $scope.selected.name, data: data })
                                             .success(function (data, status) {
                                                 $('#changeProjectDetailAlert .alert-danger').hide();
-                                                $('#changeProjectDetailAlert .alert-success').show();
-                                                $timeout(function () {
-                                                    $('#changeProjectDetailAlert .alert-success').hide();
-                                                    $('#projectDetailModal').modal('hide');
-                                                }, 1500);
+                                                $('#projectDetailModal').modal('hide');
                                                 //Change Project URL & Path
                                                 var projFound = $scope.projects.filter(function (p) {
                                                     return p.name == data.name;
@@ -242,7 +238,6 @@ angular.module('odeskApp')
                                                 }
                                             })
                                             .error(function (err) {
-                                                $('#changeProjectDetailAlert .alert-success').hide();
                                                 $('#changeProjectDetailAlert .alert-danger').show();
                                                 $('#changePasswordAlert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
                                             });
@@ -266,7 +261,6 @@ angular.module('odeskApp')
       };
 
 	    $scope.deleteProjectConfirm = function() {
-            $('#warning-project-alert .alert-success').hide();
             $('#warning-project-alert .alert-danger').hide();
 				$('#warning-project').modal('show');
 			  if($scope.isAdmin) {
@@ -279,14 +273,11 @@ angular.module('odeskApp')
       $scope.deleteProject = function () {
         $http({ method: 'DELETE', url: $scope.selected.url })
           .success(function (status) {
-            $('#warning-project-alert .alert-success').show();
             ProjectFactory.fetchProjects($scope.workspaces);
             if($scope.projects.length==0){
                     $scope.isProjectDataFetched = true;
             }
-            $timeout(function () {
-                $('#warning-project').modal('hide');
-            }, 1500);
+            $('#warning-project').modal('hide');
           })
           .error(function (err) {
                 $('#warning-project-alert .alert-danger').show();

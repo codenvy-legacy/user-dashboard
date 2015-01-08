@@ -156,9 +156,7 @@
                 <form role="form">
                   <div class="form-group">
                     <label>Select User(s):</label>
-                    <select multiple id="selectedMembers" class="form-control"  style="padding: 0; border: 0;">
-                        <option ng-repeat="member in members" ng-if="usedEmails.indexOf(member.email) == -1">{{member.email}}</option>
-                    </select>
+                    <input id="selectedMembers" class="form-control"  style="padding: 0; border: 0;"/>
                   </div>
                 </form>
               </div>
@@ -192,7 +190,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" id="createWs" ng-click="createWorkspace(accountId[0], selectedWsMembers)" disabled>Ok</button>
+          <button type="button" class="btn btn-primary" id="createWs" ng-click="createWorkspace(selectedWsMembers)" disabled>Ok</button>
         </div>
       </div>
     </div>
