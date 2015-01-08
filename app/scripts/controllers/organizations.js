@@ -436,27 +436,28 @@ angular.module('odeskApp')
 
         // Remove workspace related to account
         $scope.removeWorkspace = function (workspaceId) {
-            var deferred = $q.defer();
-            $http.delete('/api/workspace/' + workspaceId)
-                .success(function (data, status) {
-                    if (status == 204) {
-                        var removeWS = _.find($scope.workspaces, function (ws) {
-                            if (ws.id == workspaceId) return ws;
-                        });
-                        var index = $scope.workspaces.indexOf(removeWS)
-                        if (index != -1) {
-                            $scope.workspaces.splice(index, 1);
-                            $('#removeWorkspaceConfirm').modal('toggle');
-                        }
-                    }
-                    deferred.resolve(data);
-                })
-                .error(function (err) {
-                    alert(err.message);
-                    deferred.reject();
-                    $('#removeWorkspaceConfirm').modal('hide');
-                });
-        }
+            $('#removeWorkspaceAlert .alert-success').hide();
+            $('#removeWorkspaceAlert .alert-danger').hide();
+            Workspace.removeWorkspace(workspaceId).then(function (data) {
+                    $scope.loadWorkspaceInfo();
+                    $('#removeWorkspaceButton').attr('disabled', 'disabled');
+                    $('#removeWorkspaceAlert .alert-success').show();
+                    $('#removeWorkspaceAlert .alert-danger').hide();
+                    $timeout(function () {
+                        $('#removeWorkspaceAlert .alert-success').hide();
+                        $('#removeWorkspaceButton').removeAttr('disabled');
+                        $('#removeWorkspaceConfirm').modal('hide');
+                    }, 1500);
+
+            }, function (error) {
+                $('#removeWorkspaceError').text(error.message);
+                $('#removeWorkspaceAlert .alert-success').hide();
+                $('#removeWorkspaceAlert .alert-danger').show();
+                $timeout(function () {
+                    $('#removeWorkspaceAlert .alert-danger').hide();
+                }, 4500);
+            });
+        };
 
         $scope.updateMember = function (member) {
             $scope.editMember = member;
