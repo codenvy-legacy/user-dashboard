@@ -30,20 +30,22 @@ angular.module('odeskApp')
 
         ProjectFactory.fetchProjects = function(workspaces) {
             var projects = [];
+            var count = 0;
 
-            angular.forEach(workspaces, function (workspace, currentIndex) {
-                var lastIndex = workspaces.length - 1;
+            angular.forEach(workspaces, function (workspace) {
                 $http({ method: 'GET', url: $.map(workspace.workspaceReference.links, function (obj) { if (obj.rel == "get projects") return obj.href })[0] })
                     .success(function (data, status) {
+                        count++;
                         projects = projects.concat(data);
-                        if(currentIndex == lastIndex){
+                        if(count == workspaces.length){
                             updateProjectsData(projects);
                         }
                         ProjectFactory.isProjectDataFetched = !!projects.length;
                     })
                     .error(function (data, status) {
+                        count++;
                         ProjectFactory.isProjectDataFetched = true;
-                        if(currentIndex == lastIndex){
+                        if(count == workspaces.length){
                             updateProjectsData(projects);
                         }
                     });
