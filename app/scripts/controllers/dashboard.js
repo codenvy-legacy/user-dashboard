@@ -478,11 +478,11 @@ angular.module('odeskApp')
       var init = function () {
 
       // for hiding doc-boxes
-      $scope.docboxes = docBoxService.getDocBoxes();
+      $scope.docboxes = DocBoxService.getDocBoxes();
 
       $scope.hideDocBox = function(item) {
-          docBoxService.hideDocBox(item);
-          $scope.docboxes = docBoxService.getDocBoxes();
+        DocBoxService.hideDocBox(item);
+        $scope.docboxes = DocBoxService.getDocBoxes();
       };
 
       Workspace.all(function (resp) {

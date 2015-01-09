@@ -117,40 +117,53 @@ angular.module('odeskApp')
 
  // for hiding docBoxes
 angular.module('odeskApp')
-  .factory('docBoxService',function ($cookieStore) {
-    var docboxes = [{'id':'0','title':'Hello World!','isShown':'true','content':'Learn how to start first Codenvy project,Versioning,Building and Running it.'},
-      {'id':'1','title':'Getting Your Projects on Codenvy','isShown':'true','content':'Start importing your existing projects on Codenvy from GitHub, BitBucket or other desktop environments and getting them building and running.'},
-      {'id':'2','title':'Understanding Custom Build and Run Codenvy Environments','isShown':'true','content':'Learn how to create a Custom Build and Run Codenvy Environments for your Project.'}, 
-      {'id':'3','title':'Contribute to Eclipse Che','isShown':'true','content':'Get more information about how to contribute to Eclipse Che- the Open Source version of Codenvy and create plugins,extensions and new tooling applications.'}
+  .factory('DocBoxService',function ($cookieStore) {
+    var docboxes = [{'id':'1','title':'Hello World!','content':'Learn how to start first Codenvy project,Versioning,Building and Running it.'},
+      {'id':'2','title':'Getting Your Projects on Codenvy','content':'Start importing your existing projects on Codenvy from GitHub, BitBucket or other desktop environments and getting them building and running.'},
+      {'id':'3','title':'Understanding Custom Build and Run Codenvy Environments','content':'Learn how to create a Custom Build and Run Codenvy Environments for your Project.'}, 
+      {'id':'4','title':'Contribute to Eclipse Che','content':'Get more information about how to contribute to Eclipse Che- the Open Source version of Codenvy and create plugins,extensions and new tooling applications.'}
       ];
   
-    var docItems =[]; 
-
+    
+   
     return {
       getDocBoxes: function () {
-        if($cookieStore.get('notificationsSet'))
-          {             
-            docItems = $cookieStore.get('notifications');               
+        var isShownItems =[]; 
+        var docboxItems=[];
+        var iscookies = $cookieStore.get('UD_user_docboxes');
+        if($cookieStore.get('UD_user_docboxes')==undefined)
+          {
+           angular.forEach(docboxes,function(v,k){
+              isShownItems.push({'id':v.id,'isShown':true});
+              docboxItems.push(v);
+            });           
+            $cookieStore.put('UD_user_docboxes',isShownItems);
           }
-        else{                  
-          $cookieStore.put('notifications',docboxes);
-          docItems = $cookieStore.get('notifications');       
-          $cookieStore.put('notificationsSet',true) ;        
+          else{
+            isShownItems = $cookieStore.get('UD_user_docboxes');
+            angular.forEach(docboxes,function(v1,k1){
+              if(v1.id==isShownItems[k1].id && isShownItems[k1].isShown==true)
+                {
+                 docboxItems.push(v1);
+                }
+            });
           }
-          return angular.fromJson(eval(docItems));
+          return angular.fromJson(eval(docboxItems));          
         }, 
 
       hideDocBox: function(item){
-        console.log(item);
-        if($cookieStore.get('notificationsSet'))
-          {             
-            docItems = $cookieStore.get('notifications');               
-            angular.forEach(docItems,function(v,k){
+        var isShownItems =[]; 
+        var docboxItems=[];
+        if($cookieStore.get('UD_user_docboxes'))
+          {   
+            var temp = [];
+            angular.forEach($cookieStore.get('UD_user_docboxes'),function(v,k){
               if(v.id==item.id){
-                  v.isShown='false';
-              }
-            });
-              $cookieStore.put('notifications',docItems);
+                  v.isShown=false;
+                }
+              temp.push(v);              
+            }); 
+            $cookieStore.put('UD_user_docboxes',temp);
           }
         }
       };
