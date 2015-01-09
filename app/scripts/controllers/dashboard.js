@@ -453,81 +453,116 @@ angular.module('odeskApp')
           }
       };
 
+      $scope.createSampleProject = function(workspaceId) {
+          var projectName = "getting-started-guided-tour";
+          return Project.import(
+              {
+                  workspaceID: workspaceId,
+                  path: projectName
+              },
+              ProjectFactory.getSampleProject(),
+              function() {
+                  ProjectFactory.fetchProjects($scope.workspaces);
+                  Profile.update({"sampleProjectCreated": 'true'});
+              }
+          );
+      }
+
       $scope.importNewProject = function (type) {
           var promise = newProject.open($scope.currentUserId, $scope.workspaces, type);
       };
 
       //constructor
-      var init = function () {
+        var init = function () {
 
-      Workspace.all(function (resp) {
-        $scope.workspaces = _.filter(resp, function (workspace) {
-          return !workspace.workspaceReference.temporary;
-        });
+            Workspace.all(function (resp) {
+                $scope.workspaces = _.filter(resp, function (workspace) {
+                    return !workspace.workspaceReference.temporary;
+                });
 
-        if(!$scope.workspaces.length) {
-          var tempWorkspaces = _.filter(resp, function (workspace) {
-            return workspace.workspaceReference.temporary;
-          });
-          if (tempWorkspaces.length) {
-            $window.location.href = '/site/login';
-            $scope.isProjectDataFetched = true;
-          }
-        }
-        $scope.projects = ProjectFactory.projects;
-        ProjectFactory.fetchProjects($scope.workspaces);
-
-        angular.forEach($scope.workspaces, function (workspace) {
-          workspace.members = [];
-          Workspace.getMembersForWorkspace(workspace.workspaceReference.id).then(function (workspaceMembers) {
-            angular.forEach(workspaceMembers, function (workspaceMember) {
-              Profile.getById(workspaceMember.userId).then(function (data) {
-                var member = createMember(data.attributes, workspaceMember.userId, false, false, workspaceMember.roles)
-                workspace.members.push(member); // load the members for the workspace,
-              });
-            });
-          });
-        });
-        });
-
-        Profile.query().then(function (data) {
-            if (data.attributes.resetPassword && data.attributes.resetPassword == 'true') {
-                if ($cookieStore.get('resetPassword') != true) {
-                    $cookieStore.put('resetPassword', true);
-                    $('#defineUserPassword').modal('toggle'); // show once per session
+                if (!$scope.workspaces.length) {
+                    var tempWorkspaces = _.filter(resp, function (workspace) {
+                        return workspace.workspaceReference.temporary;
+                    });
+                    if (tempWorkspaces.length) {
+                        $window.location.href = '/site/login';
+                        $scope.isProjectDataFetched = true;
+                    }
                 }
-            }
-        });
+                $scope.projects = ProjectFactory.projects;
 
-        $http({ method: 'GET', url: '/api/account' }).success(function (account, status) {
-          $scope.ownerWorkspace = _.pluck(_.pluck(account, 'accountReference'), 'name');
-          $scope.currentUserId = account[0].userId;
-        });
+                Profile.query().then(function (data) {
+                    if (data.attributes.resetPassword && data.attributes.resetPassword == 'true') {
+                        if ($cookieStore.get('resetPassword') != true) {
+                            $cookieStore.put('resetPassword', true);
+                            $('#defineUserPassword').modal('toggle'); // show once per session
+                        }
+                    }
 
-        $timeout(function () {
-          $("[rel=tooltip]").tooltip({ placement: 'bottom' });
-          $(document).on("click", ".searchfield", function () {
-            $('.searchfull').show();
-            $('.detail').animate({ opacity: 0 }, 400);
-            $('.searchfull').animate({ width: "100%" }, 400, function () { $(".closeBtn").show(); });
-            $('.searchfield').focus();
-          });
-          $(document).on("click", ".closeBtn", function () {
-            $(".closeBtn").hide();
-            $('.detail').animate({ opacity: 1 }, 400);
-            $('.searchfull').animate({ width: "43px" }, 400, function () {
-              $('.searchfield').val('');
-              $('.searchfull').hide();
+                    //Check for sample project creation (if created - "sampleProjectCreated" attribute is set):
+                    if (!data.attributes.sampleProjectCreated || data.attributes.sampleProjectCreated == "false") {
+                        var projects = Project.query({
+                            workspaceID: $scope.workspaces[0].workspaceReference.id
+                        }, function (projects) {
+                            var featureStartPoint = new Date(1420070400000); //01-01-2015 (timestamp in UTC 1420070400)
+                            var afterFeatureStarted = featureStartPoint < new Date(parseInt(data.attributes["codenvy:created"]));
+                            if (projects.length == 0 && afterFeatureStarted) {
+                                $scope.createSampleProject($scope.workspaces[0].workspaceReference.id);
+                            } else {
+                                ProjectFactory.fetchProjects($scope.workspaces);
+                            }
+                        });
+                    } else {
+                        ProjectFactory.fetchProjects($scope.workspaces);
+                    }
+                });
+
+
+                angular.forEach($scope.workspaces, function (workspace) {
+                    workspace.members = [];
+                    Workspace.getMembersForWorkspace(workspace.workspaceReference.id).then(function (workspaceMembers) {
+                        angular.forEach(workspaceMembers, function (workspaceMember) {
+                            Profile.getById(workspaceMember.userId).then(function (data) {
+                                var member = createMember(data.attributes, workspaceMember.userId, false, false, workspaceMember.roles)
+                                workspace.members.push(member); // load the members for the workspace,
+                            });
+                        });
+                    });
+                });
             });
-          });
-        });
 
-        $interval(function () {
-            ProjectFactory.fetchProjects($scope.workspaces);
-        }, 30000);// update the projects once in every 30 seconds
-      };
-      init();// all code starts here
-     });
+
+            $http({ method: 'GET', url: '/api/account' }).success(function (account, status) {
+                $scope.ownerWorkspace = _.pluck(_.pluck(account, 'accountReference'), 'name');
+                $scope.currentUserId = account[0].userId;
+            });
+
+            $timeout(function () {
+                $("[rel=tooltip]").tooltip({ placement: 'bottom' });
+                $(document).on("click", ".searchfield", function () {
+                    $('.searchfull').show();
+                    $('.detail').animate({ opacity: 0 }, 400);
+                    $('.searchfull').animate({ width: "100%" }, 400, function () {
+                        $(".closeBtn").show();
+                    });
+                    $('.searchfield').focus();
+                });
+                $(document).on("click", ".closeBtn", function () {
+                    $(".closeBtn").hide();
+                    $('.detail').animate({ opacity: 1 }, 400);
+                    $('.searchfull').animate({ width: "43px" }, 400, function () {
+                        $('.searchfield').val('');
+                        $('.searchfull').hide();
+                    });
+                });
+            });
+
+            $interval(function () {
+                ProjectFactory.fetchProjects($scope.workspaces);
+            }, 30000);// update the projects once in every 30 seconds
+        };
+        init();// all code starts here
+    });
 
 angular.module('odeskApp')
         .directive('stopEvent', function () {
