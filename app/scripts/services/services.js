@@ -103,6 +103,47 @@ angular.module('odeskApp')
       };
     });
 
+ // for hiding docBoxes
+angular.module('odeskApp')
+  .factory('docBoxService',function ($cookieStore) {
+    var docboxes = [{'id':'0','title':'Hello World!','isShown':'true','content':'Learn how to start first Codenvy project,Versioning,Building and Running it.'},
+      {'id':'1','title':'Getting Your Projects on Codenvy','isShown':'true','content':'Start importing your existing projects on Codenvy from GitHub, BitBucket or other desktop environments and getting them building and running.'},
+      {'id':'2','title':'Understanding Custom Build and Run Codenvy Environments','isShown':'true','content':'Learn how to create a Custom Build and Run Codenvy Environments for your Project.'}, 
+      {'id':'3','title':'Contribute to Eclipse Che','isShown':'true','content':'Get more information about how to contribute to Eclipse Che- the Open Source version of Codenvy and create plugins,extensions and new tooling applications.'}
+      ];
+  
+    var docItems =[]; 
+
+    return {
+      getDocBoxes: function () {
+        if($cookieStore.get('notificationsSet'))
+          {             
+            docItems = $cookieStore.get('notifications');               
+          }
+        else{                  
+          $cookieStore.put('notifications',docboxes);
+          docItems = $cookieStore.get('notifications');       
+          $cookieStore.put('notificationsSet',true) ;        
+          }
+          return angular.fromJson(eval(docItems));
+        }, 
+
+      hideDocBox: function(item){
+        console.log(item);
+        if($cookieStore.get('notificationsSet'))
+          {             
+            docItems = $cookieStore.get('notifications');               
+            angular.forEach(docItems,function(v,k){
+              if(v.id==item.id){
+                  v.isShown='false';
+              }
+            });
+              $cookieStore.put('notifications',docItems);
+          }
+        }
+      };
+    });
+
 angular.module('odeskApp')
 	.factory('Profile', ['$http', '$q', function ($http, $q) {
 	    return {

@@ -181,14 +181,14 @@
     <div class="col-lg-10" ng-if="docboxes.length > 0">
         <div class="row">
             
-             <div class="col-lg-4 col-lg-offset-8 hello-world" ng-repeat="docbox in docboxes">
+             <div class="col-lg-4 col-lg-offset-8 hello-world" ng-if="docbox.isShown" ng-repeat="docbox in docboxes">
                  <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-ttl">{{docbox.title}}</h3>
                     </div>
                     <div class="panel-body">
                       <p>{{docbox.content}}</p>
-                      <a style="color: #52ade1;float:right" href="" ng-click="hideDocBox($index)">Hide</a>
+                      <a style="color: #52ade1;float:right" href="" ng-click="hideDocBox(docbox)">Hide</a>
                     </div>
                   </div>
 
