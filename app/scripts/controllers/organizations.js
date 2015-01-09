@@ -64,7 +64,6 @@ angular.module('odeskApp')
         $scope.loadWorkspaceInfo = function () {
             $scope.workspaces = [];
             $scope.members = [];
-            $scope.usedEmails = [];
             $scope.selectedMembers = [];
             $scope.selectedWsMembers = [];
             $scope.allowedRAM = 0;
@@ -138,6 +137,7 @@ angular.module('odeskApp')
             // Display members details in members page for organizations
             $http({method: 'GET', url: '/api/account/' + $scope.currentAccount.id + '/members'})
                 .success(function (members) {
+                    var count = 0;
 
                     angular.forEach(members, function (member) {
                         //  Get member's email and name
@@ -146,10 +146,17 @@ angular.module('odeskApp')
                         return $q.all([
                             $http({method: 'GET', url: '/api/profile/' + member['userId']})
                                 .success(function (data) {
+                                    count ++;
                                     email = data['attributes'].email;
                                     var firstName = data['attributes'].firstName || "";
                                     var lastName = data['attributes'].lastName || "";
                                     name = (firstName && lastName) ? firstName + " " + lastName : firstName + lastName;
+                                })
+                                .error(function (err) {
+                                    count ++;
+                                    if(count == members.length){
+                                        $scope.updateFreeEmails();
+                                    }
                                 })
                         ]).then(function (results) {
                             var memberDetails = {
@@ -160,7 +167,9 @@ angular.module('odeskApp')
 
                             }
                             $scope.members.push(memberDetails);
-                            updateUsedEmails();
+                            if(count == members.length){
+                                $scope.updateFreeEmails();
+                            }
                         });
 
                     });
@@ -177,25 +186,40 @@ angular.module('odeskApp')
             });
         }
 
-        var updateUsedEmails = function () {
-            $scope.usedEmails = [];
+        $scope.updateFreeEmails = function () {
+            var freeEmails = [];
+            var usedEmails = [];
+
             angular.forEach($scope.selectedWsMembers, function (member) {
-                $scope.usedEmails.push(member.email);
+                usedEmails.push(member.email);
             });
-            $scope.usedEmails = $scope.usedEmails.concat($scope.userAlreadyAdded);
-            //update selected fields
+            if($scope.userAlreadyAdded !== null){
+                usedEmails = usedEmails.concat($scope.userAlreadyAdded);
+            }
+
+            var members = $scope.members;
+
+            angular.forEach(members, function (member) {
+                if(usedEmails.indexOf(member.email) == -1) {
+                    freeEmails.push({id: member.email, text: member.email});
+                }
+            });
+
             $("#selectedMembers").select2({
-                formatNoMatches: function () {
+                placeholder: "User(s) email",
+                multiple: true,
+                formatNoMatches: function() {
                     return 'No member to add';
                 },
-                placeholder: "User(s) email"
+                data: freeEmails
             });
         }
 
 
         //Add members to workspace list
         $scope.addMemberToWsList = function () {
-            var selectedMemberEmails = $("#selectedMembers").val();
+            var selectedMembers = $("#selectedMembers").val();
+            var selectedMemberEmails = selectedMembers.split(",");
             var role = $("input[name=ws_member_role]:checked").val();
 
             $("#userAlreadyAdded").hide();
@@ -207,7 +231,7 @@ angular.module('odeskApp')
             $scope.userNotMemberList = [];
             $scope.userAlreadyAdded = [];
 
-            if (selectedMemberEmails != null) {
+            if (selectedMembers.length > 0) {
                 $("#ws_name").parent().removeClass('has-error');
                 $("#emptyWs").hide();
                 $("#selectedMembers").parent().removeClass('has-error');
@@ -235,7 +259,7 @@ angular.module('odeskApp')
                             });
                             if (typeof(alreadyAddedMember) != "undefined") {
                                 $scope.userAlreadyAdded.push(memberEmail);
-                                updateUsedEmails();
+                                $scope.updateFreeEmails();
                                 $("#userAlreadyAdded").show();
                                 $("#selectedMembers").parent().addClass('has-error');
                             }
@@ -256,7 +280,7 @@ angular.module('odeskApp')
                                         }
                                         $scope.selectedWsMembers.push(memberDetails);
                                         $("#createWs").removeAttr('disabled');
-                                        updateUsedEmails();
+                                        $scope.updateFreeEmails();
                                     });
                             }
                         }
@@ -291,7 +315,7 @@ angular.module('odeskApp')
                 if (index == 0) {
                     $("#createWs").attr('disabled', 'disabled');
                 }
-                updateUsedEmails();
+                $scope.updateFreeEmails();
             }
         };
 
@@ -323,7 +347,7 @@ angular.module('odeskApp')
         }
 
         // Create workspace related to account
-        $scope.createWorkspace = function (accounts, selectedMembers) {
+        $scope.createWorkspace = function (selectedMembers) {
 
             if ($scope.workspaceNameValidity()) {
                 var con = {
@@ -333,7 +357,7 @@ angular.module('odeskApp')
                 };
 
                 var data = {
-                    "accountId": accountId,
+                    "accountId": $scope.currentAccount.id,
                     "name": $("#ws_name").val() // needs to be array
                 };
 
@@ -369,7 +393,7 @@ angular.module('odeskApp')
                             $http.post('/api/workspace/' + workspaceId + '/members', memberData, con)
                                 .success(function (data) {
                                     $scope.selectedWsMembers = [];
-                                    updateUsedEmails();
+                                    $scope.updateFreeEmails();
                                 })
                                 .error(function (err, status) {
                                     $("#addMemberErr").show();
@@ -412,6 +436,7 @@ angular.module('odeskApp')
 
         // Remove workspace related to account
         $scope.removeWorkspace = function (workspaceId) {
+
             var deferred = $q.defer();
             $http.delete('/api/workspace/' + workspaceId)
                 .success(function (data, status) {
@@ -433,7 +458,7 @@ angular.module('odeskApp')
                     deferred.reject();
                     $('#removeWorkspaceConfirm').modal('hide');
                 });
-        }
+        };
 
         $scope.updateMember = function (member) {
             $scope.editMember = member;

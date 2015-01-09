@@ -1411,3 +1411,93 @@ a.message{
 .hello-world .panel-body {
     padding: 8px !important;
 }
+.git-hub-repositories-list .list-group-item {
+  position: relative;
+  display: block;
+  padding: 6px 30px 6px 30px;
+  font-size: 14px;
+  height: 52px;
+}
+.git-hub-repositories-list .list-group-item.no-desc {
+  padding-top: 17px;
+  padding-bottom: 16px;
+}
+.git-hub-repositories-list .list-group-item.active span {
+  color: #fff;
+}
+.git-hub-repositories-list .repo-icon {
+  float: left;
+  margin-top: 2px;
+  margin-left: -20px;
+  color: #666;
+}
+.git-hub-repositories-list .repo-name {
+  font-weight: bold;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.git-hub-repositories-list .repo-private {
+  color: #a1882b;
+}
+.git-hub-repositories-list .repo-description {
+  display: block;
+  max-width: 100%;
+  font-size: 12px;
+  color: #777;
+  line-height: 21px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Select2 icons.
+----------------------------------------------*/
+.select2-search input.select2-active {
+    background: #fff url(../images/select2-spinner.gif) no-repeat 100%;
+    background: url(../images/select2-spinner.gif) no-repeat 100%, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, #fff), color-stop(0.99, #eee));
+    background: url(../images/select2-spinner.gif) no-repeat 100%, -webkit-linear-gradient(center bottom, #fff 85%, #eee 99%);
+    background: url(../images/select2-spinner.gif) no-repeat 100%, -moz-linear-gradient(center bottom, #fff 85%, #eee 99%);
+    background: url(../images/select2-spinner.gif) no-repeat 100%, linear-gradient(to bottom, #fff 85%, #eee 99%) 0 0;
+}
+
+.select2-more-results.select2-active {
+    background: #f4f4f4 url(../images/select2-spinner.gif) no-repeat 100%;
+}
+
+.select2-container-multi .select2-choices .select2-search-field input.select2-active {
+    background: #fff url(../images/select2-spinner.gif) no-repeat 100% !important;
+}
+
+.select2-search-choice-close {
+    top: 3px;
+    background: url(../images/select2.png) right top no-repeat;
+}
+
+html[dir="rtl"] .select2-search input {
+    background: #fff url(../images/select2.png) no-repeat -37px -22px;
+    background: url(../images/select2.png) no-repeat -37px -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, #fff), color-stop(0.99, #eee));
+    background: url(../images/select2.png) no-repeat -37px -22px, -webkit-linear-gradient(center bottom, #fff 85%, #eee 99%);
+    background: url(../images/select2.png) no-repeat -37px -22px, -moz-linear-gradient(center bottom, #fff 85%, #eee 99%);
+    background: url(../images/select2.png) no-repeat -37px -22px, linear-gradient(to bottom, #fff 85%, #eee 99%) 0 0;
+}
+
+.select2-search input {
+    background: #fff url('../images/select2.png') no-repeat 100% -22px;
+    background: url(../images/select2.png) no-repeat 100% -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, #fff), color-stop(0.99, #eee));
+    background: url(../images/select2.png) no-repeat 100% -22px, -webkit-linear-gradient(center bottom, #fff 85%, #eee 99%);
+    background: url(../images/select2.png) no-repeat 100% -22px, -moz-linear-gradient(center bottom, #fff 85%, #eee 99%);
+    background: url(../images/select2.png) no-repeat 100% -22px, linear-gradient(to bottom, #fff 85%, #eee 99%) 0 0;
+}
+
+.select2-container .select2-choice .select2-arrow b {
+    background: url(../images/select2.png) no-repeat 0 1px;
+}
+
+.select2-container .select2-choice abbr {
+    background: url(../images/select2.png) right top no-repeat;
+}
+
+.select2-choices li.select2-search-field {
+    float: none;
+}

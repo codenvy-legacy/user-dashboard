@@ -24,7 +24,8 @@ angular.module('odeskApp', [
     'ngRoute',
     'ngAnimate',
     'ui.bootstrap',
-    'chieffancypants.loadingBar'
+    'chieffancypants.loadingBar',
+    'ui.codemirror'
 ]).config(function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeBar = false;
 }).factory('AuthInterceptor', function ($window, $cookies, $q) {
