@@ -204,30 +204,33 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          Remove Workspace: <strong>{{selectedWsForRemove.name}}</strong>
+          Remove Workspace: <b>{{selectedWsForRemove.name}}</b>
         </div>
-        <div class="modal-body">
-
-          Removing a workspace will delete all projects inside that workspace:
-
-          <ul ng-if="selectedWsForRemove.projectsName.length>0">
-            <li ng-repeat="project in selectedWsForRemove.projectsName" >
-              {{project}}
-            </li>
-          </ul>
-
-          <div ng-if="selectedWsForRemove.projectsName.length==0">
-            <strong>No Projects added</strong>
+        <div class="modal-body" style="padding-bottom: 5px;">
+           <p>Removing a workspace will delete all projects inside that workspace:
+           <ul ng-if="selectedWsForRemove.projectsName.length>0">
+               <li ng-repeat="project in selectedWsForRemove.projectsName" >
+                   {{project}}
+               </li>
+           </ul>
+         <span ng-if="selectedWsForRemove.projectsName.length==0">
+           <b>No Projects added</b>
+         </span>
+           </p>
+           <p>If you are going to remove a workspace ensure no one is working on any of the projects listed above before proceeding.</p>
+           <p><b>Removing a workspace can't be undone, are you sure you want to continue?</b></p>
+        </div>
+          <div id="removeWorkspaceAlert" style="margin: 20px;">
+              <div class="alert alert-success" style="display: none; margin-bottom: 0;">
+                  <strong>Successfully Done!</strong> Delete process completed.
+              </div>
+              <div class="alert alert-danger" style="display: none; margin-bottom: 0;">
+                  <strong>Failed!</strong> Delete failed. <span id="removeWorkspaceError"></span>.
+              </div>
           </div>
-
-          <br/>
-          If you are going to remove a workspace ensure no one is working on any of the projects listed above before proceeding.
-          <br/>
-          <strong>Removing a workspace can't be undone, are you sure you want to continue?</strong>
-        </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-           <button type="button" class="btn btn-primary" ng-click="removeWorkspace(selectedWsForRemove.id)">Ok</button>
+           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+           <button type="button" class="btn btn-primary" id="removeWorkspaceButton" ng-click="removeWorkspace(selectedWsForRemove.id)">Ok</button>
         </div>
       </div>
     </div>

@@ -77,7 +77,19 @@ angular.module('odeskApp')
                 });
             return deferred.promise;
         };
-        
+
+        item.removeWorkspace = function (workspaceId) {
+            var deferred = $q.defer();
+            $http.delete('/api/workspace/' + workspaceId)
+                .success(function (data) {
+                    deferred.resolve(data);
+                })
+                .error(function (err) {
+                    deferred.reject(err);
+                });
+            return deferred.promise;
+        };
+
         return item;
     }]);
 
