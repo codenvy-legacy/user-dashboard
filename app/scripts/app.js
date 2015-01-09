@@ -28,6 +28,21 @@ angular.module('odeskApp', [
     'ui.codemirror'
 ]).config(function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeBar = false;
+}).constant('udCodemirrorConfig', {
+    codemirror: {
+      lineWrapping: true,
+      lineNumbers: true,
+      mode: 'application/json',
+      gutters: ['CodeMirror-lint-markers', 'CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+      lint: true,
+      matchBrackets: true,
+      autoCloseBrackets: true,
+      foldGutter: true,
+      styleActiveLine: true,
+      theme: 'codenvy'
+    }
+}).config(function() {
+  uiCodemirrorDirective.$inject = ["$timeout", "udCodemirrorConfig"];
 }).factory('AuthInterceptor', function ($window, $cookies, $q) {
   return {
     request: function(config) {
