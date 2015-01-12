@@ -130,7 +130,6 @@ angular.module('odeskApp')
       getDocBoxes: function () {
         var isShownItems =[]; 
         var docboxItems=[];
-        var iscookies = $cookieStore.get('UD_user_docboxes');
         if($cookieStore.get('UD_user_docboxes')==undefined)
           {
            angular.forEach(docboxes,function(v,k){
@@ -147,13 +146,11 @@ angular.module('odeskApp')
                  docboxItems.push(v1);
                 }
             });
-          }
-          return angular.fromJson(eval(docboxItems));          
+          }    
+          return docboxItems;        
         }, 
 
       hideDocBox: function(item){
-        var isShownItems =[]; 
-        var docboxItems=[];
         if($cookieStore.get('UD_user_docboxes'))
           {   
             var temp = [];
