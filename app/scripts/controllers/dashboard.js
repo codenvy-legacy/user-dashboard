@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $cookies, $rootScope, $timeout, Workspace, DocBoxService, Project, Users, Profile, Password, $cookieStore, $http, $q, $window) {
+    .controller('DashboardCtrl', function ($scope, $cookies, $rootScope, $timeout, $interval, Workspace, DocBoxService, Project, ProjectFactory, Users, Profile, Password, $cookieStore, $http, $q, $window) {
       var old_description = '';
 	    var old_projectName = '';
  
@@ -34,16 +34,6 @@ angular.module('odeskApp')
       $scope.changeName ='';
       $scope.timer = '';    
       $scope.activeProjectVisibility = '';
-
-      // for hiding doc-boxes
-      $rootScope.docboxes = [{'id':'0','title':'Hello World!','content':'Learn how to start first Codenvy project,Versioning,Building and Running it.'},{'id':'1','title':'Getting Your Projects on Codenvy','content':'Start importing your existing projects on Codenvy from GitHub, BitBucket or other desktop environments and getting them building and running.'},{'id':'2','title':'Understanding Custom Build and Run Codenvy Environments','content':'Learn how to create a Custom Build and Run Codenvy Environments for your Project.'}, {'id':'3','title':'Contribute to Eclipse Che','content':'Get more information about how to contribute to Eclipse Che- the Open Source version of Codenvy and create plugins,extensions and new tooling applications.'}];
-      $rootScope.hideDocBox = function(docbox) {
-        var removeBox = _.find($rootScope.docboxes, function(box){ if(box.id == docbox.id) return box; });
-        var index = $rootScope.docboxes.indexOf(removeBox) ; 
-        if (index != -1) {
-          $rootScope.docboxes.splice(index, 1);
-        }
-      };
 
       //private methods
       // for one user set the read write properties
@@ -497,7 +487,7 @@ angular.module('odeskApp')
       //constructor
         var init = function () {
 
-          $scope.docboxes = DocBoxService.getDocBoxes();
+          //$scope.docboxes = DocBoxService.getDocBoxes();
 
           $scope.hideDocBox = function(item) {
             DocBoxService.hideDocBox(item);
