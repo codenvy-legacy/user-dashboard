@@ -137,7 +137,7 @@
         </div><!-- Box -->
 
 
-        <div class="box box-two" ng-if="workspaces.length == 1 && docboxes.length == 0">
+        <div class="box box-two" ng-if="workspaces.length == 1">
             <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=importProjectFromLocation" target="_blank">
                 <span class="glyphicon white glyphicon-import"></span>
                 <br />
@@ -160,7 +160,7 @@
     </div><!-- New Project -->
 
     <!-- start help-->
-    <div ng-show="isNeedToShowHelp()" class="box-example" ng-if="docboxes.length == 0">
+    <div ng-show="isNeedToShowHelp()" class="box-example">
         <div class="col-lg-3 col-sm-6 col-md-3 col-xs-12">
             <div class="arrow-img hidden-xs"><img src="./images/arrow.png" class="img-responsive"  alt=""/></div>
             <div class="panel panel-default">
@@ -197,7 +197,7 @@
     </div>
     <!-- end doc-boxes -->
 
-    <div class="col-md-10" ng-if="docboxes.length == 0">
+    <div class="col-md-10">
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
             <div class="panel panel-default" ng-if="projects.length > 0">
                 <div class="panel-heading">
