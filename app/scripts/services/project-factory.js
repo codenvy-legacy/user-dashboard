@@ -71,5 +71,54 @@ angular.module('odeskApp')
             }
         };
 
+        ProjectFactory.getSampleProject = function () {
+            return {
+                project: {
+                    name: "getting-started-guided-tour",
+                    visibility: "public",
+                    builders: {
+                        default: "maven"
+                    },
+                    runners: {
+                        default: "system:/java/web/tomcat7"
+                    },
+                    type: "maven",
+                    attributes: {
+                        language: ["java"],
+                        codenvyGuidedTour: [
+                            "https://gist.githubusercontent.com/benoitf/3e0120e79167243eda19/raw/a56b177cd2a4057a6ba2e5cd1486b67bf8cc8976/gistfile1.json"
+                        ] },
+                    description: "Getting Started Guided Tour"
+                },
+                source: {
+                    project: {
+                        location: "https://github.com/spring-projects/spring-petclinic.git",
+                        type: "git",
+                        parameters: {
+                            branch: "master"
+                        }
+                    }
+                },
+                actions: {
+                    welcome: {
+                        authenticated: {
+                            title: "Discover",
+                            contenturl: "https://dl.dropboxusercontent.com/u/2187905/Codenvy/PetClinic-Onboarding-Steps/welcome.html"
+                        },
+                        nonauthenticated: {
+                            title: "Discover",
+                            contenturl: "https://dl.dropboxusercontent.com/u/2187905/Codenvy/PetClinic-Onboarding-Steps/welcome.html"
+                        }
+                    }
+                },
+                creator: {
+                    name: "Florent Benoit",
+                    email: "florent.benoit@serli.com",
+                    accountId: "accountya9vidwqbifhqd9p"
+                },
+                v: "2.0"
+            }
+        }
+
         return ProjectFactory;
     }]);
