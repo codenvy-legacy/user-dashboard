@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $cookies, $rootScope, $timeout, $interval, Workspace, DocBoxService, Project, ProjectFactory, Users, Profile, Password, $cookieStore, $http, $q, $window) {
+    .controller('DashboardCtrl', function ($scope, $cookies, $rootScope, $timeout, $interval, Workspace, DocBoxService, newProject, Project, ProjectFactory, Users, Profile, Password, $cookieStore, $http, $q, $window) {
       var old_description = '';
 	    var old_projectName = '';
  

@@ -136,27 +136,9 @@
             </ul>
         </div><!-- Box -->
 
-
-        <div class="box box-two" ng-if="workspaces.length == 1">
-            <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=importProjectFromLocation" target="_blank">
-                <span class="glyphicon white glyphicon-import"></span>
-                <br />
-                <div class="text-center" style="color: #919191"><strong>Import Project</strong></div>
-            </a>
-        </div><!-- Box -->
-        <div class="box box-one" ng-if="workspaces.length > 1">
-            <button type="button" class="dropdown-toggle" data-toggle="dropdown">
-                <span class="glyphicon white glyphicon-import"></span>
-                <br>
-                <strong>Import Project <span class="caret"></span></strong>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                <li><span>Select Destination Workspace:</span></li>
-                <li ng-repeat="workspace in workspaces"><a href="/ws/{{workspace.workspaceReference.name}}?action=importProjectFromLocation" target="_blank">{{workspace.workspaceReference.name}}</a></li>
-            </ul>
-        </div><!-- Box -->
-
-
+        <button class="import-button-box" type="button" ng-click="importNewProject('GitHub')">Import from <span class="import-source"><i class="import-icon fa fa-github fa-lg"></i> GitHub</span></button>
+        <button class="import-button-box" type="button" ng-click="importNewProject('Git')">Import from <span class="import-source"><i class="import-icon fa fa-git-square fa-lg"></i> Git</span></button>
+        <button class="import-button-box" type="button" ng-click="importNewProject('Zip')">Import from <span class="import-source"><i class="import-icon fa fa-file-archive-o fa-lg"></i> Zip</span></button>
     </div><!-- New Project -->
 
     <!-- start help-->
@@ -232,15 +214,15 @@
                     </div><!-- .row -->
                 </div><!-- panel-footer -->
             </div><!-- panel-default -->
-          
+
         </div><!-- projectbox -->
 
-</div> 
+</div>
 
-  
+
     </div>
 
- 
+
 <div ng-if="notification" style="width: 300px" class="col-md-3 projectbox" data-toggle="modal" data-target="#myModal">
     <div class="panel panel-primary">
         <div class="panel-heading">
