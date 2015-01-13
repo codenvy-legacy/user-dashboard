@@ -33,7 +33,7 @@ angular.module('odeskApp')
             var count = 0;
 
             angular.forEach(workspaces, function (workspace) {
-                $http({ method: 'GET', url: $.map(workspace.workspaceReference.links, function (obj) { if (obj.rel == "get projects") return obj.href })[0] })
+                $http({ method: 'GET', url: $.map(workspace.workspaceReference.links, function (obj) { if (obj.rel == "get projects") return obj.href })[0] , ignoreLoadingBar: true })
                     .success(function (data, status) {
                         count++;
                         projects = projects.concat(data);
