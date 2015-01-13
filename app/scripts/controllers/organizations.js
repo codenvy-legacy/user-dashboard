@@ -66,9 +66,7 @@ angular.module('odeskApp')
             $scope.members = [];
             $scope.selectedMembers = [];
             $scope.selectedWsMembers = [];
-            $scope.allowedRAM = 0;
-            $scope.infoForRAMAllocation = [];
-            $scope.leftMemory = 0;
+
 
             $scope.defineProperValue = false;
             $scope.primaryWorkspace = {'name': ''};
@@ -122,10 +120,8 @@ angular.module('odeskApp')
                                     projectsName: projectsName,
                                     developers: membersLength
                                 }
-                                $scope.allowedRAM += parseInt(allocatedRam, 0);
-                                $scope.workspaces.push(workspaceDetails);
 
-                                $scope.infoForRAMAllocation.push({id: workspace.id, name: workspace.name, allocatedRam: allocatedRam });
+                                $scope.workspaces.push(workspaceDetails);
                             });
                         });
                     });
@@ -676,6 +672,18 @@ angular.module('odeskApp')
             return false;
         };
 
+
+        $scope.getInfoForRAMAllocation = function() {
+            $scope.allowedRAM = 0;
+            $scope.infoForRAMAllocation = [];
+            $scope.leftMemory = 0;
+
+            angular.forEach($scope.workspaces, function(workspace) {
+                $scope.allowedRAM += parseInt(workspace.allocatedRam, 0);
+                $scope.infoForRAMAllocation.push({id: workspace.id, name: workspace.name, allocatedRam: workspace.allocatedRam});
+            });
+        }
+
         //Redistribute resources:
         $scope.redistributeResources = function () {
             console.log($scope.primaryWorkspace.name);
@@ -693,16 +701,11 @@ angular.module('odeskApp')
             $http.post('/api/account/' + $scope.currentAccount.id + '/resources/', data, context)
                 .success(function () {
                     $('#ramAllocation').modal('toggle');
-                    $scope.leftMemory = 0;
-                    $scope.allowedRAM = 0;
-                    $scope.infoForRAMAllocation = [];
                     angular.forEach($scope.workspaces, function (workspace) {
                         //  Get workspace's projects and developers using workspace id
                         $http({method: 'GET', url: "/api/runner/" + workspace.id + "/resources" })
                             .success(function (data) {
                                 workspace.allocatedRam = data.totalMemory;
-                                $scope.allowedRAM += parseInt(workspace.allocatedRam, 0);
-                                $scope.infoForRAMAllocation.push({id: workspace.id, name: workspace.name, allocatedRam: workspace.allocatedRam});
                             })
                             .error(processError);
                     });
