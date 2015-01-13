@@ -21,11 +21,13 @@
   <link rel="stylesheet" href="bower_components/select2/select2.css">
   <link rel="stylesheet" href="bower_components/morris.js/morris.css">
   <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.min.css">
+  <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.min.css">
   <link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
   <link rel="stylesheet" type="text/css" href="bower_components/codemirror/addon/lint/lint.css">
   <link rel="stylesheet" type="text/css" href="bower_components/codemirror/addon/fold/foldgutter.css">
   <link rel="stylesheet" type="text/css" href="bower_components/codemirror/theme/mdn-like.css">
   <link rel="stylesheet" type="text/css" href="styles/codemirror.css">
+
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css({.tmp,app}) styles/main.css -->
@@ -122,7 +124,9 @@
 <script src="bower_components/codemirror/addon/fold/foldgutter.js"></script>
 <script src="bower_components/codemirror/addon/fold/brace-fold.js"></script>
 <script src="bower_components/codemirror/addon/selection/active-line.js"></script>
+<script src="bower_components/angular-ui-select/dist/select.js"></script>
 <script src="bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
+<script src="bower_components/angular-file-upload/angular-file-upload.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -133,6 +137,7 @@
 <script src="scripts/controllers/navbar.js"></script>
 <script src="scripts/controllers/dashboard.js"></script>
 <script src="scripts/controllers/runner.js"></script>
+<script src="scripts/controllers/factory.js"></script>
 <script src="scripts/controllers/factories.js"></script>
 <script src="scripts/controllers/stats.js"></script>
 <script src="scripts/controllers/account.js"></script>
@@ -144,8 +149,10 @@
 <script src="scripts/controllers/subscriptions.js"></script>
 <script src="scripts/controllers/subscriptiondetail.js"></script>
 <script src="scripts/services/new-project.js"></script>
+<script src="scripts/services/new-factory.js"></script>
 <script src="scripts/controllers/newProject.js"></script>
 <script src="scripts/directives/new-project-details.js"></script>
+<script src="scripts/directives/new-factory-from-file.js"></script>
 <script src="scripts/directives/import-github.js"></script>
 <script src="scripts/directives/import-git-repository.js"></script>
 <script src="scripts/directives/import-zip.js"></script>

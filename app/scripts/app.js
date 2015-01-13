@@ -25,7 +25,9 @@ angular.module('odeskApp', [
     'ngAnimate',
     'ui.bootstrap',
     'chieffancypants.loadingBar',
-    'ui.codemirror'
+    'ui.codemirror',
+    'ui.select',
+    'angularFileUpload'
 ]).config(function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeBar = false;
 }).constant('udCodemirrorConfig', {
@@ -89,6 +91,10 @@ angular.module('odeskApp', [
 	    .when('/factories', {
             templateUrl: BASE_URL + 'views/factories.html',
             controller: 'FactoriesCtrl'
+        })
+        .when('/factory/:id', {
+            templateUrl: BASE_URL + 'views/factorydetails.html',
+            controller: 'FactoryCtrl'
         })
 	    .when('/stats', {
             templateUrl: BASE_URL + 'views/stats.html',

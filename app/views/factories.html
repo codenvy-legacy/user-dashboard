@@ -1,4 +1,4 @@
-<div class="col-md-12" style="margin-top:20px;">
+<!--<div class="col-md-12" style="margin-top:20px;">
         <div class="panel panel-default panel-ce">
             <div class="panel-body">
                 <h4 class="text-center"><strong>Your most popular factories</strong> <span class="garrow">- {{selectedPeriodText}}</span></h4>
@@ -6,32 +6,41 @@
             </div>
         </div> 
 </div>
+-->
+<div class="col-md-12">
+    <div class="row factories-bar">
+        <div class="col-md-8">All Factories ({{factories.length}})</div>
+        <div class="col-md-4 text-right"><button ng-click="createNewFactory()" class="btn btn-sm-text btn-ttl btn-create-factory-modal"><i class="glyphicon glyphicon-plus"></i><span> CREATE FACTORY</span></button></div>
+    </div>
+</div>
 <div class="col-md-12">
     <div class="row">
-<ul class="breadcrumb projectnav" style="margin-bottom:0px;border-top:1px solid #dcdcdc; border-bottom:none;">
-            <li>Your most popular factories</li>
-            <li class="dropdown user-dropdown"> LAST:
-			    <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-up"></i> {{selectedPeriodText}} </a>
-				<ul class="dropdown-menu">
-					<li ng-repeat="period in periodTexts"><a href="" ng-click='selectPeriod(period)'>{{period}}</a></li>
-				</ul>
+        <!-- Sorting
+              <ul class="breadcrumb projectnav" style="margin-bottom:0px;border-top:1px solid #dcdcdc; border-bottom:none;">
+                    <li class="dropdown user-dropdown"> FILTER:
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-up"></i> {{selectedPeriodText}} </a>
+                        <ul class="dropdown-menu">
+                            <li ng-repeat="period in periodTexts"><a href="" ng-click='selectPeriod(period)'>{{period}}</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown user-dropdown"> WORKSPACE:
+                <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down garrow"></i> {{filter.workspace||'All'}}</a>
+                <ul class="dropdown-menu">
+                    <li><a href="" ng-click="filter.workspace=''">All</a></li>
+                     <li ng-repeat="workspace in workspaces"><a href="" ng-click="filter.workspace=project.workspace">{{workspace.workspaceRef.name}}</a></li>
+                </ul>
             </li>
-            <li class="dropdown user-dropdown"> WORKSPACE:
-        <a href="" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down garrow"></i> {{filter.workspace||'All'}}</a>
-        <ul class="dropdown-menu">
-            <li><a href="" ng-click="filter.workspace=''">All</a></li>
-             <li ng-repeat="workspace in workspaces"><a href="" ng-click="filter.workspace=project.workspace">{{workspace.workspaceRef.name}}</a></li>
-        </ul>
-    </li>
-    <div class="search1">
-      <input type="button" class="searchfield "/>
+            <div class="search1">
+              <input type="button" class="searchfield "/>
 
-</div>
-  <!-- content title-->
+        </div>
+
 <div class="searchfull searchfullfactory clearfix" style="display:none;" >
       <input type="button" class="closeBtn" style="display:none;" />
       <input type="text" ng-model="filter.name" class="searchfield " placeholder="Search for Projects"/>
 </div>
+        -->
+
     <!--
     <div class="pull-right" ng-class="{'col-md-12 showfactorysearch':search, 'hidefactorysearch':!search}">
         <div class="input-group">
@@ -47,69 +56,41 @@
     </div>
     -->
 </ul>
-		<div class="breadcrumb projectnav" style="display: inline-block; overflow-y: scroll; max-height:150px;">
+		<div class="breadcrumb projectnav" style="display: inline-block; overflow-y: scroll;">
 			<table class="table table-striped table-condensed-" style="background:#ffffff;">
 				<thead>
 					<tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
-						<th style="width:54px"></th>
+                        <th class="col-md-2 text-center"><h4>ID</h4></th>
 						<th class="col-md-2 text-center"><h4>PROJECT</h4></th>
 						<th class="col-md-3 text-center"><h4>DESCRIPTION</h4></th>
 						<th class="col-md-1 text-center"><h4>CREATED</h4></th>
 						<th class="text-center" style="width:100px"><h4>VIEWS</h4></th>
-						<th class="text-center" style="width:100px"><h4>BUILDS</h4></th>
-						<th class="text-center" style="width:100px"><h4>RUNS</h4></th>
-						<th class="text-center" style="width:100px"><h4>COPIES</h4></th>
-						<th></th>
+                        <!--
+						<th class="text-center" style="width:100px"><h4>GIGABYTE HOURS</h4></th>
+						-->
+						<th class="text-center" style="width:100px"></th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="factory in factories| filter: filter | orderBy:param:reverse">
-						<td><img  class="bordered" height="44" width="44" ng-src="./images/{{project.projectTypeName}}.png"/></td>
-						<td class="text-center" style="vertical-align:middle;" >
-							<p><strong>{{factory.projectname}}</strong></p>
-							<span>{{factory.project.workspace}}</span>
-						</td>
+               <tr ng-repeat="factory in factories| filter: filter | orderBy:param:reverse">
+                        <td class="text-center" style="vertical-align:middle;"><em><a href="#/factory/{{factory.id}}">{{factory.id}}</a></em></td>
+						<td class="text-center" style="vertical-align:middle;" ><strong>{{factory.projectname}}</strong></td>
 						<td class="text-center" style="vertical-align:middle;">{{factory.description}}</td>
-						<td class="text-center" style="vertical-align:middle;">{{factory.created | date: 'dd MMM yyyy'}}</td>
+						<td class="text-center" style="vertical-align:middle;">{{factory.created | date: 'MMMM, dd yyyy'}}</td>
 						<td  class="text-center" style="vertical-align:middle;">{{factory.views}}</td>
-						<td class="text-center" style="vertical-align:middle;">{{factory.builds}}</td>
-						<td class="text-center" style="vertical-align:middle;">{{factory.runs}}</td>
-						<td class="text-center" style="vertical-align:middle;">{{factory.copies}}</td>
+                   <!--
+						<td class="text-center" style="vertical-align:middle;">{{factory.gigahours}}</td>
+						-->
 						<td class="text-center" style="vertical-align:middle;">
-							<a ng-href="{{factory.seeURL}}" class="col-md-4 text-left" >See</a>
-							<a onclick='$("#snippetsModal").modal("show");' class="col-md-4 text-center" >Snippets</a>
-							<a href="" class="col-md-4 text-right" >Share</a>
+                            <div class="factory-list-buttons">
+                                <a ng-href="#/factory/{{factory.id}}" class="btn btn-ttl btn-sm-text"><i class="import-icon fa fa-edit fa-lg"></i> Edit</a>
+							    <a ng-href="{{factory.seeURL}}" class="btn btn-ttl btn-sm-text" target="_blank"><i class="import-icon fa fa-eye fa-lg"></i> Use</a>
+							    <a ng-click="openSnippets(factory.id)" class="btn btn-ttl btn-sm-text" ><i class="import-icon fa fa-share-alt fa-lg"></i> Share</a>
+                            </div>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-    </div>
-</div>
-<div id="snippetsModal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Get snippets for factory</h4>
-            </div>
-            <div class="modal-body">
-                <div style="display:block; float:left; clear:both; width:100%;">
-					<span>Direct Url:</span><br/>
-					<input type="text" readonly />
-				</div>
-                <div style="display:inline-block; float:left; width:50%">
-					<span>HTML Markup:</span><br/>
-					<input type="text" readonly />
-				</div>
-				<div style="display:inline-block; float:right; width:50%">
-					<span>MARKDOWN Markup:</span><br/>
-					<input type="text" readonly />
-				</div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
-            </div>
-        </div>
     </div>
 </div>
