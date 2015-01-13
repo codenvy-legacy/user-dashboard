@@ -115,6 +115,57 @@ angular.module('odeskApp')
       };
     });
 
+ // for hiding docBoxes
+angular.module('odeskApp')
+  .factory('DocBoxService',function ($cookieStore) {
+    var docboxes = [{'id':'1','title':'Hello World!','content':'Learn how to start first Codenvy project,Versioning,Building and Running it.'},
+      {'id':'2','title':'Getting Your Projects on Codenvy','content':'Start importing your existing projects on Codenvy from GitHub, BitBucket or other desktop environments and getting them building and running.'},
+      {'id':'3','title':'Understanding Custom Build and Run Codenvy Environments','content':'Learn how to create a Custom Build and Run Codenvy Environments for your Project.'}, 
+      {'id':'4','title':'Contribute to Eclipse Che','content':'Get more information about how to contribute to Eclipse Che- the Open Source version of Codenvy and create plugins,extensions and new tooling applications.'}
+      ];
+  
+    
+   
+    return {
+      getDocBoxes: function () {
+        var isShownItems =[]; 
+        var docboxItems=[];
+        if($cookieStore.get('UD_user_docboxes')==undefined)
+          {
+           angular.forEach(docboxes,function(v,k){
+              isShownItems.push({'id':v.id,'isShown':true});
+              docboxItems.push(v);
+            });           
+            $cookieStore.put('UD_user_docboxes',isShownItems);
+          }
+          else{
+            isShownItems = $cookieStore.get('UD_user_docboxes');
+            angular.forEach(docboxes,function(v1,k1){
+              if(v1.id==isShownItems[k1].id && isShownItems[k1].isShown==true)
+                {
+                 docboxItems.push(v1);
+                }
+            });
+          }    
+          return docboxItems;        
+        }, 
+
+      hideDocBox: function(item){
+        if($cookieStore.get('UD_user_docboxes'))
+          {   
+            var temp = [];
+            angular.forEach($cookieStore.get('UD_user_docboxes'),function(v,k){
+              if(v.id==item.id){
+                  v.isShown=false;
+                }
+              temp.push(v);              
+            }); 
+            $cookieStore.put('UD_user_docboxes',temp);
+          }
+        }
+      };
+    });
+
 angular.module('odeskApp')
 	.factory('Profile', ['$http', '$q', function ($http, $q) {
 	    return {

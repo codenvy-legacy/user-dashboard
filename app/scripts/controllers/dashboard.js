@@ -17,13 +17,13 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $interval, $timeout, Workspace, Project, Users, Profile, Password, $cookieStore, $http, $q, $window, newProject, ProjectFactory) {
+    .controller('DashboardCtrl', function ($scope, $cookies, $rootScope, $timeout, Workspace, DocBoxService, Project, Users, Profile, Password, $cookieStore, $http, $q, $window) {
       var old_description = '';
-      var old_projectName = '';
+	    var old_projectName = '';
  
       $scope.box = 1;
       $scope.search = 0;
-      $scope.projects = ProjectFactory.projects;
+      $scope.projects = [];
       $scope.ownerWorkspace = '';
       $scope.members = [];
       $scope.filter = {};
@@ -35,10 +35,18 @@ angular.module('odeskApp')
       $scope.timer = '';    
       $scope.activeProjectVisibility = '';
 
+      // for hiding doc-boxes
+      $rootScope.docboxes = [{'id':'0','title':'Hello World!','content':'Learn how to start first Codenvy project,Versioning,Building and Running it.'},{'id':'1','title':'Getting Your Projects on Codenvy','content':'Start importing your existing projects on Codenvy from GitHub, BitBucket or other desktop environments and getting them building and running.'},{'id':'2','title':'Understanding Custom Build and Run Codenvy Environments','content':'Learn how to create a Custom Build and Run Codenvy Environments for your Project.'}, {'id':'3','title':'Contribute to Eclipse Che','content':'Get more information about how to contribute to Eclipse Che- the Open Source version of Codenvy and create plugins,extensions and new tooling applications.'}];
+      $rootScope.hideDocBox = function(docbox) {
+        var removeBox = _.find($rootScope.docboxes, function(box){ if(box.id == docbox.id) return box; });
+        var index = $rootScope.docboxes.indexOf(removeBox) ; 
+        if (index != -1) {
+          $rootScope.docboxes.splice(index, 1);
+        }
+      };
 
       //private methods
       // for one user set the read write properties
-  
       var setPermissions = function (projectPermissions, member) {
         angular.forEach(projectPermissions, function (perm) {
           if (perm.principal.type === "USER" && perm.principal.name === member.userId) {
@@ -227,7 +235,7 @@ angular.module('odeskApp')
                                             .success(function (data, status) {
                                                 $('#changeProjectDetailAlert .alert-danger').hide();
                                                 $('#changeProjectDetailAlert .alert-success').show();
-                                                $timeout(function () {
+                                                setTimeout(function () {
                                                     $('#changeProjectDetailAlert .alert-success').hide();
                                                     $('#projectDetailModal').modal('hide');
                                                 }, 1500);
@@ -268,7 +276,7 @@ angular.module('odeskApp')
 	    $scope.deleteProjectConfirm = function() {
             $('#warning-project-alert .alert-success').hide();
             $('#warning-project-alert .alert-danger').hide();
-				$('#warning-project').modal('show');
+            $('#warning-project').modal('show');
 			  if($scope.isAdmin) {
                   $('#warning-project-message').html("Removing a project can't be undone, are you sure you want to continue?");
               } else {
@@ -280,15 +288,16 @@ angular.module('odeskApp')
         $http({ method: 'DELETE', url: $scope.selected.url })
           .success(function (status) {
             $('#warning-project-alert .alert-success').show();
-            ProjectFactory.fetchProjects($scope.workspaces);
+            $scope.projects = _.without($scope.projects, _.findWhere($scope.projects, $scope.selected));        
             if($scope.projects.length==0){
-                    $scope.isProjectDataFetched = true;
+                 $scope.isProjectDataFetched = true;
             }
-            $timeout(function () {
+            setTimeout(function () {
                 $('#warning-project').modal('hide');
             }, 1500);
           })
           .error(function (err) {
+                $('#warning-project-alert .alert-success').hide();
                 $('#warning-project-alert .alert-danger').show();
                 $('#warning-project-alert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
           });
@@ -412,8 +421,18 @@ angular.module('odeskApp')
       }
 
       return '';
-	  };
+	  }
+	  // for displaying message
+      $scope.c2User='TRUE';
+      $http({method: 'GET', url: '/api/profile/'}).success(function(data){
+          $scope.userDetails=data.attributes;
+          $scope.oldUser = data.attributes['codenvy:created'];
 
+          if(data.attributes['codenvy:created']!=undefined){$scope.c2User='TRUE';}else{$scope.c2User='FALSE';}
+
+      }).error(function(err){
+
+      });
     // to show scheduled maintenance message from statuspage.io (Path-to service)
       $scope.scheduled='FALSE';
       $http({method: 'GET', url: '/dashboard/scheduled'})
@@ -435,13 +454,15 @@ angular.module('odeskApp')
               $('#newPassword').css('border', '1px solid #e5e5e5');
               $('#newPasswordVerify').css('border', '1px solid #e5e5e5');
               Password.update(password).then(function (data) {
-                  $timeout(function () {
+                  setTimeout(function () {
                       $('#defineUserPassword').modal('hide');
                   }, 1500);
               });
               Profile.query().then(function (data) {
+                  if (data.attributes.resetPassword && data.attributes.resetPassword == "true") {
                       Profile.update({"resetPassword": 'false'});
                       $cookieStore.remove('resetPassword');
+                  }
               });
           } else {
               $('#defineUserPassword #doesNotMatch').show();
@@ -452,6 +473,7 @@ angular.module('odeskApp')
               $('#newPasswordVerify').css('border', '1px solid #a94442');
           }
       };
+
 
       $scope.createSampleProject = function(workspaceId) {
           var projectName = "getting-started-guided-tour";
@@ -475,6 +497,12 @@ angular.module('odeskApp')
       //constructor
         var init = function () {
 
+          $scope.docboxes = DocBoxService.getDocBoxes();
+
+          $scope.hideDocBox = function(item) {
+            DocBoxService.hideDocBox(item);
+            $scope.docboxes = DocBoxService.getDocBoxes();
+          };
             Workspace.all(function (resp) {
                 $scope.workspaces = _.filter(resp, function (workspace) {
                     return !workspace.workspaceReference.temporary;
@@ -556,6 +584,7 @@ angular.module('odeskApp')
                     });
                 });
             });
+
 
             $interval(function () {
                 ProjectFactory.fetchProjects($scope.workspaces);

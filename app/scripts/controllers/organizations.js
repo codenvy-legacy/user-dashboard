@@ -124,12 +124,11 @@ angular.module('odeskApp')
                                 }
                                 $scope.allowedRAM += parseInt(allocatedRam, 0);
                                 $scope.workspaces.push(workspaceDetails);
+
                                 $scope.infoForRAMAllocation.push({id: workspace.id, name: workspace.name, allocatedRam: allocatedRam });
                             });
                         });
-
                     });
-
                 })
                 .error(function (err) {
                 });
@@ -165,6 +164,7 @@ angular.module('odeskApp')
                                 role: member['roles'][0].split("/")[1],
                                 email: email,
                                 name: name
+
                             }
                             $scope.members.push(memberDetails);
                             if(count == members.length){
@@ -436,28 +436,29 @@ angular.module('odeskApp')
 
         // Remove workspace related to account
         $scope.removeWorkspace = function (workspaceId) {
-            $('#removeWorkspaceAlert .alert-success').hide();
-            $('#removeWorkspaceAlert .alert-danger').hide();
-            Workspace.removeWorkspace(workspaceId).then(function (data) {
-                    $scope.loadWorkspaceInfo();
-                    $('#removeWorkspaceButton').attr('disabled', 'disabled');
-                    $('#removeWorkspaceAlert .alert-success').show();
-                    $('#removeWorkspaceAlert .alert-danger').hide();
-                    $timeout(function () {
-                        $('#removeWorkspaceAlert .alert-success').hide();
-                        $('#removeWorkspaceButton').removeAttr('disabled');
-                        $('#removeWorkspaceConfirm').modal('hide');
-                    }, 1500);
 
-            }, function (error) {
-                $('#removeWorkspaceError').text(error.message);
+          $('#removeWorkspaceAlert .alert-success').hide();
+          $('#removeWorkspaceAlert .alert-danger').hide();
+          Workspace.removeWorkspace(workspaceId).then(function (data) {
+            $scope.loadWorkspaceInfo();
+            $('#removeWorkspaceButton').attr('disabled', 'disabled');
+            $('#removeWorkspaceAlert .alert-success').show();
+            $('#removeWorkspaceAlert .alert-danger').hide();
+            $timeout(function () {
                 $('#removeWorkspaceAlert .alert-success').hide();
-                $('#removeWorkspaceAlert .alert-danger').show();
-                $timeout(function () {
-                    $('#removeWorkspaceAlert .alert-danger').hide();
-                }, 4500);
-            });
-        };
+                $('#removeWorkspaceButton').removeAttr('disabled');
+                $('#removeWorkspaceConfirm').modal('hide');
+            }, 1500);
+
+          }, function (error) {
+              $('#removeWorkspaceError').text(error.message);
+              $('#removeWorkspaceAlert .alert-success').hide();
+              $('#removeWorkspaceAlert .alert-danger').show();
+              $timeout(function () {
+                  $('#removeWorkspaceAlert .alert-danger').hide();
+              }, 4500);
+          });
+      };
 
         $scope.updateMember = function (member) {
             $scope.editMember = member;
