@@ -184,7 +184,7 @@ angular.module('odeskApp')
                     $scope.authenticateWithGitHub = function() {
                         var redirectUrl = $location.protocol() + '://'
                             + $location.host() + ':'
-                            + $location.port() + '/'
+                            + $location.port()
                             + $browser.baseHref()
                             + 'gitHubCallback.html';
                         return popup.open('/api/oauth/authenticate'
