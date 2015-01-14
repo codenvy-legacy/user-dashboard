@@ -61,6 +61,35 @@ angular.module('odeskApp')
             }
         }
 
+        $scope.updateFreeEmails = function () {
+            var freeEmails = [];
+            var usedEmails = [];
+
+            angular.forEach($scope.selectedWsMembers, function (member) {
+                usedEmails.push(member.email);
+            });
+            if($scope.userAlreadyAdded !== null){
+                usedEmails = usedEmails.concat($scope.userAlreadyAdded);
+            }
+
+            var members = $scope.members;
+
+            angular.forEach(members, function (member) {
+                if(usedEmails.indexOf(member.email) == -1) {
+                    freeEmails.push({id: member.email, text: member.email});
+                }
+            });
+
+            $("#selectedMembers").select2({
+                placeholder: "User(s) email",
+                multiple: true,
+                formatNoMatches: function() {
+                    return 'No member to add';
+                },
+                data: freeEmails
+            });
+        }
+
         $scope.loadWorkspaceInfo = function () {
             $scope.workspaces = [];
             $scope.members = [];
@@ -181,36 +210,6 @@ angular.module('odeskApp')
                 $scope.init();
             });
         }
-
-        $scope.updateFreeEmails = function () {
-            var freeEmails = [];
-            var usedEmails = [];
-
-            angular.forEach($scope.selectedWsMembers, function (member) {
-                usedEmails.push(member.email);
-            });
-            if($scope.userAlreadyAdded !== null){
-                usedEmails = usedEmails.concat($scope.userAlreadyAdded);
-            }
-
-            var members = $scope.members;
-
-            angular.forEach(members, function (member) {
-                if(usedEmails.indexOf(member.email) == -1) {
-                    freeEmails.push({id: member.email, text: member.email});
-                }
-            });
-
-            $("#selectedMembers").select2({
-                placeholder: "User(s) email",
-                multiple: true,
-                formatNoMatches: function() {
-                    return 'No member to add';
-                },
-                data: freeEmails
-            });
-        }
-
 
         //Add members to workspace list
         $scope.addMemberToWsList = function () {
@@ -686,7 +685,6 @@ angular.module('odeskApp')
 
         //Redistribute resources:
         $scope.redistributeResources = function () {
-            console.log($scope.primaryWorkspace.name);
             $("#allocationError").hide();
             var data = [];
             angular.forEach($scope.infoForRAMAllocation, function (w) {

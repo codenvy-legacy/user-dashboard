@@ -344,33 +344,37 @@ angular.module('odeskApp')
             }
         };
 
-        orgAddonData.getOrgAccounts = function() {
+        orgAddonData.getOrgAccounts = function () {
+            var deferred = $q.defer();
             var accounts = [];
-            return $q.all([
-                Account.getAccounts().then(function (response){
-                    angular.forEach(response, function(membership) {
-                        if (membership.roles.indexOf("account/owner") >= 0){
-                            accounts.push(membership.accountReference);
-                        }
-                    });
-                })
-            ]).then(function () {
+
+            Account.getAccounts().then(function (response) {
+                angular.forEach(response, function (membership) {
+                    if (membership.roles.indexOf("account/owner") >= 0) {
+                        accounts.push(membership.accountReference);
+                    }
+                });
+
                 var promises = [];
                 var orgAccounts = [];
-                angular.forEach(accounts, function(account){
+                angular.forEach(accounts, function (account) {
                     promises.push(
-                    Account.getSubscription(account.id).then(function (response){
-                        var serviceId = _.pluck(response, 'serviceId')[0];
-                        var packageName = _.pluck(_.pluck(response, 'properties'),'Package')[0];
-                        if(_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
-                            orgAccounts.push(account);
-                        }
-                    }));
-                    $q.all(promises).then(function (){
-                        orgAddonData.update(orgAccounts);
-                    })
+                        Account.getSubscription(account.id).then(function (response) {
+                            var serviceId = _.pluck(response, 'serviceId')[0];
+                            var packageName = _.pluck(_.pluck(response, 'properties'), 'Package')[0];
+                            if (_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
+                                orgAccounts.push(account);
+                            }
+                        }));
+
                 });
+                $q.all(promises).then(function () {
+                    orgAddonData.update(orgAccounts);
+                    deferred.resolve();
+                })
             });
+
+            return deferred.promise;
         };
 
 
