@@ -21,7 +21,6 @@ angular.module('odeskApp')
       var old_description = '';
 	    var old_projectName = '';
  
-      $scope.box = 1;
       $scope.search = 0;
       $scope.projects = [];
       $scope.ownerWorkspace = '';
