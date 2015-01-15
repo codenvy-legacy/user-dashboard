@@ -233,7 +233,7 @@ angular.module('odeskApp')
                                             .success(function (data, status) {
                                                 $('#changeProjectDetailAlert .alert-danger').hide();
                                                 $('#changeProjectDetailAlert .alert-success').show();
-                                                $timeout(function () {
+                                                setTimeout(function () {
                                                     $('#changeProjectDetailAlert .alert-success').hide();
                                                     $('#projectDetailModal').modal('hide');
                                                 }, 1500);
@@ -272,6 +272,11 @@ angular.module('odeskApp')
       };
 
         $scope.setCurrentWorkspace = function (workspace) {
+            if (workspace) {
+              $scope.filter.workspaceName=workspace.workspaceReference.name;
+            } else {
+              $scope.filter = {};
+            }
             $scope.currentWorkspace = workspace;
             Workspace.currentWorkspace = workspace;
         }
@@ -492,7 +497,7 @@ angular.module('odeskApp')
             }
             if (time != null && refreshInterval == null) {
                 refreshInterval = $interval(function () {
-                        ProjectFactory.fetchProjects($scope.currentWorkspace ? [ $scope.currentWorkspace ] : $scope.workspaces, false);
+                        ProjectFactory.fetchProjects($scope.workspaces, false);
                 }, time);
             }
         }
