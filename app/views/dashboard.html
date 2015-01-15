@@ -97,9 +97,20 @@
             </ul>
         </div><!-- Box -->
 
-        <button class="import-button-box" type="button" ng-click="importNewProject('GitHub')">Import from <span class="import-source"><i class="import-icon fa fa-github fa-lg"></i> GitHub</span></button>
-        <button class="import-button-box" type="button" ng-click="importNewProject('Git')">Import from <span class="import-source"><i class="import-icon fa fa-git-square fa-lg"></i> Git</span></button>
-        <button class="import-button-box" type="button" ng-click="importNewProject('Zip')">Import from <span class="import-source"><i class="import-icon fa fa-file-archive-o fa-lg"></i> Zip</span></button>
+        <div class="box box-two" ng-if="workspaces.length == 1">
+            <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=importProjectFromLocation" target="_blank">
+                <span class="glyphicon white glyphicon-import"></span>
+                <br />
+                <div class="text-center" style="color: #919191"><strong>Import Project</strong></div>
+            </a>
+        </div><!-- Box -->
+        <div class="box box-one" ng-if="workspaces.length > 1">
+            <button type="button" class="dropdown-toggle" ng-click="importNewProject('GitHub')">
+                <span class="glyphicon white glyphicon-import"></span>
+                <br>
+                <strong>Import Project</strong>
+            </button>
+        </div><!-- Box -->
     </div><!-- New Project -->
 
     <!-- start help-->
@@ -117,7 +128,7 @@
               </div>
             </div>
         </div>
-        </div>
+    </div>
      <!-- end help-->
 
     <!-- start displaying doc-boxes -->

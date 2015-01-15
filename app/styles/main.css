@@ -648,30 +648,7 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   color: #8d8d8d;
 }
 .box {
-  margin-bottom: 34px;
-}
-.import-button-box {
-  display: block;
-  padding: 5px 0;
-  margin-bottom: 15px;
-  width: 100%;
-  border-radius: 0;
-  color: #919191;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.1s linear;
-  display: block;
-  font-weight: bold;
-}
-.import-button-box:hover {
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-}
-.import-button-box .import-source {
-  color: #54aee0;
-}
-.import-button-box .import-icon {
-  vertical-align: text-top;
+  margin-bottom: 35px;
 }
 .projectlist .new-project .box-one .glyphicon{
   margin-right: 3px;
