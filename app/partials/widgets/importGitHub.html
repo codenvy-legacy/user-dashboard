@@ -28,7 +28,7 @@
         <div class="git-hub-repositories-list">
             <div class="list-group">
                 <a class="list-group-item" ng-class="{'active': selectedRepository == gitHubRepository, 'no-desc': !gitHubRepository.description}"
-                    ng-repeat="gitHubRepository in gitHubRepositories | filterRepositories:organizationName:repositoryName"
+                    ng-repeat="gitHubRepository in gitHubRepositories | filterRepositories:organizationName:repositoryName | orderBy:'name'"
                     ng-click="selectRepository(gitHubRepository)">
                     <span ng-if="!gitHubRepository.fork" class="repo-icon octicon octicon-repo"></span>
                     <span ng-if="gitHubRepository.fork" class="repo-icon octicon octicon-repo-forked" title="forked"></span>
