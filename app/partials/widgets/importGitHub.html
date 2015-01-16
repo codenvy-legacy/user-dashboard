@@ -9,16 +9,26 @@
     <button type="button" class="btn btn-primary" ng-click="loadRepositories()" ng-if="shouldDisplayLoadButton && !loadingRepos">Load your GitHub repositories</button>
 
     <div ng-if="!shouldDisplayLoadButton && !loadingRepos">
-        <div class="form-group" style="margin-left: 0; margin-bottom: 15px; overflow: auto">
-            <label for="organizationFilter" class="control-label">Filter GitHub repositories</label>
-            <select id="organizationFilter" class="form-control col-md-8" ng-model="organizationName" ng-options="resolveOrganizationName(organization) group by resolveOrganizationType(organization) for organization in organizations">
-                <option value="">All your organizations</option>
-            </select>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="organizationFilter" class="control-label">Filter by organization</label>
+                    <select id="organizationFilter" class="form-control" ng-model="organizationName" ng-options="resolveOrganizationName(organization) group by resolveOrganizationType(organization) for organization in organizations">
+                        <option value="">All your organizations</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="nameFilter" class="control-label">Filter by name</label>
+                    <input id="nameFilter" class="form-control" ng-model="repositoryName" type="text" placeholder="Start typing here">
+                </div>
+            </div>
         </div>
         <div class="git-hub-repositories-list">
             <div class="list-group">
                 <a class="list-group-item" ng-class="{'active': selectedRepository == gitHubRepository, 'no-desc': !gitHubRepository.description}"
-                    ng-repeat="gitHubRepository in gitHubRepositories | filterRepositories:organizationName"
+                    ng-repeat="gitHubRepository in gitHubRepositories | filterRepositories:organizationName:repositoryName"
                     ng-click="selectRepository(gitHubRepository)">
                     <span ng-if="!gitHubRepository.fork" class="repo-icon octicon octicon-repo"></span>
                     <span ng-if="gitHubRepository.fork" class="repo-icon octicon octicon-repo-forked" title="forked"></span>
