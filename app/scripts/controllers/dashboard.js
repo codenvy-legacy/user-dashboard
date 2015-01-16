@@ -422,19 +422,6 @@ angular.module('odeskApp')
       }).error(function(err){
 
       });
-    // to show scheduled maintenance message from statuspage.io (Path-to service)
-      $scope.scheduled='FALSE';
-      $http({method: 'GET', url: '/dashboard/scheduled'})
-        .success(function(data){
-          if (Array.isArray(data)){
-            if(data.length){
-              $scope.data=data;
-              $scope.scheduled='TRUE';
-            }
-          }
-      }).error(function(err){
-
-      });
 
       $scope.definePassword = function () {
           var password = $('#newPassword').val();
