@@ -19,30 +19,7 @@
 angular.module('odeskApp')
     .constant('localGitHubToken', 'gitHubToken')
     .constant('gitHubCallbackPage', 'gitHubCallback.html')
-    .factory('gitHubTokenStore', function() {
-        return {
-            setToken: function(token) {
-                localStorage.setItem('gitHubToken', token);
-            },
-            getToken: function() {
-                return localStorage.getItem('gitHubToken');
-            }
-        }
-    }).factory('GitHubTokenInjectorInterceptor', ['$q', 'gitHubTokenStore', function($q, gitHubTokenStore) {
-        return {
-            request: function(config) {
-                if (config.url.indexOf('https://api.github.com') == 0) {
-                    var token = gitHubTokenStore.getToken();
-                    if (token) {
-                        config.headers['Authorization'] = 'token ' + token;
-                    }
-                }
-                return config;
-            }
-        };
-    }]).config(['$httpProvider', function($httpProvider) {
-        $httpProvider.interceptors.push('GitHubTokenInjectorInterceptor');
-    }]).service('utils', function() {
+    .service('utils', function() {
         this.camelCase = function(name) {
             return name.replace(/([\:\-\_]+(.))/g, function(_, separator, letter, offset) {
                 return offset ? letter.toUpperCase() : letter;
