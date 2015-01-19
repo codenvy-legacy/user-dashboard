@@ -1,11 +1,15 @@
 <div class="form-group" style="margin-left: 0; margin-bottom: 15px; overflow: auto">
-    <ud-new-project-details workspaces="workspaces" new-project-data="newProjectData"></ud-new-project-details>
+    <ud-new-project-details parent-form="parentForm"
+                            workspaces="workspaces"
+                            new-project-data="newProjectData">
+    </ud-new-project-details>
 
     <label for="remoteZipURL" class="control-label">Remote Zip URL</label>
-    <input type="text"
+    <input type="url"
            id="remoteZipURL"
            class="form-control"
-           ng-model="remoteZipUrl"
+           ng-model="newProjectData.remoteUrl"
            ng-change="setRemoteZipUrl()"
-           placeholder="The URL of the remote Zip repository you want to import from"/>
+           placeholder="The URL of the remote Zip repository you want to import from"
+           required />
 </div>

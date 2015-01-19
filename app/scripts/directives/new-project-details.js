@@ -22,7 +22,8 @@ angular.module('odeskApp')
             restrict: 'E',
             scope: {
                 workspaces: '=',
-                newProjectData: '='
+                newProjectData: '=',
+                parentForm: '='
             },
             link: function ($scope, element, attrs) {
                 $scope.newProjectData.workspaceSelected = $scope.workspaces[0];

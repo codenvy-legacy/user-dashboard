@@ -1874,3 +1874,8 @@ html[dir="rtl"] .select2-search input {
 #delete-factory-modal {
     z-index: 5000;
 }
+
+/* Form validation */
+.css-form input.ng-invalid.ng-touched {
+    border-color: rgb(169, 68, 66);
+}
