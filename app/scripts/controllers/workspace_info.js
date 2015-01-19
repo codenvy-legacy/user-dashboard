@@ -63,6 +63,45 @@ angular.module('odeskApp')
             }
         }
 
+        $scope.userRolesToStr = function (roles) {
+            var str = "";
+            angular.forEach(roles, function (r) {
+                str += r.split("/")[1];
+                str += roles.indexOf(r) < (roles.length - 1) ? ", " : "";
+            });
+            return str;
+        }
+
+        $scope.updateFreeEmails = function(){
+            var freeEmails = [];
+            var usedEmails = [];
+
+            angular.forEach($scope.workspace.members, function (member) {
+                usedEmails.push(member.email);
+            });
+            angular.forEach($scope.selectedMembers, function (member) {
+                usedEmails.push(member.email);
+            });
+            if($scope.userAlreadyAdded !== null) {
+                usedEmails = usedEmails.concat($scope.userAlreadyAdded);
+            }
+
+            angular.forEach($scope.account_members, function (member) {
+                if(usedEmails.indexOf(member.email) == -1) {
+                    freeEmails.push({id: member.email, text: member.email});
+                }
+            });
+
+            $("#selectedMembers").select2({
+                placeholder: "User(s) email",
+                multiple: true,
+                formatNoMatches: function() {
+                    return 'No member to add';
+                },
+                data: freeEmails
+            });
+        }
+
         $scope.refreshWorkspaceInfo = function () {
             $scope.workspaceId = $route.current.params.id;
             $scope.workspace = {};
@@ -153,53 +192,24 @@ angular.module('odeskApp')
                 });
         }
 
-
-        if (OrgAddon.accounts.length > 0) {
-            $scope.init();
-        } else {
-            return OrgAddon.getOrgAccounts().then(function () {
-                $scope.init();
+        // Remove member from selected list
+        $scope.removeMemberToList = function (user) {
+            var removedMember = _.find($scope.selectedMembers, function (member) {
+                if (member.id == user.id) return member;
             });
-        }
-
-        $scope.updateFreeEmails = function(){
-            var freeEmails = [];
-            var usedEmails = [];
-
-            angular.forEach($scope.workspace.members, function (member) {
-                usedEmails.push(member.email);
-            });
-            angular.forEach($scope.selectedMembers, function (member) {
-                usedEmails.push(member.email);
-            });
-            if($scope.userAlreadyAdded !== null) {
-                usedEmails = usedEmails.concat($scope.userAlreadyAdded);
+            var index = $scope.selectedMembers.indexOf(removedMember)
+            if (index != -1) {
+                $scope.selectedMembers.splice(index, 1);
             }
+            if (index == 0) {
+                $("#addMembers").attr('disabled', 'disabled');
+            }
+            $scope.updateFreeEmails();
+        };
 
-            angular.forEach($scope.account_members, function (member) {
-                if(usedEmails.indexOf(member.email) == -1) {
-                    freeEmails.push({id: member.email, text: member.email});
-                }
-            });
-
-            $("#selectedMembers").select2({
-                placeholder: "User(s) email",
-                multiple: true,
-                formatNoMatches: function() {
-                    return 'No member to add';
-                },
-                data: freeEmails
-            });
-        }
-
-        $scope.userRolesToStr = function (roles) {
-            var str = "";
-            angular.forEach(roles, function (r) {
-                str += r.split("/")[1];
-                str += roles.indexOf(r) < (roles.length - 1) ? ", " : "";
-            });
-            return str;
-        }
+        $scope.onRemoveMember = function (member) {
+            $scope.selectedMemberForRemove = member;
+        };
 
         // Add members to workspace list
         $scope.addMemberToWsList = function () {
@@ -285,21 +295,6 @@ angular.module('odeskApp')
             }
         };
 
-        // Remove member from selected list
-        $scope.removeMemberToList = function (user) {
-            var removedMember = _.find($scope.selectedMembers, function (member) {
-                if (member.id == user.id) return member;
-            });
-            var index = $scope.selectedMembers.indexOf(removedMember)
-            if (index != -1) {
-                $scope.selectedMembers.splice(index, 1);
-            }
-            if (index == 0) {
-                $("#addMembers").attr('disabled', 'disabled');
-            }
-            $scope.updateFreeEmails();
-        };
-
         // For add members in workspace for organization Tab
         $scope.addMembersToWs = function (members) {
             $("#userNotFoundError").hide();
@@ -353,9 +348,6 @@ angular.module('odeskApp')
             });
         };
 
-        $scope.addMemberProject = function (member) {
-            $scope.selectedMemberForRemove = member;
-        };
         // Remove member related to workspace
         $scope.removeMemberFromWs = function (memberId) {
             var deferred = $q.defer();
@@ -435,4 +427,13 @@ angular.module('odeskApp')
                 });
 
         };
+
+
+        if (OrgAddon.accounts.length > 0) {
+            $scope.init();
+        } else {
+            return OrgAddon.getOrgAccounts().then(function () {
+                $scope.init();
+            });
+        }
     });
