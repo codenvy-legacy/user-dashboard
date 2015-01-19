@@ -25,10 +25,10 @@ angular.module('odeskApp')
                 return $resource('https://api.github.com/user/orgs');
             },
             userRepositories : function() {
-                return $resource('https://api.github.com/user/repos');
+                return $resource('https://api.github.com/user/repos', {sort: 'full_name'});
             },
             organizationRepositories : function(organizationLogin) {
-                return $resource('https://api.github.com/orgs/:organizationLogin/repos', {organizationLogin: organizationLogin})
+                return $resource('https://api.github.com/orgs/:organizationLogin/repos', {organizationLogin: organizationLogin, sort: 'full_name'})
             }
         }
     }]);

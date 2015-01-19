@@ -148,14 +148,15 @@ angular.module('odeskApp')
             return organization.name ? organization.name : organization.login;
         }
     }).filter('filterRepositories', function() {
-      return function (repositories, organizationFilter) {
+      return function (repositories, organizationFilter, repositoryNameFilter) {
         if (!repositories) {
           return [];
         }
         var filtered = [];
         for (var i = 0; i < repositories.length; i++) {
           var repository = repositories[i];
-          if (!organizationFilter || repository.owner.login == organizationFilter.login) {
+          if ((!organizationFilter || repository.owner.login == organizationFilter.login)
+              && (!repositoryNameFilter || repository.name.toLocaleLowerCase().indexOf(repositoryNameFilter.toLocaleLowerCase()) >= 0)) {
             filtered.push(repository);
           }
         }
