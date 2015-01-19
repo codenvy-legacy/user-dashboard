@@ -80,14 +80,7 @@
             </ul>
         </div><!-- Box -->
 
-        <div class="box box-two" ng-if="workspaces.length == 1">
-            <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=importProjectFromLocation" target="_blank">
-                <span class="glyphicon white glyphicon-import"></span>
-                <br />
-                <div class="text-center" style="color: #919191"><strong>Import Project</strong></div>
-            </a>
-        </div><!-- Box -->
-        <div class="box box-one" ng-if="workspaces.length > 1">
+        <div class="box box-one">
             <button type="button" class="dropdown-toggle" ng-click="importNewProject('GitHub')">
                 <span class="glyphicon white glyphicon-import"></span>
                 <br>
