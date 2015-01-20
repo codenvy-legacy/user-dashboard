@@ -1,0 +1,26 @@
+<form id="share-factory-modal" novalidate class="simple-form">
+    <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
+        <button type="button" class="close" ng-click="$close()" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="WarningFactoryLabel">Get snippets for factory</h4>
+    </div>
+    <div class="modal-body">
+
+        <form class="form-horizontal">
+            <div class="row">
+                <div class="col-md-4"><label class="control-label">Direct URL:</label></div>
+                <div class="col-md-8"><a ng-href="{{factoryURL}}">{{factoryURL}}</a></div>
+            </div>
+            <div class="row">
+                <div class="col-md-4"><label class="control-label">HTML Markup:</label></div>
+                <div class="col-md-8"><textarea rows="5" readonly ng-model="factorySnippetHTML"></textarea> </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4"><label class="control-label">Markdown syntax:</label></div>
+                <div class="col-md-8"><textarea rows="5" ng-model="factorySnippetMarkdown" readonly></textarea> </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
+        <button type="button" class="btn btn-primary" ng-click="$close()">OK</button>
+    </div>
+</form>
