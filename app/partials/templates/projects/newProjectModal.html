@@ -9,19 +9,28 @@
                 <tab-heading>
                     <span class="tab-title"><i class="import-icon fa fa-github fa-lg"></i> From your GitHub account</span>
                 </tab-heading>
-                <ud-import-github workspaces="newProjectCtrl.workspaces" user="newProjectCtrl.user" new-project-data="newProjectCtrl.newProjectData" />
+                <ud-import-github workspaces="newProjectCtrl.workspaces" user="newProjectCtrl.user" new-project-data="newProjectCtrl.newProjectData"></ud-import-github>
+                <alert ng-repeat="alert in newProjectCtrl.alerts" type="{{alert.type}}" close="newProjectCtrl.closeAlert($index)">
+                    {{alert.msg}}
+                </alert>
             </tab>
             <tab active="newProjectCtrl.tabActivated['Git']" select="newProjectCtrl.setProjectType('Git')">
                 <tab-heading>
                     <span class="tab-title"><i class="import-icon fa fa-git-square fa-lg"></i> From a Git repository</span>
                 </tab-heading>
-                <ud-import-git-repository workspaces="newProjectCtrl.workspaces" new-project-data="newProjectCtrl.newProjectData" />
+                <ud-import-git-repository workspaces="newProjectCtrl.workspaces" new-project-data="newProjectCtrl.newProjectData"></ud-import-git-repository>
+                <alert ng-repeat="alert in newProjectCtrl.alerts" type="{{alert.type}}" close="newProjectCtrl.closeAlert($index)">
+                    {{alert.msg}}
+                </alert>
             </tab>
             <tab active="newProjectCtrl.tabActivated['Zip']" select="newProjectCtrl.setProjectType('Zip')">
                 <tab-heading>
                     <span class="tab-title"><i class="import-icon fa fa-file-archive-o fa-lg"></i> From a Zip URL</span>
                 </tab-heading>
-                <ud-import-zip workspaces="newProjectCtrl.workspaces" new-project-data="newProjectCtrl.newProjectData" />
+                <ud-import-zip workspaces="newProjectCtrl.workspaces" new-project-data="newProjectCtrl.newProjectData"></ud-import-zip>
+                <alert ng-repeat="alert in newProjectCtrl.alerts" type="{{alert.type}}" close="newProjectCtrl.closeAlert($index)">
+                    {{alert.msg}}
+                </alert>
             </tab>
         </tabset>
     </div>

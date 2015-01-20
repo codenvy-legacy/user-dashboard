@@ -18,6 +18,7 @@
 angular.module('odeskApp')
     .controller('NewProjectCtrl', [
         '$scope',
+        '$timeout',
         '$modalInstance',
         'currentUserId',
         'workspaces',
@@ -26,6 +27,7 @@ angular.module('odeskApp')
         'ProjectFactory',
         function(
             $scope,
+            $timeout,
             $modalInstance,
             currentUserId,
             workspaces,
@@ -37,8 +39,13 @@ angular.module('odeskApp')
           this.currentUserId = currentUserId;
           this.tabActivated = {};
           this.tabActivated[type] = true;
+          this.alerts = [];
 
           this.newProjectData = {
+          };
+
+          this.closeAlert = function(index) {
+            this.alerts.splice(index, 1);
           };
 
           this.setProjectType = function(type) {
@@ -54,54 +61,61 @@ angular.module('odeskApp')
           };
 
           this.import = function() {
-              var factory = {
-                v: '2.0',
-                source: {
-                  project: {
-                    location: undefined,
-                    type: undefined
-                  }
-                },
+            this.alerts = [];
+
+            var factory = {
+              v: '2.0',
+              source: {
                 project: {
                   type: 'blank',
                   visibility: 'public'
                 }
-              };
-
-              switch (this.newProjectData.importType) {
-                case 'GitHub':
-                  if (this.newProjectData.remoteUrl) {
-                    factory.source.project.location = this.newProjectData.remoteUrl;
-                  }
-                  factory.source.project.type = 'git';
-                  break;
-                case 'Git':
-                  if (this.newProjectData.remoteUrl) {
-                    factory.source.project.location = this.newProjectData.remoteUrl;
-                  }
-                  factory.source.project.type = 'git';
-                  break;
-                case 'Zip':
-                  if (this.newProjectData.remoteUrl) {
-                    factory.source.project.location = this.newProjectData.remoteUrl;
-                  }
-                  factory.source.project.type = 'zip';
-                  break;
-                case 'default':
-                  return;
               }
+            };
 
-              var response = Project.import(
-                {
-                  workspaceID: this.newProjectData.workspaceSelected.workspaceReference.id,
-                  path: this.newProjectData.projectName
-                },
-                factory,
-                function() {
-                  ProjectFactory.fetchProjects(workspaces);
+            switch (this.newProjectData.importType) {
+              case 'GitHub':
+                if (this.newProjectData.remoteUrl) {
+                  factory.source.project.location = this.newProjectData.remoteUrl;
                 }
-              );
-              $modalInstance.close();
+                factory.source.project.type = 'git';
+                break;
+              case 'Git':
+                if (this.newProjectData.remoteUrl) {
+                  factory.source.project.location = this.newProjectData.remoteUrl;
+                }
+                factory.source.project.type = 'git';
+                break;
+              case 'Zip':
+                if (this.newProjectData.remoteUrl) {
+                  factory.source.project.location = this.newProjectData.remoteUrl;
+                }
+                factory.source.project.type = 'zip';
+                break;
+              case 'default':
+                return;
+            }
+
+            var that = this;
+            var response = Project.import(
+              {
+                workspaceID: this.newProjectData.workspaceSelected.workspaceReference.id,
+                path: this.newProjectData.projectName
+              },
+              factory,
+              function() {
+                that.alerts.push({type: 'success', msg: 'Successfully Done! Import process completed.'});
+
+                $timeout(function() {
+                  that.alerts = [];
+                  ProjectFactory.fetchProjects(workspaces);
+                  $modalInstance.close();
+                }, 1500);
+              },
+              function(data) {
+                that.alerts.push({type: 'danger', msg: 'Failed! Import failed: ' + data.data.message});
+              }
+            );
           };
         }
     ]);
