@@ -188,6 +188,7 @@ angular.module('odeskApp')
                     return false;
                   }
                   gitHubTokenStore.setToken(result.data);
+                  $http({ method: 'POST', url: '/api/github/ssh/generate'});
                   return true;
                 });
               };
