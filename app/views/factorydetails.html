@@ -1,10 +1,11 @@
-<div class="col-md-12">
-    <div class="row factory-details-infobar">
-        <p style="margin:10px;"><a href="#/factories">All Factories</a> > ID {{factoryId}}</p>
-    </div>
+<div class="breadcrumb-wrap">
+    <ul class="breadcrumb factorynav">
+        <li><a href="#/factories">All Factories</a> > ID {{factoryId}}</li>
+        <li ng-controller="FactoriesCtrl" class="factory-navbar-right"><button ng-click="createNewFactory()" class="btn btn-sm-text btn-ttl btn-create-factory-modal"><i class="glyphicon glyphicon-plus"></i><span> CREATE FACTORY</span></button></li>
+    </ul>
 </div>
-<div class="col-md-12">
-    <div class="row factory-details">
+<div class="col-md-12 mrg-top80">
+    <div class="row">
         <div class="col-md-4">
             <div class="panel panel-default panel-ce">
                 <div class="panel-body">
@@ -57,7 +58,7 @@
                     <div class="factory-configuration">
                         <h4 class="text-center">Factory Configuration</h4>
                         <div class="panel-body">
-                            <textarea ui-codemirror ng-model="factoryContent" class="form-control" rows="30">
+                            <textarea ui-codemirror ng-model="factoryContent" class="form-control" rows="40">
                             </textarea>
                         </div>
                         <div class="row">
