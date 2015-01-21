@@ -27,7 +27,8 @@ angular.module('odeskApp', [
     'chieffancypants.loadingBar',
     'ui.codemirror',
     'ui.select',
-    'angularFileUpload'
+    'angularFileUpload',
+    'ngClipboard'
 ]).config(function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeBar = false;
 }).constant('udCodemirrorConfig', {
