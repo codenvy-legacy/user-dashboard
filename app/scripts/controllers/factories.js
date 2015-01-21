@@ -580,7 +580,7 @@ angular.module('odeskApp')
 				userid = data["id"];
 
 				// Now, get all factories created by this user
-				$http.get('/api/factory/find?id=&v=2.0&v=2.1&creator.userId=' + userid).success(function(data, status) {
+				$http.get('/api/factory/find?id=&v>2.0&creator.userId=' + userid).success(function(data, status) {
 
 					data.forEach(function(factory){
    					var factoryURL = factory.href.trim();
