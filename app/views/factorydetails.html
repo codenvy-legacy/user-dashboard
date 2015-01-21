@@ -1,0 +1,89 @@
+<div class="col-md-12">
+    <div class="row factory-details-infobar">
+        <p style="margin:10px;"><a href="#/factories">All Factories</a> > ID {{factoryId}}</p>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="row factory-details">
+        <div class="col-md-4">
+            <div class="panel panel-default panel-ce">
+                <div class="panel-body">
+                    <div class="factory-information">
+
+                        <h4 class="text-center">Factory Information</h4>
+
+                        <form class="form-horizontal">
+                            <div class="row">
+                                <div class="col-md-4"><label class="control-label">Factory URL:</label></div>
+                                <div class="col-md-8"><a ng-href="{{factoryURL}}">{{factoryURL}}</a></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4"><label class="control-label">Created On:</label></div>
+                                <div class="col-md-8">{{factoryDate | date: 'MMMM, dd yyyy'}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4"><label class="control-label">Tracked Factory:</label></div>
+                                <div class="col-md-8">
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" disabled="disabled" ng-checked="factoryTracked"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr width="80%">
+                            <!--
+                            <div class="form-group">
+                                <label class="control-label col-xs-4">Deactivate Factory</label>
+                                <div class="col-xs-8">
+                                    Disable access to the Factory temporarily&nbsp;<button type="submit" class="btn btn-sm btn-primary">Deactivate</button>
+                                </div>
+                            </div>
+                            -->
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <label class="control-label">Delete the Factory:</label><p>Destroy the Factory and all of its data</p>
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <button type="submit" class="btn btn-danger" ng-click="removeConfirmFactory(factoryId)">Delete</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="panel panel-default panel-ce">
+                <div class="panel-body">
+                    <div class="factory-configuration">
+                        <h4 class="text-center">Factory Configuration</h4>
+                        <div class="panel-body">
+                            <textarea ui-codemirror ng-model="factoryContent" class="form-control" rows="30">
+                            </textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="data-info">
+                                    <a href="http://docs.codenvy.com/user/project-lifecycle/#configuration-reference">Factory reference documentation</a>
+                                </div>
+                                <div class="alerts">
+                                    <div class="row alert alert-danger" ng-show="factoryConfigurationError != null">
+                                        {{factoryConfigurationError}}
+                                    </div>
+                                    <div class="row alert alert-success" ng-show="factoryConfigurationOK != null">
+                                        <b>{{factoryConfigurationOK}}</b>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="actions-buttons text-right">
+                                    <a ng-click="loadDetails(factoryId, true)" class="btn btn-default factory-configuration-button">Reload</a>
+                                    <a ng-click="updateDetails(factoryId)" class="btn btn-primary factory-configuration-button">Update</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
