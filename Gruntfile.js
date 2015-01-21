@@ -311,7 +311,6 @@ module.exports = function (grunt) {
             '*.html',
             'partials/**/*',
             'views/{,*/}*.html',
-            'bower_components/**/*',
             'images/{,*/}*.{webp}',
             'fonts/*',
             'styles/octicons*'
