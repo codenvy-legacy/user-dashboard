@@ -382,7 +382,7 @@ angular.module('odeskApp')
 					cache:true
 				};
 				
-				$http.post('/api/analytics/metric/factory_used/list', reqData, con)
+				$http.post('api/analytics/public-metric/factory_used/list', reqData, con)
                 .success(function (data, status) {
 					$scope.nCountFactories++;
 					var i=0;
@@ -475,7 +475,7 @@ angular.module('odeskApp')
 					_factory.seeURL = data.links[5].href;
 
 					// Add analytics data
-					var analyticsUri = '/api/analytics/metric/factory_used?factory=https%3A%2F%2Fcodenvy.com%2Ffactory%3Fid%3D' + factory.id;
+					var analyticsUri = '/api/analytics/public-metric/factory_used?factory=https%3A%2F%2Fcodenvy.com%2Ffactory%3Fid%3D' + factory.id;
 
 					$http.get(analyticsUri).success(function(data, status){
 						_factory.views = parseInt(data.value);
