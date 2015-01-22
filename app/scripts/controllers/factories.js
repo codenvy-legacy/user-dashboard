@@ -134,13 +134,18 @@ angular.module('odeskApp')
 					} else if ("snippet/markdown" == link.rel) {
 						$http.get(link.href).success(function (data, status) {
 							$scope.factorySnippetMarkdown = data;
-						}).error(function (data) {
+						}).error(function (data, status) {
+							// display a fallback for the link
+							if (409 == status) {
+								$scope.factorySnippetMarkdown = "[Factory link](" + $scope.factoryURL + ")";
+							} else {
 								$scope.factorySnippetMarkdown = "Error: " + $filter('json')(data, 2);
+							}
 						});
 					} else if ("snippet/html" == link.rel) {
 						$http.get(link.href).success(function (data, status) {
 							$scope.factorySnippetHTML = data;
-						}).error(function (data) {
+						}).error(function (data, status) {
 							$scope.factorySnippetHTML = "Error: " + $filter('json')(data, 2);
 						});
 					}
@@ -148,6 +153,7 @@ angular.module('odeskApp')
 			});
 		}
 
+		$scope.shareFactoryCopy = "";
 
 		$scope.openSnippets = function(factoryId) {
 			// load snippets details
@@ -156,7 +162,6 @@ angular.module('odeskApp')
 			// open modal
 			$modal.open({
 				templateUrl: 'partials/templates/factories/shareFactoryModal.html',
-				size: 'lg',
 				scope: $scope
 			});
 		}

@@ -1871,6 +1871,20 @@ html[dir="rtl"] .select2-search input {
     width: 100%;
 }
 
+#share-factory-modal .row {
+    margin-bottom: 15px;
+}
+
+#share-factory-modal .row .btn-share-url {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#share-factory-modal .factory-share-copied {
+    color: green;
+}
+
+
 #delete-factory-modal {
     z-index: 5000;
 }
