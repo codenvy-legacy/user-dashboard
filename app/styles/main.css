@@ -224,7 +224,26 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .form-control:-ms-input-placeholder {  
   color: #cecece;  
 }
-
+/* Styling of modals */
+.modal-header {
+  padding: 10px 15px;
+  background: #f0f0f0;
+}
+.modal-body {
+  padding: 10px 15px;
+}
+.modal-footer {
+  margin-top: 0;
+  padding: 10px 15px;
+  background-color: #f0f0f0;
+}
+.modal-footer .btn.pull-left {
+  margin-left: 0;
+}
+.modal-body .alert {
+  margin-top: 15px;
+  margin-bottom: 0;
+}
 /* Breadcrumb Search
 ----------------------------------------------*/
 .breadcrumb .new-project {
@@ -512,20 +531,6 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 
 /* Privacy Modal related.
 ----------------------------------------------*/
-.modal-header {
-  padding: 10px;
-  background: #f0f0f0;
-}
-.modal-header button.close {
-  line-height: 16px;
-}
-#privacyModal .modal-body .form-group {
-  margin-bottom: 25px;
-  margin-left: 20px;
-}
-#privacyModal .modal-body .form-group:last-child {
-  margin-bottom: 0;
-}
 #privacyModal input {
   vertical-align:bottom;
   margin-top: 2px;
@@ -543,23 +548,6 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 #privacyModal .help-block {
   margin: 0 0 0 25px;
   color: #a3a3a3;
-}
-#privacyModal .modal-header .close{
-  margin: 0;
-  position: absolute;
-  top: 4px;
-  right: 12px;
-  height: 20px;
-  width: 12px;
-  line-height: 1;
-}
-#privacyModal .modal-body {
-  padding: 0 0 10px 10px;
-}
-#privacyModal .modal-footer{
-  margin-top: 0;
-  padding: 10px;
-  background-color: #f0f0f0;
 }
 
 /* PROJECTBOX
@@ -786,7 +774,6 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 }
 #developersModal .form-group{
   width: 100%;
-  margin-bottom: 10px;
 }
 #developersModal .form-control{
   width: 80%;
@@ -950,28 +937,20 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .btn-bdr-lf { border-bottom: none; border-left: none;}
 .btn-bdr-rt { border-bottom: none; border-right: none; border-left: none;}
 
-#developersModal #showInviteError, .org-errors{
-  background-color: #f7d6d5;
-  color: #B35B59;
-  font-weight: bold;
-  border: 1px solid #e18986;
-  padding: 5px;
-  margin: 5px;
-}
-.success-errors{
+.success-errors {
   background-color: #3B8C37;
   color: #ffffff;
   font-weight: bold;
   border: 1px solid #3B8C37;
   padding: 5px;
-  margin: 5px;
+  margin: 5px 0 0;
 }
 .font-success{
-    color: #3B8C37;
+  color: #3B8C37;
 }
 
 .font-error{
-    color: #B35B59;
+  color: #B35B59;
 }
 
 #developersModal .invitation p.darkBlack {
@@ -1434,7 +1413,7 @@ a.message{
     padding: 8px !important;
 }
 #new-project-dialog .tab-content {
-  padding: 15px;
+  padding: 10px 15px;
 }
 #new-project-dialog .import-icon {
   vertical-align: text-top;

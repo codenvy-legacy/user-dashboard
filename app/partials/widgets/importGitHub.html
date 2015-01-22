@@ -28,18 +28,16 @@
                 </div>
             </div>
         </div>
-        <div class="git-hub-repositories-list">
-            <div class="list-group">
-                <a class="list-group-item" ng-class="{'active': selectedRepository == gitHubRepository, 'no-desc': !gitHubRepository.description}"
-                    ng-repeat="gitHubRepository in gitHubRepositories | filterRepositories:organizationName:repositoryName | orderBy:'name'"
-                    ng-click="selectRepository(gitHubRepository)">
-                    <span ng-if="!gitHubRepository.fork" class="repo-icon octicon octicon-repo"></span>
-                    <span ng-if="gitHubRepository.fork" class="repo-icon octicon octicon-repo-forked" title="forked"></span>
-                    <span class="repo-name">{{gitHubRepository.name}}</span>
-                    <span ng-if="gitHubRepository.private" class="repo-private fa fa-lock" title="private"></span>
-                    <span class="repo-description">{{gitHubRepository.description}}</span>
-                </a>
-            </div>
+        <div class="list-group git-hub-repositories-list form-group">
+            <a class="list-group-item" ng-class="{'active': selectedRepository == gitHubRepository, 'no-desc': !gitHubRepository.description}"
+                ng-repeat="gitHubRepository in gitHubRepositories | filterRepositories:organizationName:repositoryName | orderBy:'name'"
+                ng-click="selectRepository(gitHubRepository)">
+                <span ng-if="!gitHubRepository.fork" class="repo-icon octicon octicon-repo"></span>
+                <span ng-if="gitHubRepository.fork" class="repo-icon octicon octicon-repo-forked" title="forked"></span>
+                <span class="repo-name">{{gitHubRepository.name}}</span>
+                <span ng-if="gitHubRepository.private" class="repo-private fa fa-lock" title="private"></span>
+                <span class="repo-description">{{gitHubRepository.description}}</span>
+            </a>
         </div>
     </div>
 </div>
