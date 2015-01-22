@@ -1,5 +1,8 @@
 <div>
-    <ud-new-project-details workspaces="workspaces" new-project-data="newProjectData"></ud-new-project-details>
+    <ud-new-project-details parent-form="parentForm"
+                            workspaces="workspaces"
+                            new-project-data="newProjectData">
+    </ud-new-project-details>
 
     <p ng-if="state == 'LOAD_ERROR'" class="alert alert-danger" >
         We get problem authenticating you to GitHub. You can retry by pushing again the button below.
