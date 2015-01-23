@@ -52,13 +52,6 @@
         </div>
 
         <div class="row">
-            <!--
-            <div class="col-md-1">
-                Templates
-                <button ng-click="loadBasicTemplate();" class="btn btn-ttl btn-sm-text"><i class="import-icon fa fa-quote-left fa-lg"></i> Basic</button>
-                <button ng-click="loadAdvancedTemplate();" class="btn btn-ttl btn-sm-text"><i class="import-icon fa fa-quote-left fa-lg"></i> Advanced</button>
-
-            </div>-->
             <div class="col-md-12">
                 <div class="panel-body">
                     <textarea ui-codemirror="{ onLoad : codemirrorLoaded }" ng-model="factoryContent" class="form-control" rows="30">
@@ -78,18 +71,18 @@
     </div>
     <div class="modal-footer">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="alerts">
 
-                    <div class="row alert alert-danger" ng-show="factoryConfigurationError != null">
+                    <div class="row alert alert-danger nowrap" ng-show="factoryConfigurationError != null">
                         {{factoryConfigurationError}}
                     </div>
-                    <div class="row alert alert-success" ng-show="factoryConfigurationOK != null">
+                    <div class="row alert alert-success nowrap" ng-show="factoryConfigurationOK != null">
                         {{factoryConfigurationOK}}
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
 
                 <button class="btn btn-default" ng-click="$close()">Cancel</button>
                 <button id="create-factory-modal-button" class="btn btn-primary" ng-click="createFactory(this)">Create</button>
