@@ -1810,6 +1810,7 @@ html[dir="rtl"] .select2-search input {
 .factory-configuration .CodeMirror {
     font-size: 11px;
     z-index: 1;
+    height: 448px;
 }
 
 
@@ -1839,8 +1840,8 @@ html[dir="rtl"] .select2-search input {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
     /* padding-bottom: 50%; */
     padding-top: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 15px;
+    margin-right: 17px;
     color: #8b8b8b;
 }
 
