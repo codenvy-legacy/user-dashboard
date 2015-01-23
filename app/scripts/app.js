@@ -50,8 +50,8 @@ angular.module('odeskApp', [
   return {
     request: function(config) {
       //remove prefix url
-      if (config.url.indexOf("https://codenvy.com/api") == 0) {
-         config.url = config.url.substring("https://codenvy.com".length);
+      if (config.url.indexOf("http://dev.box.com/api") == 0) {
+         config.url = config.url.substring("http://dev.box.com".length);
       }
 
       //Do not add token on auth login
@@ -130,8 +130,8 @@ angular.module('odeskApp', [
             controller: 'OrgdetailCtrl'
         })
         .when('/account', {
-            templateUrl: BASE_URL + 'views/account/profile.html',
-            controller: 'AccountConfigCtrl'
+            templateUrl: BASE_URL + 'account/account.html',
+            controller: 'AccountCtrl'
         })
         .when('/account/configuration', {
             templateUrl: BASE_URL + 'views/account/configuration.html',
@@ -186,17 +186,7 @@ angular.module('odeskApp', [
         }
     };
 }).run(['$rootScope', function($rootScope) {
-    if (DEV) {
-        $rootScope.$on('$routeChangeStart', function (event, next, current) {
-            console.log('$routeChangeStart', event, next, current);
-        });
-        $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
-            console.log('$routeChangeSuccess', event, current, previous);
-        });
-        $rootScope.$on('$routeChangeError', function (event, current, previous, rejection) {
-            console.log('$routeChangeError', event, current, previous, rejection);
-        });
-    }
+
 }]);
 
 angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])

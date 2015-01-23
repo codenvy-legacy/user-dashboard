@@ -16,7 +16,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('OrganizationsCtrl', function ($scope, Account, OrgAddon, WorkspaceInfo, Workspace, $http, $q, $timeout) {
+    .controller('OrganizationsCtrl', function ($scope, OrgAddon, WorkspaceInfo, Workspace, $http, $q, $timeout) {
         $scope.$on('orgAddonDataUpdated', function () {
             $scope.accounts = OrgAddon.accounts;
             $scope.isOrgAddOn = OrgAddon.isOrgAddOn;

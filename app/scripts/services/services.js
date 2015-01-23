@@ -235,22 +235,6 @@ angular.module('odeskApp')
 angular.module('odeskApp')
 	.factory('Users', function ($http, $q) {
 	    return {
-	        query: function () {
-	            var deferred = $q.defer();
-	            var con = {
-	                headers: {
-	                    'Accept': 'application/json',
-	                    'X-Requested-With': 'XMLHttpRequest'
-	                }
-	            };
-	            $http.get('/api/account', con)
-                    .success(function (data) {
-                        deferred.resolve(data); //resolve data
-                    })
-                    .error(function (err) { deferred.reject(); });
-	            return deferred.promise;
-	        },
-
 	        getUserByEmail: function (email) {
 	            var deferred = $q.defer();
 	            var con = {
@@ -270,60 +254,7 @@ angular.module('odeskApp')
 	});
 
 angular.module('odeskApp')
-	.factory('Account', function ($http, $q) {
-	    return {
-	        query: function (orgId) {
-	            var deferred = $q.defer();
-	            var con = {
-	                headers: {
-	                    'Accept': 'application/json',
-	                    'X-Requested-With': 'XMLHttpRequest'
-	                }
-	            };
-	            $http.get('/api/account/' + orgId + '/subscriptions', con)
-                    .success(function (data) {
-                        deferred.resolve(data); //resolve data
-                    })
-                    .error(function (err) { deferred.reject(); });
-	            return deferred.promise;
-	        },
-
-          getAccounts: function (){
-            var deferred = $q.defer();
-            var con = {
-              headers: {
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-              }
-            };
-            $http.get('/api/account/', con)
-                .success(function (data) {
-                  deferred.resolve(data); //resolve data
-                })
-                .error(function (err) { deferred.reject(); });
-            return deferred.promise;
-          },
-
-          getSubscription: function (accountId){
-            var deferred = $q.defer();
-            var con = {
-              headers: {
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-              }
-            };
-            $http.get('/api/account/'+ accountId +'/subscriptions', con)
-                .success(function (data) {
-                  deferred.resolve(data); //resolve data
-                })
-                .error(function (err) { deferred.reject(); });
-            return deferred.promise;
-          }
-      };
-	});
-
-angular.module('odeskApp')
-    .factory('OrgAddon', function ($rootScope, Account, $q) {
+    .factory('OrgAddon', function ($rootScope, AccountService, $q) {
         var serviceIds = ["Saas", "OnPremises"];
         var packages = ["Team", "Enterprise"];
         var orgAddonData = {};
@@ -348,8 +279,8 @@ angular.module('odeskApp')
             var deferred = $q.defer();
             var accounts = [];
 
-            Account.getAccounts().then(function (response) {
-                angular.forEach(response, function (membership) {
+            AccountService.getAccounts().then(function () {
+                angular.forEach(AccountService.accounts, function (membership) {
                     if (membership.roles.indexOf("account/owner") >= 0) {
                         accounts.push(membership.accountReference);
                     }
@@ -359,9 +290,9 @@ angular.module('odeskApp')
                 var orgAccounts = [];
                 angular.forEach(accounts, function (account) {
                     promises.push(
-                        Account.getSubscription(account.id).then(function (response) {
-                            var serviceId = _.pluck(response, 'serviceId')[0];
-                            var packageName = _.pluck(_.pluck(response, 'properties'), 'Package')[0];
+                        AccountService.getSubscriptions(account.id).then(function () {
+                            var serviceId = _.pluck(AccountService.subscriptions, 'serviceId')[0];
+                            var packageName = _.pluck(_.pluck(AccountService.subscriptions, 'properties'), 'Package')[0];
                             if (_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
                                 orgAccounts.push(account);
                             }
