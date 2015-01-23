@@ -50,7 +50,6 @@ angular.module('odeskApp')
                   editorInstance.doc.setValue('');
                 });
                 editorInstance.on("update", function(editorInstance) {
-                  $log.info('Set validity: ' + (!$scope.codeMirroInstance.state.lint.marked.length > 0));
                   formCtrl.$setValidity('jsonConfig', !$scope.codeMirroInstance.state.lint.marked.length > 0);
                   $scope.$apply('jsonConfig');
                 });
@@ -71,7 +70,6 @@ angular.module('odeskApp')
 
               $scope.$watch('newProjectData', function(newValue, oldValue) {
                 $scope.setJsonContent(newValue);
-                $log.info('Set validity: true');
                 formCtrl.$setValidity('jsonConfig', true);
               }, true);
 
@@ -100,7 +98,7 @@ angular.module('odeskApp')
                   $scope.$apply();
                 };
                 reader.onerror = function () {
-                  console.log('Error reading file');
+                  $log.error('Error reading file');
                 }
               }
             }
