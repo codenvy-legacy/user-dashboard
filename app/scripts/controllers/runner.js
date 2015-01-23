@@ -8,190 +8,289 @@
 
 /**
  * @auth Parth Chhaiya
+ * @author Oleksii Orel
  * @date 08/12/2014
  * Controller for runners
  */
 
 'use strict';
 angular.module('odeskApp')
-    .controller('RunnerCtrl', function ($scope, Workspace, $http, $q, $cookies, $timeout) {
-      $scope.runners = [];
-      $scope.projects = [];
-      $scope.ramConsumption = [];
-      $scope.filter = {};
-      $scope.workspaces = [];
-      $scope.refreshStatus = $cookies['refreshStatus'];
+    .controller('RunnerCtrl', function ($scope, $rootScope, $location, $interval, Workspace, RunnerService, ProjectFactory, $cookies, $timeout) {
 
-      Workspace.all(function (resp) {
-        $scope.workspaces = _.filter(resp, function (workspace) {return !workspace.workspaceReference.temporary;});
+        var refreshInterval = null;
+        var timeRunningInterval = null;
 
-        angular.forEach($scope.workspaces, function (value) {
-          // Get workspace related resources
-          $http({method: 'GET', url:"/api/runner/"+ value.workspaceReference.id +"/resources" }).
-            success(function (data) {
+        $scope.runners = [];
+        $scope.projects = [];
+        $scope.filter = {};
+        $scope.workspaces = [];
+        $scope.currentWorkspace = null;
+        $scope.refreshStatus = $cookies['refreshStatus'];
 
-              var workspaceResources = {
-                workspaceName: value.workspaceReference.name,
-                usedMemory: data.usedMemory,
-                totalMemory: data.totalMemory
-              }
-              $scope.ramConsumption.push(workspaceResources);
-            });
 
-          // Get list of runners
-          $http({method: 'GET', url: $.map(value.workspaceReference.links,function(obj){if(obj.rel=="get projects") return obj.href})[0]}).
-            success(function (data, status) {
-              $scope.projects = $scope.projects.concat(data);
-              angular.forEach($scope.projects, function (project) {
-                $http({method: 'GET', url:"/api/runner/"+ value.workspaceReference.id +"/processes?project="+project.path }).
-                  success(function (data) {
-                    if(data.length > 0){
-                      for (var i = data.length - 1; i >= 0; i--) {
-                        var currentRunner = data[i];
-                        if(currentRunner.status == "RUNNING"){
-                          var runnerDetails = {
-                            project: project,
-                            startTime: currentRunner.startTime,
-                            shutdownUrl: $.map(currentRunner.links,function(obj){if(obj.rel=="stop") return obj.href})[0],
-                            url: $.map(currentRunner.links,function(obj){if(obj.rel=="web url") return obj.href})[0],
-                            dockerRecipe: $.map(currentRunner.links,function(obj){if(obj.rel=="runner recipe") return obj.href})[0],
-                            terminalUrl: $.map(currentRunner.links,function(obj){if(obj.rel=="shell url") return obj.href})[0]
-                          }
-                          $scope.runners.push(runnerDetails);
+        var setDateFormat = function (startTime) {
+            if (typeof startTime == "undefined") {
+                return '';
+            }
+
+            var sec, min, hour, days;
+            var now = new Date();
+            var startTimeInMs = new Date(startTime);
+            var delta = Math.floor(now.getTime() / 1000 - startTimeInMs.getTime() / 1000);
+
+            sec = delta % 60;
+            min = (delta - sec) % 3600 / 60;
+            delta -= min * 60 + sec;
+            hour = (delta % 86400) / 3600;
+            delta -= hour * 3600;
+            days = delta / 86400;
+
+            hour = hour <= 9 ? "0" + hour : hour;
+            min = min <= 9 ? "0" + min : min;
+            sec = sec <= 9 ? "0" + sec : sec;
+
+            if (min == 0 && hour == 0 && days == 0) {
+                return "00:00:" + sec;
+            } else if (days == 0) {
+                return hour + ":" + min + ":" + sec;
+            } else {
+                return days + " days and " + hour + ":" + min + ":" + sec;
+            }
+        };
+
+        var updateRunners = function () {
+            var runners = [];
+            var isHasNew = false;
+
+            angular.forEach($scope.projects, function (project) {
+                angular.forEach(project.runnerProcesses, function (runnerProcess) {
+                    if ((runnerProcess.status == 'RUNNING' || runnerProcess.status == 'NEW') && (runnerProcess.project == project.path)) {
+                        if (runnerProcess.status == 'NEW') {
+                            isHasNew = true;
                         }
-                      };
+                        var runner = [];
+                        runner.ideUrl = project.ideUrl;
+                        runner.projectName = project.name;
+                        runner.startTime = setDateFormat(runnerProcess.startTime);
+                        runner.status = runnerProcess.status;
+                        runner.workspaceName = project.workspaceName;
+                        runner.url = $.map(runnerProcess.links, function (obj) {
+                            if (obj.rel == "web url") return obj.href
+                        })[0];
+                        runner.dockerRecipe = $.map(runnerProcess.links, function (obj) {
+                            if (obj.rel == "runner recipe") return obj.href
+                        })[0];
+                        runner.terminalUrl = $.map(runnerProcess.links, function (obj) {
+                            if (obj.rel == "shell url") return obj.href
+                        })[0];
+                        runner.runnerProcess = runnerProcess;
+                        runners.push(runner);
                     }
-                  });
-              });
+                });
             });
+            if (!angular.equals(runners, $scope.runners)) {
+                $scope.runners = runners;
+            }
+            return isHasNew;
+        };
 
-          $timeout(function () {
-            $("[rel=tooltip]").tooltip({ placement: 'bottom' });
-            $(document).on("click", ".searchfield", function () {
-              $('.searchfull').show();
-              $('.detail').animate({ opacity: 0 }, 400);
-              $('.searchfull').animate({ width: "100%" }, 400, function () { $(".closeBtn").show(); });
-              $('.searchfield').focus();
-            });
-            $(document).on("click", ".closeBtn", function () {
-              $(".closeBtn").hide();
-              $('.detail').animate({ opacity: 1 }, 400);
-              $('.searchfull').animate({ width: "43px" }, 400, function () {
-                $('.searchfield').val('');
-                $('.searchfull').hide();
-              });
-            });
-          });
+        var refreshNewProcess = function (repeat) {
+            $scope.projects = ProjectFactory.projects;
+                ProjectFactory.fetchProjects($scope.currentWorkspace ? [ $scope.currentWorkspace ] : $scope.workspaces, false).then(function () {
+                    repeat--;
+                    if (repeat && updateRunners()) {
+                        $timeout(function () {
+                            refreshNewProcess(repeat);
+                        }, 5000);
+                    }
+                });
+        };
 
+        var updateRefreshInterval = function (time) {
+            if (refreshInterval != null) {
+                if ($interval.cancel(refreshInterval)) {
+                    refreshInterval = null;
+                }
+            }
+            if (time != null && refreshInterval == null) {
+                refreshInterval = $interval(function () {
+                    if ($cookies.refreshStatus == "ENABLED") {
+                        $scope.refresh(false);
+                    }
+                }, time);
+            }
+        };
+
+        var updateTimeRunningInterval = function (time) {
+            if (timeRunningInterval != null) {
+                if ($interval.cancel(timeRunningInterval)) {
+                    timeRunningInterval = null;
+                }
+            }
+            if (time != null && timeRunningInterval == null) {
+                timeRunningInterval = $interval(function () {
+                    if ($scope.runners.length > 0) {
+                        angular.forEach($scope.runners, function (runner) {
+                            runner.startTime = setDateFormat(runner.runnerProcess.startTime);
+                        });
+                    }
+                }, time);
+            }
+        };
+
+        var init = function () {
+            $scope.workspaces = Workspace.workspaces;
+            $scope.currentWorkspace = Workspace.currentWorkspace;
+            $scope.projects = ProjectFactory.projects;
+            if (!$scope.workspaces.length) {
+                Workspace.all(true).then(function (workspaces) {
+                    $scope.workspaces = $scope.workspaces.concat(_.filter(workspaces, function (workspace) {
+                        return !workspace.workspaceReference.temporary;
+                    }));
+                    Workspace.updateWorkspaceResources(true);
+                    if ($scope.projects == null || $scope.projects.length == 0) {
+                        ProjectFactory.fetchProjects($scope.currentWorkspace ? [ $scope.currentWorkspace ] : $scope.workspaces, true).then(function () {
+                            updateRunners();
+                        });
+                    } else {
+                        updateRunners();
+                    }
+                });
+            } else {
+                Workspace.updateWorkspaceResources(true);
+                if ($scope.projects == null || $scope.projects.length == 0) {
+                    ProjectFactory.fetchProjects($scope.currentWorkspace ? [ $scope.currentWorkspace ] : $scope.workspaces, true).then(function () {
+                        updateRunners();
+                    });
+                } else {
+                    updateRunners();
+                    $timeout(function () {
+                        refreshNewProcess(3);
+                    }, 5000);
+                }
+            }
+
+            timeRunningInterval = $interval(function () {
+                if ($scope.runners.length > 0) {
+                    angular.forEach($scope.runners, function (runner) {
+                        runner.startTime = setDateFormat(runner.runnerProcess.startTime);
+                    });
+                }
+            }, 1000);
+
+            updateTimeRunningInterval(1000);
+
+            updateRefreshInterval(30000);// update the runners every 30 seconds
+
+            $timeout(function () {
+                $("[rel=tooltip]").tooltip({ placement: 'bottom' });
+                $(document).on("click", ".searchfield", function () {
+                    $('.searchfull').show();
+                    $('.detail').animate({ opacity: 0 }, 400);
+                    $('.searchfull').animate({ width: "100%" }, 400, function () {
+                        $(".closeBtn").show();
+                    });
+                    $('.searchfield').focus();
+                });
+                $(document).on("click", ".closeBtn", function () {
+                    $(".closeBtn").hide();
+                    $('.detail').animate({ opacity: 1 }, 400);
+                    $('.searchfull').animate({ width: "43px" }, 400, function () {
+                        $('.searchfield').val('');
+                        $('.searchfull').hide();
+                    });
+                });
+            });
+        };
+        init();// all code starts here
+
+        $scope.setCurrentWorkspace = function (workspace) {
+            $scope.currentWorkspace = workspace;
+            Workspace.currentWorkspace = workspace;
+        }
+
+        $scope.refresh = function (showLoading) {
+            Workspace.all(false).then(function (workspaces) {
+                Workspace.updateWorkspaceResources(showLoading).then(function (workspaces) {
+                    if (!angular.equals($scope.workspaces, workspaces)) {
+                        $scope.workspaces = workspaces;
+                    }
+                    ProjectFactory.fetchProjects($scope.currentWorkspace ? [ $scope.currentWorkspace ] : $scope.workspaces, showLoading)
+                        .then(function () {
+                            updateRunners();
+                        });
+                });
+
+            });
+            $scope.refreshStatus = $cookies['refreshStatus'];
+        };
+
+        $scope.shutdownRunner = function (runner) {
+            var processId = runner.runnerProcess.processId;
+
+            RunnerService.stopProcess(runner.runnerProcess, true).then(function (data) {
+                if (data.status == "STOPPED") {
+                    angular.forEach($scope.runners, function (runner, index) {
+                        if (runner.runnerProcess.processId == processId) {
+                            $scope.runners.splice(index, 1);
+                            return;
+                        }
+                    });
+                    Workspace.updateWorkspaceResources();
+                }
+            });
+        };
+
+        $scope.restartRunner = function (runner) {
+            var processId = runner.runnerProcess.processId;
+
+            RunnerService.restartProcess(runner.runnerProcess).then(function (data) {
+                angular.forEach($scope.runners, function (runner, index) {
+                    if (runner.runnerProcess.processId == processId) {
+                        $scope.runners.splice(index, 1);
+                        return;
+                    }
+                });
+                updateRefreshInterval(30000);
+                $timeout(function () {
+                    refreshNewProcess(4);
+                }, 5000);
+            });
+        };
+
+        $scope.refreshStatusCheck = function () {
+            if ($cookies.refreshStatus == "DISABLED") {
+                $cookies.refreshStatus = "ENABLED";
+                updateRefreshInterval(30000);// update the runners every 30 seconds
+                $scope.refresh(true);
+            } else {
+                $cookies.refreshStatus = "DISABLED";
+            }
+            $scope.refreshStatus = $cookies['refreshStatus'];
+        };
+
+        $rootScope.$on('$locationChangeStart', function () {
+            if ($location.url() != "/runner") {
+                if (refreshInterval != null) {
+                    if ($interval.cancel(refreshInterval)) {
+                        refreshInterval = null;
+                    }
+                }
+                if (timeRunningInterval != null) {
+                    if ($interval.cancel(timeRunningInterval)) {
+                        timeRunningInterval = null;
+                    }
+                }
+            } else {
+                if (timeRunningInterval == null) {
+                    updateTimeRunningInterval(1000);
+                }
+                if (refreshInterval == null) {
+                    updateRefreshInterval(30000);// update the runners every 30 seconds
+                }
+            }
         });
-      });
 
-      $scope.setDateFormat = function (startTime){
-        var now = new Date();
-        var startTimeInMs = new Date(startTime);
-
-        var delta = now.getTime() - startTimeInMs.getTime();
-
-        delta = delta/1000;
-
-        var min, hour, sec, days;
-
-        if(delta<=59){
-          delta = Math.floor(delta)
-          delta = delta <= 9 ? "0"+delta : delta
-          return "00:00:"+delta;
-        }
-
-        if(delta>=60 && delta<=3599){
-          min = Math.floor(delta/60);
-          min = min <= 9 ? "0"+min : min
-          sec = Math.floor(delta-(min*60));
-          sec = sec <= 9 ? "0"+sec : sec
-          return "00:"+min+":"+sec;
-        }
-
-        if(delta>=3600 && delta<=86399){
-          hour= Math.floor(delta/3600);
-          min = (delta-(hour*3600))/60;
-          sec = Math.floor(delta-(min*60));
-
-          hour = hour <= 9 ? "0"+hour : hour
-          min = min <= 9 ? "0"+min : min
-          sec = sec <= 9 ? "0"+sec : sec
-
-          return hour+":"+Math.floor(min)+":"+sec;
-        }
-
-        if(delta>=86400){
-          days =  Math.floor(delta/86400);
-          hour =  Math.floor((delta-(days*86400))/3600);
-          min  =  Math.floor((delta-(hour*3600))/60);
-          sec  =  Math.floor(delta-(min*60));
-
-          hour = hour <= 9 ? "0"+hour : hour
-          min = min <= 9 ? "0"+min : min
-          sec = sec <= 9 ? "0"+sec : sec
-
-          return days+" days and "+hour+":"+min+":"+sec;
-        }
-      };
-
-      $scope.shutdownRunnerRefresh = function (shutdownUrl){
-
-        var deferred = $q.defer();
-
-        $http({method: 'POST', url: shutdownUrl})
-          .success(function (data) {
-            deferred.resolve(data);
-            $scope.refresh();
-          })
-          .error(function (err) { deferred.reject(); });
-        return deferred.promise;
-      };
-
-      $scope.shutdownRunner = function (shutdownUrl){
-
-        var deferred = $q.defer();
-
-        $http({method: 'POST', url: shutdownUrl})
-            .success(function (data) {
-              deferred.resolve(data);
-            })
-            .error(function (err) { deferred.reject(); });
-        return deferred.promise;
-      };
-
-      $scope.restartRunner = function (shutdownUrl, project){
-
-        return $q.all([
-          $scope.shutdownRunner(shutdownUrl)
-        ]).then(function (results) {
-          var deferred = $q.defer();
-
-          $http({method: 'POST', url: '/api/runner/'+project.workspaceId+'/run?project='+project.path})
-            .success(function (data) {
-              deferred.resolve(data);
-            })
-            .error(function (err) { deferred.reject(); });
-        });
-
-      };
-
-      $scope.refresh = function (){
-        location.reload();
-      };
-
-      $scope.refreshStatusCheck = function () {
-        if($cookies.refreshStatus == "DISABLED"){
-          $cookies.refreshStatus = "ENABLED"
-        }else{
-          $cookies.refreshStatus = "DISABLED"
-        }
-        $scope.refresh();
-      };
-
-      if($cookies.refreshStatus == "ENABLED"){
-        $timeout($scope.refresh, 30000);
-      }
-
-    });
+    }
+)
+;
