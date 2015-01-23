@@ -156,7 +156,8 @@ angular.module('odeskApp')
             scope: {
               workspaces: '=',
               currentUserId: '=',
-              newProjectData: '='
+              newProjectData: '=',
+              parentForm: '='
             },
             link: function($scope, element, attrs, ctrl) {
               $scope.authenticateWithGitHub = function() {
@@ -243,34 +244,29 @@ angular.module('odeskApp')
                 });
               };
 
-                $scope.selectRepository = function(gitHubRepository) {
-                  var oldSelectedRepository = $scope.selectedRepository;
-                  $scope.selectedRepository = gitHubRepository;
+              $scope.selectRepository = function(gitHubRepository) {
+                $scope.selectedRepository = gitHubRepository;
+                $scope.newProjectData.projectName = gitHubRepository.name;
+                $scope.newProjectData.projectDescription = gitHubRepository.description;
+                $scope.newProjectData.remoteUrl = gitHubRepository.clone_url ;
+              };
 
-                  if (!$scope.newProjectData.projectName || (oldSelectedRepository && $scope.newProjectData.projectName == oldSelectedRepository.name)) {
-                    $scope.newProjectData.projectName = gitHubRepository.name;
-                  }
-                  if (!$scope.newProjectData.projectDescription || (oldSelectedRepository && $scope.newProjectData.projectDescription == oldSelectedRepository.description)) {
-                    $scope.newProjectData.projectDescription = gitHubRepository.description;
-                  }
-                  $scope.newProjectData.remoteUrl = gitHubRepository.clone_url ;
-                };
+              $scope.resolveOrganizationName = organizationNameResolver.resolve;
 
-                $scope.resolveOrganizationName = organizationNameResolver.resolve;
+              $scope.resolveOrganizationType = function(organization) {
+                return organization.name ? "Your account" : "Your organization's account";
+              };
 
-                $scope.resolveOrganizationType = function(organization) {
-                  return organization.name ? "Your account" : "Your organization's account";
-                };
+              $scope.workspaceSelected = $scope.workspaces[0];
+              $scope.organizations = [];
+              $scope.gitHubRepositories = [];
 
-                $scope.workspaceSelected = $scope.workspaces[0];
-                $scope.organizations = [];
-
-                $scope.state = 'IDLE';
-                $scope.checkTokenValidity().then(function() {
-                  $scope.loadRepositories();
-                });
-              },
-              templateUrl: 'partials/widgets/importGitHub.html'
-            };
-          }
-        ]);
+              $scope.state = 'IDLE';
+              $scope.checkTokenValidity().then(function() {
+                $scope.loadRepositories();
+              });
+            },
+            templateUrl: 'partials/widgets/importGitHub.html'
+          };
+        }
+      ]);

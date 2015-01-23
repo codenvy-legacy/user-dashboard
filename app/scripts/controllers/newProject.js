@@ -20,6 +20,7 @@ angular.module('odeskApp')
         '$scope',
         '$timeout',
         '$modalInstance',
+        '$filter',
         'currentUserId',
         'workspaces',
         'type',
@@ -29,6 +30,7 @@ angular.module('odeskApp')
             $scope,
             $timeout,
             $modalInstance,
+            $filter,
             currentUserId,
             workspaces,
             type,
@@ -49,12 +51,16 @@ angular.module('odeskApp')
           };
 
           this.setProjectType = function(type) {
-            if ($scope.newProjectForm) {
-              if ($scope.newProjectForm.projectName && !$scope.newProjectForm.projectName.$touched) {
-                this.newProjectData.projectName = undefined;
+            if (this.newProjectData.remoteUrl) {
+              if (type == 'Zip') {
+                if (this.newProjectData.remoteUrl.match(new RegExp('^https?://github.com/.*$'))) {
+                  this.newProjectData.remoteUrl = this.newProjectData.remoteUrl.replace(new RegExp('^(.*)\.git$'), '$1/archive/master.zip');
+                }
               }
-              if ($scope.newProjectForm.projectName && !$scope.newProjectForm.projectDescription.$touched) {
-                this.newProjectData.projectDescription = undefined;
+              if (type == 'GitHub' || type == 'Git') {
+                if (this.newProjectData.remoteUrl.match(new RegExp('^https?://github.com/.*/archive/.*\.zip$'))) {
+                  this.newProjectData.remoteUrl = this.newProjectData.remoteUrl.replace(new RegExp('^(.*)/archive/.*\.zip$'), '$1.git');
+                }
               }
             }
             this.newProjectData.importType = type;

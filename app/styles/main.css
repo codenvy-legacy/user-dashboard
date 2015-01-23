@@ -1560,8 +1560,35 @@ html[dir="rtl"] .select2-search input {
 
 /* Factory page */
 
+.factories-container {
+    margin-top:37px;
+}
 
-.btn-create-factory-modal i {
+.factorynav > li {
+    vertical-align: middle;
+    margin: 0 0 0 10px;
+    padding: 4px 0 0 0;
+}
+
+.factory-navbar-right {
+    float: right;
+}
+
+.breadcrumb .btn-create-factory-modal {
+    height: 20px;
+    font-size: 8px;
+    line-height: 20px;
+    padding: 0px 5px 0px 5px;
+    margin-top: -2px;
+    margin-right: 5px;
+}
+
+.breadcrumb  .btn-create-factory-modal i {
+    margin-left: 5px;
+    margin-right: 0px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    vertical-align: middle;
     margin-top: -2px;
 }
 
@@ -1581,14 +1608,6 @@ html[dir="rtl"] .select2-search input {
 .factories-bar a {
     font-size: 1em;
     text-transform: uppercase !important;
-}
-
-.factory-details {
-    margin-top : 25px;
-}
-.factory-details-infobar {
-    background-color: rgb(240, 240, 240);
-    border-bottom: 1px solid #dcdcdc;
 }
 
 .factory-information {
@@ -1852,6 +1871,25 @@ html[dir="rtl"] .select2-search input {
     width: 100%;
 }
 
+#share-factory-modal .row {
+    margin-bottom: 15px;
+}
+
+#share-factory-modal .row .btn-share-url {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#share-factory-modal .factory-share-copied {
+    color: green;
+}
+
+
 #delete-factory-modal {
     z-index: 5000;
+}
+
+/* Form validation */
+.css-form input.ng-invalid.ng-touched {
+    border-color: rgb(169, 68, 66);
 }

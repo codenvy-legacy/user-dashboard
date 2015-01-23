@@ -134,13 +134,18 @@ angular.module('odeskApp')
 					} else if ("snippet/markdown" == link.rel) {
 						$http.get(link.href).success(function (data, status) {
 							$scope.factorySnippetMarkdown = data;
-						}).error(function (data) {
+						}).error(function (data, status) {
+							// display a fallback for the link
+							if (409 == status) {
+								$scope.factorySnippetMarkdown = "[Factory link](" + $scope.factoryURL + ")";
+							} else {
 								$scope.factorySnippetMarkdown = "Error: " + $filter('json')(data, 2);
+							}
 						});
 					} else if ("snippet/html" == link.rel) {
 						$http.get(link.href).success(function (data, status) {
 							$scope.factorySnippetHTML = data;
-						}).error(function (data) {
+						}).error(function (data, status) {
 							$scope.factorySnippetHTML = "Error: " + $filter('json')(data, 2);
 						});
 					}
@@ -148,6 +153,7 @@ angular.module('odeskApp')
 			});
 		}
 
+		$scope.shareFactoryCopy = "";
 
 		$scope.openSnippets = function(factoryId) {
 			// load snippets details
@@ -156,7 +162,6 @@ angular.module('odeskApp')
 			// open modal
 			$modal.open({
 				templateUrl: 'partials/templates/factories/shareFactoryModal.html',
-				size: 'lg',
 				scope: $scope
 			});
 		}
@@ -382,7 +387,7 @@ angular.module('odeskApp')
 					cache:true
 				};
 				
-				$http.post('/api/analytics/metric/factory_used/list', reqData, con)
+				$http.post('api/analytics/public-metric/factory_used/list', reqData, con)
                 .success(function (data, status) {
 					$scope.nCountFactories++;
 					var i=0;
@@ -475,7 +480,7 @@ angular.module('odeskApp')
 					_factory.seeURL = data.links[5].href;
 
 					// Add analytics data
-					var analyticsUri = '/api/analytics/metric/factory_used?factory=https%3A%2F%2Fcodenvy.com%2Ffactory%3Fid%3D' + factory.id;
+					var analyticsUri = '/api/analytics/public-metric/factory_used?factory=https%3A%2F%2Fcodenvy.com%2Ffactory%3Fid%3D' + factory.id;
 
 					$http.get(analyticsUri).success(function(data, status){
 						_factory.views = parseInt(data.value);
@@ -580,7 +585,7 @@ angular.module('odeskApp')
 				userid = data["id"];
 
 				// Now, get all factories created by this user
-				$http.get('/api/factory/find?id=&v=2.0&v=2.1&creator.userId=' + userid).success(function(data, status) {
+				$http.get('/api/factory/find?id=&v>2.0&creator.userId=' + userid).success(function(data, status) {
 
 					data.forEach(function(factory){
    					var factoryURL = factory.href.trim();
