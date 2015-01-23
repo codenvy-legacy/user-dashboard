@@ -22,53 +22,81 @@
 //  * it gives a global model (not limited to the the controller),
 //  * it gives the ability to refresh it from anywhere by calling directly the factory.
 angular.module('odeskApp')
-    .factory('ProjectFactory', ['$http', function($http) {
+    .factory('ProjectFactory', ['$http', '$q', 'RunnerService', function ($http, $q, RunnerService) {
         var ProjectFactory = {};
 
         ProjectFactory.isProjectDataFetched = false;
         ProjectFactory.projects = [];
 
-        ProjectFactory.fetchProjects = function(workspaces) {
+        ProjectFactory.fetchProjects = function (workspaces, showLoading) {
             var projects = [];
-            var count = 0;
+            var workspaceCount = 0;
+            var deferred = $q.defer();
 
             angular.forEach(workspaces, function (workspace) {
-                $http({ method: 'GET', url: $.map(workspace.workspaceReference.links, function (obj) { if (obj.rel == "get projects") return obj.href })[0] , ignoreLoadingBar: true })
-                    .success(function (data, status) {
-                        count++;
-                        projects = projects.concat(data);
-                        if(count == workspaces.length){
-                            updateProjectsData(projects);
+                $http({ method: 'GET', url: $.map(workspace.workspaceReference.links, function (obj) {
+                    if (obj.rel == "get projects") return obj.href
+                })[0], ignoreLoadingBar: !showLoading }).success(function (workspaceProjects) {
+                    workspaceCount++;
+                    var workspaceProjectCount = 0;
+                    angular.forEach(workspaceProjects, function (workspaceProject) {
+                        if (workspaceProject.problems.length) {
+                            angular.forEach(workspaceProject.problems, function (problem) {
+                                if (problem.code == 1) {
+                                    workspaceProject.description = 'This project does not have its language type and ' +
+                                        'environment set yet. Open the project to configure it properly.';
+                                    workspaceProject.type = 'mis-configured';
+                                    workspaceProject.misconfigured = true;
+                                }
+                            });
                         }
-                        ProjectFactory.isProjectDataFetched = !!projects.length;
-                    })
+                        workspaceProject.runnerProcesses = [];
+                        RunnerService.getProcesses(workspaceProject.workspaceId, workspaceProject.path, false)
+                            .then(function (runningProcesses) {
+                                workspaceProjectCount++;
+                                angular.forEach(runningProcesses , function (runningProcess) {
+                                    if ((runningProcess !== null) && (runningProcess.project == workspaceProject.path)) {
+                                        workspaceProject.runnerProcesses.push(runningProcess);
+                                    }
+                                });
+                                if (workspaceProjectCount == workspaceProjects.length) {
+                                    projects = projects.concat(workspaceProjects);
+                                    if (workspaceCount == workspaces.length) {
+                                        updateProjectsData(projects);
+                                        deferred.resolve();
+                                    }
+                                }
+                            }, function (error) {
+                                workspaceProjectCount++
+                                workspaceProject.runnerProcesses = [];
+                                if (workspaceProjectCount == workspaceProjects.length) {
+                                    projects = projects.concat(workspaceProjects);
+                                    if (workspaceCount == workspaces.length) {
+                                        updateProjectsData(projects);
+                                        deferred.reject(error);
+                                    }
+                                }
+                            });
+                    });
+                    ProjectFactory.isProjectDataFetched = !!projects.length;
+                })
                     .error(function (data, status) {
-                        count++;
+                        workspaceCount++;
                         ProjectFactory.isProjectDataFetched = true;
-                        if(count == workspaces.length){
+                        if (workspaceCount == workspaces.length) {
                             updateProjectsData(projects);
                         }
                     });
             });
 
             var updateProjectsData = function (projects) {
-                angular.forEach(projects , function (project){
-                    if(project.problems.length){
-                        angular.forEach(project.problems, function(problem){
-                            if(problem.code == 1) {
-                                project.description = 'This project does not have its language type and environment set yet. Open the project to configure it properly.';
-                                project.type='mis-configured';
-                                project.misconfigured = true;
-                            }
-                        });
-                    }
-                });
                 if (!angular.equals(projects, ProjectFactory.projects)) {
                     // Empty the array keeping its reference (reason why = [] is not used).
                     while (ProjectFactory.projects.length) ProjectFactory.projects.pop();
                     ProjectFactory.projects.push.apply(ProjectFactory.projects, projects);
                 }
             }
+            return deferred.promise;
         };
 
         ProjectFactory.getSampleProject = function () {

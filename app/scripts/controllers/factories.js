@@ -428,8 +428,8 @@ angular.module('odeskApp')
 	
         $scope.projects = [];
 
-		Workspace.all(function (resp) {
-			$scope.workspaces = _.filter(resp, function (workspace) {return !workspace.workspaceReference.temporary;});
+        Workspace.all(true).then(function (resp) {
+			$scope.workspaces = Workspace.workspaces;
 
 			angular.forEach($scope.workspaces, function (value) {
 				// Get list of projects
@@ -447,9 +447,6 @@ angular.module('odeskApp')
 		var factoriesConcatUrl;
 		var factories;
 
-        Workspace.all(function (resp) {
-			$scope.workspaces = resp;
-        });
 
 
 		/**

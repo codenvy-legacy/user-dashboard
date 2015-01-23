@@ -16,13 +16,61 @@
 'use strict';
 
 angular.module('odeskApp')
-    .factory('Workspace', ['$resource', '$q', '$http', function ($resource, $q, $http) {
-        var item = $resource('/api/workspace/:workspaceID', {}, {
-            all: { method: 'GET', params: { workspaceID: 'all' }, isArray: true },
-            query: { method: 'GET', params: {}, isArray: false }
-        });
+    .factory('Workspace', ['$resource', '$q', '$http', 'RunnerService', function ($resource, $q, $http, RunnerService) {
+        var Workspace = {};
 
-        item.getMembersForWorkspace = function (workspaceId) {
+        Workspace.workspaces = [];
+        Workspace.currentWorkspace = null;
+
+        Workspace.all = function (showLoading) {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                ignoreLoadingBar: !showLoading
+            };
+            $http.get('/api/workspace/all', con)
+                .success(function (data) {
+                    var workspaces = [];
+                    if(data !== null){
+                        workspaces = workspaces.concat(_.filter(data, function (workspace) {
+                            return !workspace.workspaceReference.temporary;
+                        }));
+                        if(!angular.equals(Workspace.workspaces, workspaces)) {
+                            Workspace.workspaces = workspaces;
+                        }
+                    }
+                    deferred.resolve(workspaces); //resolve data
+                })
+                .error(function (err) {
+                    deferred.reject(err);
+                });
+            return deferred.promise;
+        },
+
+        Workspace.updateWorkspaceResources = function (showLoading) {
+           var deferred = $q.defer();
+           var workspaceCount = 0;
+            Workspace.workspaces.forEach( function (workspace) {
+                workspaceCount++;
+                RunnerService.getResources(workspace.workspaceReference.id, showLoading).then(function (resources) {
+                    workspace.usedMemory = resources.usedMemory;
+                    workspace.totalMemory = resources.totalMemory;
+                    if (workspaceCount == Workspace.workspaces.length) {
+                        deferred.resolve(Workspace.workspaces); //resolve data
+                    }
+                }, function (err) {
+                    workspaceCount++;
+                    deferred.reject(err);
+                });
+
+             });
+            return deferred.promise;
+        },
+
+        Workspace.getMembersForWorkspace = function (workspaceId) {
             var deferred = $q.defer();
             var con = {
                 headers: {
@@ -34,18 +82,20 @@ angular.module('odeskApp')
                 .success(function (data) {
                     deferred.resolve(data); //resolve data
                 })
-                .error(function (err) { deferred.reject(); });
+                .error(function (err) {
+                    deferred.reject();
+                });
             return deferred.promise;
-        };
+        },
 
-        item.addMemberToWorkspace = function (workspaceId, userId) {
+        Workspace.addMemberToWorkspace = function (workspaceId, userId) {
             var deferred = $q.defer();
             var con = {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             };
-            
+
             var roles = [
                 "workspace/developer"
             ];
@@ -64,9 +114,9 @@ angular.module('odeskApp')
                 .error(function (err) { deferred.reject(); });
             return deferred.promise;
 
-        };
-        
-        item.removeMember = function (workspaceId, userId) {
+        },
+
+        Workspace.removeMember = function (workspaceId, userId) {
             var deferred = $q.defer();
             $http.delete('/api/workspace/' + workspaceId + '/members/' + userId)
                 .success(function (data) {
@@ -76,9 +126,9 @@ angular.module('odeskApp')
                     deferred.reject();
                 });
             return deferred.promise;
-        };
+        },
 
-        item.removeWorkspace = function (workspaceId) {
+        Workspace.removeWorkspace = function (workspaceId) {
             var deferred = $q.defer();
             $http.delete('/api/workspace/' + workspaceId)
                 .success(function (data) {
@@ -88,9 +138,9 @@ angular.module('odeskApp')
                     deferred.reject(err);
                 });
             return deferred.promise;
-        };
+        }
 
-        return item;
+        return Workspace;
     }]);
 
 // Get workspace details based on workspace id
