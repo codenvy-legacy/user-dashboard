@@ -39,6 +39,7 @@ angular.module('odeskApp')
                                         // Invalid JSON, leave it unformatted
                                         $scope.factoryContent = reader.result;
                                     }
+                                    $scope.factoryConfigurationOK = "Successfully loaded file's configuration " + $scope.uploadedFileName;
                                     $scope.$apply();
                                 };
                                 reader.onerror = function () {
