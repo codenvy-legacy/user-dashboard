@@ -9,8 +9,8 @@
                 <tab-heading>
                     <span class="tab-title"><i class="import-icon fa fa-github fa-lg"></i> From your GitHub account</span>
                 </tab-heading>
-                <ud-import-github parent-form="newProjectForm"
-                                  workspaces="newProjectCtrl.workspaces"
+                <ud-import-github workspaces="newProjectCtrl.workspaces"
+                                  workspace-selected="newProjectCtrl.workspaceSelected"
                                   current-user-id="newProjectCtrl.currentUserId"
                                   new-project-data="newProjectCtrl.newProjectData">
                 </ud-import-github>
@@ -22,8 +22,8 @@
                 <tab-heading>
                     <span class="tab-title"><i class="import-icon fa fa-git-square fa-lg"></i> From a Git repository</span>
                 </tab-heading>
-                <ud-import-git-repository parent-form="newProjectForm"
-                                          workspaces="newProjectCtrl.workspaces"
+                <ud-import-git-repository workspaces="newProjectCtrl.workspaces"
+                                          workspace-selected="newProjectCtrl.workspaceSelected"
                                           new-project-data="newProjectCtrl.newProjectData">
                 </ud-import-git-repository>
                 <alert ng-repeat="alert in newProjectCtrl.alerts" type="{{alert.type}}" close="newProjectCtrl.closeAlert($index)">
@@ -34,13 +34,23 @@
                 <tab-heading>
                     <span class="tab-title"><i class="import-icon fa fa-file-archive-o fa-lg"></i> From a Zip URL</span>
                 </tab-heading>
-                <ud-import-zip parent-form="parentForm"
-                               workspaces="newProjectCtrl.workspaces"
+                <ud-import-zip workspaces="newProjectCtrl.workspaces"
+                               workspace-selected="newProjectCtrl.workspaceSelected"
                                new-project-data="newProjectCtrl.newProjectData">
                 </ud-import-zip>
                 <alert ng-repeat="alert in newProjectCtrl.alerts" type="{{alert.type}}" close="newProjectCtrl.closeAlert($index)">
                     {{alert.msg}}
                 </alert>
+            </tab>
+            <tab active="newProjectCtrl.tabActivated['Factory']" select="newProjectCtrl.setProjectType('Factory')">
+                <tab-heading>
+                    <span class="tab-title"><i class="import-icon fa fa fa-cloud-upload fa-lg"></i> From a configuration file</span>
+                </tab-heading>
+                <ud-import-factory workspaces="newProjectCtrl.workspaces"
+                                   workspace-selected="newProjectCtrl.workspaceSelected"
+                                   new-project-data="newProjectCtrl.newProjectData"
+                                   import-type="importType">
+                </ud-import-factory>
             </tab>
         </tabset>
     </div>

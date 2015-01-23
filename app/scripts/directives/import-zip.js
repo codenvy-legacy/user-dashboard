@@ -19,15 +19,13 @@
 angular.module('odeskApp')
     .directive('udImportZip', function() {
         return {
-            restrict: 'E',
-            scope: {
-                workspaces: '=',
-                newProjectData: '=',
-                parentForm: '='
-            },
-            link: function ($scope) {
-                $scope.workspaceSelected = $scope.workspaces[0];
-            },
-            templateUrl: 'partials/widgets/importZip.html'
+          restrict: 'E',
+          require: '^form',
+          scope: {
+            workspaces: '=',
+            workspaceSelected: '=',
+            newProjectData: '='
+          },
+          templateUrl: 'partials/widgets/importZip.html'
         }
     });
