@@ -85,11 +85,11 @@ angular.module('odeskApp', [
         $httpProvider.interceptors.push('AuthInterceptor');
     }
     $routeProvider
-	    .when('/dashboard', {
+      .when('/dashboard', {
             templateUrl: BASE_URL + 'views/dashboard.html',
             controller: 'DashboardCtrl'
         })
-	    .when('/factories', {
+      .when('/factories', {
             templateUrl: BASE_URL + 'views/factories.html',
             controller: 'FactoriesCtrl'
         })
@@ -97,7 +97,7 @@ angular.module('odeskApp', [
           templateUrl: BASE_URL + 'views/factorydetails.html',
           controller: 'FactoryCtrl'
       })
-	    .when('/stats', {
+      .when('/stats', {
             templateUrl: BASE_URL + 'views/stats.html',
             controller: 'StatsCtrl'
         })
@@ -109,7 +109,7 @@ angular.module('odeskApp', [
           templateUrl: BASE_URL + 'views/admin.html',
           controller: 'AdminCtrl'
       })
-	    .when('/organizations', {
+     .when('/organizations', {
             templateUrl: BASE_URL + 'views/organization/workspaces.html',
             controller: 'OrganizationsCtrl'
       })
@@ -125,7 +125,7 @@ angular.module('odeskApp', [
           templateUrl: BASE_URL + 'views/organization/workspace_members.html',
           controller: 'workspaceInfoCtrl'
       })
-	    .when('/organizations/:name', {
+      .when('/organizations/:name', {
             templateUrl: BASE_URL + 'views/orgdetail.html',
             controller: 'OrgdetailCtrl'
       })
