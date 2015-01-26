@@ -19,10 +19,10 @@
 angular.module('odeskApp')
     .controller('DashboardCtrl', function ($scope, $rootScope, $cookieStore, $http, $q, $window, $interval, $timeout, $location,
                                            DocBoxService, Workspace, Project, Users, Profile, Password, ProjectFactory, RunnerService, newProject) {
+      var refreshLocation = "/dashboard";
       var old_description = '';
       var old_projectName = '';
       var refreshInterval = null;
-      var updateProjectTimer = null;
 
       $scope.box = 1;
       $scope.search = 0;
@@ -49,6 +49,10 @@ angular.module('odeskApp')
             setPermisionRules(perm, member);
           }
         });
+      };
+
+      var isRefreshLocation = function () {
+          return $location.url() == refreshLocation;
       };
 
       var setPermisionRules = function (permission, member) {
@@ -516,6 +520,9 @@ angular.module('odeskApp')
         };
 
         var updateProjectProcesses = function (project, repeat) {
+            if (!isRefreshLocation()) {
+                return;
+            }
             RunnerService.getProcesses(project.workspaceId, project.path, false)
                 .then(function (runnerProcesses) {
                     var newRunnerProcesses = [];
@@ -528,29 +535,15 @@ angular.module('odeskApp')
                         updateProjectStatus(project);
                     repeat--;
                     if (project.status != 'RUNNING' && repeat >= 0) {
-                        if (updateProjectTimer != null){
-                            if($timeout.cancel(updateProjectTimer)){
-                                updateProjectTimer = null;
-                            }
-                        }
-                        if (updateProjectTimer == null) {
-                            updateProjectTimer = $timeout(function () {
-                                updateProjectProcesses(project, repeat);
-                            }, 5000);
-                        }
-                    }
-                }, function (error) {
-                    repeat--;
-                    if (updateProjectTimer != null){
-                        if($timeout.cancel(updateProjectTimer)){
-                            updateProjectTimer = null;
-                        }
-                    }
-                    if (updateProjectTimer == null) {
-                        updateProjectTimer = $timeout(function () {
+                        $timeout(function () {
                             updateProjectProcesses(project, repeat);
                         }, 5000);
                     }
+                }, function (error) {
+                    repeat--;
+                    $timeout(function () {
+                        updateProjectProcesses(project, repeat);
+                    }, 5000);
                 });
         };
 
@@ -676,18 +669,11 @@ angular.module('odeskApp')
         init();// all code starts here
 
         $rootScope.$on('$locationChangeStart', function () {
-            if ($location.url() != "/dashboard") {
+            if (!isRefreshLocation()) {
                 if (refreshInterval != null) {
                     if ($interval.cancel(refreshInterval)) {
                         refreshInterval = null;
                     }
-                    if (updateProjectTimer != null){
-                        $timeout.cancel(updateProjectTimer);
-                    }
-                }
-            } else {
-                if (refreshInterval == null) {
-                    updateInterval(30000);
                 }
             }
         });

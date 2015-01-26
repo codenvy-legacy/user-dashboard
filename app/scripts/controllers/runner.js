@@ -17,6 +17,7 @@
 angular.module('odeskApp')
     .controller('RunnerCtrl', function ($scope, $rootScope, $location, $interval, Workspace, RunnerService, ProjectFactory, $cookies, $timeout) {
 
+        var refreshLocation = "/runner";
         var refreshInterval = null;
         var timeRunningInterval = null;
 
@@ -27,6 +28,10 @@ angular.module('odeskApp')
         $scope.currentWorkspace = null;
         $scope.refreshStatus = $cookies['refreshStatus'];
 
+
+        var isRefreshLocation = function () {
+            return $location.url() == refreshLocation;
+        };
 
         var setDateFormat = function (startTime) {
             if (typeof startTime == "undefined") {
@@ -88,9 +93,7 @@ angular.module('odeskApp')
                     }
                 });
             });
-            if (!angular.equals(runners, $scope.runners)) {
-                $scope.runners = runners;
-            }
+            $scope.runners = runners;
             return isHasNew;
         };
 
@@ -270,7 +273,7 @@ angular.module('odeskApp')
         };
 
         $rootScope.$on('$locationChangeStart', function () {
-            if ($location.url() != "/runner") {
+            if (!isRefreshLocation()) {
                 if (refreshInterval != null) {
                     if ($interval.cancel(refreshInterval)) {
                         refreshInterval = null;
@@ -281,16 +284,8 @@ angular.module('odeskApp')
                         timeRunningInterval = null;
                     }
                 }
-            } else {
-                if (timeRunningInterval == null) {
-                    updateTimeRunningInterval(1000);
-                }
-                if (refreshInterval == null) {
-                    updateRefreshInterval(30000);// update the runners every 30 seconds
-                }
             }
         });
 
     }
-)
-;
+);
