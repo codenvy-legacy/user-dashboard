@@ -1,10 +1,10 @@
 /*jslint
-    browser: true,
-    devel:true ,
-    node:true,
-    nomen: true,
-    es5:true
-*/
+ browser: true,
+ devel:true ,
+ node:true,
+ nomen: true,
+ es5:true
+ */
 
 /**
  * @auth Gaurav Meena
@@ -29,46 +29,46 @@ angular.module('odeskApp', [
     'ui.select',
     'angularFileUpload',
     'ngClipboard'
-]).config(function(cfpLoadingBarProvider) {
+]).config(function (cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeBar = false;
 }).constant('udCodemirrorConfig', {
     codemirror: {
-      lineWrapping: true,
-      lineNumbers: true,
-      mode: 'application/json',
-      gutters: ['CodeMirror-lint-markers', 'CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
-      lint: true,
-      matchBrackets: true,
-      autoCloseBrackets: true,
-      foldGutter: true,
-      styleActiveLine: true,
-      theme: 'codenvy'
+        lineWrapping: true,
+        lineNumbers: true,
+        mode: 'application/json',
+        gutters: ['CodeMirror-lint-markers', 'CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+        lint: true,
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        foldGutter: true,
+        styleActiveLine: true,
+        theme: 'codenvy'
     }
-}).config(function() {
-  uiCodemirrorDirective.$inject = ["$timeout", "udCodemirrorConfig"];
+}).config(function () {
+    uiCodemirrorDirective.$inject = ["$timeout", "udCodemirrorConfig"];
 }).factory('AuthInterceptor', function ($window, $cookies, $q) {
-  return {
-    request: function(config) {
-      //remove prefix url
-      if (config.url.indexOf("http://dev.box.com/api") == 0) {
-         config.url = config.url.substring("http://dev.box.com".length);
-      }
+    return {
+        request: function (config) {
+            //remove prefix url
+            if (config.url.indexOf("http://dev.box.com/api") == 0) {
+                config.url = config.url.substring("http://dev.box.com".length);
+            }
 
-      //Do not add token on auth login
-      if (config.url.indexOf("/api/auth/login") == -1 && config.url.indexOf("api/") != -1 && $cookies.token) {
-          config.params = config.params || {};
-          angular.extend(config.params, {token: $cookies.token});
-      }
-      return config || $q.when(config);
-    },
-    response: function(response) {
-      if (response.status === 401 || response.status == 403) {
-          $log.info('Redirect to login page.')
-          $location.path('/login');
-      }
-      return response || $q.when(response);
-    }
-  };
+            //Do not add token on auth login
+            if (config.url.indexOf("/api/auth/login") == -1 && config.url.indexOf("api/") != -1 && $cookies.token) {
+                config.params = config.params || {};
+                angular.extend(config.params, {token: $cookies.token});
+            }
+            return config || $q.when(config);
+        },
+        response: function (response) {
+            if (response.status === 401 || response.status == 403) {
+                $log.info('Redirect to login page.')
+                $location.path('/login');
+            }
+            return response || $q.when(response);
+        }
+    };
 }).config(function ($routeProvider, $locationProvider, $httpProvider) {
     var DEFAULT;
     var BASE_URL;
@@ -85,11 +85,11 @@ angular.module('odeskApp', [
         $httpProvider.interceptors.push('AuthInterceptor');
     }
     $routeProvider
-	    .when('/dashboard', {
+        .when('/dashboard', {
             templateUrl: BASE_URL + 'views/dashboard.html',
             controller: 'DashboardCtrl'
         })
-	    .when('/factories', {
+        .when('/factories', {
             templateUrl: BASE_URL + 'views/factories.html',
             controller: 'FactoriesCtrl'
         })
@@ -97,7 +97,7 @@ angular.module('odeskApp', [
             templateUrl: BASE_URL + 'views/factorydetails.html',
             controller: 'FactoryCtrl'
         })
-	    .when('/stats', {
+        .when('/stats', {
             templateUrl: BASE_URL + 'views/stats.html',
             controller: 'StatsCtrl'
         })
@@ -109,7 +109,7 @@ angular.module('odeskApp', [
             templateUrl: BASE_URL + 'views/admin.html',
             controller: 'AdminCtrl'
         })
-	    .when('/organizations', {
+        .when('/organizations', {
             templateUrl: BASE_URL + 'views/organization/workspaces.html',
             controller: 'OrganizationsCtrl'
         })
@@ -125,7 +125,7 @@ angular.module('odeskApp', [
             templateUrl: BASE_URL + 'views/organization/workspace_members.html',
             controller: 'workspaceInfoCtrl'
         })
-	    .when('/organizations/:name', {
+        .when('/organizations/:name', {
             templateUrl: BASE_URL + 'views/orgdetail.html',
             controller: 'OrgdetailCtrl'
         })
@@ -153,10 +153,6 @@ angular.module('odeskApp', [
             templateUrl: BASE_URL + 'views/login.html',
             controller: 'LoginCtrl'
         })
-        .when('/account/subscriptions', {
-            templateUrl: BASE_URL + 'views/account/subscriptions.html',
-            controller: 'SubscriptionsCtrl'
-        })
         .when('/account/subscriptions/:id', {
             templateUrl: BASE_URL + 'views/account/subscriptiondetails.html',
             controller: 'SubscriptionDetailsCtrl'
@@ -164,20 +160,19 @@ angular.module('odeskApp', [
         .otherwise({
             redirectTo: DEFAULT
         });
-
-	//while uncommenting line below fix # in navbar.js
+    //while uncommenting line below fix # in navbar.js
     //$locationProvider.html5Mode(true);
-}).directive('numbersOnly', function(){
+}).directive('numbersOnly', function () {
     return {
         require: 'ngModel',
-        link: function(scope, element, attrs, modelCtrl) {
+        link: function (scope, element, attrs, modelCtrl) {
             modelCtrl.$parsers.push(function (inputValue) {
                 // this next if is necessary for when using ng-required on your input.
                 // In such cases, when a letter is typed first, this parser will be called
                 // again, and the 2nd time, the value will be undefined
                 if (!inputValue) return ''
                 var transformedInput = inputValue.replace(/[^0-9+.]/g, '');
-                if (transformedInput!=inputValue) {
+                if (transformedInput != inputValue) {
                     modelCtrl.$setViewValue(transformedInput);
                     modelCtrl.$render();
                 }
@@ -185,12 +180,12 @@ angular.module('odeskApp', [
             });
         }
     };
-}).run(['$rootScope', function($rootScope) {
+}).run(['$rootScope', function ($rootScope) {
 
 }]);
 
 angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
     .controller('CarouselController', ['$scope', '$timeout', '$transition', '$q', function ($scope, $timeout, $transition, $q) {
-    }]).directive('carousel', [function() {
+    }]).directive('carousel', [function () {
         return { }
     }]);

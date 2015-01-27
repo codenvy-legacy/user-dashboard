@@ -11,11 +11,16 @@
             </ul>
         </li>
         <li class="dropdown user-dropdown">WORKSPACE:
-      <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-down garrow"></i>{{filter.workspaceName || 'All'}}</a>
+            <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-down garrow"></i>{{currentWorkspace ? currentWorkspace.workspaceReference.name : 'All'}}</a>
             <ul class="dropdown-menu">
-                <li><a href="" ng-click="filter.workspaceName=''">All</a></li>
-                <li ng-repeat="workspace in workspaces" ng-click="filter.workspaceName=workspace.workspaceReference.name"><a href="">{{workspace.workspaceReference.name}}</a></li>
+                <li><a href="" ng-click="setCurrentWorkspace(null)">All</a></li>
+                <li ng-repeat="workspace in workspaces" ng-click="setCurrentWorkspace(workspace)"><a href="">{{workspace.workspaceReference.name}}</a></li>
             </ul>
+        </li>
+        <li>
+            <span>VIEW AS:</span>
+            <a href="" ng-click="box = 0"><i style="font-size: 16px;" ng-class="{'garrow':box == 1}" class="fa fa-bars" rel="tooltip" title="List View"></i></a>
+            <a href="" ng-click="box = 1"><i style="font-size: 16px;" ng-class="{'garrow':box == 0}" class="fa fa-th-large" rel="tooltip" title="Grid View"></i></a>
         </li>
         <li class="search1 clearfix">
             <div>
@@ -127,8 +132,9 @@
     </div>
     <!-- end doc-boxes -->
 
+    <!-- show projects-->
     <div class="col-md-10">
-        <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
+        <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-4 col-md-6 col-sm-8 col-xs-12 projectbox">
             <div class="panel panel-default" ng-if="projects.length > 0">
                 <div class="panel-heading">
                     <a href="{{project.ideUrl}}" target="_blank">
@@ -136,12 +142,23 @@
                             <div class="col-md-3 col-sm-3 col-xs-3" style="width: 54px">
                                 <img class="bordered" height="44" width="44" ng-src="./images/{{project.type}}.png" alt="">
                             </div>
-                            <div class="col-md-9 col-sm-9 col-xs-9">
+                            <div class="col-md-6 col-sm-8 col-xs-6">
                                 <h3 class="panel-title"><strong>{{project.name}}</strong></h3>
                                 <span>{{project.workspaceName}}</span>
                             </div>
                         </div><!-- .row -->
                     </a>
+                    <div class="btn-runner" ng-click="runProject(project)">
+                        <span ng-if="projectStatus[project.path]  != 'NEW' &&  projectStatus[project.path]  != 'RUNNING'">
+                            <span class="triangle-right"></span>Run
+                        </span>
+                        <span ng-if="projectStatus[project.path] == 'NEW'">
+                             <span class="loader"></span>Starting
+                        </span>
+                        <span ng-if="projectStatus[project.path] == 'RUNNING'">
+                            <span class="circle"></span>Running
+                        </span>
+                    </div>
                 </div><!-- panel-heading -->
 
                 <div class="panel-body" ng-if="project.description != null && project.misconfigured==true"><span style="color:#b42020">{{project.description}}</span></div>
@@ -164,11 +181,9 @@
             </div><!-- panel-default -->
 
         </div><!-- projectbox -->
+    </div>
 
 </div>
-
-
-    </div>
 
 
 <div ng-if="notification" style="width: 300px" class="col-md-3 projectbox" data-toggle="modal" data-target="#myModal">

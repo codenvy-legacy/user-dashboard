@@ -1,0 +1,13 @@
+<div id="cancel-subscription-modal">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$close()" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Cancel Subscription</h4>
+    </div>
+    <div class="modal-body">
+        Are you sure you want to cancel subscription <b>{{subscription.description}}</b>?
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" ng-click="$dismiss()">Cancel</button>
+        <button class="btn btn-primary" ng-click="$close(cancelSubscription(subscription))">Ok</button>
+    </div>
+</div>

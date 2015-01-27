@@ -18,7 +18,7 @@ angular.module('odeskApp')
             {
                 title: "Profile",
                 active: true,
-                view: "profile.html"
+                view: "account/profile.html"
             },
             {
                 title: "Subscriptions",
@@ -32,5 +32,8 @@ angular.module('odeskApp')
             }
         ];
 
+        $scope.selectBillingTab = function() {
+            $scope.tabs[2].active = true;
+        }
 
     }]);

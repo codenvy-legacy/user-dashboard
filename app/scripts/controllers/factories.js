@@ -31,72 +31,28 @@ angular.module('odeskApp')
 
 		$scope.templates = [];
 
-		var basicTemplate = {name: "Minimalistic"};
+		var basicTemplate = {name: "Minimal"};
 		var advancedTemplate = {name: "Complete"};
 		$scope.templates.push(basicTemplate);
 		$scope.templates.push(advancedTemplate);
 		$scope.selectingTemplate = function(template) {
 			$scope.resetMessages();
 
-			if ('Minimalistic' == template.name) {
-				$scope.factoryContent = $filter('json')(angular.fromJson({
-					"v": "2.0",
-					"project": {
-						"attributes": {"language": ["java"]},
-						"builders": {"default": "maven"},
-						"name": "hello-world-jsp",
-						"runners": {
-							"configs": {
-								"system:/java/web/tomcat7": {
-									"options": {},
-									"ram": 0,
-									"variables": {}
-								}
-							},
-							"default": "system:/java/web/tomcat7"
-						},
-						"type": "maven",
-						"visibility": "public"
-					},
-					"source": {
-						"project": {
-							"location": "https://github.com/benoitf/hello-world-jsp",
-							"type": "git"
-						},
-						"runners": {}
-					},
-					"variables": []
-				}), 2);
+			if ('Minimal' == template.name) {
+				$http.get("https://rawgit.com/codenvy/factories/factory-2.0/templates/minimal.json").success(function (data) {
+					$scope.factoryContent = $filter('json')(angular.fromJson(data));
+				}).error(function(data, status) {
+					$scope.factoryConfigurationError = $filter('json')(data, 2);
+				});
 			} else if ('Complete' == template.name) {
-				$scope.factoryContent = $filter('json')(angular.fromJson({
-					"v": "2.0",
-					"project": {
-						"attributes": {"language": ["java"]},
-						"builders": {"default": "maven"},
-						"name": "hello-world-jsp-advanced",
-						"runners": {
-							"configs": {
-								"system:/java/web/tomcat7": {
-									"options": {},
-									"ram": 0,
-									"variables": {}
-								}
-							},
-							"default": "system:/java/web/tomcat7"
-						},
-						"type": "maven",
-						"visibility": "public"
-					},
-					"source": {
-						"project": {
-							"location": "https://github.com/benoitf/hello-world-jsp",
-							"type": "git"
-						},
-						"runners": {}
-					},
-					"variables": []
-				}), 2);
+				$http.get("https://rawgit.com/codenvy/factories/factory-2.0/templates/complete.json").success(function (data) {
+					$scope.factoryContent = $filter('json')(angular.fromJson(data));
+				}).error(function(data, status) {
+					$scope.factoryConfigurationError = $filter('json')(data, 2);
+				});
 			}
+			$scope.factoryConfigurationOK = "Successfully loaded '" + template.name +"' template.";
+
 		}
 
 
@@ -179,7 +135,7 @@ angular.module('odeskApp')
 				// remove links for display (links are automatically generated so no need to display them)
 				delete data.links;
 				$scope.factoryContent = $filter('json')(data, 2);
-				$scope.factoryConfigurationOK = "Successfully load project's configuration " + $item.name;
+				$scope.factoryConfigurationOK = "Successfully loaded project's configuration " + $item.name;
 			}).error(function (data,status) {
 				$scope.factoryConfigurationError = $filter('json')(data, 2);
 			});
@@ -428,8 +384,8 @@ angular.module('odeskApp')
 	
         $scope.projects = [];
 
-		Workspace.all(function (resp) {
-			$scope.workspaces = _.filter(resp, function (workspace) {return !workspace.workspaceReference.temporary;});
+        Workspace.all(true).then(function (resp) {
+			$scope.workspaces = Workspace.workspaces;
 
 			angular.forEach($scope.workspaces, function (value) {
 				// Get list of projects
@@ -447,9 +403,6 @@ angular.module('odeskApp')
 		var factoriesConcatUrl;
 		var factories;
 
-        Workspace.all(function (resp) {
-			$scope.workspaces = resp;
-        });
 
 
 		/**

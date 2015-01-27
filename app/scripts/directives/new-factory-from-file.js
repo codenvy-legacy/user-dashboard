@@ -31,7 +31,7 @@ angular.module('odeskApp')
                         $scope.uploader.onAfterAddingFile = function(fileItem) {
                             $scope.uploadedFileName = fileItem._file.name;
                                 var reader = new FileReader();
-                                var factoryContent = reader.readAsText(fileItem._file);
+                                reader.readAsText(fileItem._file);
                                 reader.onload = function () {
                                     try {
                                         $scope.factoryContent = $filter('json')(angular.fromJson(reader.result), 2);
@@ -39,6 +39,7 @@ angular.module('odeskApp')
                                         // Invalid JSON, leave it unformatted
                                         $scope.factoryContent = reader.result;
                                     }
+                                    $scope.factoryConfigurationOK = "Successfully loaded file's configuration " + $scope.uploadedFileName;
                                     $scope.$apply();
                                 };
                                 reader.onerror = function () {

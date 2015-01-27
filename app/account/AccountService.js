@@ -15,7 +15,8 @@
 /*global angular*/
 'use strict';
 angular.module('odeskApp')
-    .factory('AccountService', ['$http', '$q', function AccountService($http, $q) {
+    .factory('AccountService', ['$http', '$q', '$window', function AccountService($http, $q, $window) {
+        var BUY_SUBSCRIPTIONS_LINK = "http://codenvy.com/products/developer-environment-cloud-saas/";
         AccountService.subscriptions = [];
         AccountService.accounts = [];
 
@@ -85,13 +86,24 @@ angular.module('odeskApp')
             $http.get('/api/account/' + accountId + '/subscriptions', con)
                 .success(function (data) {
                     AccountService.subscriptions = data;
-                    console.log( AccountService.subscriptions);
-                    deferred.resolve();
+                    deferred.resolve(data);
                 })
                 .error(function (err) {
                     deferred.reject();
                 });
             return deferred.promise;
+        }
+
+        AccountService.getFactoryProposalSubscription = function() {
+            return {description : "Tracked Factory",  needToBuy: true, needToUpgrade: false};
+        }
+
+        AccountService.getOnPremisesProposalSubscription = function() {
+            return {description : "On-Premises", needToBuy: true, needToUpgrade: false};
+        }
+
+        AccountService.getSAASProposalSubscription = function() {
+            return {description : "SAAS Free Account", needToBuy: false, needToUpgrade: true};
         }
 
         //Remove subscription by it's ID:
@@ -106,6 +118,12 @@ angular.module('odeskApp')
                 });
             return deferred.promise;
         }
+
+
+        AccountService.buySubscription = function(subscription) {
+            $window.open(BUY_SUBSCRIPTIONS_LINK, '_blank');
+        }
+
 
         AccountService.addSubscription = function () {
             //TODO

@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $cookies, $rootScope, $timeout, $interval, Workspace, DocBoxService, newProject, Project, ProjectFactory, Users, Profile, Password, $cookieStore, $http, $q, $window) {
+    .controller('DashboardCtrl', function ($scope, $cookies, $rootScope, $timeout, $interval, Workspace, DocBoxService, newProject, Project, ProjectFactory, Users, ProfileService, Password, $cookieStore, $http, $q, $window) {
       var old_description = '';
 	    var old_projectName = '';
  
@@ -355,7 +355,7 @@ angular.module('odeskApp')
           Users.getUserByEmail(email).then(function (user) { // on success
             Workspace.addMemberToWorkspace($scope.activeProject.workspaceId, user.id).then(function () {
               // refresh member list
-              Profile.getById(user.id).then(function (data) {
+              ProfileService.getProfileByUserId(user.id).then(function (data) {
                 var member = createMember(data.attributes, user.id, true, true);
 
                 $scope.currentWorkspace.members.push(member);
@@ -434,9 +434,9 @@ angular.module('odeskApp')
                       $('#defineUserPassword').modal('hide');
                   }, 1500);
               });
-              Profile.query().then(function (data) {
+              ProfileService.getProfile().then(function (data) {
                   if (data.attributes.resetPassword && data.attributes.resetPassword == "true") {
-                      Profile.update({"resetPassword": 'false'});
+                      ProfileService.updateProfile({"resetPassword": 'false'});
                       $cookieStore.remove('resetPassword');
                   }
               });
@@ -461,7 +461,7 @@ angular.module('odeskApp')
               ProjectFactory.getSampleProject(),
               function() {
                   ProjectFactory.fetchProjects($scope.workspaces);
-                  Profile.update({"sampleProjectCreated": 'true'});
+                  ProfileService.updateProfile({"sampleProjectCreated": 'true'});
               }
           );
       }
@@ -495,7 +495,7 @@ angular.module('odeskApp')
                 }
                 $scope.projects = ProjectFactory.projects;
 
-                Profile.query().then(function (data) {
+                ProfileService.getProfile().then(function (data) {
                     if (data.attributes.resetPassword && data.attributes.resetPassword == 'true') {
                         if ($cookieStore.get('resetPassword') != true) {
                             $cookieStore.put('resetPassword', true);
@@ -526,7 +526,7 @@ angular.module('odeskApp')
                     workspace.members = [];
                     Workspace.getMembersForWorkspace(workspace.workspaceReference.id).then(function (workspaceMembers) {
                         angular.forEach(workspaceMembers, function (workspaceMember) {
-                            Profile.getById(workspaceMember.userId).then(function (data) {
+                            ProfileService.getProfileByUserId(workspaceMember.userId).then(function (data) {
                                 var member = createMember(data.attributes, workspaceMember.userId, false, false, workspaceMember.roles)
                                 workspace.members.push(member); // load the members for the workspace,
                             });

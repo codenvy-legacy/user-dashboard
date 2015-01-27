@@ -5,7 +5,7 @@
                 <thead>
                 <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
                     <th style="width:54px"></th>
-                    <th class="col-md-2 text-center"><h4>NAME</h4></th>
+                    <th class="col-md-2"><h4>NAME</h4></th>
                     <th class="col-md-2 text-center"><h4>ACTIVATION DATE</h4></th>
                     <th class="col-md-2 text-center"><h4>EXPIRATION DATE</h4></th>
                     <th class="col-md-2 text-center"><h4>CONSUMPTION</h4></th>
@@ -15,23 +15,22 @@
                 <tbody>
                 <tr ng-repeat="subscription in subscriptions">
                     <td>&nbsp;</td>
-                    <td class="text-center blk_lnk" style="vertical-align:middle;">
+                    <td class="blk_lnk">
                         <b class="ng-binding">{{subscription.description}}</b>
                     </td>
                     <td  class="text-center">
-                        {{subscription.startDate}}
+                        {{subscription.startDate ? subscription.startDate : "----"}}
                     </td>
                     <td class="text-center">
-                        {{subscription.endDate}}
+                        {{subscription.endDate ? subscription.endDate : "----"}}
                     </td>
                     <td class="text-center">
                         <b>[Not ready] GB Hours</b>
                     </td>
-                    <td class="text-center" >
-                        <div class="codenvybutton" style="width:150px;margin-left: auto;margin-right: auto; height:35px; position:relative; overflow:hidden;">
-                            <div style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; line-height: 35px; color: #8f8f8f;">Manage subscription</div>
-                            <a ng-href="#/account/subscriptions/{{subscription.id}}" style="color: #8f8f8f;text-decoration:none; position:relative; left:0px; top:0px; font-size:500px; opacity:0;">Manage subscription</a>
-                        </div>
+                    <td class="text-center">
+                        <button class="btn btn-xs grid-button" ng-if="!subscription.needToBuy && !subscription.needToUpgrade" ng-click="confirmCancelSubscription(subscription);">Cancel</button>
+                        <button class="btn btn-primary btn-xs grid-button" ng-if="subscription.needToBuy" ng-click="buySubscription(subscription);">BUY</button>
+                        <button class="btn btn-primary btn-xs grid-button" ng-if="subscription.needToUpgrade" ng-click="upgradeSubscription(subscription);">UPGRADE</button>
                     </td>
                 </tr>
                 </tbody>

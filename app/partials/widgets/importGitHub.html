@@ -1,12 +1,11 @@
 <div>
-    <ud-new-project-details parent-form="parentForm"
-                            workspaces="workspaces"
+    <ud-new-project-details workspaces="workspaces"
+                            workspace-selected="workspaceSelected"
                             new-project-data="newProjectData">
     </ud-new-project-details>
 
     <p ng-if="state == 'LOAD_ERROR'" class="alert alert-danger" >
-        We get problem authenticating you to GitHub. You can retry by pushing again the button below.
-        If the problem persists, please contact support on our <a href="https://groups.google.com/a/codenvy.com/forum/#!forum/codenvy" target="_blank">Google forum</a>.
+        We have a problem authenticating you with GitHub.
     </p>
 
     <button type="button" class="btn btn-primary" ng-click="loadRepositories()" ng-if="state != 'LOADING' && state != 'LOADED'">Load your GitHub repositories</button>
