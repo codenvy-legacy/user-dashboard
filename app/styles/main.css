@@ -1604,6 +1604,96 @@ a.message{
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+/* credit card.
+----------------------------------------------*/
+.creditCard {
+    height: 220px;
+    margin: 5px 60px 25px 60px;
+    position: relative;
+    background-color: rgba(223,223,223,0.4);
+}
+
+.creditCard:after {
+    content: '';
+    top: 10px;
+    left: 14px;
+    right: 14px;
+    bottom: 7px;
+    position: absolute;
+    border-radius: 10px;
+    background-color: rgba(123,123,123,0.2);
+}
+
+.creditCard .chip {
+    top: 26%;
+    left: 13%;
+    right: 74%;
+    bottom: 58%;
+    opacity: 0.5;
+    position: absolute;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.creditCard .chip:after {
+    content: '';
+    top: 22%;
+    left: 0%;
+    right: 29%;
+    bottom: 22%;
+    position: absolute;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.creditCard .cardNumber {
+    padding-top: 110px;
+    padding-left: 62px;
+    padding-right: 50px;
+}
+
+.creditCard .cardNumber i {
+    left: 5px;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.creditCard i {
+    left: 3px;
+    width: 6px;
+    height: 6px;
+    margin-top: 0;
+    position: absolute;
+    background: #fff;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    z-index: 1;
+}
+
+.creditCard .bigFont {
+    top: 31px;
+    left: 67px;
+    font-size: 19px;
+    font-weight: bold;
+    position: absolute;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    z-index: 1;
+}
+
+.creditCard .smallFont {
+    font-size: 8px;
+    font-weight: bold;
+    position: absolute;
+    color: rgba(255, 255, 255, 0.5);
+    z-index: 1;
+}
 
 /* Select2 icons.
 ----------------------------------------------*/
@@ -1655,6 +1745,7 @@ html[dir="rtl"] .select2-search input {
 .select2-choices li.select2-search-field {
     float: none;
 }
+
 .CodeMirror {
     z-index: 1060;
     border: solid 1px #e5e5e5;

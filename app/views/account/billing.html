@@ -1,102 +1,130 @@
-<ul class="breadcrumb boxnav">
-    <li><a href="#/account/profile">Profile</a></li>
-    <li><a href="#/account/configuration">Configuration</a></li>
-    <li><a href="#/account/preferences">Preferences</a></li>
-    <li class="active"><a href="#/account/billing">Billing</a></li>
-</ul>
-<div class="container">
-    <div class="col-md-6">
-        <div class="panel panel-default panel-ce">
-            <div class="panel-body">
-                <h4 class="text-center">Your Plan Details </h4>
-                <p>
-                    <strong>You are a premium user, using 1 dedicated queue for</strong> stevenlemeur<strong> workspace</strong><br/>
-                    Your Subscription expired on Jan 1, 2014.<br/>
-                </p>
-                <p class="text-center"><button type="button" class="btn btn-primary">Upgrade (soon) to get more dedicated queues</button></p>
+<div ng-controller="BillingCtrl">
+    <ul class="breadcrumb boxnav">
+        <li><a href="#/account/profile">Profile</a></li>
+        <li><a href="#/account/configuration">Configuration</a></li>
+        <li><a href="#/account/preferences">Preferences</a></li>
+        <li class="active"><a href="#/account/billing">Billing</a></li>
+    </ul>
+    <div class="container" style="margin-top: 20px;">
+        <div class="col-md-6">
+
+            <div class="panel panel-default panel-ce">
+                <div class="panel-body">
+                    <h4 class="text-center">Usage and balance</h4>
+
+                    <div class="row text-center" style="margin-top: 40px;">
+                        <div class="col-md-6">9.00 GB Hours</div>
+                        <div class="col-md-6">$0.00</div>
+                    </div>
+                </div>
             </div>
-        </div>  
-        <div class="panel panel-default panel-ce">
-            <div class="panel-body">
-                <h4 class="text-center">Renewal Information</h4>
-                <p>
-                    Automatic renewwal: Yes<br/>
-                    Subscription renewal on: Jan 1, 2014
-                </p>
-            </div>
-        </div>
-        <div class="panel panel-default panel-ce">
-            <div class="panel-body">
-                <h4 class="text-center">Invoices</h4>
-                <div class="row">
-                    <div class="col-md-8">January 1, 2013</div>
-                    <div class="col-md-2"><a href="">HTML</a></div>
-                    <div class="col-md-2"><a href="">PDF</a></div>
+            <div class="panel panel-default panel-ce">
+                <div class="panel-body">
+                    <h4 class="text-center">Invoices</h4>
+
+                    <div class="row">
+                        <div class="col-md-8">January 1, 2015 ($9.36)</div>
+                        <div class="col-md-2"><a href="">HTML</a></div>
+                        <div class="col-md-2"><a href="">PDF</a></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-6">
-        <div class="panel panel-default panel-ce">
-            <div class="panel-body">
-                <h4 class="text-center"><img height="22" src="./images/user.png"/> You are a premium user</h4>
-            </div>
-        </div>
-        <div class="panel panel-default panel-ce">
-            <div class="panel-body">
-                <h4 class="text-center">Billing Information</h4>
-                        <form action="r" method="post" accept-charset="utf-8" class="form" role="form">   
-                            <!--<legend class="text-center">Billing Information</legend>-->
-                            <div class="row">
-                                <div class="col-xs-6 col-md-6 form-group">
-                                    <label for="workspaceid">First Name:</label>
-                                    <input class="form-control" id="name" name="name" placeholder="steven" type="text" required autofocus />
-                                </div>
-                                <div class="col-xs-6 col-md-6 form-group">
-                                    <label for="workspaceid">Last Name:</label>
-                                    <input class="form-control" id="email" name="email" placeholder="le meur" type="text" required autofocus/>
+        <div class="col-md-6">
+            <div class="panel panel-default panel-ce">
+                <div class="panel-body">
+                    <h4 class="text-center">Add credit card</h4>
+                    <div class="creditCard">
+                        <div class="chip"></div>
+                        <div class="row cardNumber">
+                            <div class="col-xs-3 col-md-3">
+                                <i></i><i style="left: 18px;"></i><i style="left: 31px;"></i><i style="left: 44px;"></i>
+                            </div>
+                            <div class="col-xs-3 col-md-3">
+                                <i></i><i style="left: 18px;"></i><i style="left: 31px;"></i><i style="left: 44px;"></i>
+                            </div>
+                            <div class="col-xs-3 col-md-3">
+                                <i></i><i style="left: 18px;"></i><i style="left: 31px;"></i><i style="left: 44px;"></i>
+                            </div>
+                            <div class="col-xs-3 col-md-3">
+                                <i></i><i style="left: 18px;"></i><i style="left: 31px;"></i><i style="left: 44px;"></i>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6">
+                                <span class="bigFont">Full Name</span>
+                            </div>
+                            <div class="col-xs-6 col-md-6">
+                                <div class="row">
+                                    <div class="col-xs-4 col-md-4">
+                                        <span class="smallFont" style="top: 25px; right: 10px;">valid<br>thru</span>
+                                    </div>
+                                    <div class="col-xs-8 col-md-8">
+                                        <span class="smallFont" style="top: 15px; left: 0;">month/year</span>
+                                        <span class="bigFont" style="left: 19px;top: 23px;">/</span>
+                    <span class="smallFont" style="top: 32px; opacity: 0.5;left: 0;">
+                        <i></i><i style="left: 13px;"></i><i style="left: 25px;"></i><i style="left: 35px;"></i>
+                    </span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-6 col-md-6 form-group">
-                                    <label for="workspaceid">Company Name:</label>
-                                    <input class="form-control" id="name" name="name" placeholder="steven" type="text" required autofocus />
-                                </div>
-                                <div class="col-xs-6 col-md-6 form-group">
-                                    <label for="workspaceid">VAT ID:</label>
-                                    <input class="form-control" id="email" name="email" placeholder="le meur" type="text" required autofocus/>
-                                </div>
+                        </div>
+                    </div>
+                    <form action="r" method="post" accept-charset="utf-8" class="form" role="form">
+                        <!--<legend class="text-center">Billing Information</legend>-->
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <label for="workspaceid">Card Number:</label>
+                                <input class="form-control" id="cardNumber" placeholder="4974 XXXX XXXX XXXX" type="text" required autofocus/>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-12 col-md-12 form-group">
-                                    <label for="workspaceid">Address:</label>
-                                    <input class="form-control" id="name" name="name" placeholder="359, N Street" type="text" required autofocus />
-                                </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6 form-group">
+                                <label for="workspaceid">Last Name:</label>
+                                <input class="form-control" id="email" name="email" placeholder="le meur" type="text" required autofocus/>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-6 col-md-6 form-group">
-                                    <label for="workspaceid">Postal Code:</label>
-                                    <input class="form-control" id="name" name="name" placeholder="73105" type="text" required autofocus />
-                                </div>
-                                <div class="col-xs-6 col-md-6 form-group">
-                                    <label for="workspaceid">City:</label>
-                                    <input class="form-control" id="email" name="email" placeholder="San Fransisco" type="text" required autofocus/>
-                                </div>
+                            <div class="col-xs-6 col-md-6 form-group">
+                                <label for="workspaceid">Company Name:</label>
+                                <input class="form-control" id="name" name="name" placeholder="steven" type="text" required autofocus/>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-12 col-md-12 form-group">
-                                    <label for="workspaceid">Country:</label>
-                                    <select id="workspaceid" class="form-control">
-                                        <option selected>USA</option>
-                                        <option>UK</option>
-                                        <option>India</option>
-                                    </select>
-                                </div>
-                                <div class="col-xs-2 col-md-2 col-md-offset-10">
-                                    <button class="btn btn-primary btn-block signup-btn" type="submit">Update</button>
-                                </div>
+                            <div class="col-xs-6 col-md-6 form-group">
+                                <label for="workspaceid">VAT ID:</label>
+                                <input class="form-control" id="email" name="email" placeholder="le meur" type="text" required autofocus/>
                             </div>
-                        </form>                   
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <label for="workspaceid">Address:</label>
+                                <input class="form-control" id="name" name="name" placeholder="359, N Street" type="text" required
+                                       autofocus/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6 form-group">
+                                <label for="workspaceid">Postal Code:</label>
+                                <input class="form-control" id="name" name="name" placeholder="73105" type="text" required autofocus/>
+                            </div>
+                            <div class="col-xs-6 col-md-6 form-group">
+                                <label for="workspaceid">City:</label>
+                                <input class="form-control" id="email" name="email" placeholder="San Fransisco" type="text" required
+                                       autofocus/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <label for="workspaceid">Country:</label>
+                                <select id="workspaceid" ng-model="country" class="form-control" required>
+                                    <option value="">Select Your Country</option>
+                                    <option ng-repeat="cntry in countries">{{cntry.name}}</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-2 col-md-2 col-md-offset-10">
+                                <button class="btn btn-primary btn-block signup-btn" type="submit">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
