@@ -37,7 +37,6 @@ angular.module('odeskApp')
       $scope.currentWorkspace = null;
       $scope.currentUserId = '';
       $scope.changeName ='';
-      $scope.projectStatus = {};
       $scope.activeProjectVisibility = '';
 
       //private methods
@@ -485,69 +484,6 @@ angular.module('odeskApp')
           var promise = newProject.open($scope.currentUserId, $scope.workspaces, type);
       };
 
-      $scope.runProject = function (project) {
-          if($scope.projectStatus[project.path] == 'STOPPED' && updateProjectStatus(project) == 'STOPPED') {
-              $scope.projectStatus[project.path] = 'NEW';
-              updateInterval(90000);
-                RunnerService.runProcess(project, false).then(function (currentRunner) {
-                    project.runnerProcesses.push(currentRunner);
-                    $timeout(function () {
-                            updateProjectProcesses(project, 4);
-                    }, 5000);
-                }, function (error) {
-                    $timeout(function () {
-                        updateProjectProcesses(project, 0);
-                    }, 2000);
-                });
-            } else {
-                $location.path("/runner");
-            }
-        }
-
-        var updateProjectStatus = function (project) {
-            var status = "STOPPED";
-
-            if (typeof project.runnerProcesses != "undefined") {
-                angular.forEach(project.runnerProcesses, function (runnerProcess) {
-                    if (status != 'RUNNING') {
-                        if (runnerProcess.status == 'RUNNING' || runnerProcess.status == 'NEW') {
-                            status = runnerProcess.status;
-                        }
-                    }
-                });
-            }
-            $scope.projectStatus[project.path] = status;
-            return status;
-        };
-
-        var updateProjectProcesses = function (project, repeat) {
-            if (!isRefreshLocation()) {
-                return;
-            }
-            RunnerService.getProcesses(project.workspaceId, project.path, false)
-                .then(function (runnerProcesses) {
-                    var newRunnerProcesses = [];
-                    angular.forEach(runnerProcesses, function (runnerProcess) {
-                        if (runnerProcess.project == project.path) {
-                                newRunnerProcesses.push(runnerProcess);
-                        }
-                    });
-                        project.runnerProcesses = newRunnerProcesses;
-                        updateProjectStatus(project);
-                    repeat--;
-                    if (project.status != 'RUNNING' && repeat >= 0) {
-                        $timeout(function () {
-                            updateProjectProcesses(project, repeat);
-                        }, 5000);
-                    }
-                }, function (error) {
-                    repeat--;
-                    $timeout(function () {
-                        updateProjectProcesses(project, repeat);
-                    }, 5000);
-                });
-        };
-
         var updateInterval = function (time) {
             if (refreshInterval != null) {
                 if($interval.cancel(refreshInterval)){
@@ -556,12 +492,7 @@ angular.module('odeskApp')
             }
             if (time != null && refreshInterval == null) {
                 refreshInterval = $interval(function () {
-                        ProjectFactory.fetchProjects($scope.currentWorkspace ? [ $scope.currentWorkspace ] : $scope.workspaces, false)
-                          .then(function () {
-                              angular.forEach($scope.projects, function (project) {
-                                  updateProjectStatus(project);
-                              });
-                        });
+                        ProjectFactory.fetchProjects($scope.currentWorkspace ? [ $scope.currentWorkspace ] : $scope.workspaces, false);
                 }, time);
             }
         }
@@ -586,11 +517,6 @@ angular.module('odeskApp')
                     }
                 }
                 $scope.projects = ProjectFactory.projects;
-                if($scope.projects.length > 0){
-                    angular.forEach($scope.projects, function (project) {
-                        updateProjectStatus(project);
-                    });
-                }
 
                 Profile.query().then(function (data) {
                     if (data.attributes.resetPassword && data.attributes.resetPassword == 'true') {
@@ -610,19 +536,11 @@ angular.module('odeskApp')
                             if (projects.length == 0 && afterFeatureStarted) {
                                 $scope.createSampleProject($scope.workspaces[0].workspaceReference.id);
                             } else {
-                                ProjectFactory.fetchProjects($scope.workspaces, true).then(function () {
-                                    angular.forEach($scope.projects, function (project) {
-                                        updateProjectStatus(project);
-                                    });
-                                });
+                                ProjectFactory.fetchProjects($scope.workspaces, true);
                             }
                         });
                     } else {
-                        ProjectFactory.fetchProjects($scope.workspaces, true).then(function () {
-                            angular.forEach($scope.projects, function (project) {
-                                updateProjectStatus(project);
-                            });
-                        });
+                        ProjectFactory.fetchProjects($scope.workspaces, true);
                     }
                 });
 
