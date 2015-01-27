@@ -183,7 +183,7 @@ angular.module('odeskApp')
 
             updateTimeRunningInterval(1000);
 
-            updateRefreshInterval(30000);// update the runners every 30 seconds
+            updateRefreshInterval(90000);// update the runners every 30 seconds
 
             $timeout(function () {
                 $("[rel=tooltip]").tooltip({ placement: 'bottom' });
@@ -254,7 +254,7 @@ angular.module('odeskApp')
                         return;
                     }
                 });
-                updateRefreshInterval(30000);
+                updateRefreshInterval(90000);
                 $timeout(function () {
                     refreshNewProcess(4);
                 }, 5000);
@@ -264,7 +264,7 @@ angular.module('odeskApp')
         $scope.refreshStatusCheck = function () {
             if ($cookies.refreshStatus == "DISABLED") {
                 $cookies.refreshStatus = "ENABLED";
-                updateRefreshInterval(30000);// update the runners every 30 seconds
+                updateRefreshInterval(90000);// update the runners every 90 seconds
                 $scope.refresh(true);
             } else {
                 $cookies.refreshStatus = "DISABLED";
