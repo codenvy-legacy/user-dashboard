@@ -233,7 +233,7 @@ angular.module('odeskApp')
                                             .success(function (data, status) {
                                                 $('#changeProjectDetailAlert .alert-danger').hide();
                                                 $('#changeProjectDetailAlert .alert-success').show();
-                                                setTimeout(function () {
+                                                $timeout(function () {
                                                     $('#changeProjectDetailAlert .alert-success').hide();
                                                     $('#projectDetailModal').modal('hide');
                                                 }, 1500);
