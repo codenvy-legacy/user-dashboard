@@ -90,6 +90,12 @@ angular.module('odeskApp')
             });
 
             var updateProjectsData = function (projects) {
+                angular.forEach(projects, function (project) {
+                    $http({ method: 'GET', url: '/api/project/'+project.workspaceId+'/'+ project.path,
+                        ignoreLoadingBar: !showLoading }).success(function (projectDetails) {
+                        project.runners = projectDetails.runners;
+                    });
+                });
                 if (!angular.equals(projects, ProjectFactory.projects)) {
                     // Empty the array keeping its reference (reason why = [] is not used).
                     while (ProjectFactory.projects.length) ProjectFactory.projects.pop();

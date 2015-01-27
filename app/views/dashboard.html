@@ -148,7 +148,7 @@
                             </div>
                         </div><!-- .row -->
                     </a>
-                    <div class="btn-runner" ng-click="runProject(project)">
+                    <div ng-if="project.runners" class="btn-runner" ng-click="runProject(project)">
                         <span ng-if="projectStatus[project.path]  != 'NEW' &&  projectStatus[project.path]  != 'RUNNING'">
                             <span class="triangle-right"></span>Run
                         </span>
@@ -158,6 +158,9 @@
                         <span ng-if="projectStatus[project.path] == 'RUNNING'">
                             <span class="circle"></span>Running
                         </span>
+                    </div>
+                    <div ng-if="!project.runners" class="btn-runner disable" title="Default runner is not defined for the project">
+                        <span class="triangle-right"></span>Run
                     </div>
                 </div><!-- panel-heading -->
 

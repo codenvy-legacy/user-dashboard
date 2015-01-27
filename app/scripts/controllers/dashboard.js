@@ -8,6 +8,7 @@
 
 /**
  * @auth Gaurav Meena
+ * @author Oleksii Orel
  * @date 01/16/2014
  * Controller for dashboard/projects
  */
@@ -487,7 +488,7 @@ angular.module('odeskApp')
       $scope.runProject = function (project) {
           if($scope.projectStatus[project.path] == 'STOPPED' && updateProjectStatus(project) == 'STOPPED') {
               $scope.projectStatus[project.path] = 'NEW';
-              updateInterval(30000);
+              updateInterval(90000);
                 RunnerService.runProcess(project, false).then(function (currentRunner) {
                     project.runnerProcesses.push(currentRunner);
                     $timeout(function () {
@@ -664,7 +665,7 @@ angular.module('odeskApp')
                     });
                 });
             });
-            updateInterval(30000);// update the projects every 30 seconds
+            updateInterval(90000);// update the projects every 90 seconds
         };
         init();// all code starts here
 
