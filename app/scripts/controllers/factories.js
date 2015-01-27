@@ -421,11 +421,11 @@ angular.module('odeskApp')
 					_factory.id = data.id;
 					_factory.projectname = data.project.name;
 					if (_factory.projectname == null) {
-						_factory.projectname = "undefined";
+						_factory.projectname = "";
 					}
 					_factory.description = data.project.description;
 					if (_factory.description == null) {
-						_factory.description = "undefined";
+						_factory.description = "";
 					}
 					//_factory.logo = data.links[4].href;
 					_factory.created = data.creator.created;
