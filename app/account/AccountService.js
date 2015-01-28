@@ -19,6 +19,7 @@ angular.module('odeskApp')
         var BUY_SUBSCRIPTIONS_LINK = "http://codenvy.com/products/developer-environment-cloud-saas/";
         AccountService.subscriptions = [];
         AccountService.accounts = [];
+        AccountService.accountMetrics = {};
 
         //Get all accounts, where the current user has membership:
         AccountService.getAccounts = function () {
@@ -52,6 +53,27 @@ angular.module('odeskApp')
                 });
                 deferred.resolve(accounts);
             });
+            return deferred.promise;
+        }
+
+        //Get all accounts, where the current user has pointed role:
+        AccountService.getAccountMetrics = function (accountId) {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+            $http.get('/api/account/' + accountId + "/metrics", con)
+                .success(function (data) {
+                    AccountService.accountMetrics = data;
+                    deferred.resolve(data); //resolve data
+                })
+                .error(function (err) {
+                    deferred.reject();
+                });
+
             return deferred.promise;
         }
 
@@ -103,7 +125,7 @@ angular.module('odeskApp')
         }
 
         AccountService.getSAASProposalSubscription = function() {
-            return {description : "SAAS Free Account", needToBuy: false, needToUpgrade: true};
+            return {description : "SAAS Free Account", needToBuy: false, needToUpgrade: true, serviceId: "Saas"};
         }
 
         //Remove subscription by it's ID:

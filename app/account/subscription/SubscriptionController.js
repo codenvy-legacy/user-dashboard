@@ -15,6 +15,7 @@ angular.module('odeskApp')
     .controller('SubscriptionCtrl', ["$scope", "AccountService", "$modal", function ($scope, AccountService, $modal) {
         $scope.subscriptions = [];
         $scope.accounts = [];
+        $scope.accountMetrics = {};
 
         AccountService.getAccountsByRole("account/owner").then(function (accounts) {
             $scope.accounts = accounts;
@@ -27,6 +28,16 @@ angular.module('odeskApp')
             AccountService.getAllSubscriptions(accounts).then(function () {
                 $scope.subscriptions = AccountService.subscriptions;
                 $scope.addSubscriptionProposals();
+                //TODO need decision when more then one account:
+                $scope.getAccountMetrics(accounts[0]);
+
+            });
+        }
+
+        $scope.getAccountMetrics = function(account) {
+            AccountService.getAccountMetrics(account.id).then(function(){
+                $scope.accountMetrics = AccountService.accountMetrics;
+                $scope.subscriptions
             });
         }
 

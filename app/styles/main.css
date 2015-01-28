@@ -2117,3 +2117,11 @@ html[dir="rtl"] .select2-search input {
 .css-form input.ng-invalid.ng-touched {
     border-color: rgb(169, 68, 66);
 }
+
+.lockdown-label {
+    background-color: red;
+    color: #FFFFFF;
+    padding: 2px 10px;
+    font-size: 9px;
+    display: inline;
+}

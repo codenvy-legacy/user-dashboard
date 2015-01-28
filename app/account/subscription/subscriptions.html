@@ -25,7 +25,8 @@
                         {{subscription.endDate ? subscription.endDate : "----"}}
                     </td>
                     <td class="text-center">
-                        <b>[Not ready] GB Hours</b>
+                        <b ng-if="subscription.serviceId == 'Saas'">{{accountMetrics.usedMemoryInCurrentBillingPeriod}} MB minutes</b><br>
+                        <p ng-if="subscription.serviceId == 'Saas' && accountMetrics.usedMemoryInCurrentBillingPeriod >= accountMetrics.freeMemory " class="lockdown-label">LOCKDOWN</p>
                     </td>
                     <td class="text-center">
                         <button class="btn btn-xs grid-button" ng-if="!subscription.needToBuy && !subscription.needToUpgrade" ng-click="confirmCancelSubscription(subscription);">Cancel</button>
