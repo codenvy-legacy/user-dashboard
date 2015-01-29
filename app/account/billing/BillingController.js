@@ -14,7 +14,7 @@
 
 'use strict';
 angular.module('odeskApp')
-    .controller('BillingCtrl', function ($scope, Countries) {
+    .controller('BillingCtrl', function ($scope, Countries, PaymentService) {
 
         $scope.creditCards = [];
         $scope.countries = Countries.all();

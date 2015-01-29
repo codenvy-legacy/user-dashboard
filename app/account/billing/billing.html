@@ -8,14 +8,14 @@
                     <h4 class="text-center">Usage and balance</h4>
 
                     <div class="row text-center" style="margin-top: 40px;">
-                        <div class="col-md-6">9.00 GB Hours</div>
-                        <div class="col-md-6">$0.00</div>
+                        <div class="col-md-6">{{accountMetrics.usedMemoryInCurrentBillingPeriod}} MB minutes</div>
+                        <div class="col-md-6">$ [NOT READY]</div>
                     </div>
                 </div>
             </div>
             <div class="panel panel-default panel-ce">
                 <div class="panel-body">
-                    <h4 class="text-center">Invoices</h4>
+                    <h4 class="text-center">Invoices [NOT READY]</h4>
 
                     <div class="row">
                         <div class="col-md-8">January 1, 2015 ($9.36)</div>
@@ -65,53 +65,54 @@
                             </div>
                         </div>
                     </div>
-                    <form action="r" method="post" accept-charset="utf-8" class="form" role="form">
+                    <form action="r" id="braintree-payment-form" method="post" accept-charset="utf-8" class="form" role="form">
                         <!--<legend class="text-center">Billing Information</legend>-->
                         <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <label for="cardNumber">Card Number:</label>
+                                <input class="form-control" id="cardNumber" data-encrypted-name="number" type="text" required autofocus/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6">
+                                <label for="cardHolder">Cardholder Name:</label>
+                                <input class="form-control" id="cardHolder" name="cardHolder"  type="text" required autofocus/>
+                            </div>
+                            <div class="col-xs-3">
+                                <label for="expires">Expires:</label>
+                                <input class="form-control" id="expires" name="expires"  type="text" required autofocus/>
+                            </div>
+                            <div class="col-xs-3">
+                                <label for="cvv">CVV:</label>
+                                <input class="form-control" id="cvv" name="cvv"  data-encrypted-name="cvv" type="text" required autofocus/>
+                            </div>
+                         </div>
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6">
+                                <label for="street">Street Address:</label>
+                                <input class="form-control" id="street" name="street"  type="text" required autofocus/>
+                            </div>
+                            <div class="col-xs-6 col-md-6">
+                                <label for="city">City:</label>
+                                <input class="form-control" id="city" name="city"  type="text" required autofocus/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6">
+                                <label for="state">State:</label>
+                                <input class="form-control" id="state" name="state"  type="text" required autofocus/>
+                            </div>
+                            <div class="col-xs-6 col-md-6">
+                                <label for="postalCode">Postal Code:</label>
+                                <input class="form-control" id="postalCode" name="postalCode"  type="text" required autofocus/>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-xs-12 col-md-12 form-group">
-                                <label for="workspaceid">Card Number:</label>
-                                <input class="form-control" id="cardNumber"  type="text" required autofocus/>
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-6 col-md-6 form-group">
-                                <label for="workspaceid">Last Name:</label>
-                                <input class="form-control" id="email" name="email"  type="text" required autofocus/>
-                            </div>
-                            <div class="col-xs-6 col-md-6 form-group">
-                                <label for="workspaceid">Company Name:</label>
-                                <input class="form-control" id="name" name="name"  type="text" required autofocus/>
-                            </div>
-                            <div class="col-xs-6 col-md-6 form-group">
-                                <label for="workspaceid">VAT ID:</label>
-                                <input class="form-control" id="email" name="email"  type="text" required autofocus/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12 col-md-12 form-group">
-                                <label for="workspaceid">Address:</label>
-                                <input class="form-control" id="name" name="name"  type="text" required
-                                       autofocus/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-6 col-md-6 form-group">
-                                <label for="workspaceid">Postal Code:</label>
-                                <input class="form-control" id="name" name="name"  type="text" required autofocus/>
-                            </div>
-                            <div class="col-xs-6 col-md-6 form-group">
-                                <label for="workspaceid">City:</label>
-                                <input class="form-control" id="email" name="email"  type="text" required
-                                       autofocus/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12 col-md-12 form-group">
-                                <label for="workspaceid">Country:</label>
-                                <select id="workspaceid" ng-model="country" class="form-control" required>
+                                <label for="country">Country:</label>
+                                <select id="country" ng-model="country" class="form-control" required>
                                     <option value="">Select Your Country</option>
-                                    <option ng-repeat="cntry in countries">{{cntry.name}}</option>
+                                    <option ng-repeat="country in countries">{{country.name}}</option>
                                 </select>
                             </div>
                             <div class="col-xs-2 col-md-2 col-md-offset-10">

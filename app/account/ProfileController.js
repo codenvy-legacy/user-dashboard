@@ -24,8 +24,6 @@ angular.module('odeskApp')
         ProfileService.getProfile().then(function () {
 
             $scope.profile = ProfileService.profile;
-            console.log( $scope.profile);
-
             $scope.firstName = $scope.profile.attributes.firstName;
             $scope.lastName = $scope.profile.attributes.lastName;
             $scope.email = $scope.profile.attributes.email;
