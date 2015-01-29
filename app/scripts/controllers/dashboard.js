@@ -200,6 +200,23 @@ angular.module('odeskApp')
       };
 
         var renameSelectedProject = function (newName) {
+            RunnerService.getProcesses($scope.selected.workspaceId, $scope.selected.path, true)
+                .then(function (runnerProcesses) {
+                    var isActive = false;
+                    angular.forEach(runnerProcesses, function (runnerProcess) {
+                        if (runnerProcess.project==$scope.selected.path && runnerProcess.status=='RUNNING' || runnerProcess.status=='NEW'){
+                            isActive = true;
+                            return;
+                        }
+                    });
+                    if (isActive) {
+                        $scope.updateProjectError = 'We Cannot rename the running project';
+                        $('#changeProjectDetailAlert .alert-danger').show();
+                        $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
+                            $(this).fadeOut('slow');
+                        });
+                        $scope.selected.name = old_projectName;
+                    } else {
             Project.rename($scope.selected.workspaceId, $scope.selected.path, newName).then(function (data) {
                 //Change Project URL & Path
                 var projFound = $scope.projects.filter(function (p) {
@@ -223,6 +240,8 @@ angular.module('odeskApp')
                 $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
                     $(this).fadeOut('slow');
                 });
+                        });
+                    }
             });
         };
 
@@ -306,7 +325,7 @@ angular.module('odeskApp')
             }
             $scope.currentWorkspace = workspace;
             Workspace.currentWorkspace = workspace;
-        }
+        };
 
 	    $scope.deleteProjectConfirm = function() {
             $('#warning-project-alert .alert-success').hide();
@@ -356,7 +375,7 @@ angular.module('odeskApp')
         return $scope.projects.length==0;
       else
         return false;
-      }
+      };
 
 	    $scope.selectMemberToBeDeleted = null;
 	    $scope.setMemberToBeDeleted = function(member) {		    
@@ -510,7 +529,7 @@ angular.module('odeskApp')
                   Profile.update({"sampleProjectCreated": 'true'});
               }
           );
-      }
+      };
 
       $scope.importNewProject = function (type) {
           var promise = newProject.open($scope.currentUserId, $scope.workspaces, type);
@@ -527,7 +546,7 @@ angular.module('odeskApp')
                         ProjectFactory.fetchProjects($scope.workspaces, false);
                 }, time);
             }
-        }
+        };
 
       //constructor
         var init = function () {
