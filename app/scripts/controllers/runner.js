@@ -66,32 +66,38 @@ angular.module('odeskApp')
         var updateRunners = function () {
             var runners = [];
             var isHasNew = false;
+            var processes = [];
 
             angular.forEach($scope.projects, function (project) {
-                angular.forEach(project.runnerProcesses, function (runnerProcess) {
-                    if ((runnerProcess.status == 'RUNNING' || runnerProcess.status == 'NEW') && (runnerProcess.project == project.path)) {
-                        if (runnerProcess.status == 'NEW') {
-                            isHasNew = true;
-                        }
-                        var runner = [];
-                        runner.ideUrl = project.ideUrl;
-                        runner.projectName = project.name;
-                        runner.startTime = setDateFormat(runnerProcess.startTime);
-                        runner.status = runnerProcess.status;
-                        runner.workspaceName = project.workspaceName;
-                        runner.url = $.map(runnerProcess.links, function (obj) {
-                            if (obj.rel == "web url") return obj.href
-                        })[0];
-                        runner.dockerRecipe = $.map(runnerProcess.links, function (obj) {
-                            if (obj.rel == "runner recipe") return obj.href
-                        })[0];
-                        runner.terminalUrl = $.map(runnerProcess.links, function (obj) {
-                            if (obj.rel == "shell url") return obj.href
-                        })[0];
-                        runner.runnerProcess = runnerProcess;
-                        runners.push(runner);
-                    }
-                });
+                RunnerService.getProcesses(project.workspaceId, project.path, false)
+                    .then(function (runningProcesses) {
+                        angular.forEach(runningProcesses, function (runnerProcess) {
+                            if ((runnerProcess.status == 'RUNNING' || runnerProcess.status == 'NEW') && (runnerProcess.project == project.path)) {
+                                if (runnerProcess.status == 'NEW') {
+                                    isHasNew = true;
+                                }
+                                var runner = [];
+                                runner.ideUrl = project.ideUrl
+                                runner.projectName = project.name;
+                                runner.startTime = setDateFormat(runnerProcess.startTime);
+                                runner.status = runnerProcess.status;
+                                runner.workspaceName = project.workspaceName;
+                                runner.url = $.map(runnerProcess.links, function (obj) {
+                                    if (obj.rel == "web url") return obj.href
+                                })[0];
+                                runner.dockerRecipe = $.map(runnerProcess.links, function (obj) {
+                                    if (obj.rel == "runner recipe") return obj.href
+                                })[0];
+                                runner.terminalUrl = $.map(runnerProcess.links, function (obj) {
+                                    if (obj.rel == "shell url") return obj.href
+                                })[0];
+                                runner.runnerProcess = runnerProcess;
+                                runners.push(runner);
+                            }
+                        });
+                    }, function (error) {
+                        processes = [];
+                    });
             });
             $scope.runners = runners;
             return isHasNew;
@@ -99,14 +105,14 @@ angular.module('odeskApp')
 
         var refreshNewProcess = function (repeat) {
             $scope.projects = ProjectFactory.projects;
-                ProjectFactory.fetchProjects($scope.currentWorkspace ? [ $scope.currentWorkspace ] : $scope.workspaces, false).then(function () {
-                    repeat--;
-                    if (repeat && updateRunners()) {
-                        $timeout(function () {
-                            refreshNewProcess(repeat);
-                        }, 5000);
-                    }
-                });
+            ProjectFactory.fetchProjects($scope.currentWorkspace ? [ $scope.currentWorkspace ] : $scope.workspaces, false).then(function () {
+                repeat--;
+                if (repeat && updateRunners()) {
+                    $timeout(function () {
+                        refreshNewProcess(repeat);
+                    }, 5000);
+                }
+            });
         };
 
         var updateRefreshInterval = function (time) {
@@ -183,7 +189,7 @@ angular.module('odeskApp')
 
             updateTimeRunningInterval(1000);
 
-            updateRefreshInterval(30000);// update the runners every 30 seconds
+            updateRefreshInterval(90000);// update the runners every 90 seconds
 
             $timeout(function () {
                 $("[rel=tooltip]").tooltip({ placement: 'bottom' });
@@ -254,7 +260,7 @@ angular.module('odeskApp')
                         return;
                     }
                 });
-                updateRefreshInterval(30000);
+                updateRefreshInterval(90000);
                 $timeout(function () {
                     refreshNewProcess(4);
                 }, 5000);
@@ -264,7 +270,7 @@ angular.module('odeskApp')
         $scope.refreshStatusCheck = function () {
             if ($cookies.refreshStatus == "DISABLED") {
                 $cookies.refreshStatus = "ENABLED";
-                updateRefreshInterval(30000);// update the runners every 30 seconds
+                updateRefreshInterval(90000);// update the runners every 90 seconds
                 $scope.refresh(true);
             } else {
                 $cookies.refreshStatus = "DISABLED";

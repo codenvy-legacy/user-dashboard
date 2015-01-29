@@ -22,7 +22,7 @@
 //  * it gives a global model (not limited to the the controller),
 //  * it gives the ability to refresh it from anywhere by calling directly the factory.
 angular.module('odeskApp')
-    .factory('ProjectFactory', ['$http', '$q', 'RunnerService', function ($http, $q, RunnerService) {
+    .factory('ProjectFactory', ['$http', '$q', 'RunnerService', function ($http, $q) {
         var ProjectFactory = {};
 
         ProjectFactory.isProjectDataFetched = false;
@@ -38,47 +38,11 @@ angular.module('odeskApp')
                     if (obj.rel == "get projects") return obj.href
                 })[0], ignoreLoadingBar: !showLoading }).success(function (workspaceProjects) {
                     workspaceCount++;
-                    var workspaceProjectCount = 0;
-                    angular.forEach(workspaceProjects, function (workspaceProject) {
-                        if (workspaceProject.problems.length) {
-                            angular.forEach(workspaceProject.problems, function (problem) {
-                                if (problem.code == 1) {
-                                    workspaceProject.description = 'This project does not have its language type and ' +
-                                        'environment set yet. Open the project to configure it properly.';
-                                    workspaceProject.type = 'mis-configured';
-                                    workspaceProject.misconfigured = true;
-                                }
-                            });
-                        }
-                        workspaceProject.runnerProcesses = [];
-                        RunnerService.getProcesses(workspaceProject.workspaceId, workspaceProject.path, false)
-                            .then(function (runningProcesses) {
-                                workspaceProjectCount++;
-                                angular.forEach(runningProcesses , function (runningProcess) {
-                                    if ((runningProcess !== null) && (runningProcess.project == workspaceProject.path)) {
-                                        workspaceProject.runnerProcesses.push(runningProcess);
-                                    }
-                                });
-                                if (workspaceProjectCount == workspaceProjects.length) {
-                                    projects = projects.concat(workspaceProjects);
-                                    if (workspaceCount == workspaces.length) {
-                                        updateProjectsData(projects);
-                                        deferred.resolve();
-                                    }
-                                }
-                            }, function (error) {
-                                workspaceProjectCount++
-                                workspaceProject.runnerProcesses = [];
-                                if (workspaceProjectCount == workspaceProjects.length) {
-                                    projects = projects.concat(workspaceProjects);
-                                    if (workspaceCount == workspaces.length) {
-                                        updateProjectsData(projects);
-                                        deferred.reject(error);
-                                    }
-                                }
-                            });
-                    });
-                    ProjectFactory.isProjectDataFetched = !!projects.length;
+                    projects = projects.concat(workspaceProjects);
+                    if (workspaceCount == workspaces.length) {
+                        ProjectFactory.isProjectDataFetched = !!projects.length;
+                        updateProjectsData(projects);
+                    }
                 })
                     .error(function (data, status) {
                         workspaceCount++;
@@ -86,15 +50,27 @@ angular.module('odeskApp')
                         if (workspaceCount == workspaces.length) {
                             updateProjectsData(projects);
                         }
+                        deferred.reject();
                     });
             });
 
             var updateProjectsData = function (projects) {
+                if (projects.problems != null && projects.problems.length) {
+                    angular.forEach(projects.problems, function (problem) {
+                        if (problem.code == 1) {
+                            projects.description = 'This project does not have its language type and ' +
+                                'environment set yet. Open the project to configure it properly.';
+                            projects.type = 'mis-configured';
+                            projects.misconfigured = true;
+                        }
+                    });
+                }
                 if (!angular.equals(projects, ProjectFactory.projects)) {
                     // Empty the array keeping its reference (reason why = [] is not used).
                     while (ProjectFactory.projects.length) ProjectFactory.projects.pop();
                     ProjectFactory.projects.push.apply(ProjectFactory.projects, projects);
                 }
+                deferred.resolve();
             }
             return deferred.promise;
         };
