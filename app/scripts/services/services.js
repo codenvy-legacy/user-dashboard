@@ -796,7 +796,7 @@ angular.module('odeskApp')
             return deferred.promise;
         };
 
-        item.getProject = function (workspaceId, projectName) {
+        item.getProject = function (workspaceId, projectPath) {
             var deferred = $q.defer();
             var con = {
                 headers: {
@@ -804,7 +804,7 @@ angular.module('odeskApp')
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             };
-            $http.get('/api/project/' + workspaceId + "/" + projectName, con)
+            $http.get('/api/project/' + workspaceId + "/" + projectPath, con)
                 .success(function (data) {
                     deferred.resolve(data); //resolve data
                 })
@@ -812,7 +812,7 @@ angular.module('odeskApp')
             return deferred.promise;
         };
 
-        item.setProject = function (workspaceId, projectName, data) {
+        item.setProject = function (workspaceId, projectPath, data) {
             var deferred = $q.defer();
             var con = {
                 headers: {
@@ -820,7 +820,7 @@ angular.module('odeskApp')
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             };
-            $http.put('/api/project/' + workspaceId + "/" + projectName, data, con)
+            $http.put('/api/project/' + workspaceId + "/" + projectPath, data, con)
                 .success(function (data) {
                     deferred.resolve(data); //resolve data
                 })
