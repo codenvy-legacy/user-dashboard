@@ -130,7 +130,7 @@
     <!-- show projects-->
     <div class="col-md-10">
         <div ng-repeat="project in projects| filter: filter | orderBy:param:reverse" class="col-lg-3 col-md-4 col-sm-6 col-xs-12 projectbox">
-            <div class="panel panel-default" ng-if="projects.length > 0">
+            <div class="panel panel-default" ng-if="projects.length > 0 && (!currentWorkspace || project.workspaceName==currentWorkspace.workspaceReference.name)">
                 <div class="panel-heading">
                     <a href="{{project.ideUrl}}" target="_blank">
                         <div class="row">

@@ -67,7 +67,7 @@
 
             <!-- Start of runner box -->
             <div class="col-lg-4 col-sm-6 col-md-4 col-xs-12" ng-repeat="runner in runners" >
-              <div class="panel panel-default">
+              <div class="panel panel-default" ng-if="!currentWorkspace || runner.workspaceName == currentWorkspace.workspaceReference.name">
                 <div class="panel-heading">
                   <div class="row">
                     <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
