@@ -218,12 +218,13 @@ angular.module('odeskApp')
                         $scope.selected.name = old_projectName;
                     } else {
                         Project.rename($scope.selected.workspaceId, $scope.selected.path, newName).then(function (data) {
-                            old_projectName = newName;
-                            $scope.tempProject.name = newName;
-                            $scope.selected.path = "/" + newName;
                             var projectPath = "/" + newName;
-                            Project.getProject($scope.selected.workspaceId, projectPath).then(function (project) {
-                                $scope.selected = project;
+                            Project.getProject($scope.selected.workspaceId, projectPath).then(function (data) {
+                                angular.forEach($scope.projects, function (project, index) {
+                                    if (project.path === $scope.selected.path) {
+                                        $scope.projects[index]=data;
+                                    }
+                                });
                                 $('#changeProjectDetailAlert .alert-danger').hide();
                                 $('#changeProjectDetailAlert .alert-success').show();
                                 $timeout(function () {
@@ -231,7 +232,6 @@ angular.module('odeskApp')
                                     $('#projectDetailModal').modal('hide');
                                 }, 1500);
                             }, function (error) {
-                                $('#changeProjectDetailAlert .alert-success').hide();
                                 $scope.updateProjectError = error.message ? error.message : 'Change project detail failed.';
                                 $('#changeProjectDetailAlert .alert-danger').show();
                                 $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
@@ -239,7 +239,6 @@ angular.module('odeskApp')
                                 });
                             });
                         }, function (error) {
-                            $('#changeProjectDetailAlert .alert-success').hide();
                             $scope.updateProjectError = error.message ? error.message : 'Change project detail failed.';
                             $('#changeProjectDetailAlert .alert-danger').show();
                             $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
@@ -247,10 +246,17 @@ angular.module('odeskApp')
                             });
                         });
                     }
+                }, function (error) {
+                    $scope.updateProjectError = error.message ? error.message : 'Change project detail failed.';
+                    $('#changeProjectDetailAlert .alert-danger').show();
+                    $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
+                        $(this).fadeOut('slow');
+                    });
                 });
         };
 
         $scope.updateProject = function () {
+            $('#changeProjectDetailAlert .alert-success').hide();
             $scope.selected.name = $scope.tempProject.name;
             $scope.selected.description = $scope.tempProject.description == '' ? null : $scope.tempProject.description;
             if ($scope.selected.name && $scope.selected.name.length > 0){
@@ -287,6 +293,7 @@ angular.module('odeskApp')
                     Project.getProject($scope.selected.workspaceId, $scope.selected.path).then(function (data) {
                         data.description = $scope.selected.description;
                         Project.setProject($scope.selected.workspaceId, $scope.selected.path, data).then(function (data) {
+                            old_description = data.description;
                             if ($scope.selected.name != old_projectName){
                                 renameSelectedProject($scope.selected.name);
                             } else {
