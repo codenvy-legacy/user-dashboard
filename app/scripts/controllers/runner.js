@@ -26,7 +26,7 @@ angular.module('odeskApp')
         $scope.filter = {};
         $scope.workspaces = [];
         $scope.currentWorkspace = null;
-        $scope.refreshStatus = $cookies['refreshStatus'];
+        $scope.refreshStatus = null;
 
 
         var isRefreshLocation = function () {
@@ -190,6 +190,8 @@ angular.module('odeskApp')
             updateTimeRunningInterval(1000);
 
             updateRefreshInterval(90000);// update the runners every 90 seconds
+
+            $scope.refreshStatus = $cookies['refreshStatus'] ? $cookies['refreshStatus'] : "DISABLED";
 
             $timeout(function () {
                 $("[rel=tooltip]").tooltip({ placement: 'bottom' });

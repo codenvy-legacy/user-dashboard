@@ -779,8 +779,56 @@ angular.module('odeskApp')
             put: { method: 'PUT', params: { workspaceID: 'workspaceimb0rqn76p2euvn4' }, isArray: false },
             import: { method: 'POST', url: '/api/project/:workspaceID/import/:path' }
         });
-        
-        item.getPermissions = function (workspaceId, projectName) { // custom function added to the resource object
+
+        item.rename = function (workspaceId, projectPath, projectName) {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+            $http.post('/api/project/' + workspaceId + "/rename" + projectPath + "?name=" + projectName, con)
+                .success(function (data) {
+                    deferred.resolve(data); //resolve data
+                })
+                .error(function (err) { deferred.reject(err); });
+            return deferred.promise;
+        };
+
+        item.getProject = function (workspaceId, projectName) {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+            $http.get('/api/project/' + workspaceId + "/" + projectName, con)
+                .success(function (data) {
+                    deferred.resolve(data); //resolve data
+                })
+                .error(function (err) { deferred.reject(err); });
+            return deferred.promise;
+        };
+
+        item.setProject = function (workspaceId, projectName, data) {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+            $http.put('/api/project/' + workspaceId + "/" + projectName, data, con)
+                .success(function (data) {
+                    deferred.resolve(data); //resolve data
+                })
+                .error(function (err) { deferred.reject(err); });
+            return deferred.promise;
+        };
+
+        item.getPermissions = function (workspaceId, projectName) {
             var deferred = $q.defer();
             var con = {
                 headers: {

@@ -36,8 +36,8 @@ angular.module('odeskApp')
       $scope.workspaces = [];
       $scope.currentWorkspace = null;
       $scope.currentUserId = '';
-      $scope.changeName ='';
       $scope.activeProjectVisibility = '';
+      $scope.updateProjectError = '';
 
       //private methods
       // for one user set the read write properties
@@ -199,68 +199,95 @@ angular.module('odeskApp')
         old_projectName = project.name;
       };
 
-      $scope.updateProject = function () {
-        $scope.selected.name = $scope.tempProject.name; 
-        $scope.selected.description = $scope.tempProject.description;
-        $scope.changeName = '' ;
-        if($scope.selected.name && $scope.selected.name.length > 0) {
-            var res = /[^0-9a-zA-Z\-._]/.test($scope.selected.name) || $scope.selected.name[0] == '-' || $scope.selected.name[0] == '.' || $scope.selected.name[0] == '_';
-            if(res) {
-                alert('Project name must contain only Latin letters, digits or these following special characters -._');
-                $scope.selected.name = old_projectName;
-                return;
-            }
-            var keepGoing = true;
-            angular.forEach($scope.projects , function (project) {
-                if($scope.selected != project && $scope.selected.name == project.name) {
-                    keepGoing = false;
+        var renameSelectedProject = function (newName) {
+            Project.rename($scope.selected.workspaceId, $scope.selected.path, newName).then(function (data) {
+                //Change Project URL & Path
+                var projFound = $scope.projects.filter(function (p) {
+                    return p.name == data.name;
+                });
+                if (projFound.length > 0) {
+                    projFound[0].ideUrl = data.ideUrl;
+                    projFound[0].path = data.path;
+                    projFound[0].url = data.baseUrl;
                 }
+                $('#changeProjectDetailAlert .alert-danger').hide();
+                $('#changeProjectDetailAlert .alert-success').show();
+                $timeout(function () {
+                    $('#changeProjectDetailAlert .alert-success').hide();
+                    $('#projectDetailModal').modal('hide');
+                }, 1500);
+            }, function (error) {
+                $('#changeProjectDetailAlert .alert-success').hide();
+                $scope.updateProjectError = error.message ? error.message : 'Change project detail failed.';
+                $('#changeProjectDetailAlert .alert-danger').show();
+                $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
+                    $(this).fadeOut('slow');
+                });
             });
-            if(!keepGoing) {
-                $('#alreadyExist').show();
-                $scope.changeName = $scope.selected.name;
-                $scope.selected.name = old_projectName;
-                $('#alreadyExist').mouseout(function () { $(this).fadeOut('slow'); });
-                return;
+        };
+
+        $scope.updateProject = function () {
+            $scope.selected.name = $scope.tempProject.name;
+            $scope.selected.description = $scope.tempProject.description;
+            if ($scope.selected.name && $scope.selected.name.length > 0){
+                var res = /[^0-9a-zA-Z\-._]/.test($scope.selected.name) || $scope.selected.name[0] == '-'
+                    || $scope.selected.name[0] == '.' || $scope.selected.name[0] == '_';
+                if (res) {
+                    $scope.updateProjectError ='Project name must contain only Latin letters, digits or these following special characters -._';
+                    $('#changeProjectDetailAlert .alert-danger').show();
+                    $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
+                        $(this).fadeOut('slow');
+                    });
+                    $scope.selected.name = old_projectName;
+                    return;
+                }
+                var isExistingName = true;
+                angular.forEach($scope.projects, function (project) {
+                    if ($scope.selected != project && $scope.selected.name == project.name) {
+                        isExistingName = false;
+                    }
+                });
+                if (!isExistingName) {
+                    $scope.updateProjectError =" Impossible to rename the project. The name <b>"
+                        + $scope.selected.name + '</b> is already used in your projects.';
+                    $('#changeProjectDetailAlert .alert-danger span').html($scope.updateProjectError);
+                    $('#changeProjectDetailAlert .alert-danger').show();
+                    $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
+                        $(this).fadeOut('slow');
+                    });
+                    $scope.selected.name = old_projectName;
+                    $scope.selected.description = old_description;
+                    return;
+                }
+                if ($scope.selected.description != old_description) {
+                    Project.getProject($scope.selected.workspaceId, old_projectName).then(function (data) {
+                        data.description = $scope.selected.description;
+                        Project.setProject($scope.selected.workspaceId, old_projectName, data).then(function (data) {
+                            if ($scope.selected.name != old_projectName){
+                                renameSelectedProject($scope.selected.name);
+                            } else {
+                                $('#changeProjectDetailAlert .alert-danger').hide();
+                                $('#changeProjectDetailAlert .alert-success').show();
+                                $timeout(function () {
+                                    $('#changeProjectDetailAlert .alert-success').hide();
+                                    $('#projectDetailModal').modal('hide');
+                                }, 1500);
+                            }
+                        }, function (error) {
+                            $scope.selected.description = old_description
+                            $('#changeProjectDetailAlert .alert-success').hide();
+                            $scope.updateProjectError = error.message ? error.message : 'Change project detail failed.';
+                            $('#changeProjectDetailAlert .alert-danger').show();
+                            $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
+                                $(this).fadeOut('slow');
+                            });
+                        });
+                    });
+                } else if ($scope.selected.name != old_projectName){
+                    renameSelectedProject($scope.selected.name);
+                }
             }
-            if ($scope.selected.name != old_projectName || $scope.selected.description != old_description) {
-                return $q.all([
-                    $http({ method: 'POST', url: "/api/project/" + $scope.selected.workspaceId + "/rename" + $scope.selected.path + "?name=" + $scope.selected.name }).
-                        success(function (data, status, headers, config) {
-                                $http({ method: 'GET', url: "/api/project/" + $scope.selected.workspaceId + "/" + $scope.selected.name}).
-                                    success(function (data, status) {
-                                        $http({ method: 'PUT', url: "/api/project/" + $scope.selected.workspaceId + "/" + $scope.selected.name, data: data })
-                                            .success(function (data, status) {
-                                                $('#changeProjectDetailAlert .alert-danger').hide();
-                                                $('#changeProjectDetailAlert .alert-success').show();
-                                                $timeout(function () {
-                                                    $('#changeProjectDetailAlert .alert-success').hide();
-                                                    $('#projectDetailModal').modal('hide');
-                                                }, 1500);
-                                                //Change Project URL & Path
-                                                var projFound = $scope.projects.filter(function (p) {
-                                                    return p.name == data.name;
-                                                })
-                                                if (projFound.length > 0) {
-                                                    projFound[0].ideUrl = data.ideUrl;
-                                                    projFound[0].path = data.path;
-                                                    projFound[0].url = data.baseUrl;
-                                                }
-                                            })
-                                            .error(function (err) {
-                                                $('#changeProjectDetailAlert .alert-success').hide();
-                                                $('#changeProjectDetailAlert .alert-danger').show();
-                                                $('#changePasswordAlert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
-                                            });
-                                    })
-                        })
-                ]);
-            }
-            $('#alreadyExist').hide();
-            $('#changePasswordAlert .alert').hide();
-            $("#projectDetailModal").modal('hide');
-        }
-      };
+        };
 
       $scope.switchVisibility = function () {
 
