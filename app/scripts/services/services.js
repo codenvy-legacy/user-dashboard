@@ -828,6 +828,17 @@ angular.module('odeskApp')
             return deferred.promise;
         };
 
+        item.delete = function (project) {
+            var deferred = $q.defer();
+            var url = project.url ? project.url : project. baseUrl;
+            $http.delete(url)
+                .success(function () {
+                    deferred.resolve();
+                })
+                .error(function (err) { deferred.reject(err); });
+            return deferred.promise;
+        };
+
         item.getPermissions = function (workspaceId, projectName) {
             var deferred = $q.defer();
             var con = {

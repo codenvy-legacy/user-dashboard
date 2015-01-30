@@ -38,6 +38,7 @@ angular.module('odeskApp')
       $scope.currentUserId = '';
       $scope.activeProjectVisibility = '';
       $scope.updateProjectError = '';
+      $scope.deleteProjectError = '';
 
       //private methods
       // for one user set the read write properties
@@ -351,23 +352,21 @@ angular.module('odeskApp')
        };
 
       $scope.deleteProject = function () {
-        $http({ method: 'DELETE', url: $scope.selected.url })
-          .success(function (status) {
-            $('#warning-project-alert .alert-success').show();
-            $scope.projects = _.without($scope.projects, _.findWhere($scope.projects, $scope.selected));        
-            if($scope.projects.length==0){
-                 $scope.isProjectDataFetched = true;
-            }
-            $timeout(function () {
-                $('#warning-project').modal('hide');
-            }, 1500);
-          })
-          .error(function (err) {
-                $('#warning-project-alert .alert-success').hide();
-                $('#warning-project-alert .alert-danger').show();
-                $('#warning-project-alert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
+          Project.delete($scope.selected).then(function () {
+              $('#warning-project-alert .alert-success').show();
+              $scope.projects = _.without($scope.projects, _.findWhere($scope.projects, $scope.selected));
+              if($scope.projects.length==0){
+                  $scope.isProjectDataFetched = true;
+              }
+              $timeout(function () {
+                  $('#warning-project').modal('hide');
+              }, 1500);
+          }, function (error) {
+              $('#warning-project-alert .alert-success').hide();
+              $scope.deleteProjectError = error.message ? error.message : "Delete failed.";
+              $('#warning-project-alert .alert-danger').show();
+              $('#warning-project-alert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
           });
-          
       };
 
       // used to save permissions to server
