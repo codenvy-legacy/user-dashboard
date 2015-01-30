@@ -386,7 +386,8 @@
                         <label>Project Technology:</label>
                         <div class="row">
                             <div style="width: 54px" class="col-md-3">
-                                <img width="44" height="44" alt="" class="bordered" ng-src="./images/{{selected.type}}.png"></div>
+                                <img width="44" height="44" alt="" class="bordered" ng-src="./images/{{selected.type}}.png">
+                            </div>
                             <div class="col-md-9">
                                 <h3 ng-if="selected.projectTypeName == 'nameless' " class="panel-title">Blank Project</h3>
                                 <h3 ng-if="selected.projectTypeName != 'nameless' " class="panel-title">{{selected.projectTypeName}}</h3>
@@ -408,15 +409,12 @@
                                 <b>Successfully Done!</b> Change project detail completed.
                             </div>
                             <div class="alert alert-danger" style="display: none;">
-                                <b>Failed!</b> Change project detail failed.</div>
-                            </div>
-                            <div class="alert alert-danger" id="alreadyExist" style="display: none;">
-                                <b>Failed!</b> Impossible to rename the project. The name <strong>"{{changeName}}"</strong> is already used in your projects.
+                                <b>Failed!</b><span> {{updateProjectError}} </span>
                             </div>
                         </div>
                     </div>
                 </div>
-
+            </div>
             <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary" ng-click="updateProject()">Ok</button>
@@ -425,6 +423,7 @@
         </div>
     </div>
 </div>
+
 </div>
 
 <!-- Modal -->
@@ -484,7 +483,7 @@
                     <b>Successfully Done!</b> Delete process completed.
                 </div>
                 <div class="alert alert-danger" style="display: none;">
-                    <b>Failed!</b> Delete failed.
+                    <b>Failed!</b> {{deleteProjectError}}
                 </div>
             </div>
             <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
