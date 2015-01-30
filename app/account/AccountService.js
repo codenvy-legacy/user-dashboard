@@ -19,7 +19,7 @@ angular.module('odeskApp')
         var BUY_SUBSCRIPTIONS_LINK = "http://codenvy.com/products/developer-environment-cloud-saas/";
         AccountService.subscriptions = [];
         AccountService.accounts = [];
-        AccountService.accountMetrics = {};
+        AccountService.resources = {};
 
         //Get all accounts, where the current user has membership:
         AccountService.getAccounts = function () {
@@ -65,9 +65,9 @@ angular.module('odeskApp')
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             };
-            $http.get('/api/account/' + accountId + "/metrics", con)
+            $http.get('/api/account/' + accountId + "/resources", con)
                 .success(function (data) {
-                    AccountService.accountMetrics = data;
+                    AccountService.resources = data;
                     deferred.resolve(data); //resolve data
                 })
                 .error(function (err) {

@@ -25,7 +25,7 @@
                         {{subscription.endDate ? subscription.endDate : "----"}}
                     </td>
                     <td class="text-center">
-                        <b ng-if="subscription.serviceId == 'Saas'">{{accountMetrics.usedMemoryInCurrentBillingPeriod}} MB minutes</b><br>
+                        <b ng-if="subscription.serviceId == 'Saas'">{{usedMemory}} GB hours</b><br>
                         <p ng-if="subscription.serviceId == 'Saas' && accountMetrics.usedMemoryInCurrentBillingPeriod >= accountMetrics.freeMemory " class="lockdown-label">LOCKDOWN</p>
                     </td>
                     <td class="text-center">

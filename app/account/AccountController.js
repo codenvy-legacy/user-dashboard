@@ -15,7 +15,7 @@ angular.module('odeskApp')
     .controller('AccountCtrl', ["$scope", "AccountService", function ($scope, AccountService) {
         $scope.accounts = [];
         $scope.subscriptions = [];
-        $scope.accountMetrics = {};
+        $scope.usedMemory = 0;
 
         //TODO add possibility to register tab:
         $scope.tabs = [
@@ -58,8 +58,17 @@ angular.module('odeskApp')
 
         $scope.getAccountMetrics = function(account) {
             AccountService.getAccountMetrics(account.id).then(function(){
-                $scope.accountMetrics = AccountService.accountMetrics;
-                console.log($scope.accountMetrics);
+                $scope.resources = AccountService.resources;
+                var saasSubscription = _.find($scope.resources, function (subscription) {
+                    return subscription.subscriptionReference.serviceId == "Saas";
+                });
+                var used = _.pluck(saasSubscription.used, "memory");
+                var usedMb = used.reduce(function(sum, use) {
+                    sum += use;
+                    return sum;
+                });
+                $scope.usedMemory = (usedMb / 1024 / 60).toFixed(2);
+                console.log($scope.usedMemory);
             });
         }
 
@@ -67,7 +76,6 @@ angular.module('odeskApp')
             var services = _.pluck($scope.subscriptions, "serviceId");
             var hasOnPremises = services.indexOf("OnPremises") >= 0;
             var hasFactory = services.indexOf("Factory") >= 0;
-            var hasSaaS = services.indexOf("Saas") >= 0;
 
             if (!hasOnPremises) {
                 $scope.subscriptions.push(AccountService.getOnPremisesProposalSubscription());
@@ -77,8 +85,18 @@ angular.module('odeskApp')
                 $scope.subscriptions.push(AccountService.getFactoryProposalSubscription());
             }
 
-            if (!hasSaaS) {
-                $scope.subscriptions.push(AccountService.getSAASProposalSubscription());
+            var saasSubscription = _.find($scope.subscriptions, function (subscription) {
+                return subscription.serviceId == "Saas";
+            });
+
+            if (saasSubscription) {
+                if (saasSubscription.properties && saasSubscription.properties["Package"] && saasSubscription.properties["Package"] == "Community"){
+                    saasSubscription.description = "SAAS Free Account";
+                    saasSubscription.needToBut = false;
+                    saasSubscription.needToUpgrade = true;
+                }
+            } else {
+                $scope.subscriptions.push(AccountService.getSAASProposalSubscription);
             }
 
         }
