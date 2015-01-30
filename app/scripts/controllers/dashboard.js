@@ -272,14 +272,17 @@ angular.module('odeskApp')
       };
 
         $scope.setCurrentWorkspace = function (workspace) {
+            if($scope.currentWorkspace && workspace && $scope.currentWorkspace.workspaceReference.name == workspace.workspaceReference.name) {
+                return;
+            }
             if (workspace) {
-              $scope.filter.workspaceName=workspace.workspaceReference.name;
+                $scope.filter.workspaceName = workspace.workspaceReference.name;
             } else {
-              $scope.filter = {};
+                $scope.filter = {};
             }
             $scope.currentWorkspace = workspace;
             Workspace.currentWorkspace = workspace;
-        }
+        };
 
 	    $scope.deleteProjectConfirm = function() {
             $('#warning-project-alert .alert-success').hide();
@@ -509,6 +512,11 @@ angular.module('odeskApp')
             $scope.docboxes = DocBoxService.getDocBoxes();
           };
             $scope.currentWorkspace = Workspace.currentWorkspace;
+            if ($scope.currentWorkspace) {
+                $scope.filter.workspaceName = $scope.currentWorkspace.workspaceReference.name;
+            } else {
+                $scope.filter = {};
+            }
             Workspace.all(true).then(function (resp) {
                 $scope.workspaces = Workspace.workspaces;
 
