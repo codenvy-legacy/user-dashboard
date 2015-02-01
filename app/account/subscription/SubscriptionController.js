@@ -27,17 +27,11 @@ angular.module('odeskApp')
             $scope.selectBillingTab();
         }
 
-        $scope.cancelSubscription = function (subscription) {
-            AccountService.removeSubscription(subscription.id).then(function () {
-                $scope.loadSubscriptions($scope.accounts);
-            });
-        }
-
         $scope.confirmCancelSubscription = function (subscription) {
             $scope.subscription = subscription;
             $modal.open({
                 templateUrl: 'account/subscription/cancelSubscriptionModal.html',
-                size: 'sm',
+                size: 'lg',
                 scope: $scope,
                 subscription: subscription
             }).result;
