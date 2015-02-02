@@ -15,11 +15,14 @@
 'use strict';
 angular.module('odeskApp')
     .controller('BillingCtrl', function ($scope, $timeout, Countries, AccountService, PaymentService) {
+        var isCreditCardFormInit = false;
+
         $scope.accounts = [];
         $scope.creditCards = [];
         $scope.countries = Countries.all();
         $scope.country = Countries.default();
         $scope.creditCard = {};
+
 
         AccountService.getAccountsByRole("account/owner").then(function (accounts) {
             $scope.accounts = accounts;
@@ -28,12 +31,17 @@ angular.module('odeskApp')
             }
         });
 
-        $scope.loadCreditCards = function() {
-            PaymentService.getCreditCards($scope.accounts[0].id).then(function(){
+        $scope.loadCreditCards = function () {
+            PaymentService.getCreditCards($scope.accounts[0].id).then(function () {
                 $scope.creditCards = PaymentService.crediCards;
+                if(!$scope.creditCards.length || $scope.creditCards.length === 0){
+                    if(!isCreditCardFormInit){
+                        initCreditCardForm();
+                        isCreditCardFormInit = true;
+                    }
+                }
             });
-        }
-
+        };
 
         $scope.deleteCreditCard = function (creditCard) {
             PaymentService.deleteCreditCard(creditCard.accountId, creditCard.number).then(function () {
@@ -46,5 +54,31 @@ angular.module('odeskApp')
                 $scope.loadCreditCards();
             });
         };
+
+        var initCreditCardForm = function () {
+            $('form#creditCardForm').card({
+                container: '.cardWrapper',
+                formSelectors: {
+                    numberInput: 'input#cardNumber',
+                    expiryInput: 'input#expiry',
+                    cvcInput: 'input#cvv',
+                    nameInput: 'input#cardHolder'
+                },
+                width: 360,
+                formatting: true,
+                messages: {
+                    validDate: 'valid\ndate',
+                    monthYear: 'mm/yyyy'
+                },
+                values: {
+                    number: '•••• •••• •••• ••••',
+                    name: 'Full Name',
+                    expiry: '••/••',
+                    cvc: '•••'
+                },
+                debug: false
+            });
+        };
+
     }
 );

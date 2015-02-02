@@ -12,7 +12,7 @@
  * Controller for manipulating user's account sections - Profile, Subscriptions, Billing and Invoices.
  */
 angular.module('odeskApp')
-    .controller('AccountCtrl', ["$scope", "AccountService", "PaymentService", function ($scope, AccountService, PaymentService) {
+    .controller('AccountCtrl', ["$scope", "AccountService", "PaymentService", function ($scope, AccountService) {
         $scope.accounts = [];
         $scope.subscriptions = [];
         $scope.usedMemory = 0;
@@ -53,7 +53,7 @@ angular.module('odeskApp')
                 $scope.getAccountMetrics(accounts[0]);
 
             });
-        }
+        };
 
         $scope.getAccountMetrics = function(account) {
             AccountService.getAccountMetrics(account.id).then(function(){
@@ -69,7 +69,7 @@ angular.module('odeskApp')
                 $scope.usedMemory = (usedMb / 1024 / 60).toFixed(2);
                 console.log($scope.usedMemory);
             });
-        }
+        };
 
         $scope.addSubscriptionProposals = function () {
             var services = _.pluck($scope.subscriptions, "serviceId");
@@ -98,7 +98,7 @@ angular.module('odeskApp')
                 $scope.subscriptions.push(AccountService.getSAASProposalSubscription);
             }
 
-        }
+        };
 
         $scope.selectBillingTab = function() {
             $scope.tabs[2].active = true;
