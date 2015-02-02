@@ -64,58 +64,58 @@
                             </div>
                         </div>
                     </div>
-                    <form action="r" id="braintree-payment-form" method="post" accept-charset="utf-8" class="form" role="form">
+                    <form>
                         <!--<legend class="text-center">Billing Information</legend>-->
                         <div class="row">
                             <div class="col-xs-12 col-md-12">
                                 <label for="cardNumber">Card Number:</label>
-                                <input class="form-control" id="cardNumber" data-encrypted-name="number" type="text" required autofocus/>
+                                <input class="form-control" id="cardNumber" ng-model="creditCard.number" type="text" required autofocus/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-6 col-md-6">
                                 <label for="cardHolder">Cardholder Name:</label>
-                                <input class="form-control" id="cardHolder" name="cardHolder"  type="text" required autofocus/>
+                                <input class="form-control" id="cardHolder" name="cardHolder"  ng-model="creditCard.cardholderName" type="text" required autofocus/>
                             </div>
                             <div class="col-xs-3">
                                 <label for="expires">Expires:</label>
-                                <input class="form-control" id="expires" name="expires"  type="text" required autofocus/>
+                                <input class="form-control" id="expires" name="expires" ng-model="creditCard.expirationDate"  type="text" required autofocus/>
                             </div>
                             <div class="col-xs-3">
                                 <label for="cvv">CVV:</label>
-                                <input class="form-control" id="cvv" name="cvv"  data-encrypted-name="cvv" type="text" required autofocus/>
+                                <input class="form-control" id="cvv" name="cvv"  ng-model="creditCard.cvv" type="text" required autofocus/>
                             </div>
                          </div>
                         <div class="row">
                             <div class="col-xs-6 col-md-6">
                                 <label for="street">Street Address:</label>
-                                <input class="form-control" id="street" name="street"  type="text" required autofocus/>
+                                <input class="form-control" id="street" name="street"  type="text" autofocus/>
                             </div>
                             <div class="col-xs-6 col-md-6">
                                 <label for="city">City:</label>
-                                <input class="form-control" id="city" name="city"  type="text" required autofocus/>
+                                <input class="form-control" id="city" name="city"  type="text" autofocus/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-6 col-md-6">
                                 <label for="state">State:</label>
-                                <input class="form-control" id="state" name="state"  type="text" required autofocus/>
+                                <input class="form-control" id="state" name="state"  type="text" autofocus/>
                             </div>
                             <div class="col-xs-6 col-md-6">
                                 <label for="postalCode">Postal Code:</label>
-                                <input class="form-control" id="postalCode" name="postalCode"  type="text" required autofocus/>
+                                <input class="form-control" id="postalCode" name="postalCode"  type="text" autofocus/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12 col-md-12 form-group">
                                 <label for="country">Country:</label>
-                                <select id="country" ng-model="country" class="form-control" required>
+                                <select id="country" ng-model="country" class="form-control" >
                                     <option value="">Select Your Country</option>
                                     <option ng-repeat="country in countries">{{country.name}}</option>
                                 </select>
                             </div>
                             <div class="col-xs-2 col-md-2 col-md-offset-10">
-                                <button class="btn btn-primary btn-block signup-btn" type="submit">Add</button>
+                                <button class="btn btn-primary btn-block signup-btn" ng-click="addCreditCard();">Add</button>
                             </div>
                         </div>
                     </form>
@@ -123,9 +123,9 @@
             </div>
             <div class="panel panel-default panel-ce" ng-if="creditCards && creditCards.length > 0">
                 <div class="panel-body">
-                    <h4 class="text-center">Credit Card Information {{creditCards.length}}</h4>
+                    <h4 class="text-center">CREDIT CARD INFORMATION</h4>
                         <div class="row" ng-repeat="card in creditCards">
-                            <div class="col-md-8">{{card.cardholder}} ({{card.type}} {{card.number}})</div>
+                            <div class="col-md-8 "><h4>{{card.cardholder}} ({{card.type}} {{card.number}})</h4></div>
                             <button type="button" class="btn btn-danger" ng-click="deleteCreditCard(card)"
                                     style="float:right;margin-right:20px;">Remove</button>
                         </div>

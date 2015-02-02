@@ -37,16 +37,11 @@ angular.module('odeskApp')
         ];
 
 
-        var loadCreditCards = function (accounts) {
-            //TODO need decision when more then one account:
-            PaymentService.getCreditCards(accounts[0]);
-        };
 
         AccountService.getAccountsByRole("account/owner").then(function (accounts) {
             $scope.accounts = accounts;
             if (accounts && accounts.length > 0) {
                 $scope.loadSubscriptions(accounts);
-                loadCreditCards(accounts);
             }
         });
 

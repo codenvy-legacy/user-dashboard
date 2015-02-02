@@ -2,7 +2,7 @@
  * Created by Ann on 1/26/15.
  */
 angular.module('odeskApp')
-    .constant('clientTokenPath', '/')
+    .constant('clientTokenPath', '/')//need to init BrainTree
     .factory('PaymentService', ['$http', '$q', '$braintree', function PaymentService($http, $q, $braintree) {
         PaymentService.crediCards = [];
 
