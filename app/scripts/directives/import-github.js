@@ -216,7 +216,7 @@ angular.module('odeskApp')
                 }, function() {
                   return $scope.confirmGitHubOAuthPopupModalInstance = $modal.open({
                       templateUrl: 'partials/templates/projects/confirmGitHubOAuthPopUp.html',
-                      size: 'lg',
+                      size: 'sm',
                       scope: $scope
                     }).result;
                 });
