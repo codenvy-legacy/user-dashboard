@@ -2,7 +2,8 @@
  * Created by Ann on 1/26/15.
  */
 angular.module('odeskApp')
-    .factory('PaymentService', ['$http', '$q', function PaymentService($http, $q) {
+    .constant('clientTokenPath', '/')
+    .factory('PaymentService', ['$http', '$q', '$braintree', function PaymentService($http, $q, $braintree) {
         PaymentService.crediCards = [];
 
         PaymentService.getClientToken = function (accountId) {
@@ -23,21 +24,24 @@ angular.module('odeskApp')
             return deferred.promise;
         };
 
-        PaymentService.addCreditCard = function (accountId, data) {
+        PaymentService.addCreditCard = function (accountId, creditCard) {
+            var client;
             var deferred = $q.defer();
-           /* var con = {
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            };*/
-            $http.post('/api/creditcard/' + accountId, data)
-                .success(function (data) {
-                    deferred.resolve(data); //resolve data
-                })
-                .error(function (err) {
-                    deferred.reject(err);
+            PaymentService.getClientToken(accountId).then(function (data) {
+                client = new $braintree.api.Client({
+                    clientToken: data.token
                 });
+
+                client.tokenizeCard(creditCard, function (err, nonce) {
+                    $http.post('/api/creditcard/' + accountId, {nonce: nonce})
+                        .success(function (data) {
+                            deferred.resolve(data); //resolve data
+                        })
+                        .error(function (err) {
+                            deferred.reject(err);
+                        });
+                });
+            });
             return deferred.promise;
         }
 

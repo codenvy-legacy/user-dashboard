@@ -23,6 +23,7 @@ angular.module('odeskApp', [
     'ngSanitize',
     'ngRoute',
     'ngAnimate',
+    'braintree-angular',
     'ui.bootstrap',
     'chieffancypants.loadingBar',
     'ui.codemirror',
