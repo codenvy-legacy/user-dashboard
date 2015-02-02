@@ -12,7 +12,7 @@
  * Controller for manipulating user's account sections - Profile, Subscriptions, Billing and Invoices.
  */
 angular.module('odeskApp')
-    .controller('AccountCtrl', ["$scope", "AccountService", function ($scope, AccountService) {
+    .controller('AccountCtrl', ["$scope", "AccountService", "PaymentService", function ($scope, AccountService, PaymentService) {
         $scope.accounts = [];
         $scope.subscriptions = [];
         $scope.usedMemory = 0;
@@ -37,12 +37,16 @@ angular.module('odeskApp')
         ];
 
 
-
+        var loadCreditCards = function (accounts) {
+            //TODO need decision when more then one account:
+            PaymentService.getCreditCards(accounts[0]);
+        };
 
         AccountService.getAccountsByRole("account/owner").then(function (accounts) {
             $scope.accounts = accounts;
             if (accounts && accounts.length > 0) {
                 $scope.loadSubscriptions(accounts);
+                loadCreditCards(accounts);
             }
         });
 
