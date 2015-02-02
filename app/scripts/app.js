@@ -18,6 +18,7 @@
 var DEV = true;
 
 angular.module('odeskApp', [
+    'angular-lodash',
     'ngCookies',
     'ngResource',
     'ngSanitize',
