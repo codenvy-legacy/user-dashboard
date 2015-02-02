@@ -357,10 +357,8 @@ angular.module('odeskApp')
       $scope.deleteProject = function () {
           Project.delete($scope.selected).then(function () {
               $('#warning-project-alert .alert-success').show();
-              $scope.projects = _.without($scope.projects, _.findWhere($scope.projects, $scope.selected));
-              if($scope.projects.length==0){
-                  $scope.isProjectDataFetched = true;
-              }
+              ProjectFactory.fetchProjects($scope.workspaces);
+              $scope.isProjectDataFetched = true;
               $timeout(function () {
                   $('#warning-project').modal('hide');
               }, 1500);
