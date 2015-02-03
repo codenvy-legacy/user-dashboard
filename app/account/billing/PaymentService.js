@@ -30,7 +30,7 @@ angular.module('odeskApp')
             var mainCreditCardInfo = {};
             mainCreditCardInfo.number = creditCard.number;
             mainCreditCardInfo.cardholderName = creditCard.cardholderName;
-            mainCreditCardInfo.expirationDate = creditCard.expirationDate;
+            mainCreditCardInfo.expirationDate = creditCard.expirationDate.replace(/ /g, "");
             mainCreditCardInfo.cvv = creditCard.cvv;
             mainCreditCardInfo.billingAddress = {postalCode: creditCard.postalCode};
 
