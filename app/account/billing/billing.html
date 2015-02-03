@@ -54,27 +54,27 @@
                         <div class="row">
                             <div class="col-xs-6 col-md-6">
                                 <label for="street">Street Address:</label>
-                                <input class="form-control" id="street" type="text" autofocus/>
+                                <input class="form-control" id="street" type="text" ng-model="creditCard.streetAddress" autofocus/>
                             </div>
                             <div class="col-xs-6 col-md-6">
                                 <label for="city">City:</label>
-                                <input class="form-control" id="city" type="text" autofocus/>
+                                <input class="form-control" id="city"  ng-model="creditCard.city" type="text" autofocus/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-6 col-md-6">
                                 <label for="state">State:</label>
-                                <input class="form-control" id="state" type="text" autofocus/>
+                                <input class="form-control" id="state"  ng-model="creditCard.state" type="text" autofocus/>
                             </div>
                             <div class="col-xs-6 col-md-6">
                                 <label for="postalCode">Postal Code:</label>
-                                <input class="form-control" id="postalCode" type="text" autofocus/>
+                                <input class="form-control" id="postalCode"  ng-model='creditCard.postalCode' type="text" autofocus/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12 col-md-12 form-group">
                                 <label for="country">Country:</label>
-                                <select id="country" ng-model="country" class="form-control" >
+                                <select id="country"  ng-model="creditCard.country" class="form-control" >
                                     <option value="">Select Your Country</option>
                                     <option ng-repeat="country in countries">{{country.name}}</option>
                                 </select>
