@@ -1037,6 +1037,9 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   }
   body {
     padding-top: 0;
+    font-size: 13px;
+    color: #dbdbdb;
+    font-family:"Helvetica Neue", "Myriad Pro", arial, Verdana, Verdana, sans-serif;
   }
   .breadcrumb-wrap,
   .navbar-fixed-top {
@@ -1565,6 +1568,59 @@ a.message{
     border-top-color: #fff;
 }
 
+.panel h4 {
+    font-size: 12px;
+}
+
+#creditCardForm input,
+#creditCardForm #country {
+    color: #8b8b8b;
+    font-size: 14px;
+}
+
+.display-none {
+    display: none;
+}
+
+.cardWrapper {
+    margin-top: 25px;
+    margin-bottom: 30px;
+}
+
+.cardWrapper .card:before {
+    content: '';
+    position: absolute;
+    top: -11px;
+    left: -14px;
+    right: -14px;
+    bottom: -8px;
+    border-radius:0;
+    background-color: rgba(223,223,223,0.5);
+}
+
+.cardWrapper .card .number.display {
+    font-weight: bold;
+}
+
+.cardWrapper .card .name.display {
+    font-weight: bold;
+    font-family:"Helvetica Neue", "Myriad Pro", arial, Verdana, Verdana, sans-serif;
+}
+
+.cardWrapper .card .expiry.display {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.cardWrapper .card .expiry.display:before {
+    font-size: 10px;
+    font-family:"Helvetica Neue", "Myriad Pro", arial, Verdana, Verdana, sans-serif;
+}
+
+.cardWrapper .card .expiry.display:after {
+    font-size: 10px;
+    font-family:"Helvetica Neue", "Myriad Pro", arial, Verdana, Verdana, sans-serif;
+}
 /* loader.
 ----------------------------------------------*/
 

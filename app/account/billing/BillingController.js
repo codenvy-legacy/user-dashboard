@@ -15,8 +15,6 @@
 'use strict';
 angular.module('odeskApp')
     .controller('BillingCtrl', function ($scope, $timeout, Countries, AccountService, PaymentService) {
-        var isCreditCardFormInit = false;
-
         $scope.accounts = [];
         $scope.creditCards = [];
         $scope.countries = Countries.all();
@@ -34,12 +32,6 @@ angular.module('odeskApp')
         $scope.loadCreditCards = function () {
             PaymentService.getCreditCards($scope.accounts[0].id).then(function () {
                 $scope.creditCards = PaymentService.crediCards;
-                if(!$scope.creditCards.length || $scope.creditCards.length === 0){
-                    if(!isCreditCardFormInit){
-                        initCreditCardForm();
-                        isCreditCardFormInit = true;
-                    }
-                }
             });
         };
 
@@ -79,6 +71,6 @@ angular.module('odeskApp')
                 debug: false
             });
         };
-
+        initCreditCardForm();
     }
 );

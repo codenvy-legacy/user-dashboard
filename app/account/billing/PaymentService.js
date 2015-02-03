@@ -43,7 +43,7 @@ angular.module('odeskApp')
                 });
             });
             return deferred.promise;
-        }
+        };
 
         PaymentService.getCreditCards = function (accountId) {
             var deferred = $q.defer();

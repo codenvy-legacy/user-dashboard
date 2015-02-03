@@ -1,13 +1,13 @@
 <div ng-controller="BillingCtrl">
 
-    <div class="container" style="margin-top: 20px;">
+    <div class="container" style="margin-top: 20px; color: #8b8b8b;font-size: 13px;">
         <div class="col-md-6">
             <div class="panel panel-default panel-ce">
                 <div class="panel-body">
                     <h4 class="text-center">Usage and balance</h4>
 
                     <div class="row text-center" style="margin-top: 40px;">
-                        <div class="col-md-6">{{usedMemory}} GB hours</div>
+                        <div class="col-md-6">{{usedMemory}} GB Hours</div>
                         <div class="col-md-6">$ [NOT READY]</div>
                     </div>
                 </div>
@@ -25,10 +25,10 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="panel panel-default panel-ce" ng-if="!creditCards||creditCards.length==0">
+            <div class="panel panel-default panel-ce" ng-class="{'display-none': creditCards && creditCards.length > 0}">
                 <div class="panel-body">
                     <h4 class="text-center">Add credit card</h4>
-                    <div class="cardWrapper" style="margin-top: 25px;margin-bottom: 30px;"></div>
+                    <div class="cardWrapper"></div>
                     <form id="creditCardForm">
                         <!--<legend class="text-center">Billing Information</legend>-->
                         <div class="row">
