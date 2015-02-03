@@ -27,13 +27,26 @@ angular.module('odeskApp')
         PaymentService.addCreditCard = function (accountId, creditCard) {
             var client;
             var deferred = $q.defer();
+            var mainCreditCardInfo = {};
+            mainCreditCardInfo.number = creditCard.number;
+            mainCreditCardInfo.cardholderName = creditCard.cardholderName;
+            mainCreditCardInfo.expirationDate = creditCard.expirationDate;
+            mainCreditCardInfo.cvv = creditCard.cvv;
+            mainCreditCardInfo.billingAddress = {postalCode: creditCard.postalCode};
+
             PaymentService.getClientToken(accountId).then(function (data) {
                 client = new $braintree.api.Client({
                     clientToken: data.token
                 });
 
-                client.tokenizeCard(creditCard, function (err, nonce) {
-                    $http.post('/api/creditcard/' + accountId, {nonce: nonce})
+                client.tokenizeCard(mainCreditCardInfo, function (err, nonce) {
+                    var newCreditCard = {nonce: nonce};
+                    newCreditCard.state = creditCard.state;
+                    newCreditCard.country = creditCard.country;
+                    newCreditCard.streetAddress = creditCard.streetAddress;
+                    newCreditCard.city = creditCard.city;
+
+                    $http.post('/api/creditcard/' + accountId, newCreditCard)
                         .success(function (data) {
                             deferred.resolve(data); //resolve data
                         })
