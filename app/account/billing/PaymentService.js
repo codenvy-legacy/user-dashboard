@@ -54,6 +54,8 @@ angular.module('odeskApp')
                             deferred.reject(err);
                         });
                 });
+            }, function (err) {
+                    deferred.reject(err);
             });
             return deferred.promise;
         };

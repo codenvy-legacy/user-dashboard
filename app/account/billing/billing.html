@@ -29,46 +29,46 @@
                 <div class="panel-body">
                     <h4 class="text-center">Add credit card</h4>
                     <div class="cardWrapper"></div>
-                    <form id="creditCardForm">
+                    <form id="creditCardForm" name="creditCardForm">
                         <!--<legend class="text-center">Billing Information</legend>-->
                         <div class="row">
                             <div class="col-xs-12 col-md-12">
-                                <label for="cardNumber">Card Number:</label>
-                                <input class="form-control" id="cardNumber" name="cardNumber" ng-model="creditCard.number" type="text" required autofocus/>
+                                <label for="cardNumber"><span class="red">*</span>Card Number: </label>
+                                <input class="form-control" id="cardNumber" placeholder=" " ng-model="creditCard.number" type="text" pattern="[0-9,/ ]{16,}" autofocus/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-6 col-md-6">
-                                <label for="cardHolder">Cardholder Name:</label>
-                                <input class="form-control" id="cardHolder" ng-model="creditCard.cardholderName" type="text" required autofocus/>
+                                <label for="cardHolder"><span class="red">*</span>Cardholder Name:</label>
+                                <input class="form-control" id="cardHolder" ng-maxlength="100" ng-model="creditCard.cardholderName" type="text" autofocus/>
                             </div>
                             <div class="col-xs-3">
-                                <label for="expiry">Expires:</label>
-                                <input class="form-control" id="expiry" ng-model="creditCard.expirationDate"  type="text" required autofocus/>
+                                <label for="expiry"><span class="red">*</span>Expires:</label>
+                                <input class="form-control" id="expiry" ng-model="creditCard.expirationDate"  type="text" pattern="[0-9,//,/ ]{7,}" autofocus/>
                             </div>
                             <div class="col-xs-3">
-                                <label for="cvv">CVV:</label>
-                                <input class="form-control" id="cvv" ng-model="creditCard.cvv" type="text" required autofocus/>
+                                <label for="cvv"><span class="red">*</span>CVV:</label>
+                                <input class="form-control" id="cvv" ng-model="creditCard.cvv" type="text" pattern="[0-9]{3,}" autofocus/>
                             </div>
                          </div>
                         <div class="row">
                             <div class="col-xs-6 col-md-6">
                                 <label for="street">Street Address:</label>
-                                <input class="form-control" id="street" type="text" ng-model="creditCard.streetAddress" autofocus/>
+                                <input class="form-control" id="street" ng-maxlength="100" type="text" ng-model="creditCard.streetAddress" autofocus/>
                             </div>
                             <div class="col-xs-6 col-md-6">
                                 <label for="city">City:</label>
-                                <input class="form-control" id="city"  ng-model="creditCard.city" type="text" autofocus/>
+                                <input class="form-control" id="city" ng-maxlength="100" type="text" ng-model="creditCard.city" autofocus/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-6 col-md-6">
                                 <label for="state">State:</label>
-                                <input class="form-control" id="state"  ng-model="creditCard.state" type="text" autofocus/>
+                                <input class="form-control" id="state" ng-maxlength="100" type="text" ng-model="creditCard.state" autofocus/>
                             </div>
                             <div class="col-xs-6 col-md-6">
                                 <label for="postalCode">Postal Code:</label>
-                                <input class="form-control" id="postalCode"  ng-model='creditCard.postalCode' type="text" autofocus/>
+                                <input class="form-control" id="postalCode" ng-maxlength="100" type="text" ng-model='creditCard.postalCode' autofocus/>
                             </div>
                         </div>
                         <div class="row">
@@ -79,8 +79,18 @@
                                     <option ng-repeat="country in countries">{{country.name}}</option>
                                 </select>
                             </div>
+                            <div class="col-xs-3 col-md-3">
+                                <span class="red">* required fields</span>
+                            </div>
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <div id="warning-creditCard-alert" style="margin: 20px;">
+                                    <div class="alert alert-danger" style="display: none;">
+                                        <b>Failed!</b> {{addCreditCardError}}
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-xs-2 col-md-2 col-md-offset-10">
-                                <button class="btn btn-primary btn-block signup-btn" ng-click="addCreditCard();">Add</button>
+                                <button class="btn btn-primary btn-block signup-btn" ng-disabled="!creditCardForm.$valid" ng-click="addCreditCard();">Add</button>
                             </div>
                         </div>
                     </form>

@@ -20,6 +20,7 @@ angular.module('odeskApp')
         $scope.countries = Countries.all();
         $scope.country = Countries.default();
         $scope.creditCard = {};
+        $scope.addCreditCardError = '';
 
 
         AccountService.getAccountsByRole("account/owner").then(function (accounts) {
@@ -42,8 +43,28 @@ angular.module('odeskApp')
         };
 
         $scope.addCreditCard = function () {
+            if(!$scope.creditCard.number){
+                $('#cardNumber').attr("required", "required");
+                return;
+            }
+            if(!$scope.creditCard.cardholderName){
+                $('#cardHolder').attr("required", "required");
+                return;
+            }
+            if(!$scope.creditCard.expirationDate){
+                $('#expiry').attr("required", "required");
+                return;
+            }
+            if(!$scope.creditCard.cvv){
+                $('#cvv').attr("required", "required");
+                return;
+            }
             PaymentService.addCreditCard($scope.accounts[0].id, $scope.creditCard).then(function () {
                 $scope.loadCreditCards();
+            }, function (error) {
+                $scope.addCreditCardError = error.message ? error.message : "Add credit card failed.";
+                $('#warning-creditCard-alert .alert-danger').show();
+                $('#warning-creditCard-alert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
             });
         };
 

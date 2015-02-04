@@ -1578,6 +1578,18 @@ a.message{
     font-size: 14px;
 }
 
+.red {
+    color: red;
+    font-size: 12px;
+    margin-right: 3px;
+    font-weight: bold;
+}
+
+#creditCardForm input:invalid {
+    border: 1px solid red;
+    box-shadow: 0px 0px 8px #FF8F8F;
+}
+
 .display-none {
     display: none;
 }
