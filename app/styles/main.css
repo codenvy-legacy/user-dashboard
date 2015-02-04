@@ -10,6 +10,9 @@ body  { padding-top: 45px; font-size: 11px; }
 #footer { height: 90px; }
 h4    { color: #363636; font-size: 10px; font-weight: bold; text-transform: uppercase; }
 
+a.documentation {
+  text-decoration: underline;
+}
 .label {
 	font-size: 12px !important;
 }
@@ -224,7 +227,26 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .form-control:-ms-input-placeholder {  
   color: #cecece;  
 }
-
+/* Styling of modals */
+.modal-header {
+  padding: 10px 15px;
+  background: #f0f0f0;
+}
+.modal-body {
+  padding: 10px 15px;
+}
+.modal-footer {
+  margin-top: 0;
+  padding: 10px 15px;
+  background-color: #f0f0f0;
+}
+.modal-footer .btn.pull-left {
+  margin-left: 0;
+}
+.modal-body .alert {
+  margin-top: 15px;
+  margin-bottom: 0;
+}
 /* Breadcrumb Search
 ----------------------------------------------*/
 .breadcrumb .new-project {
@@ -512,20 +534,6 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 
 /* Privacy Modal related.
 ----------------------------------------------*/
-.modal-header {
-  padding: 10px;
-  background: #f0f0f0;
-}
-.modal-header button.close {
-  line-height: 16px;
-}
-#privacyModal .modal-body .form-group {
-  margin-bottom: 25px;
-  margin-left: 20px;
-}
-#privacyModal .modal-body .form-group:last-child {
-  margin-bottom: 0;
-}
 #privacyModal input {
   vertical-align:bottom;
   margin-top: 2px;
@@ -543,23 +551,6 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 #privacyModal .help-block {
   margin: 0 0 0 25px;
   color: #a3a3a3;
-}
-#privacyModal .modal-header .close{
-  margin: 0;
-  position: absolute;
-  top: 4px;
-  right: 12px;
-  height: 20px;
-  width: 12px;
-  line-height: 1;
-}
-#privacyModal .modal-body {
-  padding: 0 0 10px 10px;
-}
-#privacyModal .modal-footer{
-  margin-top: 0;
-  padding: 10px;
-  background-color: #f0f0f0;
 }
 
 /* PROJECTBOX
@@ -786,7 +777,6 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 }
 #developersModal .form-group{
   width: 100%;
-  margin-bottom: 10px;
 }
 #developersModal .form-control{
   width: 80%;
@@ -950,28 +940,20 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .btn-bdr-lf { border-bottom: none; border-left: none;}
 .btn-bdr-rt { border-bottom: none; border-right: none; border-left: none;}
 
-#developersModal #showInviteError, .org-errors{
-  background-color: #f7d6d5;
-  color: #B35B59;
-  font-weight: bold;
-  border: 1px solid #e18986;
-  padding: 5px;
-  margin: 5px;
-}
-.success-errors{
+.success-errors {
   background-color: #3B8C37;
   color: #ffffff;
   font-weight: bold;
   border: 1px solid #3B8C37;
   padding: 5px;
-  margin: 5px;
+  margin: 5px 0 0;
 }
 .font-success{
-    color: #3B8C37;
+  color: #3B8C37;
 }
 
 .font-error{
-    color: #B35B59;
+  color: #B35B59;
 }
 
 #developersModal .invitation p.darkBlack {
@@ -1091,69 +1073,55 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 
 /*----------------------- Start of Add New Workspace Modal css-------------------------*/
 
-.modal-col { display: block;}
-.modal-col .btn { font-size:11px;}
-.modal-col .modal-header {
-  background-color: #f0f0f0;
-  border-bottom: 1px solid #e5e5e5;
-  min-height: 16.4286px;
-  padding: 8px 10px;
-}
-
-.modal-col .modal-header h4 {
-  font-size: 12px;
-  font-weight: normal;
-  text-align: left;
-  text-transform: none;
-}
-
 .form-field label, .menber-col{
   font-size: 14px;
   color: #000000;
 }
-
-.modal-col .modal-content {
-  background-clip: padding-box;
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius:0;
-  box-shadow:none !important;
-  outline: medium none;
-  position: relative;
+.menber-textarea {
+  border:#e5e5e5 1px solid;
+  height: 125px;
+  padding:8px;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
-.modal-col .modal-footer {
-  border-top: 1px solid #e5e5e5; background-color: #f0f0f0;
-  padding:8px 10px;
-  text-align: right;
+.menber-textarea p {
+  font-size:12px;
+  margin:0px 0px 5px 0px;
+  color:#8b8b8b;
 }
-
-.menber-textarea { border:#e5e5e5 1px solid; height: 125px; padding:8px; overflow-x: hidden; overflow-y: scroll;}
-.menber-textarea p { font-size:12px; margin:0px 0px 5px 0px;color:#8b8b8b;}
-.menber-textarea .table { width:100%; margin-bottom:0px !important;}
-.menber-textarea .table > tbody > tr > td {  border-bottom: 0 none;
+.menber-textarea .table {
+  width:100%;
+  margin-bottom:0px !important;
+}
+.menber-textarea .table > tbody > tr > td {
+  border-bottom: 0 none;
   border-top: 0 none;
   font-size: 12px;
   line-height: 22px;
   padding: 0;
   text-align: left;
 }
-.active-btn {  background: none repeat scroll 0 0 #226cb6;
+.active-btn {
+  background: none repeat scroll 0 0 #226cb6;
   border-radius: 100%;
   height: 13px;
   margin: 0 auto;
   width: 13px;
   border:#cdcdcd 2px solid;
 }
-.dactive-btn {  background:#cdcdcd;
+.dactive-btn {
+  background:#cdcdcd;
   border-radius: 100%;
   height: 13px;
   margin: 0 auto;
   width: 13px;
 }
-.menber-textarea i { color:#cdcdcd;}
+.menber-textarea i {
+  color:#cdcdcd;
+}
 
 .mrg-top10 { margin-top:10px !important;}
-.mrg-top30 { margin-top:30px !important;}
+.mrg-top30 { margin-top:25px !important;}
 .pad-0{ padding: 0;}
 /*----------------------- End of Add New Workspace Modal css-------------------------*/
 
@@ -1434,7 +1402,7 @@ a.message{
     padding: 8px !important;
 }
 #new-project-dialog .tab-content {
-  padding: 15px;
+  padding: 10px 15px;
 }
 #new-project-dialog .import-icon {
   vertical-align: text-top;
@@ -1496,6 +1464,110 @@ a.message{
   overflow: hidden;
   white-space: nowrap;
 }
+/* custom buttons.
+----------------------------------------------*/
+.btn-runner {
+    background: #ffffff;
+    position: absolute;
+    top: 17px;
+    right: 26px;
+    font-size: 11px;
+    padding: 5px 8px 5px 25px;
+    text-transform: none;
+    box-shadow: 0px 1px 1px #888888;
+}
+
+.btn-runner:hover {
+    background: #f8f8f8;
+    box-shadow: 0px 2px 2px #888888;
+}
+
+.btn-runner:active {
+    box-shadow: 0px 0px 4px #888888;
+}
+
+.btn-runner.disable,
+.btn-runner:hover.disable,
+.btn-runner:active.disable {
+    background: none;
+    box-shadow: 0px 0px 1px #888888;
+}
+
+.btn-runner .triangle-right {
+    width: 0;
+    height: 0;
+    left: 11px;
+    margin-top: 2px;
+    position: absolute;
+    border-left: 8px solid #909090;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+}
+
+.btn-runner .circle {
+    width: 14px;
+    height: 14px;
+    left: 7px;
+    margin-top: 0;
+    position: absolute;
+    background: #46AF00;
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+}
+
+.btn-runner .loader {
+    position: absolute;
+    left: 3px;
+    top: 2px;
+}
+
+.btn-runner .loader:after {
+    border-top-color: #fff;
+}
+
+/* loader.
+----------------------------------------------*/
+
+.loader {
+    display: inline-block;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    border-radius: 20px;
+    border: 2px solid #54AEE0;
+    -webkit-animation: barrelRoll 1s infinite linear;
+    -moz-animation: barrelRoll 1s infinite linear;
+    animation: barrelRoll 1s infinite linear;
+}
+
+.loader:after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    bottom: -3px;
+    left: -3px;
+    border-radius: 20px;
+    border: 4px solid transparent;
+    border-top-color: #fff;
+}
+
+@-webkit-keyframes barrelRoll {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@-moz-keyframes barrelRoll {
+    0% { -moz-transform: rotate(0deg); }
+    100% { -moz-transform: rotate(360deg);}
+}
+
+@keyframes barrelRoll {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 
 /* Select2 icons.
 ----------------------------------------------*/
@@ -1556,4 +1628,362 @@ html[dir="rtl"] .select2-search input {
     font-size: 12px;
     background-color: Black;
     color: White;
+}
+
+.import-config-dialog label[for=jsonConfig] {
+  padding: 6px 0;
+}
+.import-config-dialog .upload-config-file {
+    position: relative;
+    overflow: hidden;
+    float: right;
+    font-size: 12px;
+    font-weight: bold;
+}
+.import-config-dialog .upload-config-file input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    font-size: 40px;
+}
+
+/* Factory page */
+
+.factories-container {
+    margin-top:37px;
+}
+
+.factorynav > li {
+    vertical-align: middle;
+    margin: 0 0 0 10px;
+    padding: 4px 0 0 0;
+}
+
+.factory-navbar-right {
+    float: right;
+}
+
+.breadcrumb .btn-create-factory-modal {
+    height: 20px;
+    font-size: 8px;
+    line-height: 20px;
+    padding: 0px 5px 0px 5px;
+    margin-top: -2px;
+    margin-right: 5px;
+}
+
+.breadcrumb  .btn-create-factory-modal i {
+    margin-left: 5px;
+    margin-right: 0px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    vertical-align: middle;
+    margin-top: -2px;
+}
+
+.factories-bar {
+    font-size: 1em;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    vertical-align: middle;
+    line-height: 35px;
+}
+
+.factories-bar i {
+    font-size: 1.5em;
+    vertical-align: middle;
+}
+
+.factories-bar a {
+    font-size: 1em;
+    text-transform: uppercase !important;
+}
+
+.factory-information {
+}
+
+.factory-information form {
+    padding-top: 10px;
+    margin: 10px;
+}
+.factory-information .row {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.factory-information hr {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.factory-information .control-label {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+
+.factory-information .checkbox {
+    margin-top: 0px;
+    padding-top: 0px;
+}
+
+
+.projectnav .factory-list-buttons i {
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.factory-list-buttons .btn-ttl {
+    width: 60px;
+    margin-left: 5px;
+}
+
+.factory-list-buttons {
+    white-space: nowrap;
+}
+
+
+.factory-configuration {
+    background-color: #ffffff;
+    padding: 5px;
+}
+
+.factory-configuration-button {
+    margin-top: 5px;
+    margin-bottom: 15px;
+    margin-right: 5px;
+}
+
+.factory-configuration .actions-buttons {
+    margin-right: 10px;
+}
+
+.factory-configuration .data-info {
+    margin-left: 15px;
+    margin-top: -10px;
+}
+
+
+.factory-configuration .alerts {
+    margin-top: 2px;
+    margin-left: 10px;
+}
+
+.factory-configuration .alerts .row {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: 33px;
+    line-height: 33px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 9px;
+}
+
+
+.factory-configuration .alert {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.factory-configuration .panel-body {
+    padding-bottom: 0px;
+}
+
+.factory-configuration .row {
+    margin-top: 15px;
+    margin-bottom: -10px;
+}
+
+.factory-configuration .CodeMirror {
+    font-size: 11px;
+    z-index: 1;
+    height: 448px;
+}
+
+
+#createFactoryModal input.upload {
+    display: none;
+}
+
+#createFactoryModal .ui-select-container {
+    width: 80% !important;
+    margin-left: auto;
+    margin-right: auto;}
+
+#createFactoryModal .btn-upload-file {
+    width: 80% !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#createFactoryModal .widget-select {
+    height: 135px;
+    border-color: #dddddd;
+    background-color: #ffffff;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 0px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    /* padding-bottom: 50%; */
+    padding-top: 20px;
+    margin-left: 15px;
+    margin-right: 17px;
+    color: #8b8b8b;
+}
+
+
+
+#createFactoryModal .widget-select:hover {
+    background-color: #8b8b8b;
+    color: #ffffff;
+}
+
+
+#createFactoryModal .widget-select-active {
+    background-color: #54aee0;
+    color: #ffffff;
+}
+
+#createFactoryModal .widget-select-active .body {
+    display: block !important;
+}
+
+#createFactoryModal .widget-select .body .btn-upload-file {
+    display: block;
+}
+
+#createFactoryModal .widget-select:hover .body .btn-upload-file {
+    display: block;
+}
+
+#createFactoryModal .widget-select:hover .body .uploaded-filename {
+    display: none;
+}
+
+#createFactoryModal .widget-select .body .uploaded-filename {
+    display: none;
+}
+
+#createFactoryModal .widget-select-active .body .uploaded-filename {
+    display: block;
+}
+
+
+#createFactoryModal .widget-select-active .body .btn-upload-file {
+    display: none;
+}
+
+
+
+#createFactoryModal .widget-select .icon {
+    font-size: 30px;
+    text-align: center;
+}
+
+#createFactoryModal .CodeMirror {
+    z-index: 0;
+}
+
+#createFactoryModal .data-info {
+    margin-left: 15px;
+    margin-top: -10px;
+}
+
+#createFactoryModal .widget-select .body {
+    margin-top: 5px;
+    text-align: center;
+    display: none;
+}
+
+#createFactoryModal .widget-select:hover .body {
+    display: block;
+}
+
+#createFactoryModal .widget-select:active .body {
+    display: block;
+}
+
+
+
+
+#createFactoryModal .title {
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+#createFactoryModal .widgets {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+#createFactoryModal .widgets .btn-default {
+    text-transform: none;
+    font-size: 14px;
+    color: #8b8b8b;
+    background-color: #fafafa;
+    border: 1px solid #e5e5e5;
+    border-radius: 0px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+
+#createFactoryModal .alerts {
+    margin-top: 2px;
+    margin-left: -10px;
+}
+
+#createFactoryModal .alerts .row {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 9px;
+    text-align: left;
+}
+
+
+#createFactoryModal .alert {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+
+#share-factory-modal textarea {
+    width: 100%;
+}
+
+#share-factory-modal .row {
+    margin-bottom: 15px;
+}
+
+#share-factory-modal .row .btn-share-url {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#share-factory-modal .factory-share-copied {
+    color: green;
+}
+
+
+#delete-factory-modal {
+    z-index: 5000;
+}
+
+/* Form validation */
+.css-form input.ng-invalid.ng-touched {
+    border-color: rgb(169, 68, 66);
 }

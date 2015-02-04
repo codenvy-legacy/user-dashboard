@@ -1,0 +1,36 @@
+<form id="share-factory-modal" novalidate class="simple-form">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$close()" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="WarningFactoryLabel">Share your factory</h4>
+    </div>
+    <div class="modal-body">
+
+        <form class="form-horizontal">
+            <div class="row">
+                <div class="col-md-2"><label class="control-label">URL:</label></div>
+                <div class="col-md-10"><a ng-href="{{factoryURL}}">{{factoryURL}}</a>
+                    <button clip-click="shareFactoryCopy='url'" clip-copy="factoryURL" class="btn btn-ttl btn-sm-text btn-share-url"><i class="octicon octicon-clippy"></i>
+                        &nbsp;<span class="factory-share-copied" ng-show="shareFactoryCopy == 'url'">Copied<i class="glyphicon glyphicon-ok"></i></span>
+                        <span ng-show="shareFactoryCopy != 'url'">Copy</span></button></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"><label class="control-label">HTML:</label></div>
+                <div class="col-md-8"><textarea rows="5" readonly ng-model="factorySnippetHTML"></textarea> </div>
+                <div class="col-md-2"><button clip-click="shareFactoryCopy='html'" clip-copy="factorySnippetHTML" class="btn btn-ttl btn-sm-text btn-share-html"><i class="octicon octicon-clippy"></i>
+                    &nbsp;<span class="factory-share-copied" ng-show="shareFactoryCopy == 'html'">Copied<i class="glyphicon glyphicon-ok"></i></span>
+                    <span ng-show="shareFactoryCopy != 'html'">Copy</span></button></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"><label class="control-label">Markdown:</label></div>
+                <div class="col-md-8"><textarea rows="5" ng-model="factorySnippetMarkdown" readonly></textarea> </div>
+                <div class="col-md-2"><button clip-click="shareFactoryCopy='md'" clip-copy="factorySnippetMarkdown" class="btn btn-ttl btn-sm-text btn-share-markdown"><i class="octicon octicon-clippy"></i>
+                    &nbsp;<span class="factory-share-copied" ng-show="shareFactoryCopy == 'md'">Copied<i class="glyphicon glyphicon-ok"></i></span>
+                    <span ng-show="shareFactoryCopy != 'md'">Copy</span></button></div>
+            </div>
+
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="$close()">OK</button>
+    </div>
+</form>

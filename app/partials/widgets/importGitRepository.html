@@ -1,11 +1,14 @@
-<div class="form-group" style="margin-left: 0; margin-bottom: 15px; overflow: auto">
-    <ud-new-project-details workspaces="workspaces" new-project-data="newProjectData"></ud-new-project-details>
+<div class="form-group">
+    <ud-new-project-details workspaces="workspaces"
+                            workspace-selected="workspaceSelected"
+                            new-project-data="newProjectData">
+    </ud-new-project-details>
 
     <label for="gitRepositoryURL" class="control-label">Git repository URL</label>
-    <input type="text"
+    <input type="url"
            id="gitRepositoryURL"
            class="form-control"
-           ng-model="gitRepositoryUrl"
-           ng-change="setGitRepositoryUrl()"
-           placeholder="The URL of the Git repository you want to import from"/>
+           ng-model="newProjectData.source.project.location"
+           placeholder="The URL of the Git repository you want to import from"
+           required />
 </div>

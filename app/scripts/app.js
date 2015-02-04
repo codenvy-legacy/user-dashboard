@@ -18,6 +18,7 @@
 var DEV = true;
 
 angular.module('odeskApp', [
+    'angular-lodash',
     'ngCookies',
     'ngResource',
     'ngSanitize',
@@ -25,7 +26,10 @@ angular.module('odeskApp', [
     'ngAnimate',
     'ui.bootstrap',
     'chieffancypants.loadingBar',
-    'ui.codemirror'
+    'ui.codemirror',
+    'ui.select',
+    'angularFileUpload',
+    'ngClipboard'
 ]).config(function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeBar = false;
 }).constant('udCodemirrorConfig', {
@@ -82,81 +86,85 @@ angular.module('odeskApp', [
         $httpProvider.interceptors.push('AuthInterceptor');
     }
     $routeProvider
-	    .when('/dashboard', {
+      .when('/dashboard', {
             templateUrl: BASE_URL + 'views/dashboard.html',
             controller: 'DashboardCtrl'
         })
-	    .when('/factories', {
+      .when('/factories', {
             templateUrl: BASE_URL + 'views/factories.html',
             controller: 'FactoriesCtrl'
         })
-	    .when('/stats', {
+      .when('/factory/:id', {
+          templateUrl: BASE_URL + 'views/factorydetails.html',
+          controller: 'FactoryCtrl'
+      })
+      .when('/stats', {
             templateUrl: BASE_URL + 'views/stats.html',
             controller: 'StatsCtrl'
         })
-        .when('/runner', {
-            templateUrl: BASE_URL + 'views/runner.html',
-            controller: 'RunnerCtrl'
-        })
-        .when('/admin', {
-            templateUrl: BASE_URL + 'views/admin.html',
-            controller: 'AdminCtrl'
-        })
-	    .when('/organizations', {
+      .when('/runner', {
+          templateUrl: BASE_URL + 'views/runner.html',
+          controller: 'RunnerCtrl'
+      })
+      .when('/admin', {
+          templateUrl: BASE_URL + 'views/admin.html',
+          controller: 'AdminCtrl'
+      })
+     .when('/organizations', {
             templateUrl: BASE_URL + 'views/organization/workspaces.html',
             controller: 'OrganizationsCtrl'
-        })
-        .when('/organizations/members', {
-            templateUrl: BASE_URL + 'views/organization/members.html',
-            controller: 'OrganizationsCtrl'
-        })
-        .when('/organizations/workspace/:id', {
-            templateUrl: BASE_URL + 'views/organization/workspace_info.html',
-            controller: 'workspaceInfoCtrl'
-        })
-        .when('/organizations/workspace/:id/members', {
-            templateUrl: BASE_URL + 'views/organization/workspace_members.html',
-            controller: 'workspaceInfoCtrl'
-        })
-	    .when('/organizations/:name', {
+      })
+      .when('/organizations/members', {
+          templateUrl: BASE_URL + 'views/organization/members.html',
+          controller: 'OrganizationsCtrl'
+      })
+      .when('/organizations/workspace/:id', {
+          templateUrl: BASE_URL + 'views/organization/workspace_info.html',
+          controller: 'workspaceInfoCtrl'
+      })
+      .when('/organizations/workspace/:id/members', {
+          templateUrl: BASE_URL + 'views/organization/workspace_members.html',
+          controller: 'workspaceInfoCtrl'
+      })
+      .when('/organizations/:name', {
             templateUrl: BASE_URL + 'views/orgdetail.html',
             controller: 'OrgdetailCtrl'
-        })
-        .when('/account', {
-            templateUrl: BASE_URL + 'views/account/profile.html',
-            controller: 'AccountConfigCtrl'
-        })
-        .when('/account/configuration', {
-            templateUrl: BASE_URL + 'views/account/configuration.html',
-            controller: 'AccountConfigCtrl'
-        })
-        .when('/account/preferences', {
-            templateUrl: BASE_URL + 'views/account/preferences.html',
-            controller: 'AccountConfigCtrl'
-        })
-        .when('/account/profile', {
-            templateUrl: BASE_URL + 'views/account/profile.html',
-            controller: 'AccountConfigCtrl'
-        })
-        .when('/account/billing', {
-            templateUrl: BASE_URL + 'views/account/billing.html',
-            controller: 'DashboardCtrl'
-        })
-        .when('/login', {
-            templateUrl: BASE_URL + 'views/login.html',
-            controller: 'LoginCtrl'
-        })
-        .when('/account/subscriptions', {
-            templateUrl: BASE_URL + 'views/account/subscriptions.html',
-            controller: 'SubscriptionsCtrl'
-        })
-        .when('/account/subscriptions/:id', {
-            templateUrl: BASE_URL + 'views/account/subscriptiondetails.html',
-            controller: 'SubscriptionDetailsCtrl'
-        })
-        .otherwise({
-            redirectTo: DEFAULT
-        });
+      })
+      .when('/account', {
+          templateUrl: BASE_URL + 'views/account/profile.html',
+          controller: 'AccountConfigCtrl'
+      })
+      .when('/account/configuration', {
+          templateUrl: BASE_URL + 'views/account/configuration.html',
+          controller: 'AccountConfigCtrl'
+      })
+      .when('/account/preferences', {
+          templateUrl: BASE_URL + 'views/account/preferences.html',
+          controller: 'AccountConfigCtrl'
+      })
+      .when('/account/profile', {
+          templateUrl: BASE_URL + 'views/account/profile.html',
+          controller: 'AccountConfigCtrl'
+      })
+      .when('/account/billing', {
+          templateUrl: BASE_URL + 'views/account/billing.html',
+          controller: 'DashboardCtrl'
+      })
+      .when('/login', {
+          templateUrl: BASE_URL + 'views/login.html',
+          controller: 'LoginCtrl'
+      })
+      .when('/account/subscriptions', {
+          templateUrl: BASE_URL + 'views/account/subscriptions.html',
+          controller: 'SubscriptionsCtrl'
+      })
+      .when('/account/subscriptions/:id', {
+          templateUrl: BASE_URL + 'views/account/subscriptiondetails.html',
+          controller: 'SubscriptionDetailsCtrl'
+      })
+      .otherwise({
+          redirectTo: DEFAULT
+      });
 
 	//while uncommenting line below fix # in navbar.js
     //$locationProvider.html5Mode(true);

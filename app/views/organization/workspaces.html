@@ -156,36 +156,33 @@
                 <form role="form">
                   <div class="form-group">
                     <label>Select User(s):</label>
-                    <input id="selectedMembers" class="form-control"  style="padding: 0; border: 0;"/>
+                    <input type="text" id="selectedMembers" placeholder="Type email addresses separated by commas" class="form-control" style="padding: 0; border: 0;">
                   </div>
                 </form>
               </div>
-              <div class="col-lg-5 col-sm-5 col-md-5 col-xs-12">
-                <div class="row mrg-top30" style="line-height: 25px;">
-                  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 pad-0">Administrator </div>
-                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top: 2px;">
-                     <input type="radio" name="ws_member_role" id="ws_admin_radio" class="css-checkbox lft-radio"  value="workspace/admin" checked="checked"/>
-                    <label for="ws_admin_radio" class="css-label radGroup1">&nbsp;</label>
-                  </div>
-                  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">Developer </div>
-                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top: 2px;">
-                   <input type="radio" name="ws_member_role" id="ws_dev_radio" class="css-checkbox" value="workspace/developer"/>
-                    <label for="ws_dev_radio" class="css-label radGroup1">&nbsp;</label>
-                  </div>
-                  <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
+                <div class="col-lg-5 col-sm-5 col-md-5 col-xs-12">
+                  <div class="row mrg-top30" style="line-height: 34px;">
+                    <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">Admin </div>
+                    <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top: 2px;">
+                      <input type="radio" name="ws_member_role" id="ws_admin_radio" class="css-checkbox lft-radio"  value="workspace/admin" checked="checked"/>
+                      <label for="ws_admin_radio" class="css-label radGroup1">&nbsp;</label>
+                    </div>
+                    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">Developper </div>
+                    <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top: 2px;">
+                      <input type="radio" name="ws_member_role" id="ws_dev_radio" class="css-checkbox" value="workspace/developer"/>
+                      <label for="ws_dev_radio" class="css-label radGroup1">&nbsp;</label>
+                    </div>
+                  <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12" style="margin-top: -1px">
                     <button type="button" class="btn btn-success" id="wsUserAdd" ng-click="addMemberToWsList()" disabled>ADD</button>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="org-errors" ng-if="members.length == 0">
-                <span >Users must be added as an Organization Member first before they are added to this workspace.</span>
-            </div>
-            <div id="userAlreadyAdded" style="display: none" class="org-errors">User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </div>
-            <div id="emptyEmails" style="display: none" class="org-errors"><strong>Select email addresses</strong></div>
-            <div id="emptyWs" style="display: none" class="org-errors"></div>
-            <div id="wsAlreadyExist" style="display: none" class="org-errors"></div>
-
+            <alert type="danger" ng-if="members.length == 0">Users must be added as an Organization Member first before they are added to this workspace.</alert>
+            <alert id="userAlreadyAdded" style="display: none" type="danger">User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </alert>
+            <alert id="emptyEmails" style="display: none" type="danger"><strong>Select email addresses</strong></alert>
+            <alert id="emptyWs" style="display: none" type="danger"></alert>
+            <alert id="wsAlreadyExist" style="display: none" type="danger"></alert>
           </div>
         </div>
         <div class="modal-footer">
@@ -265,9 +262,9 @@
                                 <td class="text-center" width="90px"><input type="text" ng-model="workspace.allocatedRam" style="text-align: center;" class="form-control" id="allocate_ram_{{$index}}" ng-change="getFreeMemoryAfterAllocation($index)"/></td>
                             </tr>
                         </table>
-                        <div ng-show="leftMemory < 0" class="org-errors"><strong>Not enough memory for such RAM allocation.</strong></div>
-                        <div ng-show="leftMemory > 0" class="alert alert-success"><strong>Left memory will be added to primary workspace: "{{primaryWorkspace.name}}"</strong></div>
-                        <div id="allocationError" style="display: none" class="org-errors"></div>
+                        <alert ng-show="leftMemory < 0" type="danger">Not enough memory for such RAM allocation.</alert>
+                        <alert ng-show="leftMemory > 0" type="success">Left memory will be added to primary workspace: <strong>"{{primaryWorkspace.name}}"</strong></alert>
+                        <alert id="allocationError" style="display: none" type="danger"></alert>
                     </div>
                 </div>
                 <div class="modal-footer">

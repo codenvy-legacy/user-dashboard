@@ -17,16 +17,16 @@
 'use strict';
 
 angular.module('odeskApp')
-    .directive('udNewProjectDetails', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                workspaces: '=',
-                newProjectData: '='
-            },
-            link: function ($scope, element, attrs) {
-                $scope.newProjectData.workspaceSelected = $scope.workspaces[0];
-            },
-            templateUrl: 'partials/widgets/newProjectDetails.html'
-        }
-    });
+  .directive('udNewProjectDetails', function() {
+      return {
+        restrict: 'E',
+        require: '^form',
+
+        scope: {
+          workspaces: '=',
+          workspaceSelected: '=',
+          newProjectData: '='
+        },
+        templateUrl: 'partials/widgets/newProjectDetails.html'
+      }
+  });

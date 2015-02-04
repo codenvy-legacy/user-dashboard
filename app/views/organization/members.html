@@ -141,7 +141,7 @@
                 </form>
               </div>
               <div class="col-lg-5 col-sm-5 col-md-5 col-xs-12">
-                <div class="row mrg-top30" style="line-height: 25px;">
+                <div class="row mrg-top30" style="line-height: 34px;">
                   <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">Owner </div>
                   <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top: 2px;">
                     <input type="radio" name="member_role" id="owner_radio" class="css-checkbox lft-radio" value="account/owner"/>
@@ -152,16 +152,16 @@
                     <input type="radio" name="member_role" id="member_radio" class="css-checkbox" value="account/member" checked="checked"/>
                     <label for="member_radio" class="css-label radGroup1">&nbsp;</label>
                   </div>
-                  <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
-                    <button type="button" class="btn btn-success" ng-click="addUserToList()">ADD</button>
+                  <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12" style="margin-top: -1px">
+                    <button type="button" class="btn btn-success" ng-click="addUserToList()">Add</button>
                   </div>
                 </div>
               </div>
             </div>
-            <div id="userNotFoundError" style="display: none" class="org-errors"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of your organization. </div>
-            <div id="userAlreadyAdded" style="display: none" class="org-errors">User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </div>
-            <div id="emptyEmails" style="display: none" class="org-errors"><strong>Type email addresses separated by commas</strong></div>
           </div>
+          <alert id="userNotFoundError" style="display: none" type="danger"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of your organization.</alert>
+          <alert id="userAlreadyAdded" style="display: none" type="danger">User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added.</alert>
+          <alert id="emptyEmails" style="display: none" type="danger">Type email addresses separated by commas.</alert>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -216,10 +216,8 @@
                 </div>
               </div>
             </div>
-             <div id="updateOrgMemberError" style="display: none" class="org-errors">
-              Account should have at least 1 account/owner</div>
-              <div id="updateCurrentWsMemberError" style="display: none" class="org-errors">
-              Account should have at least 1 current account/owner</div>
+            <alert id="updateOrgMemberError" style="display: none" type="danger">Account should have at least 1 account/owner</alert>
+            <alert id="updateCurrentWsMemberError" style="display: none" type="danger">Account should have at least 1 current account/owner</alert>
           </div>
         </div>
         <div class="modal-footer">

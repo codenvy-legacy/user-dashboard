@@ -1,0 +1,21 @@
+<form id="delete-factory-modal" novalidate class="simple-form">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$close()" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="WarningFactoryLabel">Warning</h4>
+    </div><!-- modal-header -->
+    <div class="modal-body">
+        <p>Removing a factory can't be undone, are you sure you want to continue?</p>
+    </div><!-- modal-body -->
+    <div id="delete-factory-alert" style="margin: 20px;">
+        <div class="alert alert-success" style="display: none;">
+            <b>Successfully Done!</b> Delete process completed.
+        </div>
+        <div class="alert alert-danger" style="display: none;">
+            <b>Failed!</b> Delete failed.
+        </div>
+    </div>
+    <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
+        <button type="button" class="btn btn-default" ng-click="$close()">Cancel</button>
+        <a  class="btn btn-danger" ng-click="removeFactory(this)">OK</a>
+    </div>
+</form>

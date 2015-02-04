@@ -18,7 +18,9 @@
 angular.module('odeskApp')
     .controller('NewProjectCtrl', [
         '$scope',
+        '$timeout',
         '$modalInstance',
+        '$filter',
         'currentUserId',
         'workspaces',
         'type',
@@ -26,7 +28,9 @@ angular.module('odeskApp')
         'ProjectFactory',
         function(
             $scope,
+            $timeout,
             $modalInstance,
+            $filter,
             currentUserId,
             workspaces,
             type,
@@ -34,74 +38,86 @@ angular.module('odeskApp')
             ProjectFactory) {
 
           this.workspaces = workspaces;
+          this.workspaceSelected = workspaces[0];
           this.currentUserId = currentUserId;
           this.tabActivated = {};
           this.tabActivated[type] = true;
+          this.alerts = [];
 
           this.newProjectData = {
+            source: {
+              project: {
+                location: '',
+                type: ''
+              }
+            },
+            project: {
+              name: '',
+              description: '',
+              type: 'blank',
+              visibility: 'public'
+            }
+          };
+
+          this.closeAlert = function(index) {
+            this.alerts.splice(index, 1);
           };
 
           this.setProjectType = function(type) {
-            if ($scope.newProjectForm) {
-              if ($scope.newProjectForm.projectName && !$scope.newProjectForm.projectName.$touched) {
-                this.newProjectData.projectName = undefined;
+            if (this.newProjectData.source.project.location) {
+              if (type == 'Zip') {
+                if (this.newProjectData.source.project.location.match(new RegExp('^https?://github.com/.*$'))) {
+                  this.newProjectData.source.project.location = this.newProjectData.source.project.location.replace(new RegExp('^(.*)\.git$'), '$1/archive/master.zip');
+                }
               }
-              if ($scope.newProjectForm.projectName && !$scope.newProjectForm.projectDescription.$touched) {
-                this.newProjectData.projectDescription = undefined;
+              if (type == 'GitHub' || type == 'Git') {
+                if (this.newProjectData.source.project.location.match(new RegExp('^https?://github.com/.*/archive/.*\.zip$'))) {
+                  this.newProjectData.source.project.location = this.newProjectData.source.project.location.replace(new RegExp('^(.*)/archive/.*\.zip$'), '$1.git');
+                }
               }
             }
-            this.newProjectData.importType = type;
+            $scope.importType=type;
+
+            switch (type) {
+              case 'GitHub':
+              case 'Git':
+                this.newProjectData.source.project.type = 'git';
+                break;
+              case 'Zip':
+                this.newProjectData.source.project.type = 'zip';
+                break;
+              default:
+                break;
+            }
           };
 
           this.import = function() {
-              var factory = {
-                v: '2.0',
-                source: {
-                  project: {
-                    location: undefined,
-                    type: undefined
-                  }
-                },
-                project: {
-                  type: 'blank',
-                  visibility: 'public'
-                }
-              };
+            this.alerts = [];
 
-              switch (this.newProjectData.importType) {
-                case 'GitHub':
-                  if (this.newProjectData.remoteUrl) {
-                    factory.source.project.location = this.newProjectData.remoteUrl;
-                  }
-                  factory.source.project.type = 'git';
-                  break;
-                case 'Git':
-                  if (this.newProjectData.remoteUrl) {
-                    factory.source.project.location = this.newProjectData.remoteUrl;
-                  }
-                  factory.source.project.type = 'git';
-                  break;
-                case 'Zip':
-                  if (this.newProjectData.remoteUrl) {
-                    factory.source.project.location = this.newProjectData.remoteUrl;
-                  }
-                  factory.source.project.type = 'zip';
-                  break;
-                case 'default':
-                  return;
-              }
+            if (!this.newProjectData.v) {
+              this.newProjectData.v = '2.0';
+            }
 
-              var response = Project.import(
-                {
-                  workspaceID: this.newProjectData.workspaceSelected.workspaceReference.id,
-                  path: this.newProjectData.projectName
-                },
-                factory,
-                function() {
+            var that = this;
+            var response = Project.import(
+              {
+                workspaceID: this.workspaceSelected.workspaceReference.id,
+                path: this.newProjectData.project.name
+              },
+              this.newProjectData,
+              function() {
+                that.alerts.push({type: 'success', msg: 'Successfully Done! Import process completed.'});
+
+                $timeout(function() {
+                  that.alerts = [];
                   ProjectFactory.fetchProjects(workspaces);
-                }
-              );
-              $modalInstance.close();
+                  $modalInstance.close();
+                }, 1500);
+              },
+              function(data) {
+                that.alerts.push({type: 'danger', msg: 'Failed! Import failed: ' + data.data.message});
+              }
+            );
           };
         }
     ]);

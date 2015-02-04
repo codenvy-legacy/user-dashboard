@@ -8,6 +8,7 @@
 
 /**
  * @auth Gaurav Meena
+ * @author Oleksii Orel
  * @date 01/16/2014
  * Controller for dashboard/projects
  */
@@ -17,10 +18,14 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $cookies, $rootScope, $timeout, $interval, Workspace, DocBoxService, newProject, Project, ProjectFactory, Users, Profile, Password, $cookieStore, $http, $q, $window) {
+    .controller('DashboardCtrl', function ($scope, $rootScope, $cookieStore, $http, $q, $window, $interval, $timeout, $location,
+                                           DocBoxService, Workspace, Project, Users, Profile, Password, ProjectFactory, RunnerService, newProject) {
+      var refreshLocation = "/dashboard";
       var old_description = '';
-	    var old_projectName = '';
- 
+      var old_projectName = '';
+      var refreshInterval = null;
+
+      $scope.box = 1;
       $scope.search = 0;
       $scope.projects = [];
       $scope.ownerWorkspace = '';
@@ -29,10 +34,11 @@ angular.module('odeskApp')
       $scope.activeProject = null;
       $scope.activeMembers = [];
       $scope.workspaces = [];
+      $scope.currentWorkspace = null;
       $scope.currentUserId = '';
-      $scope.changeName ='';
-      $scope.timer = '';    
       $scope.activeProjectVisibility = '';
+      $scope.updateProjectError = '';
+      $scope.deleteProjectError = '';
 
       //private methods
       // for one user set the read write properties
@@ -44,6 +50,10 @@ angular.module('odeskApp')
             setPermisionRules(perm, member);
           }
         });
+      };
+
+      var isRefreshLocation = function () {
+          return $location.url() == refreshLocation;
       };
 
       var setPermisionRules = function (permission, member) {
@@ -86,7 +96,7 @@ angular.module('odeskApp')
         }
       };
 
-      var createMember = function (attributes, userId, read, write,roles) {
+      var createMember = function (attributes, userId, read, write, roles) {
         var fullName;
 
         if (attributes.firstName && attributes.lastName) {
@@ -190,68 +200,126 @@ angular.module('odeskApp')
         old_projectName = project.name;
       };
 
-      $scope.updateProject = function () {
-        $scope.selected.name = $scope.tempProject.name; 
-        $scope.selected.description = $scope.tempProject.description;
-        $scope.changeName = '' ;
-        if($scope.selected.name && $scope.selected.name.length > 0) {
-            var res = /[^0-9a-zA-Z\-._]/.test($scope.selected.name) || $scope.selected.name[0] == '-' || $scope.selected.name[0] == '.' || $scope.selected.name[0] == '_';
-            if(res) {
-                alert('Project name must contain only Latin letters, digits or these following special characters -._');
-                $scope.selected.name = old_projectName;
-                return;
-            }
-            var keepGoing = true;
-            angular.forEach($scope.projects , function (project) {
-                if($scope.selected != project && $scope.selected.name == project.name) {
-                    keepGoing = false;
+        var renameSelectedProject = function (newName) {
+            RunnerService.getProcesses($scope.selected.workspaceId, $scope.selected.path, true)
+                .then(function (runnerProcesses) {
+                    var isActive = false;
+                    angular.forEach(runnerProcesses, function (runnerProcess) {
+                        if (runnerProcess.project==$scope.selected.path && runnerProcess.status=='RUNNING' || runnerProcess.status=='NEW') {
+                            isActive = true;
+                            return;
+                        }
+                    });
+                    if (isActive) {
+                        $scope.updateProjectError = 'We Cannot rename the running project';
+                        $('#changeProjectDetailAlert .alert-danger').show();
+                        $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
+                            $(this).fadeOut('slow');
+                        });
+                        $scope.selected.name = old_projectName;
+                    } else {
+                        Project.rename($scope.selected.workspaceId, $scope.selected.path, newName).then(function (data) {
+                            var projectPath = "/" + newName;
+                            Project.getProject($scope.selected.workspaceId, projectPath).then(function (data) {
+                                angular.forEach($scope.projects, function (project, index) {
+                                    if (project.path === $scope.selected.path) {
+                                        $scope.projects[index]=data;
+                                    }
+                                });
+                                $('#changeProjectDetailAlert .alert-danger').hide();
+                                $('#changeProjectDetailAlert .alert-success').show();
+                                $timeout(function () {
+                                    $('#changeProjectDetailAlert .alert-success').hide();
+                                    $('#projectDetailModal').modal('hide');
+                                }, 1500);
+                            }, function (error) {
+                                $scope.updateProjectError = error.message ? error.message : 'Change project detail failed.';
+                                $('#changeProjectDetailAlert .alert-danger').show();
+                                $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
+                                    $(this).fadeOut('slow');
+                                });
+                            });
+                        }, function (error) {
+                            $scope.updateProjectError = error.message ? error.message : 'Change project detail failed.';
+                            $('#changeProjectDetailAlert .alert-danger').show();
+                            $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
+                                $(this).fadeOut('slow');
+                            });
+                        });
+                    }
+                }, function (error) {
+                    $scope.updateProjectError = error.message ? error.message : 'Change project detail failed.';
+                    $('#changeProjectDetailAlert .alert-danger').show();
+                    $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
+                        $(this).fadeOut('slow');
+                    });
+                });
+        };
+
+        $scope.updateProject = function () {
+            $('#changeProjectDetailAlert .alert-success').hide();
+            $scope.selected.name = $scope.tempProject.name;
+            $scope.selected.description = $scope.tempProject.description == '' ? null : $scope.tempProject.description;
+            if ($scope.selected.name && $scope.selected.name.length > 0){
+                var res = /[^0-9a-zA-Z\-._]/.test($scope.selected.name) || $scope.selected.name[0] == '-'
+                    || $scope.selected.name[0] == '.' || $scope.selected.name[0] == '_';
+                if (res) {
+                    $scope.updateProjectError ='Project name must contain only Latin letters, digits or these following special characters -._';
+                    $('#changeProjectDetailAlert .alert-danger').show();
+                    $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
+                        $(this).fadeOut('slow');
+                    });
+                    $scope.selected.name = old_projectName;
+                    return;
                 }
-            });
-            if(!keepGoing) {
-                $('#alreadyExist').show();
-                $scope.changeName = $scope.selected.name;
-                $scope.selected.name = old_projectName;
-                $('#alreadyExist').mouseout(function () { $(this).fadeOut('slow'); });
-                return;
+                var isExistingName = true;
+                angular.forEach($scope.projects, function (project) {
+                    if ($scope.selected != project && $scope.selected.name == project.name) {
+                        isExistingName = false;
+                    }
+                });
+                if (!isExistingName) {
+                    $scope.updateProjectError =" Impossible to rename the project. The name <b>"
+                        + $scope.selected.name + '</b> is already used in your projects.';
+                    $('#changeProjectDetailAlert .alert-danger span').html($scope.updateProjectError);
+                    $('#changeProjectDetailAlert .alert-danger').show();
+                    $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
+                        $(this).fadeOut('slow');
+                    });
+                    $scope.selected.name = old_projectName;
+                    $scope.selected.description = old_description;
+                    return;
+                }
+                if ($scope.selected.description != old_description) {
+                    Project.getProject($scope.selected.workspaceId, $scope.selected.path).then(function (data) {
+                        data.description = $scope.selected.description;
+                        Project.setProject($scope.selected.workspaceId, $scope.selected.path, data).then(function (data) {
+                            old_description = data.description;
+                            if ($scope.selected.name != old_projectName){
+                                renameSelectedProject($scope.selected.name);
+                            } else {
+                                $('#changeProjectDetailAlert .alert-danger').hide();
+                                $('#changeProjectDetailAlert .alert-success').show();
+                                $timeout(function () {
+                                    $('#changeProjectDetailAlert .alert-success').hide();
+                                    $('#projectDetailModal').modal('hide');
+                                }, 1500);
+                            }
+                        }, function (error) {
+                            $scope.selected.description = old_description;
+                            $('#changeProjectDetailAlert .alert-success').hide();
+                            $scope.updateProjectError = error.message ? error.message : 'Change project detail failed.';
+                            $('#changeProjectDetailAlert .alert-danger').show();
+                            $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
+                                $(this).fadeOut('slow');
+                            });
+                        });
+                    });
+                } else if ($scope.selected.name != old_projectName){
+                    renameSelectedProject($scope.selected.name);
+                }
             }
-            if ($scope.selected.name != old_projectName || $scope.selected.description != old_description) {
-                return $q.all([
-                    $http({ method: 'POST', url: "/api/project/" + $scope.selected.workspaceId + "/rename" + $scope.selected.path + "?name=" + $scope.selected.name }).
-                        success(function (data, status, headers, config) {
-                                $http({ method: 'GET', url: "/api/project/" + $scope.selected.workspaceId + "/" + $scope.selected.name}).
-                                    success(function (data, status) {
-                                        $http({ method: 'PUT', url: "/api/project/" + $scope.selected.workspaceId + "/" + $scope.selected.name, data: data })
-                                            .success(function (data, status) {
-                                                $('#changeProjectDetailAlert .alert-danger').hide();
-                                                $('#changeProjectDetailAlert .alert-success').show();
-                                                setTimeout(function () {
-                                                    $('#changeProjectDetailAlert .alert-success').hide();
-                                                    $('#projectDetailModal').modal('hide');
-                                                }, 1500);
-                                                //Change Project URL & Path
-                                                var projFound = $scope.projects.filter(function (p) {
-                                                    return p.name == data.name;
-                                                })
-                                                if (projFound.length > 0) {
-                                                    projFound[0].ideUrl = data.ideUrl;
-                                                    projFound[0].path = data.path;
-                                                    projFound[0].url = data.baseUrl;
-                                                }
-                                            })
-                                            .error(function (err) {
-                                                $('#changeProjectDetailAlert .alert-success').hide();
-                                                $('#changeProjectDetailAlert .alert-danger').show();
-                                                $('#changePasswordAlert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
-                                            });
-                                    })
-                        })
-                ]);
-            }
-            $('#alreadyExist').hide();
-            $('#changePasswordAlert .alert').hide();
-            $("#projectDetailModal").modal('hide');
-        }
-      };
+        };
 
       $scope.switchVisibility = function () {
 
@@ -261,6 +329,19 @@ angular.module('odeskApp')
               // console.log(data);
             });
       };
+
+        $scope.setCurrentWorkspace = function (workspace) {
+            if($scope.currentWorkspace && workspace && $scope.currentWorkspace.workspaceReference.name == workspace.workspaceReference.name) {
+                return;
+            }
+            if (workspace) {
+                $scope.filter.workspaceName = workspace.workspaceReference.name;
+            } else {
+                $scope.filter = {};
+            }
+            $scope.currentWorkspace = workspace;
+            Workspace.currentWorkspace = workspace;
+        };
 
 	    $scope.deleteProjectConfirm = function() {
             $('#warning-project-alert .alert-success').hide();
@@ -274,23 +355,19 @@ angular.module('odeskApp')
        };
 
       $scope.deleteProject = function () {
-        $http({ method: 'DELETE', url: $scope.selected.url })
-          .success(function (status) {
-            $('#warning-project-alert .alert-success').show();
-            $scope.projects = _.without($scope.projects, _.findWhere($scope.projects, $scope.selected));        
-            if($scope.projects.length==0){
-                 $scope.isProjectDataFetched = true;
-            }
-            setTimeout(function () {
-                $('#warning-project').modal('hide');
-            }, 1500);
-          })
-          .error(function (err) {
-                $('#warning-project-alert .alert-success').hide();
-                $('#warning-project-alert .alert-danger').show();
-                $('#warning-project-alert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
+          Project.delete($scope.selected).then(function () {
+              $('#warning-project-alert .alert-success').show();
+              ProjectFactory.fetchProjects($scope.workspaces);
+              $scope.isProjectDataFetched = true;
+              $timeout(function () {
+                  $('#warning-project').modal('hide');
+              }, 1500);
+          }, function (error) {
+              $('#warning-project-alert .alert-success').hide();
+              $scope.deleteProjectError = error.message ? error.message : "Delete failed.";
+              $('#warning-project-alert .alert-danger').show();
+              $('#warning-project-alert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
           });
-          
       };
 
       // used to save permissions to server
@@ -310,7 +387,7 @@ angular.module('odeskApp')
         return $scope.projects.length==0;
       else
         return false;
-      }
+      };
 
 	    $scope.selectMemberToBeDeleted = null;
 	    $scope.setMemberToBeDeleted = function(member) {		    
@@ -381,7 +458,7 @@ angular.module('odeskApp')
       //var selectedWorkspace = _.filter($scope.workspaces, function (workspace) { return !workspace.workspaceReference.id==workspaceId; });
       var listAdmins = [];
 
-      if(typeof($scope.currentWorkspace)!="undefined"){
+      if($scope.currentWorkspace != null){
         angular.forEach($scope.currentWorkspace.members, function (tempmember) {
           if (tempmember.roles) {
             if (tempmember.roles.indexOf('workspace/admin') != -1)
@@ -430,7 +507,7 @@ angular.module('odeskApp')
               $('#newPassword').css('border', '1px solid #e5e5e5');
               $('#newPasswordVerify').css('border', '1px solid #e5e5e5');
               Password.update(password).then(function (data) {
-                  setTimeout(function () {
+                  $timeout(function () {
                       $('#defineUserPassword').modal('hide');
                   }, 1500);
               });
@@ -460,29 +537,43 @@ angular.module('odeskApp')
               },
               ProjectFactory.getSampleProject(),
               function() {
-                  ProjectFactory.fetchProjects($scope.workspaces);
+                  ProjectFactory.fetchProjects($scope.workspaces, true);
                   Profile.update({"sampleProjectCreated": 'true'});
               }
           );
-      }
+      };
 
       $scope.importNewProject = function (type) {
           var promise = newProject.open($scope.currentUserId, $scope.workspaces, type);
       };
 
+        var updateInterval = function (time) {
+            if (refreshInterval != null) {
+                if($interval.cancel(refreshInterval)){
+                    refreshInterval = null;
+                }
+            }
+            if (time != null && refreshInterval == null) {
+                refreshInterval = $interval(function () {
+                        ProjectFactory.fetchProjects($scope.workspaces, false);
+                }, time);
+            }
+        };
+
       //constructor
         var init = function () {
-
-          //$scope.docboxes = DocBoxService.getDocBoxes();
-
           $scope.hideDocBox = function(item) {
             DocBoxService.hideDocBox(item);
             $scope.docboxes = DocBoxService.getDocBoxes();
           };
-            Workspace.all(function (resp) {
-                $scope.workspaces = _.filter(resp, function (workspace) {
-                    return !workspace.workspaceReference.temporary;
-                });
+            $scope.currentWorkspace = Workspace.currentWorkspace;
+            if ($scope.currentWorkspace) {
+                $scope.filter.workspaceName = $scope.currentWorkspace.workspaceReference.name;
+            } else {
+                $scope.filter = {};
+            }
+            Workspace.all(true).then(function (resp) {
+                $scope.workspaces = Workspace.workspaces;
 
                 if (!$scope.workspaces.length) {
                     var tempWorkspaces = _.filter(resp, function (workspace) {
@@ -513,11 +604,11 @@ angular.module('odeskApp')
                             if (projects.length == 0 && afterFeatureStarted) {
                                 $scope.createSampleProject($scope.workspaces[0].workspaceReference.id);
                             } else {
-                                ProjectFactory.fetchProjects($scope.workspaces);
+                                ProjectFactory.fetchProjects($scope.workspaces, true);
                             }
                         });
                     } else {
-                        ProjectFactory.fetchProjects($scope.workspaces);
+                        ProjectFactory.fetchProjects($scope.workspaces, true);
                     }
                 });
 
@@ -560,13 +651,20 @@ angular.module('odeskApp')
                     });
                 });
             });
-
-
-            $interval(function () {
-                ProjectFactory.fetchProjects($scope.workspaces);
-            }, 30000);// update the projects once in every 30 seconds
+            updateInterval(90000);// update the projects every 90 seconds
         };
         init();// all code starts here
+
+        $rootScope.$on('$locationChangeStart', function () {
+            if (!isRefreshLocation()) {
+                if (refreshInterval != null) {
+                    if ($interval.cancel(refreshInterval)) {
+                        refreshInterval = null;
+                    }
+                }
+            }
+        });
+
     });
 
 angular.module('odeskApp')
