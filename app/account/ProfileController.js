@@ -114,16 +114,13 @@ angular.module('odeskApp')
                     ProfileService.updateProfile({resetPassword: 'false'}).then(function () {
                         $cookieStore.remove('resetPassword');
                     });
-                } else {
-                    $('#doesNotMatch').show();
-                    $('#doesNotMatch').mouseout(function () {
-                        $(this).fadeOut('slow');
-                    });
-                    $('#password1').css('border', '1px solid #a94442');
-                    $('#password2').css('border', '1px solid #a94442');
                 }
+            } else {
+                $('#doesNotMatch').show();
+                $('#doesNotMatch').mouseout(function(){ $(this).fadeOut('slow'); });
+                $('#password1').css('border', '1px solid #a94442');
+                $('#password2').css('border', '1px solid #a94442');
             }
-            ;
         }
 
 

@@ -14,21 +14,37 @@
 
 'use strict';
 angular.module('odeskApp')
-    .controller('BillingCtrl', function ($scope, $timeout, Countries, AccountService, PaymentService) {
+    .controller('BillingCtrl', function ($scope, $timeout, Countries, AccountService, PaymentService, ProfileService) {
         $scope.accounts = [];
         $scope.creditCards = [];
         $scope.countries = Countries.all();
-        $scope.country = Countries.default();
         $scope.creditCard = {};
         $scope.addCreditCardError = '';
+        $scope.usedMemory = 0;
+        $scope.profile = {};
 
 
         AccountService.getAccountsByRole("account/owner").then(function (accounts) {
             $scope.accounts = accounts;
             if (accounts && accounts.length > 0) {
                 $scope.loadCreditCards(accounts);
+                $scope.getAccountResources(accounts[0]);
             }
         });
+
+        ProfileService.getProfile().then(function () {
+            $scope.profile = ProfileService.profile;
+            var firstName = $scope.profile.attributes.firstName;
+            var lastName = $scope.profile.attributes.lastName;
+            //TODO plugin is not updating it's value, need to find out: $scope.creditCard.cardholderName = firstName && lastName ? firstName + " " + lastName : "";
+            $scope.creditCard.country = $scope.profile.attributes.country || Countries.default();
+        });
+
+        $scope.getAccountResources = function(account) {
+            AccountService.getAccountResources(account.id).then(function() {
+                $scope.usedMemory = AccountService.getUsedMemory(AccountService.resources);
+            });
+        };
 
         $scope.loadCreditCards = function () {
             PaymentService.getCreditCards($scope.accounts[0].id).then(function () {
@@ -91,6 +107,7 @@ angular.module('odeskApp')
                 },
                 debug: false
             });
+
         };
         initCreditCardForm();
     }

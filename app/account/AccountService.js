@@ -57,7 +57,7 @@ angular.module('odeskApp')
         }
 
         //Get all accounts, where the current user has pointed role:
-        AccountService.getAccountMetrics = function (accountId) {
+        AccountService.getAccountResources = function (accountId) {
             var deferred = $q.defer();
             var con = {
                 headers: {
@@ -75,6 +75,18 @@ angular.module('odeskApp')
                 });
 
             return deferred.promise;
+        }
+
+        AccountService.getUsedMemory = function (resources) {
+            var saasSubscription = _.find(resources, function (subscription) {
+                return subscription.subscriptionReference.serviceId == "Saas";
+            });
+            var used = _.pluck(saasSubscription.used, "memory");
+            var usedMb = used.reduce(function(sum, use) {
+                sum += use;
+                return sum;
+            });
+            return (usedMb / 1024 / 60).toFixed(2);
         }
 
         //Get list of subscriptions for pointed accounts:

@@ -131,32 +131,24 @@ angular.module('odeskApp', [
             controller: 'OrgdetailCtrl'
         })
         .when('/account', {
-            templateUrl: BASE_URL + 'account/account.html',
-            controller: 'AccountCtrl'
+            templateUrl: BASE_URL + 'account/profile.html',
+            controller: 'ProfileCtrl'
         })
-        .when('/account/configuration', {
-            templateUrl: BASE_URL + 'views/account/configuration.html',
-            controller: 'AccountConfigCtrl'
-        })
-        .when('/account/preferences', {
-            templateUrl: BASE_URL + 'views/account/preferences.html',
-            controller: 'AccountConfigCtrl'
+        .when('/account/subscriptions', {
+            templateUrl: BASE_URL + 'account/subscription/subscriptions.html',
+            controller: 'SubscriptionCtrl'
         })
         .when('/account/profile', {
-            templateUrl: BASE_URL + 'views/account/profile.html',
-            controller: 'AccountConfigCtrl'
+            templateUrl: BASE_URL + 'account/profile.html',
+            controller: 'ProfileCtrl'
         })
         .when('/account/billing', {
-            templateUrl: BASE_URL + 'views/account/billing.html',
-            controller: 'DashboardCtrl'
+            templateUrl: BASE_URL + 'account/billing/billing.html',
+            controller: 'BillingCtrl'
         })
         .when('/login', {
             templateUrl: BASE_URL + 'views/login.html',
             controller: 'LoginCtrl'
-        })
-        .when('/account/subscriptions/:id', {
-            templateUrl: BASE_URL + 'views/account/subscriptiondetails.html',
-            controller: 'SubscriptionDetailsCtrl'
         })
         .otherwise({
             redirectTo: DEFAULT
