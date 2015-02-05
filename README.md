@@ -51,3 +51,27 @@ Enter https://github.com/codenvy/user-dashboard and a project's name if not auto
 ## Developers
 
 Live reload feature is enabled. So each time a file is modified/updated the browser is notified with the change and refresh the page automatically. No action is required.
+
+## How to build on Dockerimage
+
+Step-by-step guide
+ 
+1) Install docker. http://docs.docker.com/installation/ubuntulinux/
+sudo apt-get update
+ 
+sudo apt-get install docker.io
+
+2)To use docker without sudo:
+sudo groupadd docker
+ 
+sudo gpasswd -a ${USER} docker
+
+3) Log out and log back in again.
+
+4) Ensure path contains $HOME variable in settings.xml
+
+<localRepository>${env.HOME}/.m2/repository</localRepository>
+Pull docker image.
+docker pull vkuznyetsov/odyssey
+Run docker-build.sh from project folder.
+./docker-build.sh
