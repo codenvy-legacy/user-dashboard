@@ -8,7 +8,7 @@
     - [Inside Codenvy IDE](#inside-codenvy-ide)
 
 - [Developers](#developers)
-- [How to build on Docker image](#dockerimg)
+- [How to build on Docker image](#how-to-build-on-docker-image)
 
 ## Quick start
 
@@ -62,7 +62,7 @@ Step-by-step guide
 >sudo apt-get update
 >sudo apt-get install docker.io
 
-2)To use docker without sudo:
+2) To use docker without sudo:
 
 >sudo groupadd docker
 >sudo gpasswd -a ${USER} docker
@@ -75,7 +75,7 @@ Step-by-step guide
 
 5) Pull docker image.
 
->docker pull vkuznyetsov/odyssey
+>docker pull vkuznyetsov/user-dashboard
 
 6) Run docker-build.sh from project folder.
 
