@@ -5,10 +5,12 @@
     </ud-new-project-details>
 
     <label for="gitRepositoryURL" class="control-label">Git repository URL</label>
-    <input type="url"
+    <input type="text"
            id="gitRepositoryURL"
+           name="remoteGitURL"
            class="form-control"
            ng-model="newProjectData.source.project.location"
            placeholder="The URL of the Git repository you want to import from"
+           ud-remote-url="{{newProjectData.source.project.type}}"
            required />
 </div>
