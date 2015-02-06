@@ -23,7 +23,6 @@ angular.module('odeskApp')
         $scope.usedMemory = 0;
         $scope.profile = {};
 
-
         AccountService.getAccountsByRole("account/owner").then(function (accounts) {
             $scope.accounts = accounts;
             if (accounts && accounts.length > 0) {
@@ -34,11 +33,16 @@ angular.module('odeskApp')
 
         ProfileService.getProfile().then(function () {
             $scope.profile = ProfileService.profile;
+            $scope.initCreditCard();
+        });
+
+        $scope.initCreditCard = function() {
+            $scope.creditCard = {};
             var firstName = $scope.profile.attributes.firstName;
             var lastName = $scope.profile.attributes.lastName;
             //TODO plugin is not updating it's value, need to find out: $scope.creditCard.cardholderName = firstName && lastName ? firstName + " " + lastName : "";
             $scope.creditCard.country = $scope.profile.attributes.country || Countries.default();
-        });
+        }
 
         $scope.getAccountResources = function(account) {
             AccountService.getAccountResources(account.id).then(function() {
@@ -76,6 +80,8 @@ angular.module('odeskApp')
                 return;
             }
             PaymentService.addCreditCard($scope.accounts[0].id, $scope.creditCard).then(function () {
+                $('#warning-creditCard-alert .alert-danger').hide();
+                $scope.initCreditCard();
                 $scope.loadCreditCards();
             }, function (error) {
                 $scope.addCreditCardError = error.message ? error.message : "Add credit card failed.";
