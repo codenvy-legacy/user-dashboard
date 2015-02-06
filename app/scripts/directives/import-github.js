@@ -266,6 +266,17 @@ angular.module('odeskApp')
               $scope.checkTokenValidity().then(function() {
                 $scope.loadRepositories();
               });
+              
+              $scope.$watch('newProjectData.source.project.location', function(newValue, oldValue) {
+                var matchRepository = $filter('filter')($scope.gitHubRepositories, function(repository, index) {
+                  return repository.clone_url == newValue;
+                });
+                if (matchRepository) {
+                  $scope.selectedRepository = matchRepository[0];
+                } else {
+                  $scope.selectedRepository = undefined;
+                }
+              });
             },
             templateUrl: 'partials/widgets/importGitHub.html'
           };
