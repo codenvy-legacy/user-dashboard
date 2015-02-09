@@ -15,6 +15,8 @@
            class="form-control"
            ng-model="newProjectData.project.name"
            placeholder="The name of your new project"
+           ng-maxlength="128"
+           ng-pattern="/^[A-Za-z0-9_\-\.]+$/"
            required />
 </div>
 <div class="form-group">
@@ -24,6 +26,7 @@
               class="form-control"
               ng-model="newProjectData.project.description"
               placeholder="The description of your new project"
+              ng-maxlength="256"
               rows="3">
     </textarea>
 </div>
