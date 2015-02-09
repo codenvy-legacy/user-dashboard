@@ -17,15 +17,15 @@
 'use strict';
 
 angular.module('odeskApp')
-    .directive('udImportGitRepository', function() {
-        return {
-          restrict: 'E',
-          require: '^form',
-          scope: {
-            workspaces: '=',
-            workspaceSelected: '=',
-            newProjectData: '='
-          },
-          templateUrl: 'partials/widgets/importGitRepository.html'
-        }
-    });
+  .directive('udImportGitRepository', function() {
+    return {
+      restrict: 'E',
+      require: '^form',
+      scope: {
+        workspaces: '=',
+        workspaceSelected: '=',
+        newProjectData: '='
+      },
+      templateUrl: 'partials/widgets/importGitRepository.html'
+    }
+  });
