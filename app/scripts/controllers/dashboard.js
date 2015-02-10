@@ -430,6 +430,13 @@ angular.module('odeskApp')
         var tempEmailList = $scope.emailList;
         angular.forEach(tempEmailList.split(","), function (email) {
           Users.getUserByEmail(email).then(function (user) { // on success
+
+            // need to send to analytics an event
+            var userInviteData = {
+              params: {'WS':$scope.activeProject.workspaceId, "EMAIL": email}
+            };
+            var res = $http.post('api/analytics/log/user-invite', userInviteData);
+            
             Workspace.addMemberToWorkspace($scope.activeProject.workspaceId, user.id).then(function () {
               // refresh member list
               Profile.getById(user.id).then(function (data) {
