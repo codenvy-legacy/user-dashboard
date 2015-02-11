@@ -55,14 +55,16 @@ angular.module('odeskApp')
             });
 
             var updateProjectsData = function (projects) {
-                if (projects.problems != null && projects.problems.length) {
-                    angular.forEach(projects.problems, function (problem) {
-                        if (problem.code == 1) {
-                            projects.description = 'This project does not have its language type and ' +
-                                'environment set yet. Open the project to configure it properly.';
-                            projects.type = 'mis-configured';
-                            projects.misconfigured = true;
-                        }
+                if (projects != null && projects.length) {
+                    angular.forEach(projects, function (project) {
+                        angular.forEach(project.problems, function (problem) {
+                            if (problem.code == 1) {
+                                project.description = 'This project does not have its language type and ' +
+                                    'environment set yet. Open the project to configure it properly.';
+                                project.type = 'mis-configured';
+                                project.misconfigured = true;
+                            }
+                        });
                     });
                 }
                 if (!angular.equals(projects, ProjectFactory.projects)) {
