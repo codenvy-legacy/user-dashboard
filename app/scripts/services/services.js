@@ -496,14 +496,11 @@ angular.module('odeskApp')
 
 angular.module('odeskApp')
     .factory('OrgAddon', function ($rootScope, AccountService, $q) {
-        var serviceIds = ["Saas", "OnPremises"];
-        var packages = ["Team", "Enterprise"];
         var orgAddonData = {};
-        orgAddonData.isOrgAddOn = false;
+        orgAddonData.isOrgAddOn = true;
         orgAddonData.accounts = [];
 
         orgAddonData.update = function(accounts) {
-            orgAddonData.isOrgAddOn = accounts.length > 0;
             orgAddonData.accounts = accounts;
             orgAddonData.currentAccount = accounts.length > 0 ? accounts[0] : null;
             $rootScope.$broadcast('orgAddonDataUpdated');
@@ -532,11 +529,7 @@ angular.module('odeskApp')
                 angular.forEach(accounts, function (account) {
                     promises.push(
                         AccountService.getSubscriptions(account.id).then(function () {
-                            var serviceId = _.pluck(AccountService.subscriptions, 'serviceId')[0];
-                            var packageName = _.pluck(_.pluck(AccountService.subscriptions, 'properties'), 'Package')[0];
-                            if (_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
-                                orgAccounts.push(account);
-                            }
+                            orgAccounts.push(account);
                         }));
 
                 });
