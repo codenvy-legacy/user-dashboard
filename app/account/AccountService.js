@@ -128,6 +128,56 @@ angular.module('odeskApp')
             return deferred.promise;
         }
 
+        AccountService.getMembers = function(accountId) {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            $http.get('/api/account/' + accountId + '/members', con)
+                .success(function (data) {
+                    deferred.resolve(data); //resolve data
+                })
+                .error(function (err) {
+                    deferred.reject(err);
+                });
+            return deferred.promise;
+        };
+
+        AccountService.addMember = function(accountId, userId) {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            var data = {
+                "userId": userId,
+                "roles": [ "account/member" ]
+            };
+            $http.post('/api/account/' + accountId + '/members', data, con)
+                .success(function (data) {
+                    deferred.resolve(data); //resolve data
+                })
+                .error(function (err) {
+                    deferred.reject(err);
+                });
+            return deferred.promise;
+        };
+
+        AccountService.removeMember = function(accountId, memberId) {
+            var deferred = $q.defer();
+            $http.delete('/api/account/' + accountId + '/members/' + memberId)
+                .success(function () {
+                    deferred.resolve();
+                })
+                .error(function (err) {
+                    deferred.reject(err);
+                });
+            return deferred.promise;
+        };
+
         AccountService.getFactoryProposalSubscription = function() {
             return {description : "Tracked Factory",  needToBuy: true, needToUpgrade: false};
         }

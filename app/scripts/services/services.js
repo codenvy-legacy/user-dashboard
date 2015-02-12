@@ -488,7 +488,7 @@ angular.module('odeskApp')
                     .success(function (data) {
                         deferred.resolve(data); //resolve data
                     })
-                    .error(function (err) { deferred.reject(); });
+                    .error(function (err) { deferred.reject(err); });
 	            return deferred.promise;
 	        }
 	    };

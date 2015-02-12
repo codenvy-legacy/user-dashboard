@@ -446,7 +446,7 @@ angular.module('odeskApp')
                         });
 
                     });
-                }, function () {
+                }, function (error) {
                     $scope.showInviteError = true;
                     if($scope.errors.length!==0)
                         $scope.errors += ", " + email;
