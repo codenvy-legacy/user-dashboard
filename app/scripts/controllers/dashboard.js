@@ -18,7 +18,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $rootScope, $cookieStore, $http, $q, $window, $interval, $timeout, $location,
+    .controller('DashboardCtrl', function ($scope, $rootScope, $cookieStore, $http, $window, $interval, $timeout, $location,
                                            DocBoxService, Workspace, Project, Users, ProfileService, Password, ProjectFactory, RunnerService, newProject) {
         var refreshLocation = "/dashboard";
         var old_description = '';
@@ -89,11 +89,7 @@ angular.module('odeskApp')
         };
 
         var getAdmin = function (roles) {
-            if (roles.indexOf('workspace/admin') !== -1) {
-                return true;
-            } else {
-                return false;
-            }
+            return roles.indexOf('workspace/admin') !== -1;
         };
 
         var createMember = function (attributes, userId, read, write, roles) {
@@ -182,8 +178,7 @@ angular.module('odeskApp')
                     $('#projectDetailModal').modal('toggle');
                 }
 
-
-                $http({ method: 'GET', url: '/api/profile' }).success(function (profile, status) {
+                ProfileService.getProfile().then(function (profile) {
                     $scope.currentUser = {
                         fullName: profile.attributes.firstName + " " + profile.attributes.lastName,
                         email: profile.attributes.email,
@@ -392,7 +387,7 @@ angular.module('odeskApp')
         $scope.selectMemberToBeDeleted = null;
         $scope.setMemberToBeDeleted = function(member) {
             $scope.selectMemberToBeDeleted = member;
-        }
+        };
 
 
         $scope.removeMember = function (member) {
@@ -494,21 +489,19 @@ angular.module('odeskApp')
             }
 
             return '';
-        }
+        };
         // for displaying message
         $scope.c2User='TRUE';
-        $http({method: 'GET', url: '/api/profile/'}).success(function(data){
+
+        ProfileService.getProfile().then(function (data) {
             $scope.userDetails=data.attributes;
             $scope.oldUser = data.attributes['codenvy:created'];
-
             if(data.attributes['codenvy:created']!=undefined){$scope.c2User='TRUE';}else{$scope.c2User='FALSE';}
-
-        }).error(function(err){
-
         });
 
       // to show scheduled maintenance message from statuspage.io (Path-to service)
         $scope.scheduled = 'FALSE';
+/*
         $http({method: 'GET', url: '/dashboard/scheduled'}).success(function (data) {
             if (Array.isArray(data)) {
                 if (data.length) {
@@ -518,7 +511,7 @@ angular.module('odeskApp')
             }
         }).error(function (err) {
         });
-
+*/
         $scope.definePassword = function () {
             var password = $('#newPassword').val();
             if (password === $('#newPasswordVerify').val()) {
@@ -532,7 +525,7 @@ angular.module('odeskApp')
                 });
                 ProfileService.getProfile().then(function (data) {
                   if (data.attributes.resetPassword && data.attributes.resetPassword == "true") {
-                        Profile.update({"resetPassword": 'false'});
+                        ProfileService.updateProfile({"resetPassword": 'false'});
                         $cookieStore.remove('resetPassword');
                     }
                 });

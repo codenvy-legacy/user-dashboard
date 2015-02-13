@@ -288,7 +288,7 @@ angular.module('odeskApp')
                                 email: email,
                                 name: name
 
-                            }
+                            };
                             $scope.members.push(memberDetails);
                             if(count == members.length){
                                 $scope.updateFreeEmails();
@@ -388,7 +388,7 @@ angular.module('odeskApp')
                 $("#userAlreadyAdded").hide();
                 $("#selectedMembers").parent().addClass('has-error');
                 $("#emptyEmails").show();
-                updateUsedEmails();
+                $scope.updateFreeEmails();
             }
         };
 
@@ -500,7 +500,7 @@ angular.module('odeskApp')
                             projects: 0,
                             projectsName: [],
                             developers: (selectedMembers.length)
-                        }
+                        };
                         $scope.workspaces.push(workspaceDetails);
                         $('#addNewWorkspace').modal('toggle');
                         $("#ws_name").val("")
@@ -550,13 +550,6 @@ angular.module('odeskApp')
               }, 4500);
           });
       };
-
-        $scope.updateMember = function (member) {
-            $scope.editMember = member;
-            $scope.member_role = $scope.editMember.role;
-            $('#updateOrgMemberError').hide();
-            $('#updateCurrentWsMemberError').hide();
-        };
 
         // Remove user from selected list
         $scope.removeUserToList = function (user) {

@@ -83,7 +83,7 @@ angular.module('odeskApp')
                     deferred.resolve(data); //resolve data
                 })
                 .error(function (err) {
-                    deferred.reject();
+                    deferred.reject(err);
                 });
             return deferred.promise;
         },

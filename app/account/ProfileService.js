@@ -41,7 +41,7 @@ angular.module('odeskApp')
                     deferred.reject(err);
                 });
             return deferred.promise;
-        }
+        };
 
         ProfileService.updateProfile = function (updateAttributes) {
             var deferred = $q.defer();
