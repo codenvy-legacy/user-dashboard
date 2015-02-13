@@ -8,6 +8,7 @@
     - [Inside Codenvy IDE](#inside-codenvy-ide)
 
 - [Developers](#developers)
+- [How to build on Docker image](#how-to-build-on-docker-image)
 
 ## Quick start
 
@@ -51,3 +52,31 @@ Enter https://github.com/codenvy/user-dashboard and a project's name if not auto
 ## Developers
 
 Live reload feature is enabled. So each time a file is modified/updated the browser is notified with the change and refresh the page automatically. No action is required.
+
+## How to build on Docker image
+
+Step-by-step guide
+ 
+1) Install docker.http://docs.docker.com/installation/ubuntulinux/
+
+>sudo apt-get update
+>sudo apt-get install docker.io
+
+2) To use docker without sudo:
+
+>sudo groupadd docker
+>sudo gpasswd -a ${USER} docker
+
+3) Log out and log back in again.
+
+4) Ensure path contains $HOME variable in settings.xml
+
+> \<localRepository\>${env.HOME}/.m2/repository\</localRepository\>
+
+5) Pull docker image.
+
+>docker pull vkuznyetsov/user-dashboard
+
+6) Run docker-build.sh from project folder.
+
+>./docker-build.sh

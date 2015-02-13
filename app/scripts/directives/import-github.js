@@ -145,12 +145,13 @@ angular.module('odeskApp')
         '$location',
         '$browser',
         '$modal',
+        '$filter',
         'GitHub',
         'Project',
         'organizationNameResolver',
         'popup',
         'gitHubTokenStore',
-        function($http, $q, $window, $location, $browser, $modal, GitHub, Project, organizationNameResolver, popup, gitHubTokenStore) {
+        function($http, $q, $window, $location, $browser, $modal, $filter, GitHub, Project, organizationNameResolver, popup, gitHubTokenStore) {
           return {
             restrict: 'E',
             require: '^form',
@@ -215,7 +216,7 @@ angular.module('odeskApp')
                 }, function() {
                   return $scope.confirmGitHubOAuthPopupModalInstance = $modal.open({
                       templateUrl: 'partials/templates/projects/confirmGitHubOAuthPopUp.html',
-                      size: 'lg',
+                      size: 'sm',
                       scope: $scope
                     }).result;
                 });
@@ -225,18 +226,18 @@ angular.module('odeskApp')
 
                 $scope.checkGitHubAuthentication().then(function() {
                   var user = GitHub.user().get();
+
                   $scope.organizations.push(user);
-                  $scope.gitHubRepositories = GitHub.userRepositories().query();
+                  GitHub.organizations().query().$promise.then(function(organizations) {
+                    $scope.organizations = $scope.organizations.concat(organizations);
 
-                  var userOrganizations = GitHub.organizations().query();
-                  userOrganizations.$promise.then(function (data) {
-                    $scope.organizations = $scope.organizations.concat(data);
+                    var organizationNames = _.map($scope.organizations, 'login');
 
-                    for (var i = 0; i < data.length; i++) {
-                      GitHub.organizationRepositories(data[i].login).query(function (data) {
-                        $scope.gitHubRepositories = $scope.gitHubRepositories.concat(data);
+                    GitHub.userRepositories().query().$promise.then(function(repositories) {
+                      $scope.gitHubRepositories = $filter('filter')(repositories, function(repository, index) {
+                        return organizationNames.indexOf(repository.owner.login) >= 0;
                       });
-                    }
+                    });
                   });
 
                   $scope.state = 'LOADED';
@@ -264,6 +265,17 @@ angular.module('odeskApp')
               $scope.state = 'IDLE';
               $scope.checkTokenValidity().then(function() {
                 $scope.loadRepositories();
+              });
+              
+              $scope.$watch('newProjectData.source.project.location', function(newValue, oldValue) {
+                var matchRepository = $filter('filter')($scope.gitHubRepositories, function(repository, index) {
+                  return repository.clone_url == newValue;
+                });
+                if (matchRepository) {
+                  $scope.selectedRepository = matchRepository[0];
+                } else {
+                  $scope.selectedRepository = undefined;
+                }
               });
             },
             templateUrl: 'partials/widgets/importGitHub.html'

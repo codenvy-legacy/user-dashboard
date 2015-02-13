@@ -129,37 +129,35 @@
             <div class="row mrg-top10">
               <div class="col-lg-7 col-sm-7 col-md-7 col-xs-12">
                 <form role="form">
-                    <div class="form-group">
-                        <label>Select User(s):</label>
-                        <input id="selectedMembers" class="form-control"  style="padding: 0; border: 0;"/>
-                    </div>
+                  <div class="form-group">
+                    <label>Select Users(s):</label>
+                    <input type="text" id="selectedMembers" placeholder="Type email addresses separated by commas" class="form-control" style="padding: 0; border: 0;">
+                  </div>
                 </form>
               </div>
               <div class="col-lg-5 col-sm-5 col-md-5 col-xs-12">
-                <div class="row mrg-top30" style="line-height: 25px;">
-                  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 pad-0">Administrator </div>
-                  <div class="col-lg-1 col-sm-2 col-md-2 col-xs-12" style="margin-top: 2px;">
+                <div class="row mrg-top30" style="line-height: 34px;">
+                  <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">Admin</div>
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top: 2px;">
                     <input type="radio" name="ws_member_role" id="ws_admin_radio" class="css-checkbox lft-radio" value="workspace/admin" checked="checked"/>
                     <label for="ws_admin_radio" class="css-label radGroup1">&nbsp;</label>
                   </div>
                   <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">Developer </div>
-                  <div class="col-lg-1 col-sm-2 col-md-2 col-xs-12" style="margin-top: 2px;">
+                  <div class="col-lg-1 col-sm-3 col-md-3 col-xs-12" style="margin-top: 2px;">
                     <input type="radio" name="ws_member_role" id="ws_dev_radio" class="css-checkbox" value="workspace/developer"/>
                     <label for="ws_dev_radio" class="css-label radGroup1">&nbsp;</label>
                   </div>
-                  <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12">
-                    <button type="button" class="btn btn-success" ng-click="addMemberToWsList()">ADD</button>
+                  <div class="col-lg-2 col-sm-3 col-md-3 col-xs-12" style="margin-top: -1px">
+                    <button type="button" class="btn btn-success" ng-click="addMemberToWsList()">Add</button>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="org-errors" ng-if="members.length == 0">
-                <span >Users must be added as an Organization Member first before they are added to this workspace.</span>
-            </div>
-            <div id="userAlreadyAdded" style="display: none" class="org-errors">User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </div>
-            <div id="emptyEmails" style="display: none" class="org-errors"><strong>Select email addresses</strong></div>
-            <div id="addMemberErr" style="display: none" class="org-errors"></div>
+            <alert class="alert alert-danger" ng-if="members.length == 0">Users must be added as an Organization Member first before they are added to this workspace.</alert>
+            <alert id="userAlreadyAdded" style="display: none" type="danger">User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added.</alert>
+            <alert id="emptyEmails" style="display: none" type="danger">Select email addresses.</alert>
+            <alert id="addMemberErr" style="display: none" type="danger"></alert>
           </div>
         </div>
         <div class="modal-footer">
@@ -213,10 +211,8 @@
                 </div>
               </div>
             </div>
-            <div id="updateCurrentWsMemberError" style="display: none" class="org-errors">
-              Cannot change role of current workspace/admin</div>
-              <div id="updateWsMemberError" style="display: none" class="org-errors">
-              Cannot change role of workspace/admin</div>
+            <alert id="updateCurrentWsMemberError" style="display: none" type="danger">Cannot change role of current workspace/admin</alert>
+            <alert id="updateWsMemberError" style="display: none" type="danger">Cannot change role of workspace/admin</alert>
           </div>
         </div>
         <div class="modal-footer">

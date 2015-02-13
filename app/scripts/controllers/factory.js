@@ -7,7 +7,7 @@
 
 'use strict';
 angular.module('odeskApp')
-	.controller('FactoryCtrl', function ($scope, $http, $route, $filter, $window, $modal) {
+	.controller('FactoryCtrl', function ($scope, $http, $route, newFactory, $filter, $window, $modal, Users) {
 
 		$scope.resetMessages = function() {
 			$scope.factoryConfigurationError = null;
@@ -17,6 +17,37 @@ angular.module('odeskApp')
 		$scope.resetMessages();
 
 		$scope.factoryId = $route.current.params.id;
+
+    $scope.userId = '';
+		$scope.accountId = '';
+		$scope.email = '';
+
+			$scope.loadAccount = function () {
+				Users.query().then(function(data){
+					for (var j = data.length - 1; j >= 0; j--) {
+						var ref = data[j].accountReference;
+						if(ref.id!=undefined)
+						{
+							//Get the account's susbcription only if user = accountOwner
+							var isAccountOwner= false;
+
+							for (var iAccount = data[j].roles.length - 1; iAccount >= 0; iAccount--) {
+								if (data[j].roles[iAccount] == "account/owner") {
+									  $scope.userId = data[j].userId;
+							    	$scope.accountId = ref.id;
+							}
+
+							};
+
+						}
+					};
+				});
+
+		  }
+
+
+	 $scope.loadAccount();
+
 
 		$scope.loadDetails = function (factoryId, displayOK) {
 			$scope.resetMessages();
@@ -44,8 +75,57 @@ angular.module('odeskApp')
 
 		}
 
+		/**
+		* Open the new factory modal dialog
+		*/
+		$scope.createNewFactory = function () {
+			newFactory.open();
+		};
 
 		$scope.loadDetails($scope.factoryId);
+
+
+		$scope.loadFactorySnippets = function(factoryId) {
+			var _uri = '/api/factory/' + factoryId;
+			$http.get(_uri).success(function (data, status) {
+
+				for (var l = 0; l < data.links.length; l++) {
+					var link = data.links[l];
+					if ("create-project" == link.rel) {
+						$scope.factoryURL = link.href;
+					} else if ("snippet/markdown" == link.rel) {
+						$http.get(link.href).success(function (data, status) {
+							$scope.factorySnippetMarkdown = data;
+						}).error(function (data, status) {
+							// display a fallback for the link
+							if (409 == status) {
+								$scope.factorySnippetMarkdown = "[Factory link](" + $scope.factoryURL + ")";
+							} else {
+								$scope.factorySnippetMarkdown = "Error: " + $filter('json')(data, 2);
+							}
+						});
+					} else if ("snippet/html" == link.rel) {
+						$http.get(link.href).success(function (data, status) {
+							$scope.factorySnippetHTML = data;
+						}).error(function (data, status) {
+							$scope.factorySnippetHTML = "Error: " + $filter('json')(data, 2);
+						});
+					}
+				}
+			});
+		}
+
+
+		$scope.openSnippets = function(factoryId) {
+			// load snippets details
+			$scope.loadFactorySnippets(factoryId);
+
+			// open modal
+			$modal.open({
+				templateUrl: 'partials/templates/factories/shareFactoryModal.html',
+				scope: $scope
+			});
+		}
 
 
 		$scope.removeConfirmFactory = function() {

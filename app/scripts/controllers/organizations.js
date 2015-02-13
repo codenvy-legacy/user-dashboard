@@ -426,12 +426,12 @@ angular.module('odeskApp')
                 } else {
                     $("#ws_name").parent().addClass('has-error');
                     $("#emptyWs").show();
-                    $("#emptyWs").html("<strong> Workspace characters should be between 3 to 20 characters and may have digit, letters and - . _ and may start with digits or letters</strong>");
+                    $("#emptyWs").html("Workspace characters should be between 3 to 20 characters and may have digit, letters and - . _ and may start with digits or letters");
                 }
             } else {
                 $("#ws_name").parent().addClass('has-error');
                 $("#emptyWs").show();
-                $("#emptyWs").html("<strong>Define the name of the workspace</strong>");
+                $("#emptyWs").html("Define the name of the workspace");
             }
             $("#wsUserAdd").attr('disabled', 'disabled');
             return false;
@@ -514,7 +514,7 @@ angular.module('odeskApp')
             else {
                 $("#ws_name").parent().addClass('has-error');
                 $("#emptyWs").show();
-                $("#emptyWs").html("<strong> Workspace characters should be between 3 to 20 characters and must have digit, letters and - . _ and must start with digits or letters</strong>");
+                $("#emptyWs").html("Workspace characters should be between 3 to 20 characters and must have digit, letters and - . _ and must start with digits or letters");
 
             }
 
@@ -591,7 +591,7 @@ angular.module('odeskApp')
                 $scope.defineProperValue = false;
                 $("#allocate_ram_" + id).parent().addClass('has-error');
                 $("#allocationError").show();
-                $("#allocationError").html("<strong> Input value is invalid </strong>");
+                $("#allocationError").html("Input value is invalid");
             }
             return false;
         };
@@ -637,7 +637,7 @@ angular.module('odeskApp')
 
             function processError(err) {
                 $("#allocationError").show();
-                $("#allocationError").html("<strong>" + err.message + "</strong>");
+                $("#allocationError").html(err.message);
             }
 
         }

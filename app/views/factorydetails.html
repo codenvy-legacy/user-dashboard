@@ -1,7 +1,7 @@
 <div class="breadcrumb-wrap">
     <ul class="breadcrumb factorynav">
         <li><a href="#/factories">All Factories</a> > ID {{factoryId}}</li>
-        <li ng-controller="FactoriesCtrl" class="factory-navbar-right"><button ng-click="createNewFactory()" class="btn btn-sm-text btn-ttl btn-create-factory-modal"><i class="glyphicon glyphicon-plus"></i><span> CREATE FACTORY</span></button></li>
+        <li class="factory-navbar-right"><button ng-click="createNewFactory()" class="btn btn-sm-text btn-ttl btn-create-factory-modal"><i class="glyphicon glyphicon-plus"></i><span> CREATE FACTORY</span></button></li>
     </ul>
 </div>
 <div class="col-md-12 mrg-top80">
@@ -16,7 +16,7 @@
                         <form class="form-horizontal">
                             <div class="row">
                                 <div class="col-md-4"><label class="control-label">Factory URL:</label></div>
-                                <div class="col-md-8"><a ng-href="{{factoryURL}}">{{factoryURL}}</a></div>
+                                <div class="col-md-8"><a ng-href="{{factoryURL}}">{{factoryURL}}</a>&nbsp;<a ng-click="openSnippets(factoryId)" class="btn btn-ttl btn-sm-text" ><i class="import-icon fa fa-share-alt fa-lg"></i> Share</a></div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4"><label class="control-label">Created On:</label></div>
@@ -49,6 +49,38 @@
                             </div>
                         </form>
                     </div>
+</div>
+</div>
+                    <div class="panel panel-default panel-ce">
+                      <div class="panel-body">
+
+                    <div class="factory-information">
+
+                      <h4 class="text-center">User Information</h4>
+
+                      <form class="form-horizontal">
+                        <div class="row">
+                          <div class="col-md-12 text-center">
+                          This information may be used to create tracked factories.
+                        </div>
+                        </div>
+                        <div class="row"></div>
+                        <div class="row" style='line-height:26px'>
+                          <div class="col-md-4"><label class="control-label">User ID:</label></div>
+                          <div class="col-md-4 text-left">{{userId}}</div>
+                          <div class="col-md-4 text-right"><button clip-click="userInformationCopy='userId'" clip-copy="userId" class="btn btn-ttl btn-sm-text btn-share-markdown"><i class="octicon octicon-clippy"></i>
+                            &nbsp;<span class="factory-share-copied" ng-show="userInformationCopy == 'userId'">Copied<i class="glyphicon glyphicon-ok"></i></span>
+                            <span ng-show="userInformationCopy != 'userId'">Copy</span></button></div>
+                        </div>
+                        <div class="row" style='line-height:26px'>
+                          <div class="col-md-4"><label class="control-label">Account ID:</label></div>
+                          <div class="col-md-4">{{accountId}}</div>
+                          <div class="col-md-4 text-right"><button clip-click="userInformationCopy='accountId'" clip-copy="accountId" class="btn btn-ttl btn-sm-text btn-share-markdown"><i class="octicon octicon-clippy"></i>
+                            &nbsp;<span class="factory-share-copied" ng-show="userInformationCopy == 'accountId'">Copied<i class="glyphicon glyphicon-ok"></i></span>
+                            <span ng-show="userInformationCopy != 'accountId'">Copy</span></button></div>
+                        </div>
+                      </form>
+              </div>
                 </div>
             </div>
         </div>
@@ -64,7 +96,7 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="data-info">
-                                    <a href="http://docs.codenvy.com/user/project-lifecycle/#configuration-reference">Factory reference documentation</a>
+                                    <a href="http://docs.codenvy.com/user/factories/#configuration-reference">Factory reference documentation</a>
                                 </div>
                                 <div class="alerts">
                                     <div class="row alert alert-danger" ng-show="factoryConfigurationError != null">

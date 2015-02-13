@@ -44,6 +44,14 @@
 <!-- <div class="col-md-12"> -->
 
 <div class="col-md-12">
+    <div class="panel-box" style="margin-top: 10px" ng-if="scheduled">
+        <div class="panel-bg" ng-repeat="maintenance in data">
+          <a class="message" ng-href="{{maintenance.shortlink}}" target="_blank">
+            Scheduled Maintenance: {{maintenance.name}}
+            </a>
+          <span>{{maintenance.scheduled_for | date: 'medium' : 'UTC'}}</span>
+        </div>
+    </div>
 <!-- Warning Message -->
 <!--
     <div class="panel-box" style="margin-top: 10px" >
@@ -203,7 +211,7 @@
 <div class="modal fade" id="privacyModal" tabindex="-1" role="dialog" aria-labelledby="privacyModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
+            <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="privacyModalLabel">Update Project Privacy</h4>
             </div>
@@ -235,7 +243,7 @@
 <div class="modal fade" id="developersModal" tabindex="-1" role="dialog" aria-labelledby="developersModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
+            <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="developersModalLabel">Manage Project &amp; Developers</h4>
             </div>
@@ -302,14 +310,14 @@
                     </div>
                   </div>
                 </form>
-                <p id="showInviteError" ng-show="showInviteError" >{{errors}} must be Codenvy user<span ng-if="errors.indexOf(',') > 0">s</span> before being added as developer<span ng-if="errors.indexOf(',') > 0">s</span> of your workspace.</p>
+                <div class="alert alert-danger" id="showInviteError" ng-show="showInviteError" >{{errors}} must be Codenvy user<span ng-if="errors.indexOf(',') > 0">s</span> before being added as developer<span ng-if="errors.indexOf(',') > 0">s</span> of your workspace.</div>
                 <p ng-show="!showInviteError">Developers become workspace/members and granted permissions across <u>all</u> projects.</p>
               </div>
                 <div class="invitation " ng-show="!isAdmin">
                     <p class="darkBlack">Invitation require Administrator permissions to the project's workspace.</p>
                 </div>
             </div>
-            <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
+            <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
 
             </div>
@@ -322,7 +330,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <form method="post" accept-charset="utf-8" role="form" ng-submit="definePassword()">
-                <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
+                <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="defineUserPasswordLabel">Define your Password</h4>
                 </div>
@@ -359,7 +367,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
+                <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Ok</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
@@ -372,7 +380,7 @@
 <div class="modal fade" id="projectDetailModal" tabindex="-1" role="dialog" aria-labelledby="projectDetailModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
+            <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="projectDetailModalLabel">Project Detail</h4>
             </div>
@@ -409,13 +417,16 @@
                                 <b>Successfully Done!</b> Change project detail completed.
                             </div>
                             <div class="alert alert-danger" style="display: none;">
-                                <b>Failed!</b><span> {{updateProjectError}} </span>
+                                <b>Failed!</b> Change project detail failed.</div>
+                            </div>
+                            <div class="alert alert-danger" id="alreadyExist" style="display: none;">
+                                <b>Failed!</b> Impossible to rename the project. The name <strong>"{{changeName}}"</strong> is already used in your projects.
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
+
+            <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary" ng-click="updateProject()">Ok</button>
                 <button type="button" class="btn btn-danger pull-left" data-toggle="modal" ng-click="deleteProjectConfirm()" data-dismiss="modal"><i class="fa fa-trash-o"></i></i> Delete Project</button>
@@ -430,14 +441,14 @@
 <div class="modal fade" id="privacyMessageModal" tabindex="-1" role="dialog" aria-labelledby="privacyMessageModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
+            <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="privacyMessageModalLabel">Project Privacy</h4>
             </div>
             <div class="modal-body">
               As a developer of the workspace, <b>{{selected.workspaceName}}</b>, you are not permitted to change privacy of the project. This action is only permitted for users with workspace/admin role designation. This workspace's administrator {{getAllAdminListToDisplay()}}.
             </div>
-            <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
+            <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
             </div>
         </div>
@@ -448,7 +459,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
 
-      <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
+      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="WarningUserLabel">Warning</h4>
       </div><!-- modal-header -->
@@ -458,7 +469,7 @@
         <p>Are you sure you want to continue?</p>
       </div><!-- modal-body -->
 
-      <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
+      <div class="modal-footer">
         <a ng-click="removeMember(selectMemberToBeDeleted)" class="btn btn-danger" data-dismiss="modal">Ok</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
       </div><!-- modal-footer -->
@@ -471,22 +482,22 @@
 <div class="modal modal-project fade" id="warning-project" tabindex="-1" role="dialog" aria-labelledby="WarningProjectLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header" style="padding: 10px; background: #f0f0f0;">
+            <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="WarningProjectLabel">Warning</h4>
             </div><!-- modal-header -->
             <div class="modal-body">
                 <p id="warning-project-message"></p>
+                <div id="warning-project-alert">
+                    <div class="alert alert-success" style="display: none;">
+                        <b>Successfully Done!</b> Delete process completed.
+                    </div>
+                    <div class="alert alert-danger" style="display: none;">
+                        <b>Failed!</b> Delete failed.
+                    </div>
+                </div>
             </div><!-- modal-body -->
-            <div id="warning-project-alert" style="margin: 20px;">
-                <div class="alert alert-success" style="display: none;">
-                    <b>Successfully Done!</b> Delete process completed.
-                </div>
-                <div class="alert alert-danger" style="display: none;">
-                    <b>Failed!</b> {{deleteProjectError}}
-                </div>
-            </div>
-            <div class="modal-footer" style="margin-top: 10px; padding: 10px; background: #f0f0f0;">
+            <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <a  class="btn btn-danger" ng-click="deleteProject()" ng-if="isAdmin">OK</a>
             </div><!-- modal-footer -->

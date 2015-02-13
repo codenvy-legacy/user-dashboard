@@ -228,7 +228,26 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .form-control:-ms-input-placeholder {  
   color: #cecece;  
 }
-
+/* Styling of modals */
+.modal-header {
+  padding: 10px 15px;
+  background: #f0f0f0;
+}
+.modal-body {
+  padding: 10px 15px;
+}
+.modal-footer {
+  margin-top: 0;
+  padding: 10px 15px;
+  background-color: #f0f0f0;
+}
+.modal-footer .btn.pull-left {
+  margin-left: 0;
+}
+.modal-body .alert {
+  margin-top: 15px;
+  margin-bottom: 0;
+}
 /* Breadcrumb Search
 ----------------------------------------------*/
 .breadcrumb .new-project {
@@ -516,20 +535,6 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 
 /* Privacy Modal related.
 ----------------------------------------------*/
-.modal-header {
-  padding: 10px;
-  background: #f0f0f0;
-}
-.modal-header button.close {
-  line-height: 16px;
-}
-#privacyModal .modal-body .form-group {
-  margin-bottom: 25px;
-  margin-left: 20px;
-}
-#privacyModal .modal-body .form-group:last-child {
-  margin-bottom: 0;
-}
 #privacyModal input {
   vertical-align:bottom;
   margin-top: 2px;
@@ -547,23 +552,6 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 #privacyModal .help-block {
   margin: 0 0 0 25px;
   color: #a3a3a3;
-}
-#privacyModal .modal-header .close{
-  margin: 0;
-  position: absolute;
-  top: 4px;
-  right: 12px;
-  height: 20px;
-  width: 12px;
-  line-height: 1;
-}
-#privacyModal .modal-body {
-  padding: 0 0 10px 10px;
-}
-#privacyModal .modal-footer{
-  margin-top: 0;
-  padding: 10px;
-  background-color: #f0f0f0;
 }
 
 /* PROJECTBOX
@@ -790,7 +778,6 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 }
 #developersModal .form-group{
   width: 100%;
-  margin-bottom: 10px;
 }
 #developersModal .form-control{
   width: 80%;
@@ -954,28 +941,20 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 .btn-bdr-lf { border-bottom: none; border-left: none;}
 .btn-bdr-rt { border-bottom: none; border-right: none; border-left: none;}
 
-#developersModal #showInviteError, .org-errors{
-  background-color: #f7d6d5;
-  color: #B35B59;
-  font-weight: bold;
-  border: 1px solid #e18986;
-  padding: 5px;
-  margin: 5px;
-}
-.success-errors{
+.success-errors {
   background-color: #3B8C37;
   color: #ffffff;
   font-weight: bold;
   border: 1px solid #3B8C37;
   padding: 5px;
-  margin: 5px;
+  margin: 5px 0 0;
 }
 .font-success{
-    color: #3B8C37;
+  color: #3B8C37;
 }
 
 .font-error{
-    color: #B35B59;
+  color: #B35B59;
 }
 
 #developersModal .invitation p.darkBlack {
@@ -1098,72 +1077,55 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
 
 /*----------------------- Start of Add New Workspace Modal css-------------------------*/
 
-.modal-col { display: block;}
-.modal-col .btn { font-size:11px;}
-.modal-col .modal-header {
-  background-color: #f0f0f0;
-  border-bottom: 1px solid #e5e5e5;
-  min-height: 16.4286px;
-  padding: 8px 10px;
-}
-
-.modal-col .modal-header h4 {
-  font-size: 12px;
-  font-weight: normal;
-  text-align: left;
-  text-transform: none;
-}
-
 .form-field label, .menber-col{
   font-size: 14px;
   color: #000000;
 }
-
-.modal-col .modal-content {
-  background-clip: padding-box;
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius:0;
-  box-shadow:none !important;
-  outline: medium none;
-  position: relative;
+.menber-textarea {
+  border:#e5e5e5 1px solid;
+  height: 125px;
+  padding:8px;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
-.modal-col .modal-footer {
-  border-top: 1px solid #e5e5e5; background-color: #f0f0f0;
-  padding:8px 10px;
-  text-align: right;
+.menber-textarea p {
+  font-size:12px;
+  margin:0px 0px 5px 0px;
+  color:#8b8b8b;
 }
-.modal-content {
-  font-size: 12px;
+.menber-textarea .table {
+  width:100%;
+  margin-bottom:0px !important;
 }
-
-.menber-textarea { border:#e5e5e5 1px solid; height: 125px; padding:8px; overflow-x: hidden; overflow-y: scroll;}
-.menber-textarea p { font-size:12px; margin:0px 0px 5px 0px;color:#8b8b8b;}
-.menber-textarea .table { width:100%; margin-bottom:0px !important;}
-.menber-textarea .table > tbody > tr > td {  border-bottom: 0 none;
+.menber-textarea .table > tbody > tr > td {
+  border-bottom: 0 none;
   border-top: 0 none;
   font-size: 12px;
   line-height: 22px;
   padding: 0;
   text-align: left;
 }
-.active-btn {  background: none repeat scroll 0 0 #226cb6;
+.active-btn {
+  background: none repeat scroll 0 0 #226cb6;
   border-radius: 100%;
   height: 13px;
   margin: 0 auto;
   width: 13px;
   border:#cdcdcd 2px solid;
 }
-.dactive-btn {  background:#cdcdcd;
+.dactive-btn {
+  background:#cdcdcd;
   border-radius: 100%;
   height: 13px;
   margin: 0 auto;
   width: 13px;
 }
-.menber-textarea i { color:#cdcdcd;}
+.menber-textarea i {
+  color:#cdcdcd;
+}
 
 .mrg-top10 { margin-top:10px !important;}
-.mrg-top30 { margin-top:30px !important;}
+.mrg-top30 { margin-top:25px !important;}
 .pad-0{ padding: 0;}
 /*----------------------- End of Add New Workspace Modal css-------------------------*/
 
@@ -1444,7 +1406,7 @@ a.message{
     padding: 8px !important;
 }
 #new-project-dialog .tab-content {
-  padding: 15px;
+  padding: 10px 15px;
 }
 #new-project-dialog .import-icon {
   vertical-align: text-top;
@@ -2092,7 +2054,7 @@ html[dir="rtl"] .select2-search input {
 }
 
 /* Form validation */
-.css-form input.ng-invalid.ng-touched {
+.css-form input.ng-invalid.ng-touched, .css-form textarea.ng-invalid.ng-touched {
     border-color: rgb(169, 68, 66);
 }
 
