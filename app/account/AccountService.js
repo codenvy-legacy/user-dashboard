@@ -39,7 +39,7 @@ angular.module('odeskApp')
                     deferred.reject();
                 });
             return deferred.promise;
-        }
+        };
 
         //Get all accounts, where the current user has pointed role:
         AccountService.getAccountsByRole = function (role) {
@@ -54,7 +54,7 @@ angular.module('odeskApp')
                 deferred.resolve(accounts);
             });
             return deferred.promise;
-        }
+        };
 
         //Get all accounts, where the current user has pointed role:
         AccountService.getAccountResources = function (accountId) {
@@ -75,7 +75,26 @@ angular.module('odeskApp')
                 });
 
             return deferred.promise;
-        }
+        };
+
+        AccountService.setAccountResources = function (accountId, resources) {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+            $http.post('/api/account/' + accountId + "/resources",  resources, con)
+                .success(function () {
+                    deferred.resolve();
+                })
+                .error(function (err) {
+                    deferred.reject(err);
+                });
+
+            return deferred.promise;
+        };
 
         AccountService.getUsedMemory = function (resources) {
             var saasSubscription = _.find(resources, function (subscription) {
@@ -87,7 +106,7 @@ angular.module('odeskApp')
                 return sum;
             });
             return (usedMb / 1024 / 60).toFixed(2);
-        }
+        };
 
         //Get list of subscriptions for pointed accounts:
         AccountService.getAllSubscriptions = function (accounts) {
@@ -106,7 +125,7 @@ angular.module('odeskApp')
                 deferred.resolve(subscriptions);
             })
             return deferred.promise;
-        }
+        };
 
         //Get list of subscriptions for pointed account:
         AccountService.getSubscriptions = function (accountId) {
@@ -126,7 +145,7 @@ angular.module('odeskApp')
                     deferred.reject();
                 });
             return deferred.promise;
-        }
+        };
 
         AccountService.getMembers = function(accountId) {
             var deferred = $q.defer();
@@ -180,15 +199,15 @@ angular.module('odeskApp')
 
         AccountService.getFactoryProposalSubscription = function() {
             return {description : "Tracked Factory",  needToBuy: true, needToUpgrade: false};
-        }
+        };
 
         AccountService.getOnPremisesProposalSubscription = function() {
             return {description : "On-Premises", needToBuy: true, needToUpgrade: false};
-        }
+        };
 
         AccountService.getSAASProposalSubscription = function() {
             return {description : "SAAS Free Account", needToBuy: false, needToUpgrade: true, serviceId: "Saas"};
-        }
+        };
 
         //Remove subscription by it's ID:
         AccountService.removeSubscription = function (subscriptionId) {
@@ -201,17 +220,17 @@ angular.module('odeskApp')
                     deferred.reject();
                 });
             return deferred.promise;
-        }
+        };
 
 
         AccountService.buySubscription = function(subscription) {
             $window.open(BUY_SUBSCRIPTIONS_LINK, '_blank');
-        }
+        };
 
 
         AccountService.addSubscription = function () {
             //TODO
-        }
+        };
 
         return AccountService;
     }

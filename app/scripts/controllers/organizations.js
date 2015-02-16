@@ -16,7 +16,8 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('OrganizationsCtrl', function ($scope, AccountService, OrgAddon, ProfileService, Users, WorkspaceInfo, Workspace, $http, $q, $timeout) {
+    .controller('OrganizationsCtrl', function ($scope, AccountService, OrgAddon, ProfileService, RunnerService, Users,
+                                               WorkspaceInfo, Workspace, $http, $q, $timeout) {
         $scope.removeMemberError = '';
 
         $scope.$on('orgAddonDataUpdated', function () {
@@ -246,7 +247,7 @@ angular.module('odeskApp')
                                     projects: projectsLength,
                                     projectsName: projectsName,
                                     developers: membersLength
-                                }
+                                };
 
                                 $scope.workspaces.push(workspaceDetails);
                             });
@@ -435,7 +436,7 @@ angular.module('odeskApp')
             }
             $("#wsUserAdd").attr('disabled', 'disabled');
             return false;
-        }
+        };
 
         // Create workspace related to account
         $scope.createWorkspace = function (selectedMembers) {
@@ -577,7 +578,6 @@ angular.module('odeskApp')
                     var value = parseInt(w.allocatedRam);
                     sumMemory += value || 0;
                 });
-                $scope.leftMemory = $scope.allowedRAM - sumMemory;
                 $("#allocationError").hide();
                 return true;
             } else {
@@ -589,51 +589,39 @@ angular.module('odeskApp')
             return false;
         };
 
-
         $scope.getInfoForRAMAllocation = function() {
             $scope.allowedRAM = 0;
             $scope.infoForRAMAllocation = [];
-            $scope.leftMemory = 0;
 
             angular.forEach($scope.workspaces, function(workspace) {
                 $scope.allowedRAM += parseInt(workspace.allocatedRam, 0);
                 $scope.infoForRAMAllocation.push({id: workspace.id, name: workspace.name, allocatedRam: workspace.allocatedRam});
             });
-        }
+        };
 
         //Redistribute resources:
         $scope.redistributeResources = function () {
             $("#allocationError").hide();
-            var data = [];
+            var resources = [];
             angular.forEach($scope.infoForRAMAllocation, function (w) {
                 var updateResourcesDescriptor = {
                     workspaceId: w.id,
-                    resources: {"RAM": w.allocatedRam}
+                    runnerRam: w.allocatedRam
                 };
-                data.push(updateResourcesDescriptor);
+                resources.push(updateResourcesDescriptor);
             });
-
-            var context = { headers: { 'Content-Type': 'application/json'  }  };
-            $http.post('/api/account/' + $scope.currentAccount.id + '/resources/', data, context)
-                .success(function () {
+            AccountService.setAccountResources($scope.currentAccount.id, resources).then(function () {
                     $('#ramAllocation').modal('toggle');
                     angular.forEach($scope.workspaces, function (workspace) {
                         //  Get workspace's projects and developers using workspace id
-                        $http({method: 'GET', url: "/api/runner/" + workspace.id + "/resources" })
-                            .success(function (data) {
-                                workspace.allocatedRam = data.totalMemory;
-                            })
-                            .error(processError);
+                        RunnerService.getResources(workspace.id, true).then(function (data) {
+                            workspace.allocatedRam = data.totalMemory;
+                        });
                     });
-                })
-                .error(processError);
-
-            function processError(err) {
+                }, function (err) {
                 $("#allocationError").show();
                 $("#allocationError").html(err.message);
-            }
-
+            });
         }
-
 
     });
