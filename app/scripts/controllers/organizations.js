@@ -16,7 +16,9 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('OrganizationsCtrl', function ($scope, AccountService, OrgAddon, ProfileService, Users, WorkspaceInfo, Workspace, $http, $q, $timeout) {
+    .controller('OrganizationsCtrl', function ($scope, AccountService, OrgAddon, ProfileService, RunnerService, Users,
+                                               WorkspaceInfo, Workspace, $http, $q, $timeout) {
+        var unlimitedValue = 1024*1024*1024;
         $scope.removeMemberError = '';
 
         $scope.$on('orgAddonDataUpdated', function () {
@@ -246,7 +248,7 @@ angular.module('odeskApp')
                                     projects: projectsLength,
                                     projectsName: projectsName,
                                     developers: membersLength
-                                }
+                                };
 
                                 $scope.workspaces.push(workspaceDetails);
                             });
@@ -435,7 +437,7 @@ angular.module('odeskApp')
             }
             $("#wsUserAdd").attr('disabled', 'disabled');
             return false;
-        }
+        };
 
         // Create workspace related to account
         $scope.createWorkspace = function (selectedMembers) {
@@ -568,72 +570,60 @@ angular.module('odeskApp')
         //Check Memory allocation and count left memory.
         $scope.getFreeMemoryAfterAllocation = function (id) {
             var allocated_ram = $("#allocate_ram_" + id).val();
-            var sumMemory = 0;
-            if (allocated_ram.length > 0 && (allocated_ram.match(/^\d{0,5}$/) != null)) {
+            if (allocated_ram.match(/^(?:\d{0,10})$/) != null) {
+                if(allocated_ram.length > 0 && allocated_ram > unlimitedValue){
+                    $("#allocate_ram_" + id).val(unlimitedValue);
+                }
                 $("#allocationError").hide();
                 $scope.defineProperValue = true;
                 $("#allocate_ram_" + id).parent().removeClass('has-error');
-                angular.forEach($scope.infoForRAMAllocation, function (w) {
-                    var value = parseInt(w.allocatedRam);
-                    sumMemory += value || 0;
-                });
-                $scope.leftMemory = $scope.allowedRAM - sumMemory;
+
                 $("#allocationError").hide();
                 return true;
             } else {
                 $scope.defineProperValue = false;
                 $("#allocate_ram_" + id).parent().addClass('has-error');
                 $("#allocationError").show();
-                $("#allocationError").html("Input value is invalid");
+                $("#allocationError").html("Input value is invalid. ");
             }
             return false;
         };
 
-
         $scope.getInfoForRAMAllocation = function() {
+            $("#allocationError").hide();
             $scope.allowedRAM = 0;
             $scope.infoForRAMAllocation = [];
-            $scope.leftMemory = 0;
 
             angular.forEach($scope.workspaces, function(workspace) {
                 $scope.allowedRAM += parseInt(workspace.allocatedRam, 0);
                 $scope.infoForRAMAllocation.push({id: workspace.id, name: workspace.name, allocatedRam: workspace.allocatedRam});
             });
-        }
+        };
 
         //Redistribute resources:
         $scope.redistributeResources = function () {
             $("#allocationError").hide();
-            var data = [];
+            var resources = [];
             angular.forEach($scope.infoForRAMAllocation, function (w) {
+                var allocatedRam = w.allocatedRam.length > 0 ? w.allocatedRam : unlimitedValue;
                 var updateResourcesDescriptor = {
                     workspaceId: w.id,
-                    resources: {"RAM": w.allocatedRam}
+                    runnerRam: allocatedRam
                 };
-                data.push(updateResourcesDescriptor);
+                resources.push(updateResourcesDescriptor);
             });
-
-            var context = { headers: { 'Content-Type': 'application/json'  }  };
-            $http.post('/api/account/' + $scope.currentAccount.id + '/resources/', data, context)
-                .success(function () {
+            AccountService.setAccountResources($scope.currentAccount.id, resources).then(function () {
                     $('#ramAllocation').modal('toggle');
                     angular.forEach($scope.workspaces, function (workspace) {
                         //  Get workspace's projects and developers using workspace id
-                        $http({method: 'GET', url: "/api/runner/" + workspace.id + "/resources" })
-                            .success(function (data) {
-                                workspace.allocatedRam = data.totalMemory;
-                            })
-                            .error(processError);
+                        RunnerService.getResources(workspace.id, true).then(function (data) {
+                            workspace.allocatedRam = data.totalMemory;
+                        });
                     });
-                })
-                .error(processError);
-
-            function processError(err) {
+                }, function (err) {
                 $("#allocationError").show();
                 $("#allocationError").html(err.message);
-            }
-
+            });
         }
-
 
     });
