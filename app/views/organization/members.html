@@ -30,7 +30,7 @@
           </div><!-- content title-->
           <div class="searchfull top0 clearfix" style="display:none" >
             <input type="button" class="closeBtn" style="display:none;" ng-click="filter = ''" />
-            <input type="text" ng-model="filter.name" class="searchfield " placeholder="Search for Members"/>
+            <input type="text" ng-model="search.name" class="searchfield " placeholder="Search for Members"/>
           </div>
         </li>
         <li class="ws-button pad0 pull-right mrg-rht5">
@@ -50,7 +50,7 @@
           </tr>
           </thead>
 
-          <tr class="v-center" ng-repeat="member in members| filter: filter | orderBy:'name'">
+          <tr class="v-center" ng-repeat="member in members| filter:search | orderBy:'name'">
 
             <td class="pad-lft18">
               <span>

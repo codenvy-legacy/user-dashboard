@@ -9,14 +9,14 @@
 /**
  * @auth Gaurav Meena
  * @date 03/23/2014
- * Controller for organizations
+ * Controller for workspaces
  */
 
 /*global angular, $*/
 'use strict';
 
 angular.module('odeskApp')
-    .controller('OrganizationsCtrl', function ($scope, Account, OrgAddon, WorkspaceInfo, Workspace, $http, $q, $timeout) {
+    .controller('WorkspacesCtrl', function ($scope, Account, OrgAddon, WorkspaceInfo, Workspace, $http, $q, $timeout) {
         $scope.$on('orgAddonDataUpdated', function () {
             $scope.accounts = OrgAddon.accounts;
             $scope.isOrgAddOn = OrgAddon.isOrgAddOn;
@@ -59,7 +59,7 @@ angular.module('odeskApp')
             } else {
                 window.location = "/#/dashboard";
             }
-        }
+        };
 
         $scope.updateFreeEmails = function () {
             var freeEmails = [];
@@ -88,7 +88,7 @@ angular.module('odeskApp')
                 },
                 data: freeEmails
             });
-        }
+        };
 
         $scope.loadWorkspaceInfo = function () {
             $scope.workspaces = [];
@@ -157,51 +157,7 @@ angular.module('odeskApp')
                 })
                 .error(function (err) {
                 });
-
-
-            // Display members details in members page for organizations
-            $http({method: 'GET', url: '/api/account/' + $scope.currentAccount.id + '/members'})
-                .success(function (members) {
-                    var count = 0;
-
-                    angular.forEach(members, function (member) {
-                        //  Get member's email and name
-                        var email;
-                        var name;
-                        return $q.all([
-                            $http({method: 'GET', url: '/api/profile/' + member['userId']})
-                                .success(function (data) {
-                                    count ++;
-                                    email = data['attributes'].email;
-                                    var firstName = data['attributes'].firstName || "";
-                                    var lastName = data['attributes'].lastName || "";
-                                    name = (firstName && lastName) ? firstName + " " + lastName : firstName + lastName;
-                                })
-                                .error(function (err) {
-                                    count ++;
-                                    if(count == members.length){
-                                        $scope.updateFreeEmails();
-                                    }
-                                })
-                        ]).then(function (results) {
-                            var memberDetails = {
-                                id: member['userId'],
-                                role: member['roles'][0].split("/")[1],
-                                email: email,
-                                name: name
-
-                            }
-                            $scope.members.push(memberDetails);
-                            if(count == members.length){
-                                $scope.updateFreeEmails();
-                            }
-                        });
-
-                    });
-                })
-                .error(function (err) {
-                });
-        }
+        };
 
         if (OrgAddon.accounts.length > 0) {
             $scope.init();
@@ -292,7 +248,7 @@ angular.module('odeskApp')
                 $("#userAlreadyAdded").hide();
                 $("#selectedMembers").parent().addClass('has-error');
                 $("#emptyEmails").show();
-                updateUsedEmails();
+                $scope.updateFreeEmails();
             }
         };
 
@@ -339,7 +295,7 @@ angular.module('odeskApp')
             }
             $("#wsUserAdd").attr('disabled', 'disabled');
             return false;
-        }
+        };
 
         // Create workspace related to account
         $scope.createWorkspace = function (selectedMembers) {
@@ -404,7 +360,7 @@ angular.module('odeskApp')
                             projects: 0,
                             projectsName: [],
                             developers: (selectedMembers.length)
-                        }
+                        };
                         $scope.workspaces.push(workspaceDetails);
                         $('#addNewWorkspace').modal('toggle');
                         $("#ws_name").val("")
@@ -455,122 +411,6 @@ angular.module('odeskApp')
           });
       };
 
-        $scope.updateMember = function (member) {
-            $scope.editMember = member;
-            $scope.member_role = $scope.editMember.role;
-            $('#updateOrgMemberError').hide();
-            $('#updateCurrentWsMemberError').hide();
-        };
-
-        //Update organization's member's role
-        $scope.updateMemberOrg = function (member_role) {
-
-            var mcon = { headers: { 'Content-Type': 'application/json'  }  };
-            var memberData = {"userId": $scope.editMember.id, "roles": ["account/" + member_role] };
-
-            var email;
-            var userid;
-            $http.get('/api/user').success(function (data) {
-                userid = data["id"];
-                email = data["email"]
-
-            }).error(function (err) {
-                console.log("error occurred");
-            });
-
-            $http.delete('/api/account/' + $scope.currentAccount.id + '/members/' + $scope.editMember.id)
-                .success(function (data, status) {
-                    if (status == 204) {
-                        $('#updateRoleModal').modal('toggle');
-                        var removeMember = _.find($scope.members, function (member) {
-                            if (member.id == $scope.editMember.id) return member;
-                        });
-                        var index = $scope.members.indexOf(removeMember)
-                        if (index != -1 && $scope.editMember.id != userid) {
-                            $scope.members.splice(index, 1);
-                            $http.post('/api/account/' + $scope.currentAccount.id + '/members', memberData, mcon)
-                                .success(function (data) {
-                                    $scope.editMember.role = member_role;
-                                    $scope.members.push($scope.editMember);
-                                });
-                        }
-                        else {
-                            $('#updateCurrentWsMemberError').show();
-                        }
-                    }
-                }).error(function (err) {
-                    $('#updateOrgMemberError').show();
-                });
-        };
-
-        // For add user in users list in add members popup modal in organization Tab
-        $scope.addUserToList = function () {
-
-            var selectedUsers = $("#selected_users").val();
-            var selectedUserEmails = selectedUsers.split(",");
-            var role = $("input[name=member_role]:checked").val();
-
-            $("#emptyEmails").hide();
-
-            $scope.userNotFoundList = [];
-            $scope.userAlreadyAdded = [];
-            if (selectedUsers.length > 0) {
-                $("#selected_users").parent().removeClass('has-error');
-                $("#emptyEmails").hide();
-                angular.forEach(selectedUserEmails, function (memberEmail) {
-                    var email, name, userId;
-                    return $q.all([
-                        $http({method: 'GET', url: '/api/user/find', params: {email: memberEmail}})
-                            .success(function (data) {
-                                userId = data["id"]
-                            })
-                            .error(function (err) {
-                                $scope.userNotFoundList.push(memberEmail);
-                                $("#userNotFoundError").show();
-                            })
-
-                    ]).then(function (results) {
-                        var alreadyListedMember = _.find($scope.members, function (member) {
-                            if (member.email == memberEmail) return member;
-                        });
-                        var alreadyAddedMember = _.find($scope.selectedMembers, function (member) {
-                            if (member.id == userId) return member;
-                        });
-
-                        if ((typeof(alreadyAddedMember) != "undefined") || (typeof(alreadyListedMember) != "undefined")) {
-                            $scope.userAlreadyAdded.push(memberEmail);
-                            $("#userAlreadyAdded").show();
-                        } else {
-                            $http({method: 'GET', url: '/api/profile/' + userId})
-                                .success(function (data) {
-                                    email = data['attributes'].email;
-                                    var firstName = data['attributes'].firstName || "";
-                                    var lastName = data['attributes'].lastName || "";
-                                    name = (firstName && lastName) ? firstName + " " + lastName : firstName + lastName;
-                                    var memberDetails = {
-                                        id: userId,
-                                        role: role.split("/")[1],
-                                        email: email,
-                                        name: name
-                                    }
-                                    $scope.selectedMembers.push(memberDetails);
-                                    $("#addMembers").removeAttr('disabled');
-                                });
-                        }
-
-                    });
-                });
-                $("#selected_users").val("");
-                $("#userNotFoundError").hide();
-                $("#userAlreadyAdded").hide();
-            }
-            else {
-                $("#userAlreadyAdded").hide();
-                $("#selected_users").parent().addClass('has-error');
-                $("#emptyEmails").show();
-            }
-        };
-
         // Remove user from selected list
         $scope.removeUserToList = function (user) {
             var removedMember = _.find($scope.selectedMembers, function (member) {
@@ -584,68 +424,6 @@ angular.module('odeskApp')
                 }
             }
         };
-
-        // For add members in organization Tab
-        $scope.addMembers = function (members) {
-            var i = 0;
-            return $q.all([
-
-                angular.forEach(members, function (member) {
-                    var con = {
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    };
-
-                    var role = $("input[name=user_role_" + i + "]:checked").val();
-                    var data = {
-                        "userId": member.id,
-                        "roles": [
-                                "account/" + role.split("/")[1]
-                        ]
-                    };
-                    member.role = role.split("/")[1];
-
-                    $http.post('/api/account/' + $scope.currentAccount.id + '/members', data, con)
-                        .success(function (data) {
-                            $scope.members.push(member);
-                        });
-                    i++;
-                })
-            ]).then(function (results) {
-                $('#addNewMember').modal('toggle');
-                $scope.selectedMembers = [];
-                $("#userNotFoundError").hide();
-                $("#userAlreadyAdded").hide();
-            });
-        };
-
-        $scope.addMemberProject = function (member) {
-            $scope.selectedMemberForRemove = member;
-        };
-        // Remove member related to account
-        $scope.removeMember = function (memberId) {
-            var deferred = $q.defer();
-            $http.delete('/api/account/' + $scope.currentAccount.id + '/members/' + memberId)
-                .success(function (data, status) {
-                    $('#removeMemberConfirm').modal('toggle');
-                    if (status == 204) {
-                        var removeMember = _.find($scope.members, function (member) {
-                            if (member.id == memberId) return member;
-                        });
-                        var index = $scope.members.indexOf(removeMember)
-                        if (index != -1) {
-                            $scope.members.splice(index, 1);
-                        }
-                    }
-                    deferred.resolve(data);
-                })
-                .error(function (err) {
-                    alert("It is impossible to remove this user from the organization or update his role. The organization needs at least one account/owner.");
-                    deferred.reject();
-                });
-        }
-
 
         //Check Memory allocation and count left memory.
         $scope.getFreeMemoryAfterAllocation = function (id) {
@@ -671,7 +449,6 @@ angular.module('odeskApp')
             return false;
         };
 
-
         $scope.getInfoForRAMAllocation = function() {
             $scope.allowedRAM = 0;
             $scope.infoForRAMAllocation = [];
@@ -681,7 +458,7 @@ angular.module('odeskApp')
                 $scope.allowedRAM += parseInt(workspace.allocatedRam, 0);
                 $scope.infoForRAMAllocation.push({id: workspace.id, name: workspace.name, allocatedRam: workspace.allocatedRam});
             });
-        }
+        };
 
         //Redistribute resources:
         $scope.redistributeResources = function () {
@@ -714,8 +491,5 @@ angular.module('odeskApp')
                 $("#allocationError").show();
                 $("#allocationError").html(err.message);
             }
-
         }
-
-
     });

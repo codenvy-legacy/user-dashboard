@@ -112,11 +112,11 @@ angular.module('odeskApp', [
       })
      .when('/organizations', {
             templateUrl: BASE_URL + 'views/organization/workspaces.html',
-            controller: 'OrganizationsCtrl'
+            controller: 'WorkspacesCtrl'
       })
       .when('/organizations/members', {
           templateUrl: BASE_URL + 'views/organization/members.html',
-          controller: 'OrganizationsCtrl'
+          controller: 'MembersCtrl'
       })
       .when('/organizations/workspace/:id', {
           templateUrl: BASE_URL + 'views/organization/workspace_info.html',
