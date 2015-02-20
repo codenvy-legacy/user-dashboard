@@ -18,7 +18,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $rootScope, $cookieStore, $http, $q, $window, $interval, $timeout, $location,
+    .controller('DashboardCtrl', function ($scope, $rootScope, $cookieStore, $http, $q, $window, $interval, $timeout, $location, Skills,
                                            DocBoxService, Workspace, Project, Users, Profile, Password, ProjectFactory, RunnerService, newProject) {
       var refreshLocation = "/dashboard";
       var old_description = '';
@@ -183,7 +183,7 @@ angular.module('odeskApp')
             }
 
 
-          $http({ method: 'GET', url: '/api/profile' }).success(function (profile, status) {
+          Profile.query().then(function (profile) {
             $scope.currentUser = {
               fullName: profile.attributes.firstName + " " + profile.attributes.lastName,
               email: profile.attributes.email,
@@ -392,7 +392,7 @@ angular.module('odeskApp')
 	    $scope.selectMemberToBeDeleted = null;
 	    $scope.setMemberToBeDeleted = function(member) {		    
             $scope.selectMemberToBeDeleted = member;
-	    }
+	    };
 
 
       $scope.removeMember = function (member) {
@@ -494,17 +494,16 @@ angular.module('odeskApp')
       }
 
       return '';
-	  }
+	  };
 	  // for displaying message
       $scope.c2User='TRUE';
-      $http({method: 'GET', url: '/api/profile/'}).success(function(data){
+      Profile.query().then(function (data) {
           $scope.userDetails=data.attributes;
-          $scope.oldUser = data.attributes['codenvy:created'];
+      });
 
-          if(data.attributes['codenvy:created']!=undefined){$scope.c2User='TRUE';}else{$scope.c2User='FALSE';}
-
-      }).error(function(err){
-
+      Skills.query().then(function (data) {
+          $scope.oldUser = data['codenvy:created'];
+          $scope.c2User = data['codenvy:created'] != undefined ? 'TRUE' : 'FALSE';
       });
 
       // to show scheduled maintenance message from statuspage.io (Path-to service)
@@ -530,9 +529,9 @@ angular.module('odeskApp')
                       $('#defineUserPassword').modal('hide');
                   }, 1500);
               });
-              Profile.query().then(function (data) {
-                  if (data.attributes.resetPassword && data.attributes.resetPassword == "true") {
-                      Profile.update({"resetPassword": 'false'});
+              Skills.query().then(function (data) {
+                  if (data.resetPassword && data.resetPassword == "true") {
+                      Skills.update({'resetPassword': 'false'});
                       $cookieStore.remove('resetPassword');
                   }
               });
@@ -557,7 +556,7 @@ angular.module('odeskApp')
               ProjectFactory.getSampleProject(),
               function() {
                   ProjectFactory.fetchProjects($scope.workspaces, true);
-                  Profile.update({"sampleProjectCreated": 'true'});
+                  Skills.update({"sampleProjectCreated": 'true'});
               }
           );
       };
@@ -605,8 +604,8 @@ angular.module('odeskApp')
                 }
                 $scope.projects = ProjectFactory.projects;
 
-                Profile.query().then(function (data) {
-                    if (data.attributes.resetPassword && data.attributes.resetPassword == 'true') {
+                Skills.query().then(function (data) {
+                    if (data.resetPassword && data.resetPassword == 'true') {
                         if ($cookieStore.get('resetPassword') != true) {
                             $cookieStore.put('resetPassword', true);
                             $('#defineUserPassword').modal('toggle'); // show once per session
@@ -614,12 +613,12 @@ angular.module('odeskApp')
                     }
 
                     //Check for sample project creation (if created - "sampleProjectCreated" attribute is set):
-                    if (!data.attributes.sampleProjectCreated || data.attributes.sampleProjectCreated == "false") {
+                    if (!data.sampleProjectCreated || data.sampleProjectCreated == "false") {
                         var projects = Project.query({
                             workspaceID: $scope.workspaces[0].workspaceReference.id
                         }, function (projects) {
                             var featureStartPoint = new Date(1420070400000); //01-01-2015 (timestamp in UTC 1420070400)
-                            var afterFeatureStarted = featureStartPoint < new Date(parseInt(data.attributes["codenvy:created"]));
+                            var afterFeatureStarted = featureStartPoint < new Date(parseInt(data["codenvy:created"]));
                             if (projects.length == 0 && afterFeatureStarted) {
                                 $scope.createSampleProject($scope.workspaces[0].workspaceReference.id);
                             } else {

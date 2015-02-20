@@ -488,7 +488,9 @@ angular.module('odeskApp')
                     .success(function (data) {
                         deferred.resolve(data); //resolve data
                     })
-                    .error(function (err) { deferred.reject(); });
+                    .error(function (err) {
+                        deferred.reject(err);
+                    });
 	            return deferred.promise;
 	        },
 
@@ -504,7 +506,7 @@ angular.module('odeskApp')
                     .success(function (data) {
                         deferred.resolve(data); //resolve data
                     })
-                    .error(function (err) { deferred.reject(); });
+                    .error(function (err) { deferred.reject(err); });
 	            return deferred.promise;
 	        },
 
@@ -519,20 +521,10 @@ angular.module('odeskApp')
 
 	            $http.post('/api/profile', appValue, con)
                    .success(function (data) {
-                       $('#btn-preloader1').removeClass('preloader');
-                       $('#btn1').removeClass('btn-disabled');
-                       $('#upadateProfileAlert .alert-success').show();
-                       $('#upadateProfileAlert .alert-danger').hide();
-                       $('#upadateProfileAlert .alert').mouseout(function () { $(this).fadeOut('slow'); });
                        deferred.resolve(data); //resolve data
                    })
                    .error(function (err) {
-                       $('#btn-preloader1').removeClass('preloader');
-                       $('#btn1').removeClass('btn-disabled');
-                       $('#upadateProfileAlert .alert-danger').show();
-                       $('#upadateProfileAlert .alert-success').hide();
-                       $('#upadateProfileAlert .alert').mouseout(function () { $(this).fadeOut('slow'); });
-                       deferred.reject();
+                       deferred.reject(err);
                    });
 	            return deferred.promise;
 	        }
@@ -688,54 +680,63 @@ angular.module('odeskApp')
         return orgAddonData;
     });
 
-angular.module('odeskApp')
-	.factory('addSkill', function ($http, $q) {
-	    return {
-	        query: function (skillset) {
-	            var config = {
-	                method: 'POST',
-	                headers: { 'Content-Type': 'application/json; charset=UTF-8' },
-	                url: '/api/profile/prefs',
-	                data: skillset
-	            };
-	            $http(config).success(function (data) {
-	                $('#btn-preloader3').removeClass('preloader');
-	                $('#btn3').removeClass('btn-disabled');
-	                $('#addSkillsAlert .alert-success').show();
-	                $('#addSkillsAlert .alert-danger').hide();
-	            }).error(function (err) {
-	                $('#btn-preloader3').removeClass('preloader');
-	                $('#btn3').removeClass('btn-disabled');
-	                $('#addSkillsAlert .alert-danger').show();
-	                $('#addSkillsAlert .alert-success').hide();
-	            });
-	            setTimeout(function () { $('#addSkillsAlert .alert').fadeOut('slow'); }, 3000);
-	        }
-	    };
-	});
-
-angular.module('odeskApp').factory('removeSkills', function ($http) {
+angular.module('odeskApp').factory('Skills', function ($http, $q) {
     return {
-        update: function (skill) {
-            var config = {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json; charset=UTF-8' },
-                url: '/api/profile/prefs',
-                data: new Array(skill)
+        query: function () {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
             };
-            $http(config).success(function (data) {
-                $('#removeSkillsAlert .alert-success').show();
-                $('#removeSkillsAlert .alert-danger').hide();
-                setTimeout(function () { $('#removeSkillsAlert .alert').fadeOut('slow'); }, 3000);
-            }).error(function (err) {
-                $('#removeSkillsAlert .alert-danger').show();
-                $('#removeSkillsAlert .alert-success').hide();
-                setTimeout(function () { $('#removeSkillsAlert .alert').fadeOut('slow'); }, 3000);
-            });
+            $http.get('/api/profile/prefs', con)
+                .success(function (data) {
+                    deferred.resolve(data); //resolve data
+                })
+                .error(function (err) {
+                    deferred.reject(err);
+                });
+            return deferred.promise;
+        },
+
+        update: function (skillset) {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+            $http.post('/api/profile/prefs', skillset, con)
+                .success(function () {
+                    deferred.resolve();
+                })
+                .error(function (err) {
+                    deferred.reject(err);
+                });
+            return deferred.promise;
+        },
+
+        remove: function (skill) {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+            $http.delete('/api/profile/prefs', new Array(skill), con)
+                .success(function () {
+                    deferred.resolve();
+                })
+                .error(function (err) {
+                    deferred.reject(err);
+                });
+            return deferred.promise;
         }
     };
 });
-
 
 angular.module('odeskApp')
 	.factory('addUsage', function ($http, $q) {
