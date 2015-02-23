@@ -352,8 +352,8 @@ angular.module('odeskApp')
         $scope.deleteProject = function () {
             Project.delete($scope.selected).then(function () {
                 $('#warning-project-alert .alert-success').show();
-              ProjectFactory.fetchProjects($scope.workspaces);
-              $scope.isProjectDataFetched = true;
+                ProjectFactory.fetchProjects($scope.workspaces);
+                $scope.isProjectDataFetched = true;
                 $timeout(function () {
                     $('#warning-project').modal('hide');
                 }, 1500);
@@ -426,12 +426,12 @@ angular.module('odeskApp')
             angular.forEach(tempEmailList.split(","), function (email) {
                 Users.getUserByEmail(email).then(function (user) { // on success
 
-            // need to send to analytics an event
-            var userInviteData = {
-              params: {'WS':$scope.activeProject.workspaceId, "EMAIL": email}
-            };
-            var res = $http.post('api/analytics/log/user-invite', userInviteData);
-            
+                    // need to send to analytics an event
+                    var userInviteData = {
+                        params: {'WS':$scope.activeProject.workspaceId, "EMAIL": email}
+                    };
+                    var res = $http.post('api/analytics/log/user-invite', userInviteData);
+
                     Workspace.addMemberToWorkspace($scope.activeProject.workspaceId, user.id).then(function () {
                         // refresh member list
                         ProfileService.getProfileByUserId(user.id).then(function (data) {
@@ -499,19 +499,19 @@ angular.module('odeskApp')
             if(data.attributes['codenvy:created']!=undefined){$scope.c2User='TRUE';}else{$scope.c2User='FALSE';}
         });
 
-      // to show scheduled maintenance message from statuspage.io (Path-to service)
+        // to show scheduled maintenance message from statuspage.io (Path-to service)
         $scope.scheduled = 'FALSE';
-/*
-        $http({method: 'GET', url: '/dashboard/scheduled'}).success(function (data) {
-            if (Array.isArray(data)) {
-                if (data.length) {
-                    $scope.data = data;
-                    $scope.scheduled = 'TRUE';
-                }
-            }
-        }).error(function (err) {
-        });
-*/
+
+         $http({method: 'GET', url: '/dashboard/scheduled'}).success(function (data) {
+         if (Array.isArray(data)) {
+         if (data.length) {
+         $scope.data = data;
+         $scope.scheduled = 'TRUE';
+         }
+         }
+         }).error(function (err) {
+         });
+
         $scope.definePassword = function () {
             var password = $('#newPassword').val();
             if (password === $('#newPasswordVerify').val()) {
@@ -524,7 +524,7 @@ angular.module('odeskApp')
                     }, 1500);
                 });
                 ProfileService.getProfile().then(function (data) {
-                  if (data.attributes.resetPassword && data.attributes.resetPassword == "true") {
+                    if (data.attributes.resetPassword && data.attributes.resetPassword == "true") {
                         ProfileService.updateProfile({"resetPassword": 'false'});
                         $cookieStore.remove('resetPassword');
                     }

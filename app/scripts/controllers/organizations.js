@@ -625,5 +625,5 @@ angular.module('odeskApp')
                 $("#allocationError").html(err.message);
             });
         }
-
     });
+
