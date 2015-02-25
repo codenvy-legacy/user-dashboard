@@ -1,5 +1,7 @@
 /**
  * Created by Ann on 1/26/15.
+ *
+ * Service for manipulations with payments: listing, adding and removing credit cards.
  */
 angular.module('odeskApp')
     .constant('clientTokenPath', '/')//need to init BrainTree

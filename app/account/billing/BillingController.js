@@ -8,13 +8,14 @@
 
 /**
  * @author Oleksii Orel
+ * @author Ann Shumilova
  * @date 23/01/2015
- * Controller for runners
+ * Controller for billing info, invoices, credit cards.
  */
 
 'use strict';
 angular.module('odeskApp')
-    .controller('BillingCtrl', function ($scope, $timeout, Countries, AccountService, PaymentService, ProfileService) {
+    .controller('BillingCtrl', function ($scope, $timeout, Countries, AccountService, PaymentService, InvoiceService, ProfileService) {
         $scope.accounts = [];
         $scope.creditCards = [];
         $scope.countries = Countries.all();
@@ -22,11 +23,13 @@ angular.module('odeskApp')
         $scope.addCreditCardError = '';
         $scope.usedMemory = 0;
         $scope.profile = {};
+        $scope.invoices = [];
 
         AccountService.getAccountsByRole("account/owner").then(function (accounts) {
             $scope.accounts = accounts;
             if (accounts && accounts.length > 0) {
                 $scope.loadCreditCards(accounts);
+                $scope.loadInvoices(accounts[0]);
                 $scope.getAccountResources(accounts[0]);
             }
         });
@@ -53,6 +56,20 @@ angular.module('odeskApp')
         $scope.loadCreditCards = function () {
             PaymentService.getCreditCards($scope.accounts[0].id).then(function () {
                 $scope.creditCards = PaymentService.crediCards;
+            });
+        };
+
+        $scope.loadInvoices = function () {
+            InvoiceService.getInvoices($scope.accounts[0].id).then(function () {
+                $scope.invoices = InvoiceService.invoices;
+                angular.forEach($scope.invoices, function(invoice) {
+                    var link = _.find(invoice.links, function(link) {
+                        return link.rel == "html view";
+                    })
+                    if (link) {
+                        invoice.viewLink = link.href;
+                    }
+                });
             });
         };
 

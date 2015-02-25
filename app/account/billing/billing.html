@@ -18,12 +18,11 @@
             </div>
             <div class="panel panel-default panel-ce">
                 <div class="panel-body">
-                    <h4 class="text-center">Invoices [NOT READY]</h4>
+                    <h4 class="text-center">Invoices</h4>
 
-                    <div class="row">
-                        <div class="col-md-8">January 1, 2015 ($9.36)</div>
-                        <div class="col-md-2"><a href="">HTML</a></div>
-                        <div class="col-md-2"><a href="">PDF</a></div>
+                    <div ng-repeat="invoice in invoices" class="row">
+                        <div class="col-md-8">{{invoice.creationDate | date:'MMMM d, yyyy'}} (${{invoice.total}})</div>
+                        <div class="col-md-2"><a ng-href="{{invoice.viewLink}}" target="_blank">View</a></div>
                     </div>
                 </div>
             </div>

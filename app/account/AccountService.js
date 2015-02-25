@@ -7,9 +7,9 @@
  */
 
 /**
- * @auth ann Shumilova
+ * @auth Ann Shumilova
  * @date
- * Service for maintaining subscriptions.
+ * Service for maintaining user's account.
  */
 
 /*global angular*/
@@ -105,7 +105,8 @@ angular.module('odeskApp')
                 sum += use;
                 return sum;
             });
-            return (usedMb / 1024 / 60).toFixed(2);
+            //return (usedMb / 1024 / 60).toFixed(2);
+            return (usedMb).toFixed(2);
         };
 
         //Get list of subscriptions for pointed accounts:
