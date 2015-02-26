@@ -17,7 +17,7 @@
         <li class="dropdown user-dropdown"> SORT BY:
           <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-down garrow"></i> Alphabetically </a>
           <ul class="dropdown-menu">
-            <li><a href="" ng-click="filter.name"> Alphabetically </a></li>
+            <li><a href=""> Alphabetically </a></li>
           </ul>
         </li>
         <div class="clearfix visible-xs"></div>
@@ -27,7 +27,7 @@
           </div><!-- content title-->
           <div class="searchfull top0 clearfix" style="display:none">
             <input type="button" class="closeBtn" style="display:none;" ng-click="filter = ''" />
-            <input type="text" ng-model="filter.name" class="searchfield " placeholder="Search for Workspaces"/>
+            <input type="text" ng-model="search.name" class="searchfield " placeholder="Search for Workspaces"/>
           </div>
         </li>
         <li class="ws-button pad0 pull-right mrg-rht5">
@@ -60,7 +60,7 @@
             </tr>
           </thead>
 
-            <tr ng-repeat="workspace in workspaces| filter: filter | orderBy:'name'" class="v-center">
+            <tr ng-repeat="workspace in workspaces| filter:search | orderBy:'name'" class="v-center">
               <td style="width: 1%;"><!--<i class="glyphicon glyphicon-lock"></i>--></td>
               <td><a ng-href="#/organizations/workspace/{{workspace.id}}/members" class="ws-name">{{workspace.name}}</a></td>
               <td class="text-center">{{workspace.allocatedRam}}</td>
