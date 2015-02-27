@@ -16,7 +16,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('OrganizationsCtrl', function ($scope, Account, OrgAddon, Profile, WorkspaceInfo, Workspace, $http, $q, $timeout) {
+    .controller('OrganizationsCtrl', function ($scope, Account, OrgAddon, WorkspaceInfo, Workspace, $http, $q, $timeout) {
         $scope.$on('orgAddonDataUpdated', function () {
             $scope.accounts = OrgAddon.accounts;
             $scope.isOrgAddOn = OrgAddon.isOrgAddOn;
@@ -59,7 +59,7 @@ angular.module('odeskApp')
             } else {
                 window.location = "/#/dashboard";
             }
-        };
+        }
 
         $scope.updateFreeEmails = function () {
             var freeEmails = [];
@@ -88,7 +88,7 @@ angular.module('odeskApp')
                 },
                 data: freeEmails
             });
-        };
+        }
 
         $scope.loadWorkspaceInfo = function () {
             $scope.workspaces = [];
@@ -168,25 +168,30 @@ angular.module('odeskApp')
                         //  Get member's email and name
                         var email;
                         var name;
-                        Profile.getById(member['userId']).then(function (data) {
-                            count ++;
-                            email = data['attributes'].email;
-                            var firstName = data['attributes'].firstName || "";
-                            var lastName = data['attributes'].lastName || "";
-                            name = (firstName && lastName) ? firstName + " " + lastName : firstName + lastName;
+                        return $q.all([
+                            $http({method: 'GET', url: '/api/profile/' + member['userId']})
+                                .success(function (data) {
+                                    count ++;
+                                    email = data['attributes'].email;
+                                    var firstName = data['attributes'].firstName || "";
+                                    var lastName = data['attributes'].lastName || "";
+                                    name = (firstName && lastName) ? firstName + " " + lastName : firstName + lastName;
+                                })
+                                .error(function (err) {
+                                    count ++;
+                                    if(count == members.length){
+                                        $scope.updateFreeEmails();
+                                    }
+                                })
+                        ]).then(function (results) {
                             var memberDetails = {
                                 id: member['userId'],
                                 role: member['roles'][0].split("/")[1],
                                 email: email,
                                 name: name
 
-                            };
-                            $scope.members.push(memberDetails);
-                            if(count == members.length){
-                                $scope.updateFreeEmails();
                             }
-                        }, function (error) {
-                            count ++;
+                            $scope.members.push(memberDetails);
                             if(count == members.length){
                                 $scope.updateFreeEmails();
                             }
@@ -196,7 +201,7 @@ angular.module('odeskApp')
                 })
                 .error(function (err) {
                 });
-        };
+        }
 
         if (OrgAddon.accounts.length > 0) {
             $scope.init();
@@ -255,7 +260,8 @@ angular.module('odeskApp')
                             }
                             else {
                                 $("#userAlreadyAdded").hide();
-                                Profile.getById(userId).then(function (data) {
+                                $http({method: 'GET', url: '/api/profile/' + userId})
+                                    .success(function (data) {
                                         email = data['attributes'].email;
 
                                         var firstName = data['attributes'].firstName || "";
@@ -266,7 +272,7 @@ angular.module('odeskApp')
                                             role: role.split("/")[1],
                                             email: email,
                                             name: name
-                                        };
+                                        }
                                         $scope.selectedWsMembers.push(memberDetails);
                                         $("#createWs").removeAttr('disabled');
                                         $scope.updateFreeEmails();
@@ -333,7 +339,7 @@ angular.module('odeskApp')
             }
             $("#wsUserAdd").attr('disabled', 'disabled');
             return false;
-        };
+        }
 
         // Create workspace related to account
         $scope.createWorkspace = function (selectedMembers) {
@@ -535,7 +541,8 @@ angular.module('odeskApp')
                             $scope.userAlreadyAdded.push(memberEmail);
                             $("#userAlreadyAdded").show();
                         } else {
-                            Profile.getById(userId).then(function (data) {
+                            $http({method: 'GET', url: '/api/profile/' + userId})
+                                .success(function (data) {
                                     email = data['attributes'].email;
                                     var firstName = data['attributes'].firstName || "";
                                     var lastName = data['attributes'].lastName || "";
@@ -545,7 +552,7 @@ angular.module('odeskApp')
                                         role: role.split("/")[1],
                                         email: email,
                                         name: name
-                                    };
+                                    }
                                     $scope.selectedMembers.push(memberDetails);
                                     $("#addMembers").removeAttr('disabled');
                                 });
@@ -637,7 +644,7 @@ angular.module('odeskApp')
                     alert("It is impossible to remove this user from the organization or update his role. The organization needs at least one account/owner.");
                     deferred.reject();
                 });
-        };
+        }
 
 
         //Check Memory allocation and count left memory.
@@ -674,7 +681,7 @@ angular.module('odeskApp')
                 $scope.allowedRAM += parseInt(workspace.allocatedRam, 0);
                 $scope.infoForRAMAllocation.push({id: workspace.id, name: workspace.name, allocatedRam: workspace.allocatedRam});
             });
-        };
+        }
 
         //Redistribute resources:
         $scope.redistributeResources = function () {
