@@ -40,11 +40,16 @@ var jobTitleValue = "";
 
 var checkValue = "";
 
+var skillNo = 0;
 var dataPreferences;
+var allSkillIds = [];
 
 'use strict';
 angular.module('odeskApp')
-    .controller('AccountConfigCtrl', function ($scope, $rootScope, $http, Profile, Countries, Password, $cookieStore, Skills, addUsage, Account) {
+    .controller('AccountConfigCtrl', function ($scope, $rootScope, $http, Profile, Countries, Password, $cookieStore, addSkill, removeSkills, addUsage, Users, Account) {
+        /*Profile.query(function (resp) {
+            $scope.attributes = resp.attributes;
+        });*/
 
     $scope.userSkills = [];
 	$scope.countries = Countries.all();
@@ -52,7 +57,7 @@ angular.module('odeskApp')
 		
 
     $http({method: 'GET', url: '/api/account'}).success(function (account, status) {
-      $http({method: 'GET', url: '/api/account/'+account[0].accountReference.id+'/subscriptions'}).success(function (subscription) {
+      $http({method: 'GET', url: '/api/account/'+account[0].accountReference.id+'/subscriptions'}).success(function (subscription, status) {
         if( subscription[0].properties.Package=='Team' || subscription[0].properties.Package=='Enterprise' ) {
               $scope.accountType = 'PREMIUM';
             } else {
@@ -129,8 +134,8 @@ angular.module('odeskApp')
 			var salesContactArray = [];
 			$scope.salesContactOptions = salesContactArray;
         });
-
-        Skills.query().then(function (prefs) {
+        
+		$http({method: 'GET', url: '/api/profile/prefs'}).success(function (prefs, status) {
 			$.each(prefs, function (key, skill) {
 				if(/skill_/i.test(key))
 				{
@@ -239,51 +244,49 @@ angular.module('odeskApp')
                                     "employer":$scope.companyName,
                                     "jobtitle":$scope.jobTitle,
                                     "sales_can_contact":$scope.check
-                                    };
+                                    }
 
-                    Profile.update(appValue)
-                        .then(function (profile) {
-                            $('#btn-preloader1').removeClass('preloader');
-                            $('#btn1').removeClass('btn-disabled');
-                            $('#upadateProfileAlert .alert-success').show();
-                            $('#upadateProfileAlert .alert-danger').hide();
-                            $('#upadateProfileAlert .alert').mouseout(function () { $(this).fadeOut('slow'); });
-                            var fullUserName;
-                            if (profile.attributes.firstName && profile.attributes.lastName) {
-                                fullUserName = profile.attributes.firstName + ' ' + profile.attributes.lastName;
-                            } else {
-                                fullUserName = profile.attributes.email;
-                            }
-                            $rootScope.$broadcast('update_fullUserName', fullUserName);// update User name at top
-
-                        }, function (error) {
-                            $('#btn-preloader1').removeClass('preloader');
-                            $('#btn1').removeClass('btn-disabled');
-                            $('#upadateProfileAlert .alert-danger').show();
-                            $('#upadateProfileAlert .alert-success').hide();
-                            $('#upadateProfileAlert .alert').mouseout(function () { $(this).fadeOut('slow'); });
-                        });
-                } else {
-                    $('#phone').css('border', '1px solid #a94442');
-                    return false;
-                }
+				Profile.update(appValue)
+                        .then(function (profile, status) {
+                              var fullUserName;
+                              if (profile.attributes.firstName && profile.attributes.lastName) {
+                                  fullUserName = profile.attributes.firstName + ' ' + profile.attributes.lastName;
+                              } else {
+                                  fullUserName = profile.attributes.email;
+                              }
+                              $rootScope.$broadcast('update_fullUserName', fullUserName);// update User name at top
+                          });
+				}
+				else {
+					$('#phone').css('border', '1px solid #a94442');
+					return false;
+				}
 				
 			}
         };
 
         $scope.updatePassword = function () {
             if ($scope.password === $scope.password_verify) {
-            	$('#btn-preloader2').addClass('preloader');
+            			$('#btn-preloader2').addClass('preloader');
 				$('#btn2').addClass('btn-disabled');
 				$('#doesNotMatch').hide();
 				$('#password1').css('border', '1px solid #e5e5e5');
 				$('#password2').css('border', '1px solid #e5e5e5');
                 Password.update($scope.password);
-                Skills.query().then(function (data) {
-                    if (data.resetPassword && data.resetPassword == "true") {
-                        Skills.update({'resetPassword': 'false'}).then(function () {
-                            $cookieStore.remove('resetPassword');
-                        });
+                Profile.query().then(function (data) {
+                    if (data.attributes.resetPassword && data.attributes.resetPassword == "true") {
+                        $http.post('/api/profile', {
+                                'resetPassword': 'false'
+                            },
+                            {
+                                headers: {
+                                    'Content-Type': 'application/json; charset=UTF-8',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            })
+                            .success(function (data) {
+                                $cookieStore.remove('resetPassword');
+                            });
                     }
                 });
             } else {
@@ -293,44 +296,24 @@ angular.module('odeskApp')
 				$('#password2').css('border', '1px solid #a94442');
             }
         };
-
-        $scope.addSkill = function () {
-            if($scope.addSkillModel!=''){
-                $('#btn-preloader3').addClass('preloader');
-                $('#btn3').addClass('btn-disabled');
-                var next_key = "skill_" + ($scope.userSkills.length + 1);
-                var skillset = {};
-                skillset[next_key] = $scope.addSkillModel;
-                Skills.update( skillset ).then(function () {
-                    $('#btn-preloader3').removeClass('preloader');
-                    $('#btn3').removeClass('btn-disabled');
-                    $('#addSkillsAlert .alert-success').show();
-                    $('#addSkillsAlert .alert-danger').hide();
-                    setTimeout(function () { $('#addSkillsAlert .alert').fadeOut('slow'); }, 3000);
-                }, function (error) {
-                    $('#btn-preloader3').removeClass('preloader');
-                    $('#addSkillsAlert .alert-danger').show();
-                    $('#addSkillsAlert .alert-success').hide();
-                    setTimeout(function () { $('#addSkillsAlert .alert').fadeOut('slow'); }, 3000);
-                });
-
-                $scope.userSkills.push({'key': next_key, 'name': $scope.addSkillModel});
-                $scope.addSkillModel = "";
-                $('#skill-name').focus();
-            }
-        };
+		
+		$scope.addSkill = function () {
+      if($scope.addSkillModel!=''){
+        $('#btn-preloader3').addClass('preloader');
+        $('#btn3').addClass('btn-disabled');
+        var next_key = "skill_" + ($scope.userSkills.length + 1);
+        var skillset = {};
+        skillset[next_key] = $scope.addSkillModel;
+        addSkill.query( skillset );
+        $scope.userSkills.push({'key': next_key, 'name': $scope.addSkillModel});
+        $scope.addSkillModel = "";
+        $('#skill-name').focus();
+	    }
+		};
 		
 		$scope.removeSkill = function (skill) {
-        $scope.userSkills = _.without($scope.userSkills, _.findWhere($scope.userSkills,  skill));
-            Skills.remove(skill.key).then(function () {
-                $('#removeSkillsAlert .alert-success').show();
-                $('#removeSkillsAlert .alert-danger').hide();
-                setTimeout(function () { $('#removeSkillsAlert .alert').fadeOut('slow'); }, 3000);
-            }, function (err) {
-                $('#removeSkillsAlert .alert-danger').show();
-                $('#removeSkillsAlert .alert-success').hide();
-                setTimeout(function () { $('#removeSkillsAlert .alert').fadeOut('slow'); }, 3000);
-            });
+      $scope.userSkills = _.without($scope.userSkills, _.findWhere($scope.userSkills,  skill));
+			removeSkills.update(skill.key);
 		};
 
             
@@ -353,7 +336,7 @@ angular.module('odeskApp')
                     var isWorkspaceOwner = false;
                     for (var iRoles = workspace.roles.length - 1; iRoles >= 0; iRoles--) {
                         if (workspace.roles[iRoles] == "workspace/admin") isWorkspaceOwner=true;
-                    }
+                    };
 
                     console.log(workspace);
                     if (isWorkspaceOwner && (workspace.workspaceReference.temporary == false)) {$scope.workspaces.push(workspace.workspaceReference)}; 
