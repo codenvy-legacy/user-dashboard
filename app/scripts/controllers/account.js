@@ -44,7 +44,7 @@ var dataPreferences;
 
 'use strict';
 angular.module('odeskApp')
-    .controller('AccountConfigCtrl', function ($scope, $rootScope, $http, Profile, Countries, Password, $cookieStore, Skills, addUsage, Account) {
+    .controller('AccountConfigCtrl', function ($scope, $rootScope, $http, ProfileService, Countries, Password, $cookieStore, addUsage, Account) {
 
     $scope.userSkills = [];
 	$scope.countries = Countries.all();
@@ -61,7 +61,7 @@ angular.module('odeskApp')
       });
    });
 
-		Profile.query().then(function (resp) {
+        ProfileService.getProfile().then(function (resp) {
 		
 			dataPreferences = resp.preferences;
                   $.each(resp.attributes, function (as,val) {
@@ -130,7 +130,7 @@ angular.module('odeskApp')
 			$scope.salesContactOptions = salesContactArray;
         });
 
-        Skills.query().then(function (prefs) {
+        ProfileService.getPreferences().then(function (prefs) {
 			$.each(prefs, function (key, skill) {
 				if(/skill_/i.test(key))
 				{
@@ -241,7 +241,7 @@ angular.module('odeskApp')
                                     "sales_can_contact":$scope.check
                                     };
 
-                    Profile.update(appValue)
+                    ProfileService.updateProfile(appValue)
                         .then(function (profile) {
                             $('#btn-preloader1').removeClass('preloader');
                             $('#btn1').removeClass('btn-disabled');
@@ -279,9 +279,9 @@ angular.module('odeskApp')
 				$('#password1').css('border', '1px solid #e5e5e5');
 				$('#password2').css('border', '1px solid #e5e5e5');
                 Password.update($scope.password);
-                Skills.query().then(function (data) {
+                ProfileService.getPreferences().then(function (data) {
                     if (data.resetPassword && data.resetPassword == "true") {
-                        Skills.update({'resetPassword': 'false'}).then(function () {
+                        ProfileService.updatePreferences({'resetPassword': 'false'}).then(function () {
                             $cookieStore.remove('resetPassword');
                         });
                     }
@@ -301,7 +301,7 @@ angular.module('odeskApp')
                 var next_key = "skill_" + ($scope.userSkills.length + 1);
                 var skillset = {};
                 skillset[next_key] = $scope.addSkillModel;
-                Skills.update( skillset ).then(function () {
+                ProfileService.updatePreferences( skillset ).then(function () {
                     $('#btn-preloader3').removeClass('preloader');
                     $('#btn3').removeClass('btn-disabled');
                     $('#addSkillsAlert .alert-success').show();
@@ -322,7 +322,7 @@ angular.module('odeskApp')
 		
 		$scope.removeSkill = function (skill) {
         $scope.userSkills = _.without($scope.userSkills, _.findWhere($scope.userSkills,  skill));
-            Skills.remove(skill.key).then(function () {
+            ProfileService.removeSkill(skill.key).then(function () {
                 $('#removeSkillsAlert .alert-success').show();
                 $('#removeSkillsAlert .alert-danger').hide();
                 setTimeout(function () { $('#removeSkillsAlert .alert').fadeOut('slow'); }, 3000);
