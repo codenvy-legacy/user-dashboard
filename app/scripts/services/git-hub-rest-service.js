@@ -104,7 +104,7 @@ angular.module('odeskApp')
        * @returns a response with unpaginated results in possible
        */
       function unpaginate(response) {
-        if (gitHubApiUtils.isGitHubApiUrl(response.config.url)) {
+        if (!gitHubApiUtils.isGitHubApiUrl(response.config.url)) {
           return response;
         }
         var nextUrl = gitHubApiUtils.parseLinkHeader(response.headers('Link'))['next'];

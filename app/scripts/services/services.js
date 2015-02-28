@@ -476,6 +476,22 @@ angular.module('odeskApp')
 angular.module('odeskApp')
 	.factory('Users', function ($http, $q) {
 	    return {
+	        query: function () {
+	            var deferred = $q.defer();
+	            var con = {
+	                headers: {
+	                    'Accept': 'application/json',
+	                    'X-Requested-With': 'XMLHttpRequest'
+	                }
+	            };
+	            $http.get('/api/account', con)
+                    .success(function (data) {
+                        deferred.resolve(data); //resolve data
+                    })
+                    .error(function (err) { deferred.reject(err); });
+	            return deferred.promise;
+	        },
+
 	        getUserByEmail: function (email) {
 	            var deferred = $q.defer();
 	            var con = {

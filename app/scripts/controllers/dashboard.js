@@ -1,10 +1,10 @@
 /*jslint
- browser: true,
- devel:true ,
- node:true,
- nomen: true,
- es5:true
- */
+    browser: true,
+    devel:true ,
+    node:true,
+    nomen: true,
+    es5:true
+*/
 
 /**
  * @auth Gaurav Meena
@@ -18,182 +18,183 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $rootScope, $cookieStore, $http, $window, $interval, $timeout, $location,
+    .controller('DashboardCtrl', function ($scope, $rootScope, $cookieStore, $http, $q, $window, $interval, $timeout, $location,
                                            DocBoxService, Workspace, Project, Users, ProfileService, Password, ProjectFactory, RunnerService, newProject) {
-        var refreshLocation = "/dashboard";
-        var old_description = '';
-        var old_projectName = '';
-        var refreshInterval = null;
+      var refreshLocation = "/dashboard";
+      var old_description = '';
+      var old_projectName = '';
+      var refreshInterval = null;
 
-        $scope.box = 1;
-        $scope.search = 0;
-        $scope.projects = [];
-        $scope.ownerWorkspace = '';
-        $scope.members = [];
-        $scope.filter = {};
-        $scope.activeProject = null;
-        $scope.activeMembers = [];
-        $scope.workspaces = [];
-        $scope.currentWorkspace = null;
-        $scope.currentUserId = '';
-        $scope.activeProjectVisibility = '';
-        $scope.updateProjectError = '';
-        $scope.deleteProjectError = '';
+      $scope.box = 1;
+      $scope.search = 0;
+      $scope.projects = [];
+      $scope.ownerWorkspace = '';
+      $scope.members = [];
+      $scope.filter = {};
+      $scope.activeProject = null;
+      $scope.activeMembers = [];
+      $scope.workspaces = [];
+      $scope.currentWorkspace = null;
+      $scope.currentUserId = '';
+      $scope.activeProjectVisibility = '';
+      $scope.updateProjectError = '';
+      $scope.deleteProjectError = '';
 
-        //private methods
-        // for one user set the read write properties
-        var setPermissions = function (projectPermissions, member) {
-            angular.forEach(projectPermissions, function (perm) {
-                if (perm.principal.type === "USER" && perm.principal.name === member.userId) {
-                    setPermisionRules(perm, member);
-                } else if (perm.principal.type === "GROUP" && member.roles.indexOf(perm.principal.name) !== -1) {
-                    setPermisionRules(perm, member);
-                }
-            });
-        };
+      //private methods
+      // for one user set the read write properties
+      var setPermissions = function (projectPermissions, member) {
+        angular.forEach(projectPermissions, function (perm) {
+          if (perm.principal.type === "USER" && perm.principal.name === member.userId) {
+            setPermisionRules(perm, member);
+          } else if (perm.principal.type === "GROUP" && member.roles.indexOf(perm.principal.name) !== -1) {
+            setPermisionRules(perm, member);
+          }
+        });
+      };
 
-        var isRefreshLocation = function () {
-            return $location.url() == refreshLocation;
-        };
+      var isRefreshLocation = function () {
+          return $location.url() == refreshLocation;
+      };
 
-        var setPermisionRules = function (permission, member) {
-            member.read = false;
-            member.write = false;
-            member.permissions = permission.permissions;
+      var setPermisionRules = function (permission, member) {
+        member.read = false;
+        member.write = false;
+        member.permissions = permission.permissions;
 
-            angular.forEach(permission.permissions, function (currentPerm) {
-                if (currentPerm == 'read') {
-                    member.read = true;
-                } else if (currentPerm == 'write') {
-                    member.write = true;
-                }
-            });
-        };
+        angular.forEach(permission.permissions, function (currentPerm) {
+          if (currentPerm == 'read') {
+            member.read = true;
+          } else if (currentPerm == 'write') {
+            member.write = true;
+          }
+        });
+      };
 
-        // Returns an array of selected permisions for given member
-        var getPermisions = function (member) {
-            if (member.read == false) { // if user doesn't have read he can't write
-                member.write = false;
-            }
+      // Returns an array of selected permisions for given member
+      var getPermisions = function (member) {
+        if (member.read == false) { // if user doesn't have read he can't write
+          member.write = false;
+        }
 
-            var listPerm = [];
+        var listPerm = [];
 
-            if (member.read) {
-                listPerm.push("read");
-            }
+        if (member.read) {
+          listPerm.push("read");
+        }
 
-            if (member.write) {
-                listPerm.push("write");
-            }
-            return listPerm;
-        };
+        if (member.write) {
+          listPerm.push("write");
+        }
+        return listPerm;
+      };
 
-        var getAdmin = function (roles) {
+      var getAdmin = function (roles) {
             return roles.indexOf('workspace/admin') !== -1;
+      };
+
+      var createMember = function (attributes, userId, read, write, roles) {
+        var fullName;
+
+        if (attributes.firstName && attributes.lastName) {
+          fullName = attributes.firstName + " " + attributes.lastName;
+        } else {
+          fullName = attributes.email.split("@")[0];
+        }
+
+        var member = {
+          fullName: fullName,
+          email: attributes.email,
+          userId: userId,
+          read: read,
+          write: write
         };
 
-        var createMember = function (attributes, userId, read, write, roles) {
-            var fullName;
+        if (roles) {
+          member.roles = roles;
+        }
 
-            if (attributes.firstName && attributes.lastName) {
-                fullName = attributes.firstName + " " + attributes.lastName;
-            } else {
-                fullName = attributes.email.split("@")[0];
-            }
+        return member;
+      };
 
-            var member = {
-                fullName: fullName,
-                email: attributes.email,
-                userId: userId,
-                read: read,
-                write: write
-            };
+       $scope.tempProject = {'name':'','description':''}; 
+       
+      //public methods
+      $scope.selectProject = function(project,modalNameType) {
 
-            if (roles) {
-                member.roles = roles;
-            }
+        $scope.tempProject.name = project.name;
+        $scope.tempProject.description = project.description;
+        $scope.emailList = '';
+        $scope.activeMembers = [];
 
-            return member;
-        };
+        $scope.showInviteError = false;
+        $scope.activeProjectVisibility = project.visibility;
+        $scope.currentWorkspace = _.find($scope.workspaces, function (workspace) {
+          return workspace.workspaceReference.id == project.workspaceId;
+        });
 
-        $scope.tempProject = {'name':'','description':''};
+        $scope.isAdmin = getAdmin($scope.currentWorkspace.roles);
+        $scope.activeMembers = angular.copy($scope.currentWorkspace.members);
 
-        //public methods
-        $scope.selectProject = function(project,modalNameType) {
+        if($scope.isAdmin) {
 
-            $scope.tempProject.name = project.name;
-            $scope.tempProject.description = project.description;
-            $scope.emailList = '';
-            $scope.activeMembers = [];
+          if (modalNameType=='privacysetting'){
+            $('#privacyModal').modal('toggle');
+          }
+          else if(modalNameType=='developersetting'){
+            $('#developersModal').modal('toggle');
+          }
+          else if(modalNameType=='projectsetting'){
+            $('#projectDetailModal').modal('toggle');
+          }
 
-            $scope.showInviteError = false;
-            $scope.activeProjectVisibility = project.visibility;
-            $scope.currentWorkspace = _.find($scope.workspaces, function (workspace) {
-                return workspace.workspaceReference.id == project.workspaceId;
+          Project.getPermissions(project.workspaceId, project.name).then(function (data) { // get the permissions for the current selected project
+            var projectPermissions = data;
+            var usersPermissions = [];
+            var groupsPermissions = [];
+
+            angular.forEach(projectPermissions, function (permission) {
+              if (permission.principal.type === 'USER') {
+                usersPermissions.push(permission);
+              } 
+              else if (permission.principal.type === 'GROUP') {
+                groupsPermissions.push(permission);
+              }
             });
 
-            $scope.isAdmin = getAdmin($scope.currentWorkspace.roles);
-            $scope.activeMembers = angular.copy($scope.currentWorkspace.members);
+            angular.forEach($scope.activeMembers, function (member) {
+              setPermissions(groupsPermissions, member);
+              setPermissions(usersPermissions, member);
+            });
+          });
+          } else {
 
-            if($scope.isAdmin) {
-
-                if (modalNameType=='privacysetting'){
-                    $('#privacyModal').modal('toggle');
-                }
-                else if(modalNameType=='developersetting'){
-                    $('#developersModal').modal('toggle');
-                }
-                else if(modalNameType=='projectsetting'){
-                    $('#projectDetailModal').modal('toggle');
-                }
-
-                Project.getPermissions(project.workspaceId, project.name).then(function (data) { // get the permissions for the current selected project
-                    var projectPermissions = data;
-                    var usersPermissions = [];
-                    var groupsPermissions = [];
-
-                    angular.forEach(projectPermissions, function (permission) {
-                        if (permission.principal.type === 'USER') {
-                            usersPermissions.push(permission);
-                        }
-                        else if (permission.principal.type === 'GROUP') {
-                            groupsPermissions.push(permission);
-                        }
-                    });
-
-                    angular.forEach($scope.activeMembers, function (member) {
-                        setPermissions(groupsPermissions, member);
-                        setPermissions(usersPermissions, member);
-                    });
-                });
-            } else {
-
-                if (modalNameType=='privacysetting') {
-                    $('#privacyMessageModal').modal('toggle');
-                }
-                else if(modalNameType=='developersetting'){
-                    $('#developersModal').modal('toggle');
-                }
-                else if(modalNameType=='projectsetting'){
-                    $('#projectDetailModal').modal('toggle');
-                }
-
-                ProfileService.getProfile().then(function (profile) {
-                    $scope.currentUser = {
-                        fullName: profile.attributes.firstName + " " + profile.attributes.lastName,
-                        email: profile.attributes.email,
-                        userId: profile.id,
-                        read: true,
-                        write: true
-                    };
-                });
+            if (modalNameType=='privacysetting') {
+              $('#privacyMessageModal').modal('toggle');
+            }
+            else if(modalNameType=='developersetting'){
+              $('#developersModal').modal('toggle');
+            }
+            else if(modalNameType=='projectsetting'){
+            $('#projectDetailModal').modal('toggle');
             }
 
-            $scope.activeProject = project; // used in setRead setWrite
-            $scope.selected = project;
-            old_description = project.description;
-            old_projectName = project.name;
-        };
+
+            ProfileService.getProfile().then(function (profile) {
+            $scope.currentUser = {
+              fullName: profile.attributes.firstName + " " + profile.attributes.lastName,
+              email: profile.attributes.email,
+              userId: profile.id,
+              read: true,
+              write: true
+            };
+          });
+        }
+
+        $scope.activeProject = project; // used in setRead setWrite
+        $scope.selected = project;
+        old_description = project.description;
+        old_projectName = project.name;
+      };
 
         var renameSelectedProject = function (newName) {
             RunnerService.getProcesses($scope.selected.workspaceId, $scope.selected.path, true)
@@ -316,14 +317,14 @@ angular.module('odeskApp')
             }
         };
 
-        $scope.switchVisibility = function () {
+      $scope.switchVisibility = function () {
 
-            $http({ method: 'POST', url: '/api/project/' + $scope.selected.workspaceId + '/switch_visibility/' + $scope.selected.name + '?visibility=' +  $scope.activeProjectVisibility }).
-                success(function (data, status) {
-                    $scope.selected.visibility = $scope.activeProjectVisibility;
-                    // console.log(data);
-                });
-        };
+        $http({ method: 'POST', url: '/api/project/' + $scope.selected.workspaceId + '/switch_visibility/' + $scope.selected.name + '?visibility=' +  $scope.activeProjectVisibility }).
+            success(function (data, status) {
+              $scope.selected.visibility = $scope.activeProjectVisibility;
+              // console.log(data);
+            });
+      };
 
         $scope.setCurrentWorkspace = function (workspace) {
             if($scope.currentWorkspace && workspace && $scope.currentWorkspace.workspaceReference.name == workspace.workspaceReference.name) {
@@ -338,93 +339,93 @@ angular.module('odeskApp')
             Workspace.currentWorkspace = workspace;
         };
 
-        $scope.deleteProjectConfirm = function() {
+	    $scope.deleteProjectConfirm = function() {
             $('#warning-project-alert .alert-success').hide();
             $('#warning-project-alert .alert-danger').hide();
             $('#warning-project').modal('show');
-            if($scope.isAdmin) {
-                $('#warning-project-message').html("Removing a project can't be undone, are you sure you want to continue?");
-            } else {
-                $('#warning-project-message').html("Deleting the project requires Administrator permissions to the project's workspace. Contact Workspace Administrator or Owner.")
-            }
-        };
+			  if($scope.isAdmin) {
+                  $('#warning-project-message').html("Removing a project can't be undone, are you sure you want to continue?");
+              } else {
+                  $('#warning-project-message').html("Deleting the project requires Administrator permissions to the project's workspace. Contact Workspace Administrator or Owner.")
+              }
+       };
 
-        $scope.deleteProject = function () {
-            Project.delete($scope.selected).then(function () {
-                $('#warning-project-alert .alert-success').show();
+      $scope.deleteProject = function () {
+          Project.delete($scope.selected).then(function () {
+              $('#warning-project-alert .alert-success').show();
               ProjectFactory.fetchProjects($scope.workspaces);
               $scope.isProjectDataFetched = true;
-                $timeout(function () {
-                    $('#warning-project').modal('hide');
-                }, 1500);
-            }, function (error) {
-                $('#warning-project-alert .alert-success').hide();
-                $scope.deleteProjectError = error.message ? error.message : "Delete failed.";
-                $('#warning-project-alert .alert-danger').show();
-                $('#warning-project-alert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
-            });
-        };
+              $timeout(function () {
+                  $('#warning-project').modal('hide');
+              }, 1500);
+          }, function (error) {
+              $('#warning-project-alert .alert-success').hide();
+              $scope.deleteProjectError = error.message ? error.message : "Delete failed.";
+              $('#warning-project-alert .alert-danger').show();
+              $('#warning-project-alert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
+          });
+      };
 
-        // used to save permissions to server
-        $scope.setReadWrite = function (member) {
-            // update server
-            var permissions = [{ "permissions": getPermisions(member), "principal": { "name": member.userId, "type": "USER" } }];
+      // used to save permissions to server
+      $scope.setReadWrite = function (member) {
+        // update server
+        var permissions = [{ "permissions": getPermisions(member), "principal": { "name": member.userId, "type": "USER" } }];
 
-            Project.setPermissions($scope.activeProject.workspaceId, $scope.activeProject.name, permissions).then(function (data) {
-                console.log("Successfully set permissions!");
-            });
-        };
+        Project.setPermissions($scope.activeProject.workspaceId, $scope.activeProject.name, permissions).then(function (data) {
+          console.log("Successfully set permissions!");
+        });
+      };
 
 
-        $scope.isProjectDataFetched = false;
-        $scope.isNeedToShowHelp = function() {
-            if($scope.isProjectDataFetched)
-                return $scope.projects.length==0;
-            else
-                return false;
-        };
+      $scope.isProjectDataFetched = false;
+      $scope.isNeedToShowHelp = function() {
+      if($scope.isProjectDataFetched)
+        return $scope.projects.length==0;
+      else
+        return false;
+      };
 
-        $scope.selectMemberToBeDeleted = null;
-        $scope.setMemberToBeDeleted = function(member) {
+	    $scope.selectMemberToBeDeleted = null;
+	    $scope.setMemberToBeDeleted = function(member) {		    
             $scope.selectMemberToBeDeleted = member;
-        };
+	    };
 
 
-        $scope.removeMember = function (member) {
-            Workspace.removeMember($scope.activeProject.workspaceId, member.userId).then(function (data) {
-                var removedMemberIndex = -1;
-                angular.forEach($scope.activeMembers, function (singleMember, index) {
-                    if (singleMember.userId === member.userId) {
-                        removedMemberIndex = index;
-                    }
-                });
-                if (removedMemberIndex > -1) {
-                    $scope.activeMembers.splice(removedMemberIndex, 1);
-                }
+      $scope.removeMember = function (member) {
+        Workspace.removeMember($scope.activeProject.workspaceId, member.userId).then(function (data) {
+          var removedMemberIndex = -1;
+          angular.forEach($scope.activeMembers, function (singleMember, index) {
+            if (singleMember.userId === member.userId) {
+              removedMemberIndex = index;
+            }
+          });
+          if (removedMemberIndex > -1) {
+            $scope.activeMembers.splice(removedMemberIndex, 1);
+          }
 
-                angular.forEach($scope.currentWorkspace.members, function (singleMember, index) {
-                    if (singleMember.userId === member.userId) {
-                        removedMemberIndex = index;
-                    }
-                });
-                if (removedMemberIndex > -1) {
-                    $scope.currentWorkspace.members.splice(removedMemberIndex, 1);
-                }
-            }, function (error) {
+          angular.forEach($scope.currentWorkspace.members, function (singleMember, index) {
+            if (singleMember.userId === member.userId) {
+              removedMemberIndex = index;
+            }
+          });
+          if (removedMemberIndex > -1) {
+            $scope.currentWorkspace.members.splice(removedMemberIndex, 1);
+          }
+        }, function (error) {
+          
+        });
+      
+      };
 
-            });
+      $scope.showLoadingInvite = false;
+      $scope.showInviteError = false;
 
-        };
-
-        $scope.showLoadingInvite = false;
-        $scope.showInviteError = false;
-
-        $scope.invite = function () {
-            $scope.showLoadingInvite = true;
-            $scope.errors = "";
-            var tempEmailList = $scope.emailList;
-            angular.forEach(tempEmailList.split(","), function (email) {
-                Users.getUserByEmail(email).then(function (user) { // on success
+      $scope.invite = function () {
+        $scope.showLoadingInvite = true;
+        $scope.errors = "";
+        var tempEmailList = $scope.emailList;
+        angular.forEach(tempEmailList.split(","), function (email) {
+          Users.getUserByEmail(email).then(function (user) { // on success
 
             // need to send to analytics an event
             var userInviteData = {
@@ -432,72 +433,69 @@ angular.module('odeskApp')
             };
             var res = $http.post('api/analytics/log/user-invite', userInviteData);
             
-                    Workspace.addMemberToWorkspace($scope.activeProject.workspaceId, user.id).then(function () {
-                        // refresh member list
-                        ProfileService.getProfileByUserId(user.id).then(function (data) {
-                            var member = createMember(data.attributes, user.id, true, true);
+            Workspace.addMemberToWorkspace($scope.activeProject.workspaceId, user.id).then(function () {
+              // refresh member list
+                ProfileService.getProfileByUserId(user.id).then(function (data) {
+                var member = createMember(data.attributes, user.id, true, true);
 
-                            $scope.currentWorkspace.members.push(member);
-                            $scope.activeMembers.push(member);
+                $scope.currentWorkspace.members.push(member);
+                $scope.activeMembers.push(member);
 
-                            $scope.emailList = '';
-                            $scope.showLoadingInvite = false;
-                            $scope.showInviteError = false;
-                        });
+                $scope.emailList = '';
+                $scope.showLoadingInvite = false;
+                $scope.showInviteError = false;
+              });
 
-                    });
-                }, function (error) {
-                    $scope.showInviteError = true;
-                    if($scope.errors.length!==0)
-                        $scope.errors += ", " + email;
-                    else
-                        $scope.errors += email;
-                });
             });
-        };
-
-        $scope.getAllAdminListToDisplay = function() {
-            //var selectedWorkspace = _.filter($scope.workspaces, function (workspace) { return !workspace.workspaceReference.id==workspaceId; });
-            var listAdmins = [];
-
-            if($scope.currentWorkspace != null){
-                angular.forEach($scope.currentWorkspace.members, function (tempmember) {
-                    if (tempmember.roles) {
-                        if (tempmember.roles.indexOf('workspace/admin') != -1)
-                            listAdmins.push(tempmember.fullName);
-                    }
-                });
-                if(listAdmins.length == 1)
-                {
-                    return 'is ' + listAdmins[0];
-                }
-
-                if(listAdmins.length > 1)
-                {
-                    var strAdmins = '';
-                    for(var i=0;i<listAdmins.length;i++)
-                    {
-                        if(i==0)
-                            strAdmins += listAdmins[i];
-                        else if(listAdmins.length > 1 && (listAdmins.length-1)==i)
-                            strAdmins += ' and ' + listAdmins[i];
-                        else
-                            strAdmins +=  ', ' + listAdmins[i];
-                    }
-                    return 'are ' + strAdmins;
-                }
-            }
-
-            return '';
-        };
-        // for displaying message
-        $scope.c2User='TRUE';
-
-        ProfileService.getProfile().then(function (data) {
-            $scope.userDetails=data.attributes;
-            $scope.oldUser = data.attributes['codenvy:created'];
-            if(data.attributes['codenvy:created']!=undefined){$scope.c2User='TRUE';}else{$scope.c2User='FALSE';}
+                }, function (error) {
+            $scope.showInviteError = true;
+			if($scope.errors.length!==0)
+				$scope.errors += ", " + email;
+			else
+				$scope.errors += email;
+          });
         });
+      };
+
+	  $scope.getAllAdminListToDisplay = function() {
+      //var selectedWorkspace = _.filter($scope.workspaces, function (workspace) { return !workspace.workspaceReference.id==workspaceId; });
+      var listAdmins = [];
+
+      if($scope.currentWorkspace != null){
+        angular.forEach($scope.currentWorkspace.members, function (tempmember) {
+          if (tempmember.roles) {
+            if (tempmember.roles.indexOf('workspace/admin') != -1)
+              listAdmins.push(tempmember.fullName);
+          }
+        });
+        if(listAdmins.length == 1)
+        {
+          return 'is ' + listAdmins[0];
+        }
+
+        if(listAdmins.length > 1)
+        {
+          var strAdmins = '';
+          for(var i=0;i<listAdmins.length;i++)
+          {
+            if(i==0)
+              strAdmins += listAdmins[i];
+            else if(listAdmins.length > 1 && (listAdmins.length-1)==i)
+              strAdmins += ' and ' + listAdmins[i];
+            else
+              strAdmins +=  ', ' + listAdmins[i];
+          }
+          return 'are ' + strAdmins;
+        }
+      }
+
+      return '';
+	  };
+	  // for displaying message
+      $scope.c2User='TRUE';
+      ProfileService.getProfile().then(function (data) {
+          $scope.userDetails=data.attributes;
+      });
 
       // to show scheduled maintenance message from statuspage.io (Path-to service)
         $scope.scheduled = 'FALSE';
@@ -512,52 +510,52 @@ angular.module('odeskApp')
         }).error(function (err) {
         });
 */
-        $scope.definePassword = function () {
-            var password = $('#newPassword').val();
-            if (password === $('#newPasswordVerify').val()) {
-                $('#defineUserPassword #doesNotMatch').hide();
-                $('#newPassword').css('border', '1px solid #e5e5e5');
-                $('#newPasswordVerify').css('border', '1px solid #e5e5e5');
-                Password.update(password).then(function (data) {
-                    $timeout(function () {
-                        $('#defineUserPassword').modal('hide');
-                    }, 1500);
-                });
-                ProfileService.getProfile().then(function (data) {
-                  if (data.attributes.resetPassword && data.attributes.resetPassword == "true") {
-                        ProfileService.updateProfile({"resetPassword": 'false'});
-                        $cookieStore.remove('resetPassword');
-                    }
-                });
-            } else {
-                $('#defineUserPassword #doesNotMatch').show();
-                $('#defineUserPassword #doesNotMatch').mouseout(function () {
-                    $(this).fadeOut('slow');
-                });
-                $('#newPassword').css('border', '1px solid #a94442');
-                $('#newPasswordVerify').css('border', '1px solid #a94442');
-            }
-        };
+      $scope.definePassword = function () {
+          var password = $('#newPassword').val();
+          if (password === $('#newPasswordVerify').val()) {
+              $('#defineUserPassword #doesNotMatch').hide();
+              $('#newPassword').css('border', '1px solid #e5e5e5');
+              $('#newPasswordVerify').css('border', '1px solid #e5e5e5');
+              Password.update(password).then(function (data) {
+                  $timeout(function () {
+                      $('#defineUserPassword').modal('hide');
+                  }, 1500);
+              });
+              ProfileService.getPreferences().then(function (data) {
+                  if (data.resetPassword && data.resetPassword == "true") {
+                      ProfileService.updatePreferences({'resetPassword': 'false'});
+                      $cookieStore.remove('resetPassword');
+                  }
+              });
+          } else {
+              $('#defineUserPassword #doesNotMatch').show();
+              $('#defineUserPassword #doesNotMatch').mouseout(function () {
+                  $(this).fadeOut('slow');
+              });
+              $('#newPassword').css('border', '1px solid #a94442');
+              $('#newPasswordVerify').css('border', '1px solid #a94442');
+          }
+      };
 
 
-        $scope.createSampleProject = function(workspaceId) {
-            var projectName = "getting-started-guided-tour";
-            return Project.import(
-                {
-                    workspaceID: workspaceId,
-                    path: projectName
-                },
-                ProjectFactory.getSampleProject(),
-                function() {
-                    ProjectFactory.fetchProjects($scope.workspaces, true);
-                    ProfileService.updateProfile({"sampleProjectCreated": 'true'});
-                }
-            );
-        };
+      $scope.createSampleProject = function(workspaceId) {
+          var projectName = "getting-started-guided-tour";
+          return Project.import(
+              {
+                  workspaceID: workspaceId,
+                  path: projectName
+              },
+              ProjectFactory.getSampleProject(),
+              function() {
+                  ProjectFactory.fetchProjects($scope.workspaces, true);
+                  ProfileService.updatePreferences({"sampleProjectCreated": 'true'});
+              }
+          );
+      };
 
-        $scope.importNewProject = function (type) {
-            var promise = newProject.open($scope.currentUserId, $scope.workspaces, type);
-        };
+      $scope.importNewProject = function (type) {
+          var promise = newProject.open($scope.currentUserId, $scope.workspaces, type);
+      };
 
         var updateInterval = function (time) {
             if (refreshInterval != null) {
@@ -567,17 +565,17 @@ angular.module('odeskApp')
             }
             if (time != null && refreshInterval == null) {
                 refreshInterval = $interval(function () {
-                    ProjectFactory.fetchProjects($scope.workspaces, false);
+                        ProjectFactory.fetchProjects($scope.workspaces, false);
                 }, time);
             }
         };
 
-        //constructor
+      //constructor
         var init = function () {
-            $scope.hideDocBox = function(item) {
-                DocBoxService.hideDocBox(item);
-                $scope.docboxes = DocBoxService.getDocBoxes();
-            };
+          $scope.hideDocBox = function(item) {
+            DocBoxService.hideDocBox(item);
+            $scope.docboxes = DocBoxService.getDocBoxes();
+          };
             $scope.currentWorkspace = Workspace.currentWorkspace;
             if ($scope.currentWorkspace) {
                 $scope.filter.workspaceName = $scope.currentWorkspace.workspaceReference.name;
@@ -598,8 +596,8 @@ angular.module('odeskApp')
                 }
                 $scope.projects = ProjectFactory.projects;
 
-                ProfileService.getProfile().then(function (data) {
-                    if (data.attributes.resetPassword && data.attributes.resetPassword == 'true') {
+                ProfileService.getPreferences().then(function (data) {
+                    if (data.resetPassword && data.resetPassword == 'true') {
                         if ($cookieStore.get('resetPassword') != true) {
                             $cookieStore.put('resetPassword', true);
                             $('#defineUserPassword').modal('toggle'); // show once per session
@@ -607,12 +605,12 @@ angular.module('odeskApp')
                     }
 
                     //Check for sample project creation (if created - "sampleProjectCreated" attribute is set):
-                    if (!data.attributes.sampleProjectCreated || data.attributes.sampleProjectCreated == "false") {
+                    if (!data.sampleProjectCreated || data.sampleProjectCreated == "false") {
                         var projects = Project.query({
                             workspaceID: $scope.workspaces[0].workspaceReference.id
                         }, function (projects) {
                             var featureStartPoint = new Date(1420070400000); //01-01-2015 (timestamp in UTC 1420070400)
-                            var afterFeatureStarted = featureStartPoint < new Date(parseInt(data.attributes["codenvy:created"]));
+                            var afterFeatureStarted = featureStartPoint < new Date(parseInt(data["codenvy:created"]));
                             if (projects.length == 0 && afterFeatureStarted) {
                                 $scope.createSampleProject($scope.workspaces[0].workspaceReference.id);
                             } else {

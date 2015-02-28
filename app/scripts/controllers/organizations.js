@@ -268,22 +268,12 @@ angular.module('odeskApp')
                         //  Get member's email and name
                         var email;
                         var name;
-                        return $q.all([
-                            $http({method: 'GET', url: '/api/profile/' + member['userId']})
-                                .success(function (data) {
-                                    count ++;
-                                    email = data['attributes'].email;
-                                    var firstName = data['attributes'].firstName || "";
-                                    var lastName = data['attributes'].lastName || "";
-                                    name = (firstName && lastName) ? firstName + " " + lastName : firstName + lastName;
-                                })
-                                .error(function (err) {
-                                    count ++;
-                                    if(count == members.length){
-                                        $scope.updateFreeEmails();
-                                    }
-                                })
-                        ]).then(function (results) {
+                        ProfileService.getProfileByUserId(member['userId']).then(function (data) {
+                            count ++;
+                            email = data['attributes'].email;
+                            var firstName = data['attributes'].firstName || "";
+                            var lastName = data['attributes'].lastName || "";
+                            name = (firstName && lastName) ? firstName + " " + lastName : firstName + lastName;
                             var memberDetails = {
                                 id: member['userId'],
                                 role: member['roles'][0].split("/")[1],
@@ -292,6 +282,11 @@ angular.module('odeskApp')
 
                             };
                             $scope.members.push(memberDetails);
+                            if(count == members.length){
+                                $scope.updateFreeEmails();
+                            }
+                        }, function (error) {
+                            count ++;
                             if(count == members.length){
                                 $scope.updateFreeEmails();
                             }
@@ -358,8 +353,7 @@ angular.module('odeskApp')
                             }
                             else {
                                 $("#userAlreadyAdded").hide();
-                                $http({method: 'GET', url: '/api/profile/' + userId})
-                                    .success(function (data) {
+                                ProfileService.getProfileByUserId(userId).then(function (data) {
                                         email = data['attributes'].email;
 
                                         var firstName = data['attributes'].firstName || "";
@@ -370,7 +364,7 @@ angular.module('odeskApp')
                                             role: role.split("/")[1],
                                             email: email,
                                             name: name
-                                        }
+                                        };
                                         $scope.selectedWsMembers.push(memberDetails);
                                         $("#createWs").removeAttr('disabled');
                                         $scope.updateFreeEmails();

@@ -30,7 +30,7 @@
           </div><!-- content title-->
           <div class="searchfull top0 clearfix" style="display:none" >
             <input type="button" class="closeBtn" style="display:none;" ng-click="filter = ''" />
-            <input type="text" ng-model="filter" class="searchfield " placeholder="Search for Members"/>
+            <input type="text" ng-model="search.name" class="searchfield " placeholder="Search for Members"/>
           </div>
         </li>
         <li class="ws-button pad0 pull-right mrg-rht5">
@@ -50,7 +50,7 @@
           </tr>
           </thead>
 
-          <tr class="v-center" ng-repeat="member in members| filter: filter | orderBy:'name'">
+          <tr class="v-center" ng-repeat="member in members| filter:search | orderBy:'name'">
 
             <td class="pad-lft18">
               <span>
@@ -129,9 +129,9 @@
                 </div>
               </div>
             </div>
-            <div id="userNotFoundError" style="display: none" class="org-errors"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of your organization. </div>
-            <div id="userAlreadyAdded" style="display: none" class="org-errors">User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added. </div>
-            <div id="emptyEmails" style="display: none" class="org-errors"><strong>Type email addresses separated by commas</strong></div>
+              <alert id="userNotFoundError" style="display: none" type="danger"><strong>'{{userNotFoundList.join(", ")}}'</strong> must be Codenvy user(s) before being added as member(s) of your organization.</alert>
+              <alert id="userAlreadyAdded" style="display: none" type="danger">User <strong>'{{userAlreadyAdded.join(", ")}}'</strong> already added.</alert>
+              <alert id="emptyEmails" style="display: none" type="danger">Type email addresses separated by commas.</alert>
           </div>
         </div>
         <div class="modal-footer">
