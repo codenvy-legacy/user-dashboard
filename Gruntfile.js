@@ -67,9 +67,9 @@ module.exports = function (grunt) {
      // e.g.: Use grunt serve --codenvy-url=dev.box.com --codenvy-port=80 --no-codenvy-https --codenvy-chg-orig to test with Vagrant
      proxies: [{
        context: ['/api', '/ws', '/datasource', '/java-ca'], // the context of the data service
-       host: grunt.option('codenvy-url') || 'codenvy.com', // wherever the data service is running
-       port: grunt.option('codenvy-port') || 443, // the port that the data service is running on
-       https: !grunt.option('no-codenvy-https') && true,
+       host: grunt.option('codenvy-url') || 'nightly.codenvy-stg.com', // wherever the data service is running
+       port: grunt.option('codenvy-port') || 80, // the port that the data service is running on
+       https: !grunt.option('no-codenvy-https') && false,
        changeOrigin: !grunt.option('no-codenvy-chg-orig') && true,
        xforward: !!grunt.option('codenvy-xforward') || false
     }],

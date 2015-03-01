@@ -545,9 +545,6 @@ angular.module('odeskApp')
 
         return orgAddonData;
     });
-
-
-
 angular.module('odeskApp')
     .factory('Project', ['$resource', '$http', '$q', function ($resource, $http, $q) {
         var item = $resource('/api/project/:workspaceID', {}, {

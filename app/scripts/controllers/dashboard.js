@@ -40,80 +40,80 @@ angular.module('odeskApp')
         $scope.updateProjectError = '';
         $scope.deleteProjectError = '';
 
-        //private methods
-        // for one user set the read write properties
-        var setPermissions = function (projectPermissions, member) {
-            angular.forEach(projectPermissions, function (perm) {
-                if (perm.principal.type === "USER" && perm.principal.name === member.userId) {
-                    setPermisionRules(perm, member);
-                } else if (perm.principal.type === "GROUP" && member.roles.indexOf(perm.principal.name) !== -1) {
-                    setPermisionRules(perm, member);
-                }
-            });
+      //private methods
+      // for one user set the read write properties
+      var setPermissions = function (projectPermissions, member) {
+        angular.forEach(projectPermissions, function (perm) {
+          if (perm.principal.type === "USER" && perm.principal.name === member.userId) {
+            setPermisionRules(perm, member);
+          } else if (perm.principal.type === "GROUP" && member.roles.indexOf(perm.principal.name) !== -1) {
+            setPermisionRules(perm, member);
+          }
+        });
+      };
+
+      var isRefreshLocation = function () {
+          return $location.url() == refreshLocation;
+      };
+
+      var setPermisionRules = function (permission, member) {
+        member.read = false;
+        member.write = false;
+        member.permissions = permission.permissions;
+
+        angular.forEach(permission.permissions, function (currentPerm) {
+          if (currentPerm == 'read') {
+            member.read = true;
+          } else if (currentPerm == 'write') {
+            member.write = true;
+          }
+        });
+      };
+
+      // Returns an array of selected permisions for given member
+      var getPermisions = function (member) {
+        if (member.read == false) { // if user doesn't have read he can't write
+          member.write = false;
+        }
+
+        var listPerm = [];
+
+        if (member.read) {
+          listPerm.push("read");
+        }
+
+        if (member.write) {
+          listPerm.push("write");
+        }
+        return listPerm;
+      };
+
+      var getAdmin = function (roles) {
+        return roles.indexOf('workspace/admin') !== -1;
+      };
+
+      var createMember = function (attributes, userId, read, write, roles) {
+        var fullName;
+
+        if (attributes.firstName && attributes.lastName) {
+          fullName = attributes.firstName + " " + attributes.lastName;
+        } else {
+          fullName = attributes.email.split("@")[0];
+        }
+
+        var member = {
+          fullName: fullName,
+          email: attributes.email,
+          userId: userId,
+          read: read,
+          write: write
         };
 
-        var isRefreshLocation = function () {
-            return $location.url() == refreshLocation;
-        };
+        if (roles) {
+          member.roles = roles;
+        }
 
-        var setPermisionRules = function (permission, member) {
-            member.read = false;
-            member.write = false;
-            member.permissions = permission.permissions;
-
-            angular.forEach(permission.permissions, function (currentPerm) {
-                if (currentPerm == 'read') {
-                    member.read = true;
-                } else if (currentPerm == 'write') {
-                    member.write = true;
-                }
-            });
-        };
-
-        // Returns an array of selected permisions for given member
-        var getPermisions = function (member) {
-            if (member.read == false) { // if user doesn't have read he can't write
-                member.write = false;
-            }
-
-            var listPerm = [];
-
-            if (member.read) {
-                listPerm.push("read");
-            }
-
-            if (member.write) {
-                listPerm.push("write");
-            }
-            return listPerm;
-        };
-
-        var getAdmin = function (roles) {
-            return roles.indexOf('workspace/admin') !== -1;
-        };
-
-        var createMember = function (attributes, userId, read, write, roles) {
-            var fullName;
-
-            if (attributes.firstName && attributes.lastName) {
-                fullName = attributes.firstName + " " + attributes.lastName;
-            } else {
-                fullName = attributes.email.split("@")[0];
-            }
-
-            var member = {
-                fullName: fullName,
-                email: attributes.email,
-                userId: userId,
-                read: read,
-                write: write
-            };
-
-            if (roles) {
-                member.roles = roles;
-            }
-
-            return member;
+        return member;
         };
 
         $scope.tempProject = {'name':'','description':''};
@@ -389,32 +389,31 @@ angular.module('odeskApp')
             $scope.selectMemberToBeDeleted = member;
         };
 
+      $scope.removeMember = function (member) {
+        Workspace.removeMember($scope.activeProject.workspaceId, member.userId).then(function (data) {
+          var removedMemberIndex = -1;
+          angular.forEach($scope.activeMembers, function (singleMember, index) {
+            if (singleMember.userId === member.userId) {
+              removedMemberIndex = index;
+            }
+          });
+          if (removedMemberIndex > -1) {
+            $scope.activeMembers.splice(removedMemberIndex, 1);
+          }
 
-        $scope.removeMember = function (member) {
-            Workspace.removeMember($scope.activeProject.workspaceId, member.userId).then(function (data) {
-                var removedMemberIndex = -1;
-                angular.forEach($scope.activeMembers, function (singleMember, index) {
-                    if (singleMember.userId === member.userId) {
-                        removedMemberIndex = index;
-                    }
-                });
-                if (removedMemberIndex > -1) {
-                    $scope.activeMembers.splice(removedMemberIndex, 1);
-                }
-
-                angular.forEach($scope.currentWorkspace.members, function (singleMember, index) {
-                    if (singleMember.userId === member.userId) {
-                        removedMemberIndex = index;
-                    }
-                });
-                if (removedMemberIndex > -1) {
-                    $scope.currentWorkspace.members.splice(removedMemberIndex, 1);
-                }
-            }, function (error) {
-
-            });
-
-        };
+          angular.forEach($scope.currentWorkspace.members, function (singleMember, index) {
+            if (singleMember.userId === member.userId) {
+              removedMemberIndex = index;
+            }
+          });
+          if (removedMemberIndex > -1) {
+            $scope.currentWorkspace.members.splice(removedMemberIndex, 1);
+          }
+        }, function (error) {
+          
+        });
+      
+      };
 
         $scope.showLoadingInvite = false;
         $scope.showInviteError = false;
@@ -428,7 +427,7 @@ angular.module('odeskApp')
 
                     // need to send to analytics an event
                     var userInviteData = {
-                        params: {'WS':$scope.activeProject.workspaceId, "EMAIL": email}
+                        params: {'WS': $scope.activeProject.workspaceId, "EMAIL": email}
                     };
                     var res = $http.post('api/analytics/log/user-invite', userInviteData);
 
@@ -446,9 +445,9 @@ angular.module('odeskApp')
                         });
 
                     });
-                }, function (error) {
+                }, function () {
                     $scope.showInviteError = true;
-                    if($scope.errors.length!==0)
+                    if ($scope.errors.length !== 0)
                         $scope.errors += ", " + email;
                     else
                         $scope.errors += email;
@@ -490,27 +489,29 @@ angular.module('odeskApp')
 
             return '';
         };
-        // for displaying message
-        $scope.c2User='TRUE';
+	  // for displaying message
+      $scope.c2User='TRUE';
 
         ProfileService.getProfile().then(function (data) {
-            $scope.userDetails=data.attributes;
-            $scope.oldUser = data.attributes['codenvy:created'];
-            if(data.attributes['codenvy:created']!=undefined){$scope.c2User='TRUE';}else{$scope.c2User='FALSE';}
+            $scope.userDetails = data.attributes;
+        });
+
+        ProfileService.getPreferences().then(function (data) {
+            $scope.oldUser = data['codenvy:created'];
+            $scope.c2User = data['codenvy:created'] != undefined ? 'TRUE' : 'FALSE';
         });
 
         // to show scheduled maintenance message from statuspage.io (Path-to service)
         $scope.scheduled = 'FALSE';
-
-         $http({method: 'GET', url: '/dashboard/scheduled'}).success(function (data) {
-         if (Array.isArray(data)) {
-         if (data.length) {
-         $scope.data = data;
-         $scope.scheduled = 'TRUE';
-         }
-         }
-         }).error(function (err) {
-         });
+        $http({method: 'GET', url: '/dashboard/scheduled'}).success(function (data) {
+            if (Array.isArray(data)) {
+                if (data.length) {
+                    $scope.data = data;
+                    $scope.scheduled = 'TRUE';
+                }
+            }
+        }).error(function (err) {
+        });
 
         $scope.definePassword = function () {
             var password = $('#newPassword').val();
@@ -523,9 +524,9 @@ angular.module('odeskApp')
                         $('#defineUserPassword').modal('hide');
                     }, 1500);
                 });
-                ProfileService.getProfile().then(function (data) {
-                    if (data.attributes.resetPassword && data.attributes.resetPassword == "true") {
-                        ProfileService.updateProfile({"resetPassword": 'false'});
+                ProfileService.getPreferences().then(function (data) {
+                    if (data.resetPassword && data.resetPassword == "true") {
+                        ProfileService.updatePreferences({'resetPassword': 'false'});
                         $cookieStore.remove('resetPassword');
                     }
                 });
@@ -550,7 +551,7 @@ angular.module('odeskApp')
                 ProjectFactory.getSampleProject(),
                 function() {
                     ProjectFactory.fetchProjects($scope.workspaces, true);
-                    ProfileService.updateProfile({"sampleProjectCreated": 'true'});
+                    ProfileService.updatePreferences({"sampleProjectCreated": 'true'});
                 }
             );
         };
@@ -598,8 +599,9 @@ angular.module('odeskApp')
                 }
                 $scope.projects = ProjectFactory.projects;
 
-                ProfileService.getProfile().then(function (data) {
-                    if (data.attributes.resetPassword && data.attributes.resetPassword == 'true') {
+
+                ProfileService.getPreferences().then(function (data) {
+                    if (data.resetPassword && data.resetPassword == 'true') {
                         if ($cookieStore.get('resetPassword') != true) {
                             $cookieStore.put('resetPassword', true);
                             $('#defineUserPassword').modal('toggle'); // show once per session
@@ -607,12 +609,12 @@ angular.module('odeskApp')
                     }
 
                     //Check for sample project creation (if created - "sampleProjectCreated" attribute is set):
-                    if (!data.attributes.sampleProjectCreated || data.attributes.sampleProjectCreated == "false") {
+                    if (!data.sampleProjectCreated || data.sampleProjectCreated == "false") {
                         var projects = Project.query({
                             workspaceID: $scope.workspaces[0].workspaceReference.id
                         }, function (projects) {
                             var featureStartPoint = new Date(1420070400000); //01-01-2015 (timestamp in UTC 1420070400)
-                            var afterFeatureStarted = featureStartPoint < new Date(parseInt(data.attributes["codenvy:created"]));
+                            var afterFeatureStarted = featureStartPoint < new Date(parseInt(data["codenvy:created"]));
                             if (projects.length == 0 && afterFeatureStarted) {
                                 $scope.createSampleProject($scope.workspaces[0].workspaceReference.id);
                             } else {

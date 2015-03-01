@@ -21,6 +21,7 @@ angular.module('odeskApp')
         var unlimitedValue = 1024*1024*1024;
         $scope.removeMemberError = '';
 
+
         $scope.$on('orgAddonDataUpdated', function () {
             $scope.accounts = OrgAddon.accounts;
             $scope.isOrgAddOn = OrgAddon.isOrgAddOn;
@@ -262,43 +263,38 @@ angular.module('odeskApp')
             // Display members details in members page for organizations
 
             AccountService.getMembers($scope.currentAccount.id).then(function (members) {
-                    var count = 0;
+                var count = 0;
 
-                    angular.forEach(members, function (member) {
-                        //  Get member's email and name
-                        var email;
-                        var name;
-                        return $q.all([
-                            $http({method: 'GET', url: '/api/profile/' + member['userId']})
-                                .success(function (data) {
-                                    count ++;
-                                    email = data['attributes'].email;
-                                    var firstName = data['attributes'].firstName || "";
-                                    var lastName = data['attributes'].lastName || "";
-                                    name = (firstName && lastName) ? firstName + " " + lastName : firstName + lastName;
-                                })
-                                .error(function (err) {
-                                    count ++;
-                                    if(count == members.length){
-                                        $scope.updateFreeEmails();
-                                    }
-                                })
-                        ]).then(function (results) {
-                            var memberDetails = {
-                                id: member['userId'],
-                                role: member['roles'][0].split("/")[1],
-                                email: email,
-                                name: name
+                angular.forEach(members, function (member) {
+                    //  Get member's email and name
+                    var email;
+                    var name;
+                    ProfileService.getProfileByUserId(member['userId']).then(function (data) {
+                        count ++;
+                        email = data['attributes'].email;
+                        var firstName = data['attributes'].firstName || "";
+                        var lastName = data['attributes'].lastName || "";
+                        name = (firstName && lastName) ? firstName + " " + lastName : firstName + lastName;
+                        var memberDetails = {
+                            id: member['userId'],
+                            role: member['roles'][0].split("/")[1],
+                            email: email,
+                            name: name
 
-                            };
-                            $scope.members.push(memberDetails);
-                            if(count == members.length){
-                                $scope.updateFreeEmails();
-                            }
-                        });
-
+                        };
+                        $scope.members.push(memberDetails);
+                        if(count == members.length){
+                            $scope.updateFreeEmails();
+                        }
+                    }, function (error) {
+                        count ++;
+                        if(count == members.length){
+                            $scope.updateFreeEmails();
+                        }
                     });
+
                 });
+            });
         };
 
         if (OrgAddon.accounts.length > 0) {
@@ -358,8 +354,7 @@ angular.module('odeskApp')
                             }
                             else {
                                 $("#userAlreadyAdded").hide();
-                                $http({method: 'GET', url: '/api/profile/' + userId})
-                                    .success(function (data) {
+                                ProfileService.getProfileByUserId(userId).then(function (data) {
                                         email = data['attributes'].email;
 
                                         var firstName = data['attributes'].firstName || "";
@@ -370,7 +365,7 @@ angular.module('odeskApp')
                                             role: role.split("/")[1],
                                             email: email,
                                             name: name
-                                        }
+                                        };
                                         $scope.selectedWsMembers.push(memberDetails);
                                         $("#createWs").removeAttr('disabled');
                                         $scope.updateFreeEmails();
@@ -552,6 +547,7 @@ angular.module('odeskApp')
               }, 4500);
           });
       };
+
 
         // Remove user from selected list
         $scope.removeUserToList = function (user) {

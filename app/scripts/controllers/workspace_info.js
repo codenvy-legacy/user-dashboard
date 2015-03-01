@@ -247,8 +247,7 @@ angular.module('odeskApp')
                             }
                             else {
                                 $("#userAlreadyAdded").hide();
-                                $http({method: 'GET', url: '/api/profile/' + userId})
-                                    .success(function (data) {
+                                ProfileService.getProfileByUserId(userId).then(function (data) {
                                         email = data['attributes'].email;
                                         var firstName = data['attributes'].firstName || "";
                                         var lastName = data['attributes'].lastName || "";
@@ -413,7 +412,6 @@ angular.module('odeskApp')
                 });
 
         };
-
 
         if (OrgAddon.accounts.length > 0) {
             $scope.init();

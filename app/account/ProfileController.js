@@ -110,8 +110,8 @@ angular.module('odeskApp')
                 $('#password1').css('border', '1px solid #e5e5e5');
                 $('#password2').css('border', '1px solid #e5e5e5');
                 Password.update($scope.password);
-                if ($scope.profile.attributes.resetPassword && $scope.profile.attributes.resetPassword == "true") {
-                    ProfileService.updateProfile({resetPassword: 'false'}).then(function () {
+                if ($scope.preferences.resetPassword && $scope.preferences.resetPassword == "true") {
+                    ProfileService.updatePreferences({resetPassword: 'false'}).then(function () {
                         $cookieStore.remove('resetPassword');
                     });
                 }
