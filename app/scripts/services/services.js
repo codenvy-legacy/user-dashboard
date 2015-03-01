@@ -474,64 +474,6 @@ angular.module('odeskApp')
     });
 
 angular.module('odeskApp')
-	.factory('Profile', ['$http', '$q', function ($http, $q) {
-	    return {
-	        query: function () {
-	            var deferred = $q.defer();
-	            var con = {
-	                headers: {
-	                    'Accept': 'application/json',
-	                    'X-Requested-With': 'XMLHttpRequest'
-	                }
-	            };
-	            $http.get('/api/profile', con)
-                    .success(function (data) {
-                        deferred.resolve(data); //resolve data
-                    })
-                    .error(function (err) {
-                        deferred.reject(err);
-                    });
-	            return deferred.promise;
-	        },
-
-	        getById: function (userId) {
-	            var deferred = $q.defer();
-	            var con = {
-	                headers: {
-	                    'Accept': 'application/json',
-	                    'X-Requested-With': 'XMLHttpRequest'
-	                }
-	            };
-	            $http.get('/api/profile/' + userId, con)
-                    .success(function (data) {
-                        deferred.resolve(data); //resolve data
-                    })
-                    .error(function (err) { deferred.reject(err); });
-	            return deferred.promise;
-	        },
-
-	        update: function (appValue) {
-	            var deferred = $q.defer();
-	            var con = {
-	                headers: {
-	                    'Content-Type': 'application/json; charset=UTF-8',
-	                    'X-Requested-With': 'XMLHttpRequest'
-	                }
-	            };
-
-	            $http.post('/api/profile', appValue, con)
-                   .success(function (data) {
-                       deferred.resolve(data); //resolve data
-                   })
-                   .error(function (err) {
-                       deferred.reject(err);
-                   });
-	            return deferred.promise;
-	        }
-	    };
-	}]);
-
-angular.module('odeskApp')
 	.factory('Users', function ($http, $q) {
 	    return {
 	        query: function () {
@@ -679,64 +621,6 @@ angular.module('odeskApp')
 
         return orgAddonData;
     });
-
-angular.module('odeskApp').factory('Skills', function ($http, $q) {
-    return {
-        query: function () {
-            var deferred = $q.defer();
-            var con = {
-                headers: {
-                    'Content-Type': 'application/json; charset=UTF-8',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            };
-            $http.get('/api/profile/prefs', con)
-                .success(function (data) {
-                    deferred.resolve(data); //resolve data
-                })
-                .error(function (err) {
-                    deferred.reject(err);
-                });
-            return deferred.promise;
-        },
-
-        update: function (skillset) {
-            var deferred = $q.defer();
-            var con = {
-                headers: {
-                    'Content-Type': 'application/json; charset=UTF-8',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            };
-            $http.post('/api/profile/prefs', skillset, con)
-                .success(function () {
-                    deferred.resolve();
-                })
-                .error(function (err) {
-                    deferred.reject(err);
-                });
-            return deferred.promise;
-        },
-
-        remove: function (skill) {
-            var deferred = $q.defer();
-            var con = {
-                headers: {
-                    'Content-Type': 'application/json; charset=UTF-8',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            };
-            $http.delete('/api/profile/prefs', new Array(skill), con)
-                .success(function () {
-                    deferred.resolve();
-                })
-                .error(function (err) {
-                    deferred.reject(err);
-                });
-            return deferred.promise;
-        }
-    };
-});
 
 angular.module('odeskApp')
 	.factory('addUsage', function ($http, $q) {

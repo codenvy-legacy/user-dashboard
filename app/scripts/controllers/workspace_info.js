@@ -16,7 +16,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('workspaceInfoCtrl', function ($scope, Account, OrgAddon, Profile, Workspace, WorkspaceInfo, $http, $q, $route, $timeout) {
+    .controller('workspaceInfoCtrl', function ($scope, Account, OrgAddon, ProfileService, Workspace, WorkspaceInfo, $http, $q, $route, $timeout) {
 
         $scope.$on('orgAddonDataUpdated', function () {
             $scope.accounts = OrgAddon.accounts;
@@ -121,7 +121,7 @@ angular.module('odeskApp')
                                 //  Get member's email and name
 
                                 return $q.all([
-                                    Profile.getById(member['userId']).then(function (data) {
+                                    ProfileService.getProfileByUserId(member['userId']).then(function (data) {
                                             email = data['attributes'].email;
                                             var firstName = data['attributes'].firstName || "";
                                             var lastName = data['attributes'].lastName || "";
@@ -163,7 +163,7 @@ angular.module('odeskApp')
                         //  Get member's email and name
                         var email;
                         var name;
-                        Profile.getById(member['userId']).then(function (data) {
+                        ProfileService.getProfileByUserId(member['userId']).then(function (data) {
                             count++;
                             email = data['attributes'].email;
                             var firstName = data['attributes'].firstName || "";
@@ -255,7 +255,7 @@ angular.module('odeskApp')
                             }
                             else {
                                 $("#userAlreadyAdded").hide();
-                                Profile.getById(userId).then(function (data) {
+                                ProfileService.getProfileByUserId(userId).then(function (data) {
                                         email = data['attributes'].email;
                                         var firstName = data['attributes'].firstName || "";
                                         var lastName = data['attributes'].lastName || "";

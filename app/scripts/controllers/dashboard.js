@@ -18,8 +18,8 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('DashboardCtrl', function ($scope, $rootScope, $cookieStore, $http, $q, $window, $interval, $timeout, $location, Skills,
-                                           DocBoxService, Workspace, Project, Users, Profile, Password, ProjectFactory, RunnerService, newProject) {
+    .controller('DashboardCtrl', function ($scope, $rootScope, $cookieStore, $http, $q, $window, $interval, $timeout, $location,
+                                           DocBoxService, Workspace, Project, Users, ProfileService, Password, ProjectFactory, RunnerService, newProject) {
       var refreshLocation = "/dashboard";
       var old_description = '';
       var old_projectName = '';
@@ -183,7 +183,7 @@ angular.module('odeskApp')
             }
 
 
-          Profile.query().then(function (profile) {
+            ProfileService.getProfile().then(function (profile) {
             $scope.currentUser = {
               fullName: profile.attributes.firstName + " " + profile.attributes.lastName,
               email: profile.attributes.email,
@@ -439,7 +439,7 @@ angular.module('odeskApp')
             
             Workspace.addMemberToWorkspace($scope.activeProject.workspaceId, user.id).then(function () {
               // refresh member list
-              Profile.getById(user.id).then(function (data) {
+                ProfileService.getProfileByUserId(user.id).then(function (data) {
                 var member = createMember(data.attributes, user.id, true, true);
 
                 $scope.currentWorkspace.members.push(member);
@@ -497,11 +497,11 @@ angular.module('odeskApp')
 	  };
 	  // for displaying message
       $scope.c2User='TRUE';
-      Profile.query().then(function (data) {
+        ProfileService.getProfile().then(function (data) {
           $scope.userDetails=data.attributes;
       });
 
-      Skills.query().then(function (data) {
+        ProfileService.getPreferences().then(function (data) {
           $scope.oldUser = data['codenvy:created'];
           $scope.c2User = data['codenvy:created'] != undefined ? 'TRUE' : 'FALSE';
       });
@@ -529,9 +529,9 @@ angular.module('odeskApp')
                       $('#defineUserPassword').modal('hide');
                   }, 1500);
               });
-              Skills.query().then(function (data) {
+              ProfileService.getPreferences().then(function (data) {
                   if (data.resetPassword && data.resetPassword == "true") {
-                      Skills.update({'resetPassword': 'false'});
+                      ProfileService.updatePreferences({'resetPassword': 'false'});
                       $cookieStore.remove('resetPassword');
                   }
               });
@@ -556,7 +556,7 @@ angular.module('odeskApp')
               ProjectFactory.getSampleProject(),
               function() {
                   ProjectFactory.fetchProjects($scope.workspaces, true);
-                  Skills.update({"sampleProjectCreated": 'true'});
+                  ProfileService.updatePreferences({"sampleProjectCreated": 'true'});
               }
           );
       };
@@ -604,7 +604,7 @@ angular.module('odeskApp')
                 }
                 $scope.projects = ProjectFactory.projects;
 
-                Skills.query().then(function (data) {
+                ProfileService.getPreferences().then(function (data) {
                     if (data.resetPassword && data.resetPassword == 'true') {
                         if ($cookieStore.get('resetPassword') != true) {
                             $cookieStore.put('resetPassword', true);
@@ -635,7 +635,7 @@ angular.module('odeskApp')
                     workspace.members = [];
                     Workspace.getMembersForWorkspace(workspace.workspaceReference.id).then(function (workspaceMembers) {
                         angular.forEach(workspaceMembers, function (workspaceMember) {
-                            Profile.getById(workspaceMember.userId).then(function (data) {
+                            ProfileService.getProfileByUserId(workspaceMember.userId).then(function (data) {
                                 var member = createMember(data.attributes, workspaceMember.userId, false, false, workspaceMember.roles)
                                 workspace.members.push(member); // load the members for the workspace,
                             });
