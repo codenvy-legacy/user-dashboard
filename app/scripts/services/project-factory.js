@@ -82,6 +82,9 @@ angular.module('odeskApp')
                 project: {
                     name: "getting-started-guided-tour",
                     visibility: "public",
+                    "mixinTypes": [
+                        "GuidedTour"
+                    ],
                     builders: {
                         default: "maven"
                     },
