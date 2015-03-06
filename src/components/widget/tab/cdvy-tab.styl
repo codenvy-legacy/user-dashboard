@@ -17,10 +17,13 @@
   margin-right 20px
   position relative
 
-.cdvy-tab  md-tab.separator:after
+.cdvy-tab:last-child  md-tab:after
+  display none
+
+.cdvy-tab  md-tab:after
   position absolute
   top 0
-  left 0
+  right 1px
   height 24px
   margin-top 12px
   border solid 1px sub-menu-separator-color
