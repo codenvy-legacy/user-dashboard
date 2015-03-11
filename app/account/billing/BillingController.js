@@ -15,7 +15,7 @@
 
 'use strict';
 angular.module('odeskApp')
-    .controller('BillingCtrl', function ($scope, $timeout, Countries, AccountService, PaymentService, InvoiceService, ProfileService) {
+    .controller('BillingCtrl', function ($scope, $timeout, $modal, Countries, AccountService, PaymentService, InvoiceService, ProfileService) {
         $scope.accounts = [];
         $scope.creditCards = [];
         $scope.countries = Countries.all();
@@ -71,6 +71,16 @@ angular.module('odeskApp')
                     }
                 });
             });
+        };
+
+        $scope.confirmCreditCardDeletion = function (creditCard) {
+            $scope.creditCardToRemove = creditCard;
+
+            $modal.open({
+                templateUrl: 'account/billing/removeCreditCardModal.html',
+                size: 'lg',
+                scope: $scope
+            }).result;
         };
 
         $scope.deleteCreditCard = function (creditCard) {
