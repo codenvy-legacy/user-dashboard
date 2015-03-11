@@ -67,7 +67,7 @@ li.no-bdr{border: 0px !important; background: none !important}
 .action-button { min-height:36px;background:none !important; padding: 0px 15px !important; border:none;/* position: fixed;*/ width: 100%; z-index: 999; margin-bottom: 0;}
 .action-button > li + li:before { content: none; } 
 .action-button li a { color: #177eb7;}
-.grid-button {text-transform: none  !important; width: 80px; border-radius: 0px}
+.grid-button {text-transform: none  !important; width: 110px; border-radius: 0px}
 
 .jqstooltip { border: 0 none !important; display: block !important; padding: 0 !important; }
 .jqsfield { display: inline-block; line-height: 13px; padding: 4px 5px 5px; }
