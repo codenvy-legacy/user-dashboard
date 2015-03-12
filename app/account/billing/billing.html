@@ -99,12 +99,13 @@
                     </form>
                 </div>
             </div>
-            <div class="panel panel-default panel-ce" ng-if="creditCards && creditCards.length > 0">
-                <div class="panel-body">
+            <div class="panel panel-default panel-ce"  >
+                <div class="panel-body" id="creditCardPanel" tabindex="0">
                     <h4 class="text-center">CREDIT CARD INFORMATION</h4>
                         <div class="row" ng-repeat="card in creditCards">
-                            <div class="col-md-8" style="margin-top: 8px;">
-                                <span style="text-transform: uppercase;">{{card.cardholder}}</span> ({{card.type}} {{card.number}})
+                            <div class="col-md-8">
+                                <span style="text-transform: uppercase;">{{card.cardholder}}</span><br>
+                                {{card.type}} ...{{card.number.slice(-4)}} ({{card.expiration}})
                             </div>
                             <button type="button" class="btn btn-danger" ng-click="confirmCreditCardDeletion(card)"
                                     style="float:right;margin-right:20px;">Remove</button>

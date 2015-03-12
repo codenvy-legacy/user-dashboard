@@ -24,6 +24,7 @@ angular.module('odeskApp')
         $scope.usedMemory = 0;
         $scope.profile = {};
         $scope.invoices = [];
+        $scope.isNewCreditCardAdded = false;
 
         AccountService.getAccountsByRole("account/owner").then(function (accounts) {
             $scope.accounts = accounts;
@@ -56,6 +57,10 @@ angular.module('odeskApp')
         $scope.loadCreditCards = function () {
             PaymentService.getCreditCards($scope.accounts[0].id).then(function () {
                 $scope.creditCards = PaymentService.crediCards;
+                if ($scope.isNewCreditCardAdded){
+                    angular.element("#creditCardPanel").focus();
+                    $scope.isNewCreditCardAdded = false;
+                }
             });
         };
 
@@ -109,6 +114,7 @@ angular.module('odeskApp')
             PaymentService.addCreditCard($scope.accounts[0].id, $scope.creditCard).then(function () {
                 $('#warning-creditCard-alert .alert-danger').hide();
                 $scope.initCreditCard();
+                $scope.isNewCreditCardAdded = true;
                 $scope.loadCreditCards();
             }, function (error) {
                 $scope.addCreditCardError = error.message ? error.message : "Add credit card failed.";
