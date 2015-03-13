@@ -58,8 +58,10 @@ angular.module('odeskApp')
             PaymentService.getCreditCards($scope.accounts[0].id).then(function () {
                 $scope.creditCards = PaymentService.crediCards;
                 if ($scope.isNewCreditCardAdded){
-                    angular.element("#creditCardPanel").focus();
-                    $scope.isNewCreditCardAdded = false;
+                    $timeout(function(){
+                        angular.element("#creditCardPanel").focus();
+                        $scope.isNewCreditCardAdded = false;
+                    }, 2000);
                 }
             });
         };
