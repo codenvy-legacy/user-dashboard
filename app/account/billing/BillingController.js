@@ -26,6 +26,14 @@ angular.module('odeskApp')
         $scope.invoices = [];
         $scope.isNewCreditCardAdded = false;
 
+        var oldCardContainerClasses = null;
+        var defaultCardValues = {
+            number: '&bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull;',
+            name: 'Full Name',
+            expiry: '&bull;&bull;/&bull;&bull;',
+            cvc: '&bull;&bull;&bull;'
+        };
+
         AccountService.getAccountsByRole("account/owner").then(function (accounts) {
             $scope.accounts = accounts;
             if (accounts && accounts.length > 0) {
@@ -116,11 +124,30 @@ angular.module('odeskApp')
                 $scope.initCreditCard();
                 $scope.isNewCreditCardAdded = true;
                 $scope.loadCreditCards();
+
+                //Clear credit card widget and set default values
+                var cardContainer = $('.cardWrapper .card-container  div.card')[0];
+                oldCardContainerClasses = cardContainer.getAttribute('class');
+                cardContainer.setAttribute('class', 'card');
+                $('.cardWrapper .card-container  div.number')[0].innerHTML = defaultCardValues.number;
+                $('.cardWrapper .card-container  div.name')[0].innerHTML = defaultCardValues.name;
+                $('.cardWrapper .card-container  div.expiry')[0].innerHTML = defaultCardValues.expiry;
             }, function (error) {
                 $scope.addCreditCardError = error.message ? error.message : "Add credit card failed.";
                 $('#warning-creditCard-alert .alert-danger').show();
                 $('#warning-creditCard-alert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
             });
+        };
+
+        $scope.checkCardStyle = function () {
+            if (oldCardContainerClasses === null) {
+                return;
+            }
+            var cardContainer = $('.cardWrapper .card-container  div.card')[0];
+            if(cardContainer.getAttribute('class') === 'card') {
+                cardContainer.setAttribute('class', oldCardContainerClasses);
+            }
+            oldCardContainerClasses = null;
         };
 
         var initCreditCardForm = function () {
@@ -138,12 +165,7 @@ angular.module('odeskApp')
                     validDate: 'valid\ndate',
                     monthYear: 'mm/yyyy'
                 },
-                values: {
-                    number: '•••• •••• •••• ••••',
-                    name: 'Full Name',
-                    expiry: '••/••',
-                    cvc: '•••'
-                },
+                values: defaultCardValues,
                 debug: false
             });
 
