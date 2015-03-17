@@ -23,7 +23,7 @@ class CodenvyProject {
    * Default constructor that is using resource
    * @ngInject for Dependency injection
    */
-  constructor ($resource, $q) {
+  constructor($resource, $q) {
 
     // keep resource
     this.$resource = $resource;
@@ -46,11 +46,14 @@ class CodenvyProject {
     this.projects = [];
 
     // remote call
-    this.remoteProjectsAPI = this.$resource('/api/project/:workspaceId',  {workspaceId:'@id'}, {
-      import: { method: 'POST', url: '/api/project/:workspaceId/import/:path'},
-      create: { method: 'POST', url: '/api/project/:workspaceId?name=:path'},
-      details: { method: 'GET', url: '/api/project/:workspaceId/:path'},
-      remove: {method: 'DELETE', url: '/api/project/:workspaceId/:path'}
+    this.remoteProjectsAPI = this.$resource('/api/project/:workspaceId', {workspaceId: '@id'}, {
+      import: {method: 'POST', url: '/api/project/:workspaceId/import/:path'},
+      create: {method: 'POST', url: '/api/project/:workspaceId?name=:path'},
+      details: {method: 'GET', url: '/api/project/:workspaceId/:path'},
+      rename: {method: 'POST', url: '/api/project/:workspaceId/rename/:path?name=:name'},
+      remove: {method: 'DELETE', url: '/api/project/:workspaceId/:path'},
+      update: {method: 'PUT', url: '/api/project/:workspaceId/:path'},
+      setVisibility: {method: 'POST', url: '/api/project/:workspaceId/switch_visibility/:path?visibility=:visibility'}
     });
   }
 
@@ -178,11 +181,36 @@ class CodenvyProject {
     return promise;
   }
 
-  remove(workspaceId, projectName) {
-  let promise = this.remoteProjectsAPI.remove({workspaceId: workspaceId, path: projectName}).$promise;
+  updateProjectDetails(projectDetails) {
+    let promise = this.remoteProjectsAPI.update({
+      workspaceId: projectDetails.workspaceId,
+      path: projectDetails.name
+    }, projectDetails).$promise;
 
     return promise;
-}
+  }
+
+  rename(workspaceId, projectName, newProjectName) {
+    let promise = this.remoteProjectsAPI.rename({workspaceId: workspaceId, path: projectName, name: newProjectName}, null).$promise;
+
+    return promise;
+  }
+
+  setVisibility(workspaceId, projectName, visibility) {
+    let promise = this.remoteProjectsAPI.setVisibility({
+      workspaceId: workspaceId,
+      path: projectName,
+      visibility: visibility
+    }, null).$promise;
+
+    return promise;
+  }
+
+  remove(workspaceId, projectName) {
+    let promise = this.remoteProjectsAPI.remove({workspaceId: workspaceId, path: projectName}).$promise;
+
+    return promise;
+  }
 
 }
 
