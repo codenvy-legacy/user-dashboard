@@ -435,7 +435,7 @@ angular.module('odeskApp')
             var userInviteData = {
               params: {'WS':$scope.activeProject.workspaceId, "EMAIL": email}
             };
-            var res = $http.post('api/analytics/log/user-invite', userInviteData);
+            var res = $http.post('/api/analytics/log/user-invite', userInviteData);
             
             Workspace.addMemberToWorkspace($scope.activeProject.workspaceId, user.id).then(function () {
               // refresh member list
