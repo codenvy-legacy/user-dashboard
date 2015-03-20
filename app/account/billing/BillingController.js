@@ -20,6 +20,7 @@ angular.module('odeskApp')
         $scope.creditCards = [];
         $scope.countries = Countries.all();
         $scope.creditCard = {};
+        $scope.showNewCreditCardForm = false;
         $scope.addCreditCardError = '';
         $scope.usedMemory = 0;
         $scope.profile = {};
@@ -65,11 +66,11 @@ angular.module('odeskApp')
         $scope.loadCreditCards = function () {
             PaymentService.getCreditCards($scope.accounts[0].id).then(function () {
                 $scope.creditCards = PaymentService.crediCards;
+                $scope.showNewCreditCardForm = $scope.creditCards && $scope.creditCards.length == 0;
                 if ($scope.isNewCreditCardAdded){
-                    $timeout(function(){
-                        angular.element("#creditCardPanel").focus();
-                        $scope.isNewCreditCardAdded = false;
-                    }, 2000);
+                    angular.element("#creditCardPanel").focus();
+                    $scope.isNewCreditCardAdded = false;
+                    AccountService.addSubscription($scope.accounts[0].id, AccountService.SAAS_PLAN_ID, true);
                 }
             });
         };
@@ -124,6 +125,7 @@ angular.module('odeskApp')
             PaymentService.addCreditCard($scope.accounts[0].id, $scope.creditCard).then(function () {
                 $('#warning-creditCard-alert .alert-danger').hide();
                 $scope.initCreditCard();
+                $scope.showNewCreditCardForm = false;
                 $scope.isNewCreditCardAdded = true;
                 $scope.loadCreditCards();
 
