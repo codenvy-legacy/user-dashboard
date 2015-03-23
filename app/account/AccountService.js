@@ -20,9 +20,11 @@ angular.module('odeskApp')
         AccountService.SAAS_SERVICE_ID = "Saas";
         AccountService.SAAS_PLAN_ID = "saas";
         AccountService.ONPREMISES_SERVICE_ID = "OnPremises";
+        AccountService.RESOURCES_LOCKED_PROPERTY = "codenvy:resources_locked";
         AccountService.subscriptions = [];
         AccountService.accounts = [];
         AccountService.resources = {};
+        AccountService.accountDetails = {};
 
         //Get all accounts, where the current user has membership:
         AccountService.getAccounts = function () {
@@ -71,6 +73,27 @@ angular.module('odeskApp')
             $http.get('/api/account/' + accountId + "/resources", con)
                 .success(function (data) {
                     AccountService.resources = data;
+                    deferred.resolve(data); //resolve data
+                })
+                .error(function (err) {
+                    deferred.reject();
+                });
+
+            return deferred.promise;
+        };
+
+        //Get account details by it's id
+        AccountService.getAccountDetails = function (accountId) {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+            $http.get('/api/account/' + accountId, con)
+                .success(function (data) {
+                    AccountService.accountDetails = data;
                     deferred.resolve(data); //resolve data
                 })
                 .error(function (err) {

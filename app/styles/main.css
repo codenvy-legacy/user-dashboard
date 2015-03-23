@@ -2064,4 +2064,5 @@ html[dir="rtl"] .select2-search input {
     padding: 2px 10px;
     font-size: 9px;
     display: inline;
+    margin-left: 10px;
 }
