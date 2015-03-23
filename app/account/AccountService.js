@@ -15,11 +15,16 @@
 /*global angular*/
 'use strict';
 angular.module('odeskApp')
-    .factory('AccountService', ['$http', '$q', '$window', function AccountService($http, $q, $window) {
-        var BUY_SUBSCRIPTIONS_LINK = "http://codenvy.com/products/developer-environment-cloud-saas/";
+    .factory('AccountService', ['$http', '$q', '$window', '$location', function AccountService($http, $q, $window, $location) {
+        AccountService.BUY_SUBSCRIPTIONS_LINK = "http://codenvy.com/products/developer-environment-cloud-saas/";
+        AccountService.SAAS_SERVICE_ID = "Saas";
+        AccountService.SAAS_PLAN_ID = "saas";
+        AccountService.ONPREMISES_SERVICE_ID = "OnPremises";
+        AccountService.RESOURCES_LOCKED_PROPERTY = "codenvy:resources_locked";
         AccountService.subscriptions = [];
         AccountService.accounts = [];
         AccountService.resources = {};
+        AccountService.accountDetails = {};
 
         //Get all accounts, where the current user has membership:
         AccountService.getAccounts = function () {
@@ -77,6 +82,27 @@ angular.module('odeskApp')
             return deferred.promise;
         };
 
+        //Get account details by it's id
+        AccountService.getAccountDetails = function (accountId) {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+            $http.get('/api/account/' + accountId, con)
+                .success(function (data) {
+                    AccountService.accountDetails = data;
+                    deferred.resolve(data); //resolve data
+                })
+                .error(function (err) {
+                    deferred.reject();
+                });
+
+            return deferred.promise;
+        };
+
         AccountService.setAccountResources = function (accountId, resources) {
             var deferred = $q.defer();
             var con = {
@@ -98,7 +124,7 @@ angular.module('odeskApp')
 
         AccountService.getUsedMemory = function (resources) {
             var saasSubscription = _.find(resources, function (subscription) {
-                return subscription.subscriptionReference.serviceId == "Saas";
+                return subscription.subscriptionReference.serviceId == AccountService.SAAS_SERVICE_ID;
             });
             var used = _.pluck(saasSubscription.used, "memory");
             var usedMb = used.reduce(function(sum, use) {
@@ -198,16 +224,12 @@ angular.module('odeskApp')
             return deferred.promise;
         };
 
-        AccountService.getFactoryProposalSubscription = function() {
-            return {description : "Tracked Factory",  needToBuy: true, needToUpgrade: false};
-        };
-
         AccountService.getOnPremisesProposalSubscription = function() {
-            return {description : "On-Premises", needToBuy: true, needToUpgrade: false};
+            return {description : "On-Prem Subscription", buyTooltip: "Purchase a license to use Codenvy behind your firewall in your own private cloud.", needToBuy: true, serviceId: AccountService.ONPREMISES_SERVICE_ID};
         };
 
         AccountService.getSAASProposalSubscription = function() {
-            return {description : "SAAS Free Account", needToBuy: false, needToUpgrade: true, serviceId: "Saas"};
+            return {description : "SaaS Pay-as-you-Go Subscription", buyTooltip: "Add a credit card to use Codenvy without limits.", needToBuy: true, serviceId: AccountService.SAAS_SERVICE_ID};
         };
 
         //Remove subscription by it's ID:
@@ -223,14 +245,27 @@ angular.module('odeskApp')
             return deferred.promise;
         };
 
+        AccountService.addSubscription = function (accountId, planId, usePaymentSystem) {
+            var data = {};
+            data.accountId = accountId;
+            data.planId = planId;
+            data.trialDuration = 0;
+            data.usePaymentSystem = usePaymentSystem;
+            var con = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
 
-        AccountService.buySubscription = function(subscription) {
-            $window.open(BUY_SUBSCRIPTIONS_LINK, '_blank');
-        };
-
-
-        AccountService.addSubscription = function () {
-            //TODO
+            var deferred = $q.defer();
+            $http.post('/api/account/subscriptions/', data, con)
+                .success(function (data) {
+                    deferred.resolve(data); //resolve data
+                })
+                .error(function (err) {
+                    deferred.reject();
+                });
+            return deferred.promise;
         };
 
         return AccountService;

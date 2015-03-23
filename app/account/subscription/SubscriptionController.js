@@ -13,10 +13,18 @@
  */
 angular.module('odeskApp')
     .controller('SubscriptionCtrl', ["$scope", "AccountService", "$modal", "$location", function ($scope, AccountService, $modal, $location) {
+        var cancelPayAsYouGoTooltip = "Remove your credit card to return to a SaaS Free Account.";
+        var cancelPrePaidTooltip = "Cancel your pre-paid subscription.";
+        var cancelOnPromisesTooltip = "Cancel your on-prem subscription.";
+
+        var cancelPayAsYouGoLink = "#/account/billing";
+        var cancelPrePaidLink = "mailto:sales@codenvy.com?subject=" + escape("Cancellation of Pre-Paid Subscription");
+        var cancelOnPromisesLink = "mailto:sales@codenvy.com?subject=" + escape("Cancellation of On-Prem Subscription");
+
+
 
         $scope.accounts = [];
         $scope.subscriptions = [];
-        $scope.usedMemory = 0;
 
         AccountService.getAccountsByRole("account/owner").then(function (accounts) {
             $scope.accounts = accounts;
@@ -28,31 +36,23 @@ angular.module('odeskApp')
         $scope.loadSubscriptions = function (accounts) {
             AccountService.getAllSubscriptions(accounts).then(function () {
                 $scope.subscriptions = AccountService.subscriptions;
+                angular.forEach($scope.subscriptions, function(subscription) {
+                    if (subscription.serviceId === AccountService.SAAS_SERVICE_ID) {
+                        var prepaidGbH = subscription.properties.PrepaidGbH;
+                        subscription.cancelTooltip = prepaidGbH && parseInt(prepaidGbH) > 0 ? cancelPrePaidTooltip : cancelPayAsYouGoTooltip;
+                        subscription.cancelLink = prepaidGbH && parseInt(prepaidGbH) > 0 ? cancelPrePaidLink : cancelPayAsYouGoLink;
+                    } else if (subscription.serviceId === AccountService.ONPREMISES_SERVICE_ID) {
+                        subscription.cancelTooltip = cancelOnPromisesTooltip;
+                        subscription.cancelLink = cancelOnPromisesLink;
+                    }
+                });
                 $scope.addSubscriptionProposals();
-                //TODO need decision when more then one account:
-                $scope.getAccountResources(accounts[0]);
-
-            });
-        };
-
-        $scope.getAccountResources = function(account) {
-            AccountService.getAccountResources(account.id).then(function() {
-                $scope.usedMemory = AccountService.getUsedMemory(AccountService.resources);
             });
         };
 
         $scope.addSubscriptionProposals = function () {
             var services = _.pluck($scope.subscriptions, "serviceId");
             var hasOnPremises = services.indexOf("OnPremises") >= 0;
-            var hasFactory = services.indexOf("Factory") >= 0;
-
-            if (!hasOnPremises) {
-                $scope.subscriptions.push(AccountService.getOnPremisesProposalSubscription());
-            }
-
-            if (!hasFactory) {
-                $scope.subscriptions.push(AccountService.getFactoryProposalSubscription());
-            }
 
             var saasSubscription = _.find($scope.subscriptions, function (subscription) {
                 return subscription.serviceId == "Saas";
@@ -60,22 +60,29 @@ angular.module('odeskApp')
 
             if (saasSubscription) {
                 if (saasSubscription.properties && saasSubscription.properties["Package"] && saasSubscription.properties["Package"] == "Community"){
-                    saasSubscription.description = "SAAS Free Account";
-                    saasSubscription.needToBut = false;
-                    saasSubscription.needToUpgrade = true;
+                    $scope.subscriptions.splice($scope.subscriptions.indexOf(saasSubscription), 1);
+                    $scope.subscriptions.push(AccountService.getSAASProposalSubscription());
                 }
             } else {
-                $scope.subscriptions.push(AccountService.getSAASProposalSubscription);
+                $scope.subscriptions.push(AccountService.getSAASProposalSubscription());
             }
 
+            if (!hasOnPremises) {
+                $scope.subscriptions.push(AccountService.getOnPremisesProposalSubscription());
+            }
         };
 
         $scope.buySubscription = function(subscription) {
-            AccountService.buySubscription(subscription);
-        }
-
-        $scope.upgradeSubscription = function(subscription) {
-            $location.path("/account/billing");
+            if (subscription.serviceId === AccountService.SAAS_SERVICE_ID) {
+                $location.path("/account/billing");
+            } else if (subscription.serviceId === AccountService.ONPREMISES_SERVICE_ID) {
+                $modal.open({
+                    templateUrl: 'account/subscription/buyOnPremSubscriptionModal.html',
+                    size: 'lg',
+                    scope: $scope,
+                    subscription: subscription
+                }).result;
+            }
         }
 
         $scope.confirmCancelSubscription = function (subscription) {

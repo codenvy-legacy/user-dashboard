@@ -11,12 +11,12 @@
                     <h4 class="text-center">Usage and balance</h4>
 
                     <div class="row text-center" style="margin-top: 40px;">
-                        <div class="col-md-6">{{usedMemory}} GB Hours</div>
-                        <div class="col-md-6">0$</div>
+                        <div class="col-md-6">{{usedMemory}} GB Hours<div class="lockdown-label" ng-show="isLocked">Reached Limit</div></div>
+                        <div class="col-md-6">{{balance}} $</div>
                     </div>
                 </div>
             </div>
-            <div class="panel panel-default panel-ce">
+            <div class="panel panel-default panel-ce" ng-show="invoices && invoices.length > 0">
                 <div class="panel-body">
                     <h4 class="text-center">Invoices</h4>
 
@@ -28,12 +28,11 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="panel panel-default panel-ce" ng-class="{'display-none': creditCards && creditCards.length > 0}">
-                <div class="panel-body">
+            <div class="panel-default panel-ce" ng-class="{panel: (showNewCreditCardForm || (creditCards && creditCards.length > 0))}" id="creditCardPanel" tabindex="0">
+                <div class="panel-body" ng-show="showNewCreditCardForm">
                     <h4 class="text-center">Add credit card</h4>
                     <div class="cardWrapper"></div>
                     <form id="creditCardForm" name="creditCardForm">
-                        <!--<legend class="text-center">Billing Information</legend>-->
                         <div class="row">
                             <div class="col-xs-12 col-md-12">
                                 <label for="cardNumber"><span class="red">*</span>Card Number: </label>
@@ -98,9 +97,7 @@
                         </div>
                     </form>
                 </div>
-            </div>
-            <div class="panel panel-default panel-ce" ng-show="creditCards && creditCards.length > 0">
-                <div class="panel-body" id="creditCardPanel" tabindex="0">
+                <div class="panel-body" ng-show="creditCards && creditCards.length > 0">
                     <h4 class="text-center">CREDIT CARD INFORMATION</h4>
                         <div class="row" ng-repeat="card in creditCards">
                             <div class="col-md-8">
@@ -112,8 +109,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
+        </div>
         </div>
     </div>
 </div>

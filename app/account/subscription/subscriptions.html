@@ -10,10 +10,9 @@
                 <thead>
                 <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
                     <th style="width:54px"></th>
-                    <th class="col-md-2"><h4>NAME</h4></th>
+                    <th class="col-md-2"><h4>TYPE</h4></th>
                     <th class="col-md-2 text-center"><h4>ACTIVATION DATE</h4></th>
-                    <th class="col-md-2 text-center"><h4>EXPIRATION DATE</h4></th>
-                    <th class="col-md-2 text-center"><h4>CONSUMPTION</h4></th>
+                    <th class="col-md-2 text-center"><h4>NEXT RENEWAL</h4></th>
                     <th class="text-center" style="width:350px"><h4>ACTIONS</h4></th>
                 </tr>
                 </thead>
@@ -30,13 +29,8 @@
                         {{subscription.endDate ? subscription.endDate : "----"}}
                     </td>
                     <td class="text-center">
-                        <b ng-if="subscription.serviceId == 'Saas'">{{usedMemory}} GB hours</b><br>
-                        <p ng-if="subscription.serviceId == 'Saas' && accountMetrics.usedMemoryInCurrentBillingPeriod >= accountMetrics.freeMemory " class="lockdown-label">LOCKDOWN</p>
-                    </td>
-                    <td class="text-center">
-                        <button class="btn btn-xs grid-button" ng-if="!subscription.needToBuy && !subscription.needToUpgrade" ng-click="confirmCancelSubscription(subscription);">Cancel</button>
-                        <button class="btn btn-primary btn-xs grid-button" ng-if="subscription.needToBuy" ng-click="buySubscription(subscription);">BUY</button>
-                        <button class="btn btn-primary btn-xs grid-button" ng-if="subscription.needToUpgrade" ng-click="upgradeSubscription(subscription);" tooltip="Add a credit card to use Codenvy without limits.">REMOVE LIMITS</button>
+                        <a href="{{subscription.cancelLink}}" ng-if="!subscription.needToBuy" tooltip="{{subscription.cancelTooltip}}"><button class="btn btn-xs grid-button">Cancel</button></a>
+                        <button class="btn btn-primary btn-xs grid-button" ng-if="subscription.needToBuy" ng-click="buySubscription(subscription);" tooltip="{{subscription.buyTooltip}}">BUY</button>
                     </td>
                 </tr>
                 </tbody>

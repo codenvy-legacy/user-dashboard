@@ -17,14 +17,17 @@
 angular.module('odeskApp')
     .controller('BillingCtrl', function ($scope, $timeout, $modal, Countries, AccountService, PaymentService, InvoiceService, ProfileService) {
         $scope.accounts = [];
+        $scope.balance =  0;
         $scope.creditCards = [];
         $scope.countries = Countries.all();
         $scope.creditCard = {};
+        $scope.showNewCreditCardForm = false;
         $scope.addCreditCardError = '';
         $scope.usedMemory = 0;
         $scope.profile = {};
         $scope.invoices = [];
         $scope.isNewCreditCardAdded = false;
+        $scope.isLocked = false;
 
         var oldCardContainerClasses = null;
         var defaultCardValues = {
@@ -40,6 +43,7 @@ angular.module('odeskApp')
                 $scope.loadCreditCards(accounts);
                 $scope.loadInvoices(accounts[0]);
                 $scope.getAccountResources(accounts[0]);
+                $scope.getAccountAttributes(accounts[0]);
             }
         });
 
@@ -62,14 +66,21 @@ angular.module('odeskApp')
             });
         };
 
+        $scope.getAccountAttributes = function (account) {
+            AccountService.getAccountDetails(account.id).then(function () {
+                $scope.isLocked = !!(AccountService.accountDetails.attributes[AccountService.RESOURCES_LOCKED_PROPERTY]
+                && AccountService.accountDetails.attributes[AccountService.RESOURCES_LOCKED_PROPERTY] === 'true');
+            });
+        };
+
         $scope.loadCreditCards = function () {
             PaymentService.getCreditCards($scope.accounts[0].id).then(function () {
                 $scope.creditCards = PaymentService.crediCards;
+                $scope.showNewCreditCardForm = $scope.creditCards && $scope.creditCards.length == 0;
                 if ($scope.isNewCreditCardAdded){
-                    $timeout(function(){
-                        angular.element("#creditCardPanel").focus();
-                        $scope.isNewCreditCardAdded = false;
-                    }, 2000);
+                    angular.element("#creditCardPanel").focus();
+                    $scope.isNewCreditCardAdded = false;
+                    AccountService.addSubscription($scope.accounts[0].id, AccountService.SAAS_PLAN_ID, true);
                 }
             });
         };
@@ -77,7 +88,9 @@ angular.module('odeskApp')
         $scope.loadInvoices = function () {
             InvoiceService.getInvoices($scope.accounts[0].id).then(function () {
                 $scope.invoices = InvoiceService.invoices;
+                $scope.balance = 0;
                 angular.forEach($scope.invoices, function(invoice) {
+                    $scope.balance += invoice.total;
                     var link = _.find(invoice.links, function(link) {
                         return link.rel == "html view";
                     })
@@ -124,6 +137,7 @@ angular.module('odeskApp')
             PaymentService.addCreditCard($scope.accounts[0].id, $scope.creditCard).then(function () {
                 $('#warning-creditCard-alert .alert-danger').hide();
                 $scope.initCreditCard();
+                $scope.showNewCreditCardForm = false;
                 $scope.isNewCreditCardAdded = true;
                 $scope.loadCreditCards();
 
