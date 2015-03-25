@@ -590,6 +590,12 @@ angular.module('odeskApp')
             } else {
                 $scope.filter = {};
             }
+
+            $http({ method: 'GET', url: '/api/account' }).success(function (account, status) {
+                $scope.ownerWorkspace = _.pluck(_.pluck(account, 'accountReference'), 'name');
+                $scope.currentUserId = account[0].userId;
+            });
+
             Workspace.all(true).then(function (resp) {
                 $scope.workspaces = Workspace.workspaces;
 
@@ -606,8 +612,8 @@ angular.module('odeskApp')
 
                 ProfileService.getPreferences().then(function (data) {
                     if (data.resetPassword && data.resetPassword == 'true') {
-                        if ($cookieStore.get('resetPassword') != true) {
-                            $cookieStore.put('resetPassword', true);
+                        if ($cookieStore.get('resetPassword') != $scope.currentUserId) {
+                            $cookieStore.put('resetPassword', $scope.currentUserId);
                             $('#defineUserPassword').modal('toggle'); // show once per session
                         }
                     }
@@ -642,12 +648,6 @@ angular.module('odeskApp')
                         });
                     });
                 });
-            });
-
-
-            $http({ method: 'GET', url: '/api/account' }).success(function (account, status) {
-                $scope.ownerWorkspace = _.pluck(_.pluck(account, 'accountReference'), 'name');
-                $scope.currentUserId = account[0].userId;
             });
 
             $timeout(function () {
