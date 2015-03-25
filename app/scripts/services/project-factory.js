@@ -97,7 +97,7 @@ angular.module('odeskApp')
                         codenvyGuidedTour: [
                             "https://gist.githubusercontent.com/benoitf/3e0120e79167243eda19/raw/a56b177cd2a4057a6ba2e5cd1486b67bf8cc8976/gistfile1.json"
                         ] },
-                    description: "Getting Started Guided Tour"
+                    description: "Get started with Codenvy by following guided tour on this sample Spring application"
                 },
                 source: {
                     project: {
