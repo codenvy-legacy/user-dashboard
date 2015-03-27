@@ -26,6 +26,7 @@
   <link rel="stylesheet" type="text/css" href="bower_components/codemirror/addon/lint/lint.css">
   <link rel="stylesheet" type="text/css" href="bower_components/codemirror/addon/fold/foldgutter.css">
   <link rel="stylesheet" type="text/css" href="bower_components/codemirror/theme/mdn-like.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/card/lib/css/card.css">
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css({.tmp,app}) styles/main.css -->
@@ -108,6 +109,7 @@
 <script src="bower_components/zeroclipboard/dist/ZeroClipboard.js"></script>
 <script src="bower_components/ng-clip/src/ngClip.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/braintree-angular/dist/braintree-angular.js"></script>
 <script src="bower_components/angular-animate/angular-animate.js"></script>
 <script src="bower_components/angular-resource/angular-resource.js"></script>
 <script src="bower_components/angular-cookies/angular-cookies.js"></script>
@@ -129,6 +131,7 @@
 <script src="bower_components/angular-ui-select/dist/select.js"></script>
 <script src="bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
 <script src="bower_components/angular-file-upload/angular-file-upload.js"></script>
+<script src="bower_components/card/lib/js/card.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -142,14 +145,20 @@
 <script src="scripts/controllers/factory.js"></script>
 <script src="scripts/controllers/factories.js"></script>
 <script src="scripts/controllers/stats.js"></script>
-<script src="scripts/controllers/account.js"></script>
+<script src="account/AccountService.js"></script>
+<script src="account/subscription/SubscriptionController.js"></script>
+<script src="account/ProfileController.js"></script>
+<script src="account/ProfileService.js"></script>
 <script src="scripts/controllers/organizations.js"></script>
 <script src="scripts/controllers/workspace_info.js"></script>
 <script src="scripts/controllers/orgdetail.js"></script>
 <script src="scripts/controllers/admin.js"></script>
+<script src="account/billing/BillingController.js"></script>
+<script src="account/billing/InvoiceService.js"></script>
+<script src="account/billing/PaymentService.js"></script>
 <script src="scripts/services/services.js"></script>
-<script src="scripts/controllers/subscriptions.js"></script>
-<script src="scripts/controllers/subscriptiondetail.js"></script>
+<!--<script src="scripts/controllers/subscriptions.js"></script>
+<script src="scripts/controllers/subscriptiondetail.js"></script>-->
 <script src="scripts/services/new-project.js"></script>
 <script src="scripts/services/new-factory.js"></script>
 <script src="scripts/controllers/newProject.js"></script>
@@ -163,7 +172,6 @@
 <script src="scripts/services/git-hub-rest-service.js"></script>
 <script src="scripts/services/runnerService.js"></script>
 <script src="scripts/services/project-factory.js"></script>
-<script src="scripts/services/ProfileService.js"></script>
 <!-- endbuild -->
 </body>
 </html>

@@ -67,6 +67,7 @@ li.no-bdr{border: 0px !important; background: none !important}
 .action-button { min-height:36px;background:none !important; padding: 0px 15px !important; border:none;/* position: fixed;*/ width: 100%; z-index: 999; margin-bottom: 0;}
 .action-button > li + li:before { content: none; } 
 .action-button li a { color: #177eb7;}
+.grid-button {text-transform: none  !important; width: 110px; border-radius: 0px}
 
 .jqstooltip { border: 0 none !important; display: block !important; padding: 0 !important; }
 .jqsfield { display: inline-block; line-height: 13px; padding: 4px 5px 5px; }
@@ -1015,6 +1016,9 @@ img.bordered { min-height: 44px; min-width: 44px; display: block;}
   }
   body {
     padding-top: 0;
+    font-size: 13px;
+    color: #dbdbdb;
+    font-family:"Helvetica Neue", "Myriad Pro", arial, Verdana, Verdana, sans-serif;
   }
   .breadcrumb-wrap,
   .navbar-fixed-top {
@@ -1526,6 +1530,71 @@ a.message{
     border-top-color: #fff;
 }
 
+.panel h4 {
+    font-size: 12px;
+}
+
+#creditCardForm input,
+#creditCardForm #country {
+    color: #8b8b8b;
+    font-size: 14px;
+}
+
+.red {
+    color: red;
+    font-size: 12px;
+    margin-right: 3px;
+    font-weight: bold;
+}
+
+#creditCardForm input:invalid {
+    border: 1px solid red;
+    box-shadow: 0px 0px 8px #FF8F8F;
+}
+
+.display-none {
+    display: none;
+}
+
+.cardWrapper {
+    margin-top: 25px;
+    margin-bottom: 30px;
+}
+
+.cardWrapper .card:before {
+    content: '';
+    position: absolute;
+    top: -11px;
+    left: -14px;
+    right: -14px;
+    bottom: -8px;
+    border-radius:0;
+    background-color: rgba(223,223,223,0.5);
+}
+
+.cardWrapper .card .number.display {
+    font-weight: bold;
+}
+
+.cardWrapper .card .name.display {
+    font-weight: bold;
+    font-family:"Helvetica Neue", "Myriad Pro", arial, Verdana, Verdana, sans-serif;
+}
+
+.cardWrapper .card .expiry.display {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.cardWrapper .card .expiry.display:before {
+    font-size: 10px;
+    font-family:"Helvetica Neue", "Myriad Pro", arial, Verdana, Verdana, sans-serif;
+}
+
+.cardWrapper .card .expiry.display:after {
+    font-size: 10px;
+    font-family:"Helvetica Neue", "Myriad Pro", arial, Verdana, Verdana, sans-serif;
+}
 /* loader.
 ----------------------------------------------*/
 
@@ -1619,6 +1688,7 @@ html[dir="rtl"] .select2-search input {
 .select2-choices li.select2-search-field {
     float: none;
 }
+
 .CodeMirror {
     z-index: 1060;
     border: solid 1px #e5e5e5;
@@ -1986,4 +2056,13 @@ html[dir="rtl"] .select2-search input {
 /* Form validation */
 .css-form input.ng-invalid.ng-touched, .css-form textarea.ng-invalid.ng-touched {
     border-color: rgb(169, 68, 66);
+}
+
+.lockdown-label {
+    background-color: red;
+    color: #FFFFFF;
+    padding: 2px 10px;
+    font-size: 9px;
+    display: inline;
+    margin-left: 10px;
 }

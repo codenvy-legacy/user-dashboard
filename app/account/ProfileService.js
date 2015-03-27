@@ -60,7 +60,7 @@ angular.module('odeskApp')
                     deferred.reject();
                 });
             return deferred.promise;
-        };
+        }
 
 
         ProfileService.getPreferences = function () {
@@ -74,7 +74,7 @@ angular.module('odeskApp')
                     deferred.reject(err);
                 });
             return deferred.promise;
-        };
+        }
 
         ProfileService.updatePreferences = function (preferences) {
             var deferred = $q.defer();
@@ -90,10 +90,10 @@ angular.module('odeskApp')
                     deferred.resolve(data); //resolve data
                 })
                 .error(function (err) {
-                    deferred.reject(err);
+                    deferred.reject();
                 });
             return deferred.promise;
-        };
+        }
 
         ProfileService.removePreference = function (preferences) {
             var deferred = $q.defer();
@@ -106,10 +106,10 @@ angular.module('odeskApp')
             $http(config).success(function (data) {
                 deferred.resolve(data);
             }).error(function (err) {
-                deferred.reject(err);
+                deferred.reject();
             });
             return deferred.promise;
-        };
+        }
 
         return ProfileService;
     }]);

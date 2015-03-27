@@ -17,8 +17,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('NavbarCtrl', function ($scope, $rootScope, $location, $http, $cookies, $window, Account, OrgAddon, ProfileService, $q) {
-
+    .controller('NavbarCtrl', function ($scope, $rootScope, $location, $http, $cookies, $window, OrgAddon, ProfileService, $q) {
         $scope.menu = [
             /*//{
             //    'title': 'Admin',

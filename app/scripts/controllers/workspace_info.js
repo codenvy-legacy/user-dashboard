@@ -16,7 +16,8 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('workspaceInfoCtrl', function ($scope, Account, OrgAddon, ProfileService, Workspace, WorkspaceInfo, $http, $q, $route, $timeout) {
+    .controller('workspaceInfoCtrl', function ($scope, AccountService, OrgAddon, ProfileService, Users, Workspace, WorkspaceInfo,
+                                               $http, $q, $route, $timeout) {
 
         $scope.$on('orgAddonDataUpdated', function () {
             $scope.accounts = OrgAddon.accounts;
@@ -108,82 +109,82 @@ angular.module('odeskApp')
             $scope.account_members = [];
             $scope.selectedMembers = [];
 
-            // Display workspace details in workspace
+            // Get workspace detail
             WorkspaceInfo.getDetail($scope.workspaceId).then(function (response) {
                 var members = [];
-                return $q.all([
-                    // Get all members of the current workspace
-                    $http({method: 'GET', url: "/api/workspace/" + $scope.workspaceId + "/members" })
-                        .success(function (data) {
-                            angular.forEach(data, function (member) {
-                                var email, name;
-                                var role = $scope.userRolesToStr(member['roles']);
-                                //  Get member's email and name
+                var count = 0;
 
-                                return $q.all([
-                                    ProfileService.getProfileByUserId(member['userId']).then(function (data) {
-                                            email = data['attributes'].email;
-                                            var firstName = data['attributes'].firstName || "";
-                                            var lastName = data['attributes'].lastName || "";
-                                            name = (firstName && lastName) ? firstName + " " + lastName : firstName + lastName;
-                                        })
-                                ]).then(function (results) {
-
-
-                                    var memberDetails = {
-                                        id: member['userId'],
-                                        role: role,
-                                        email: email,
-                                        name: name
-                                    };
-
-                                    members.push(memberDetails);
-                                    $scope.updateFreeEmails();
-                                });
-
-                            });
-                        })
-
-                ]).then(function (results) {
-                    $scope.workspace = {
-                        id: $scope.workspaceId,
-                        name: response.name,
-                        members: members
-                    }
-                });
-            });
-
-
-            // Get all members of the current organization/account
-            $http({method: 'GET', url: '/api/account/' + $scope.currentAccount.id + '/members'})
-                .success(function (members) {
-                    var count = 0;
-
-                    angular.forEach(members, function (member) {
+                // Get all members of the current workspace
+                Workspace.getMembersForWorkspace($scope.workspaceId).then(function (data) {
+                    angular.forEach(data, function (member) {
+                        var email, name;
+                        var role = $scope.userRolesToStr(member['roles']);
                         //  Get member's email and name
-                        var email;
-                        var name;
                         ProfileService.getProfileByUserId(member['userId']).then(function (data) {
-                            count++;
+                            count ++;
                             email = data['attributes'].email;
                             var firstName = data['attributes'].firstName || "";
                             var lastName = data['attributes'].lastName || "";
                             name = (firstName && lastName) ? firstName + " " + lastName : firstName + lastName;
                             var memberDetails = {
                                 id: member['userId'],
-                                role: member['roles'][0].split("/")[1],
+                                role: role,
                                 email: email,
                                 name: name
                             };
-                            $scope.account_members.push(memberDetails);
-                        }, function(err){
-                            count++;
-                            if(count == members.length){
+                            members.push(memberDetails);
+                            if(count == members.length) {
+                                $scope.workspace = {
+                                    id: $scope.workspaceId,
+                                    name: response.name,
+                                    members: members
+                                };
                                 $scope.updateFreeEmails();
                             }
+                        }, function (error) {
+                            count ++;
+                            $scope.workspace = {
+                                id: $scope.workspaceId,
+                                name: response.name,
+                                members: members
+                            };
+                            $scope.updateFreeEmails();
                         });
                     });
+                })
+            });
+
+
+            // Get all members of the current organization/account
+            AccountService.getMembers($scope.currentAccount.id).then(function (members) {
+                var count = 0;
+
+                angular.forEach(members, function (member) {
+                    //  Get member's email and name
+                    var email;
+                    var name;
+                    ProfileService.getProfileByUserId(member['userId']).then(function (data) {
+                        count++;
+                        email = data['attributes'].email;
+                        var firstName = data['attributes'].firstName || "";
+                        var lastName = data['attributes'].lastName || "";
+                        name = (firstName && lastName) ? firstName + " " + lastName : firstName + lastName;
+                        var memberDetails = {
+                            id: member['userId'],
+                            role: member['roles'][0].split("/")[1],
+                            email: email,
+                            name: name
+                        };
+                        $scope.account_members.push(memberDetails);
+                        if(count == members.length){
+                            $scope.updateFreeEmails();
+                        }
+                    }, function (error) {
+                        count++;
+                        $scope.updateFreeEmails();
+                    });
                 });
+            });
         };
 
         // Remove member from selected list
@@ -223,19 +224,10 @@ angular.module('odeskApp')
 
             if (selectedMembers.length > 0) {
                 $("#selectedMembers").parent().removeClass('has-error');
-                $("#emptyEmails").hide();
                 angular.forEach(selectedMemberEmails, function (memberEmail) {
                     var email, name, userId;
-                    return $q.all([
-                        $http({method: 'GET', url: '/api/user/find', params: {email: memberEmail}})
-                            .success(function (data) {
-                                userId = data["id"]
-                            })
-                            .error(function (err) {
-                                $scope.userNotFoundList.push(memberEmail);
-                            })
-
-                    ]).then(function (results) {
+                    Users.getUserByEmail(memberEmail).then(function (data) {
+                        userId = data["id"];
                         var foundMember = _.find($scope.account_members, function (member) {
                             if (member.id == userId) return member;
                         });
@@ -276,6 +268,8 @@ angular.module('odeskApp')
                             $scope.userNotMemberList.push(memberEmail);
                             $("#userAlreadyAdded").hide();
                         }
+                    }, function (error) {
+                        $scope.userNotFoundList.push(memberEmail);
                     });
                 });
                 $("#selectedMembers").val("");
@@ -314,9 +308,7 @@ angular.module('odeskApp')
                         "roles": rolesArray
                     };
 
-                    $http.post('/api/workspace/' + $scope.workspaceId + "/members",
-                        data,
-                        con)
+                    $http.post('/api/workspace/' + $scope.workspaceId + "/members", data, con)
                         .success(function (data) {
                             var memberDetails = {
                                 id: data.userId,
@@ -365,7 +357,7 @@ angular.module('odeskApp')
                     alert("It is impossible to remove this user from the organization or update his role. The organization needs at least one workspace/admin.");
                     deferred.reject();
                 });
-        }
+        };
 
         $scope.updateWsMember = function (member) {
             $scope.editWsMember = member;
@@ -420,7 +412,6 @@ angular.module('odeskApp')
                 });
 
         };
-
 
         if (OrgAddon.accounts.length > 0) {
             $scope.init();
