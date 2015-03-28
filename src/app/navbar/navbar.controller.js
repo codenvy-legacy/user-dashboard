@@ -16,12 +16,21 @@ class NavBarCtrl {
    * Default constructor
    * @ngInject for Dependency injection
    */
-  constructor ($mdSidenav, userDashboardConfig) {
+  constructor($mdSidenav, userDashboardConfig, codenvyAPI) {
     this.mdSidenav = $mdSidenav;
+    this.codenvyAPI = codenvyAPI;
     this.links =[{href:'#/projects', name:'List Projects'}
-    ]
+    ];
 
     this.displayLoginItem = userDashboardConfig.developmentMode;
+    this.updateData();
+  }
+
+  /**
+   * Update profile data
+   */
+  updateData() {
+    this.profile = this.codenvyAPI.getProfile().getProfile();
   }
 
   /**
