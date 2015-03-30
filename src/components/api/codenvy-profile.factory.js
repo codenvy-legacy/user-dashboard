@@ -49,6 +49,21 @@ class CodenvyProfile {
   }
 
   /**
+   * Gets the full name if it possible
+   * @return full name or blank
+   */
+  getFullName() {
+    if(typeof this.profile.attributes === 'undefined'){
+      this.fullName = "";
+    } else {
+      var firstName = typeof this.profile.attributes.firstName === 'undefined' ? "": this.profile.attributes.firstName;
+      var lastName = typeof this.profile.attributes.lastName === 'undefined' ? "": this.profile.attributes.lastName;
+      this.fullName = firstName + " " + lastName;
+    }
+    return this.fullName;
+  }
+
+  /**
    * Gets the profile data
    */
   fetchProfile() {

@@ -23,14 +23,19 @@ class NavBarCtrl {
     ];
 
     this.displayLoginItem = userDashboardConfig.developmentMode;
-    this.updateData();
+    this.profile = codenvyAPI.getProfile().getProfile();
+    this.fullName = "";
+    this.email = "";
   }
 
   /**
-   * Update profile data
+   * Update current full name and email
    */
   updateData() {
-    this.profile = this.codenvyAPI.getProfile().getProfile();
+    this.fullName = this.codenvyAPI.getProfile().getFullName();
+    if(typeof this.profile.attributes !== 'undefined') {
+      this.email = this.profile.attributes.email;
+    }
   }
 
   /**

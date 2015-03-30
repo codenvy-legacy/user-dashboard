@@ -51,10 +51,10 @@
   </section>
   <section layout="column" layout-align="center center">&nbsp;</section>
   <md-divider md-theme="factory-theme"></md-divider>
-  <div class="navbar-menu" ng-if="navbarCtrl.profile.$resolved">
-    <div ng-init="isExpand=true">
-      <img class="developers-face" gravatar-src="navbarCtrl.profile.attributes.email">
-      <span>{{navbarCtrl.profile.attributes.firstName}}&nbsp;{{navbarCtrl.profile.attributes.lastName}}</span>
+  <div class="navbar-menu" ng-if="navbarCtrl.profile.$resolved" ng-init="navbarCtrl.updateData(); isExpand=true">
+    <div>
+      <img class="developers-face" gravatar-src="navbarCtrl.email">
+      <span>{{navbarCtrl.fullName}}</span>
       <i class="material-design icon-ic_expand_more_24px md-tab-themed" ng-click='isExpand=!isExpand'>&nbsp;</i>
     </div>
     <section class="animation" layout="column" layout-align="center center" ng-if="isExpand" >
