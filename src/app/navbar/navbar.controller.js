@@ -9,18 +9,20 @@
  *   Codenvy, S.A. - initial API and implementation
  */
 'use strict';
-/*jshint esnext: true */
 
-class NavbarCtrl {
+class NavBarCtrl {
 
   /**
    * Default constructor
    * @ngInject for Dependency injection
    */
-  constructor ($mdSidenav) {
+  constructor ($mdSidenav, userDashboardConfig) {
     this.mdSidenav = $mdSidenav;
-  }
+    this.links =[{href:'#/projects', name:'List Projects'}
+    ]
 
+    this.displayLoginItem = userDashboardConfig.developmentMode;
+  }
 
   /**
    * Toggle the left menu
@@ -29,6 +31,8 @@ class NavbarCtrl {
     this.mdSidenav('left').toggle();
   }
 
+
+
 }
 
-export default NavbarCtrl;
+export default NavBarCtrl;

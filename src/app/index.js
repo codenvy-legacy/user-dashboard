@@ -14,10 +14,12 @@
 var DEV = true;
 
 // init module
-let module = angular.module('userDashboard', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ngRoute', 'angular-websocket', 'ui.bootstrap', 'ui.codemirror', 'ngMaterial', 'ngMessages', 'angularMoment', 'angular.filter', 'ngDropdowns']);
+let module = angular.module('userDashboard', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ngRoute', 'angular-websocket', 'ui.bootstrap', 'ui.codemirror', 'ngMaterial', 'ngMessages', 'angularMoment', 'angular.filter', 'ngDropdowns', 'ui.gravatar']);
 
 import Register from '../components/utils/register';
 
+// colors
+import Colors from './colors/codenvy-color.constant.js';
 
 // import components
 import ComponentsConfig from '../components/components-config';
@@ -34,10 +36,12 @@ import DemoComponentsCtrl from './demo-components/demo-components.controller';
 import LoginCtrl from './main/login.controller';
 
 // import navabr
-import NavbarCtrl from './navbar/navbar.controller';
+import NavBarCtrl from './navbar/navbar.controller';
+import NavBar from './navbar/navbar.directive.js';
 
 var instanceRegister = Register.getInstance();
-
+instanceRegister.directive('cdvyNavBar', NavBar);
+instanceRegister.controller('NavbarCtrl', NavBarCtrl);
 
 // import projects
 import FactoryConfig from './factories/factories-config';
@@ -51,7 +55,6 @@ new ProjectsConfig(instanceRegister);
 
 // and setup controllers
 module.controller('DashboardCtrl', DashboardCtrl)
-  .controller('NavbarCtrl', NavbarCtrl)
   .controller('LoginCtrl', LoginCtrl)
   .controller('DemoComponentsCtrl', DemoComponentsCtrl);
 
@@ -85,6 +88,8 @@ module.config(function ($routeProvider) {
 
 })
 ;
+
+
 
 
 // add interceptors
@@ -178,10 +183,27 @@ module.factory('LogInterceptor', function ($q) {
   };
 });
 
-module.config(function($mdThemingProvider) {
+
+module.config(function($mdThemingProvider, jsonColors) {
+
+  var codenvyColors = angular.fromJson(jsonColors);
+  var getColor = function(key) {
+    var color = codenvyColors[key];
+    if (!color) {
+      // return a flashy red color if color is undefined
+      console.log('error, the color' + key + 'is undefined');
+      return '#ff0000';
+    }
+    if (color.indexOf('$') == 0) {
+      color = getColor(color);
+    }
+    return color;
+
+  }
+
 
   var codenvyMap = $mdThemingProvider.extendPalette('indigo', {
-    '500': '2b333e',
+    '500': getColor('$dark-menu-color'),
     '300' : 'D0D0D0'
   });
   $mdThemingProvider.definePalette('codenvy', codenvyMap);
@@ -192,15 +214,15 @@ module.config(function($mdThemingProvider) {
 
   var codenvyDefaultMap = $mdThemingProvider.extendPalette('blue', {
     'A400'  : '538DAB'/*,
-    '700': '538DAB'*/
+     '700': '538DAB'*/
   });
   $mdThemingProvider.definePalette('codenvyDefault', codenvyDefaultMap);
 
 
   var codenvyAccentMap = $mdThemingProvider.extendPalette('green', {
-    '700' : '00897B',
-    'A400': '3d8f76',
-    'A200': '00897B',
+    '700' : getColor('$codenvy-green-color'),
+    'A400': getColor('$codenvy-green-color'),
+    'A200': getColor('$codenvy-green-color'),
     'contrastDefaultColor': 'light'
   });
   $mdThemingProvider.definePalette('codenvyAccent', codenvyAccentMap);
@@ -239,7 +261,7 @@ module.config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default')
     .primaryPalette('codenvy')
     .accentPalette('codenvyAccent')
-  .backgroundPalette('grey');
+    .backgroundPalette('grey');
 
   $mdThemingProvider.theme('toolbar-theme')
     .primaryPalette('toolbarPrimaryPalette')
@@ -248,8 +270,8 @@ module.config(function($mdThemingProvider) {
   $mdThemingProvider.theme('factory-theme')
     .primaryPalette('light-blue')
     .accentPalette('pink')
-  .warnPalette('red')
-  .backgroundPalette('purple');
+    .warnPalette('red')
+    .backgroundPalette('purple');
 
   $mdThemingProvider.theme('maincontent-theme')
     .primaryPalette('codenvy')
@@ -257,11 +279,11 @@ module.config(function($mdThemingProvider) {
     .backgroundPalette('codenvyGrey');
 
 
-
-
-
 });
 
+module.constant('userDashboardConfig', {
+  developmentMode: DEV
+});
 
 module.config(function ($routeProvider, $locationProvider, $httpProvider) {
 
@@ -274,3 +296,14 @@ module.config(function ($routeProvider, $locationProvider, $httpProvider) {
 });
 
 
+angular.module('ui.gravatar').config(['gravatarServiceProvider', function(gravatarServiceProvider) {
+    gravatarServiceProvider.defaults = {
+      size     : 43,
+      "default": 'mm'  // Mystery man as default for missing avatars
+    };
+
+    // Use https endpoint
+    gravatarServiceProvider.secure = true;
+
+  }
+]);

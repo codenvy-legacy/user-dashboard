@@ -51,7 +51,7 @@ gulp.task('html', ['inject', 'partials'], function () {
   return gulp.src(paths.tmp + '/serve/*.html')
     .pipe($.inject(partialsInjectFile, partialsInjectOptions))
     .pipe(assets = $.useref.assets())
-    .pipe($.rev())
+    /*.pipe($.rev())*/
     .pipe(jsFilter)
     .pipe($.ngAnnotate())
     .pipe($.uglify(/*{preserveComments: $.uglifySaveLicense}*/))
@@ -85,12 +85,27 @@ gulp.task('existingfonts', function () {
     .pipe(gulp.dest(paths.dist + '/fonts/'));
 });
 
-gulp.task('fonts', ['existingfonts'], function () {
+gulp.task('fonts', ['colors', 'existingfonts'], function () {
   return gulp.src($.mainBowerFiles())
     .pipe($.filter('**/*.{eot,svg,ttf,otf,woff,woff2}'))
     .pipe($.flatten())
     .pipe(gulp.dest(paths.dist + '/fonts/'));
 });
+
+var fs = require('fs');
+gulp.task('colorstemplate', function () {
+  return gulp.src('src/app/colors/codenvy-color.constant.js.template')
+    .pipe($.replace('%CONTENT%', fs.readFileSync('src/app/colors/codenvy-colors.json')))
+    .pipe(gulp.dest('src/app/colors/template'));
+});
+
+gulp.task('colors', ['colorstemplate'], function () {
+  return gulp.src("src/app/colors/template/codenvy-color.constant.js.template")
+    .pipe($.rename("codenvy-color.constant.js"))
+    .pipe(gulp.dest("src/app/colors"));
+});
+
+
 
 gulp.task('misc', function () {
   return gulp.src(paths.src + '/**/*.ico')
@@ -98,7 +113,7 @@ gulp.task('misc', function () {
 });
 
 gulp.task('clean', function (done) {
-  $.del([paths.dist + '/', paths.tmp + '/'], done);
+  $.del([paths.dist + '/', paths.tmp + '/', paths.doc + '/'], done);
 });
 
 gulp.task('build', ['html', 'images', 'fonts', 'misc']);

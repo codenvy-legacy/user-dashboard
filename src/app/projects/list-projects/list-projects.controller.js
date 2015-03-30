@@ -11,7 +11,9 @@
 'use strict';
 
 /**
- * This class is handling the controller for listing the projects
+ * @ngdoc controller
+ * @name projects.list.controller:ListProjectsCtrl
+ * @description This class is handling the controller for listing the projects
  * @author Florent Benoit
  */
 class ListProjectsCtrl {
@@ -25,6 +27,8 @@ class ListProjectsCtrl {
     this.workspace = codenvyAPI.getWorkspace();
 
     this.state = 'loading';
+
+    this.filtersWorkspaceSelected = {};
 
     // fetch workspaces when initializing
     let promise = this.workspace.fetchWorkspaces();
@@ -42,10 +46,30 @@ class ListProjectsCtrl {
       });
 
 
+    this.dropDownOptionsList = [
+      /*{
+        name: 'Bulk Edit'
+      },*/ {
+        name: 'Filter Workspace', id: 'workspaceFilter'
+      }/*, {
+        name: 'Favorited Projects'
+      }*/
+    ];
+
+    // by default, the workspace filter is hidden
+    this.displayWorkspaceFilter = false;
+
   }
 
   updateData() {
     this.workspacesById = this.workspace.getWorkspacesById();
+    this.workspaces = this.workspace.getWorkspaces();
+
+    // init the filters of workspaces
+    this.workspaces.forEach((workspace) => {
+      this.filtersWorkspaceSelected[workspace.workspaceReference.id] = true;
+    });
+
     this.projectsPerWorkspace = this.codenvyAPI.getProject().getProjectsByWorkspace();
     this.state = 'loaded';
   }
@@ -57,6 +81,35 @@ class ListProjectsCtrl {
    */
   getWorkspaceName(workspaceId) {
     return this.workspacesById.get(workspaceId).workspaceReference.name;
+  }
+
+  /**
+   * Callback called when the dropdown on the list projects is called
+   * @param selected the selected element
+   */
+  dropDownSelected(selected) {
+    // hit the workspace filter
+    if ('workspaceFilter' === selected.id) {
+        this.displayWorkspaceFilter = true;
+    }
+  }
+
+
+  /**
+   * Hide the workspace filter menu
+   */
+  hideWorkspaceFilter() {
+    this.displayWorkspaceFilter = false;
+  }
+
+  /**
+   * All workspaces should be selected
+   */
+  resetWorkspaceFilter() {
+    var keys = Object.keys(this.filtersWorkspaceSelected);
+    keys.forEach((key) => {
+      this.filtersWorkspaceSelected[key] = true;
+    });
   }
 
 

@@ -45,6 +45,11 @@ class CreateProjectGit {
         return;
       }
 
+      // no focus, abort
+      if (!$scope.createProjectGitCtrl.focus) {
+        return;
+      }
+
       // get current url
       var uri = newValue.source.project.location;
 
@@ -55,7 +60,7 @@ class CreateProjectGit {
       // search if repository is ending with . (for example .git) or the last name
       var indexFinishProjectName = uri.lastIndexOf('.');
       var indexStartProjectName;
-      if (uri.lastIndexOf('/') != -1) {
+      if (uri.lastIndexOf('/') !== -1) {
         indexStartProjectName = uri.lastIndexOf('/') + 1;
       } else {
         indexStartProjectName = uri.lastIndexOf(':') + 1;
@@ -65,9 +70,9 @@ class CreateProjectGit {
       var name;
 
       // extract name with .../dummy.git
-      if (indexStartProjectName != 0 && indexStartProjectName < indexFinishProjectName) {
+      if (indexStartProjectName !== 0 && indexStartProjectName < indexFinishProjectName) {
         name = uri.substring(indexStartProjectName, indexFinishProjectName);
-      } else if (indexStartProjectName != 0) {
+      } else if (indexStartProjectName !== 0) {
         // extract ...../dummy
         name = uri.substring(indexStartProjectName);
       } else {

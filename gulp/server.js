@@ -44,7 +44,7 @@ function browserSyncInit(baseDir, files, browser) {
   });
 }
 
-gulp.task('serve', ['watch'], function () {
+gulp.task('serve', ['colors', 'watch'], function () {
   browserSyncInit([
     paths.tmp + '/serve',
     paths.src
@@ -63,6 +63,10 @@ gulp.task('serve:app', ['serve'], function () {
 
 gulp.task('serve:dist', ['build'], function () {
   browserSyncInit(paths.dist);
+});
+
+gulp.task('serve:docs', ['ngdocs'], function () {
+  browserSyncInit(paths.doc);
 });
 
 gulp.task('serve:e2e', ['inject'], function () {

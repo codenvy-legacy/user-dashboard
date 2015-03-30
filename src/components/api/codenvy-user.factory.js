@@ -28,7 +28,16 @@ class CodenvyUser {
     this.$resource = $resource;
 
     // remote call
-    this.remoteUserAPI = this.$resource('/api/user');
+    this.remoteUserAPI = this.$resource('/api/user',{}, {
+      findByID: {method: 'GET', url: '/api/user/:userId'},
+      findByEmail: {method: 'GET', url: '/api/user/find?email=:userEmail'}
+    });
+
+    // users by ID
+    this.useridMap = new Map();
+
+    // users by email
+    this.userEmailMap = new Map();
 
     // fetch the user when we're initialized
     this.fetchUser();
@@ -59,6 +68,35 @@ class CodenvyUser {
     // check if if was OK or not
     promise.then(() => {this.isLogged = true;}, () => {this.isLogged = false;});
     return promise;
+  }
+
+
+  fetchUserId(userId) {
+    let promise = this.remoteUserAPI.findByID({userId: userId}).$promise;
+    let parsedResultPromise = promise.then((user) => {
+      this.useridMap.set(userId, user);
+    });
+
+    return parsedResultPromise;
+
+  }
+
+  getUserFromId(userId) {
+    return this.useridMap.get(userId);
+  }
+
+  fetchUserEmail(userEmail) {
+    let promise = this.remoteUserAPI.findByEmail({userEmail: userEmail}).$promise;
+    let parsedResultPromise = promise.then((user) => {
+      this.userEmailMap.set(userEmail, user);
+    });
+
+    return parsedResultPromise;
+
+  }
+
+  getUserFromEmail(userEmail) {
+    return this.userEmailMap.get(userEmail);
   }
 
 }
