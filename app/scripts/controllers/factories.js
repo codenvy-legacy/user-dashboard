@@ -384,7 +384,7 @@ angular.module('odeskApp')
 	
         $scope.projects = [];
 
-        Workspace.all(true).then(function (resp) {
+        Workspace.all(true, false).then(function (resp) {
 			$scope.workspaces = Workspace.workspaces;
 
 			angular.forEach($scope.workspaces, function (value) {
