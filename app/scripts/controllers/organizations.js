@@ -201,64 +201,59 @@ angular.module('odeskApp')
             $scope.defineProperValue = false;
             $scope.primaryWorkspace = {'name': ''};
 
-            // Display workspace details in workspace
-            $http({method: 'GET', url: '/api/workspace/find/account?id=' + $scope.currentAccount.id})
-                .success(function (workspaces) {
+            Workspace.all(true, true).then(function (workspaces) {
+                angular.forEach(workspaces, function (workspace) {
+                    //  Get workspace's projects and developers using workspace id
+                    WorkspaceInfo.getDetail(workspace.id).then(function (response) {
 
-                    angular.forEach(workspaces, function (workspace) {
-                        //  Get workspace's projects and developers using workspace id
-                        WorkspaceInfo.getDetail(workspace.id).then(function (response) {
-
-                            var projectsLength = 0;
-                            var projectsName;
-                            var membersLength = 0;
-                            var allocatedRam;
-                            var promises = [];
-                            if (workspace.attributes['codenvy:role'] != 'extra') {
-                                $scope.primaryWorkspace.name = workspace.name;
-                            }
-                            var getProjectsURL = _.find(response.links, function (obj) {
-                                return obj.rel == "get projects"
-                            });
-                            if (getProjectsURL !== undefined) {
-                                promises.push(
-                                    $http({method: getProjectsURL.method, url: getProjectsURL.href})
-                                        .success(function (data) {
-                                            projectsName = _.pluck(data, 'name');
-                                            projectsLength = data.length;
-                                        }));
-                            }
-
+                        var projectsLength = 0;
+                        var projectsName;
+                        var membersLength = 0;
+                        var allocatedRam;
+                        var promises = [];
+                        if (workspace.attributes['codenvy:role'] != 'extra') {
+                            $scope.primaryWorkspace.name = workspace.name;
+                        }
+                        var getProjectsURL = _.find(response.links, function (obj) {
+                            return obj.rel == "get projects"
+                        });
+                        if (getProjectsURL !== undefined) {
                             promises.push(
-                                $http({method: 'GET', url: "/api/workspace/" + workspace.id + "/members" })
+                                $http({method: getProjectsURL.method, url: getProjectsURL.href})
                                     .success(function (data) {
-                                        membersLength = data.length;
+                                        projectsName = _.pluck(data, 'name');
+                                        projectsLength = data.length;
                                     }));
+                        }
 
-                            promises.push(
-                                $http({method: 'GET', url: "/api/runner/" + workspace.id + "/resources" })
-                                    .success(function (data) {
-                                        allocatedRam = data.totalMemory;
-                                    }));
+                        promises.push(
+                            $http({method: 'GET', url: "/api/workspace/" + workspace.id + "/members" })
+                                .success(function (data) {
+                                    membersLength = data.length;
+                                }));
 
-                            return $q.all(promises).then(function (results) {
-                                var workspaceDetails = {
-                                    id: workspace.id,
-                                    name: workspace.name,
-                                    allocatedRam: allocatedRam,
-                                    projects: projectsLength,
-                                    projectsName: projectsName,
-                                    developers: membersLength
-                                };
+                        promises.push(
+                            $http({method: 'GET', url: "/api/runner/" + workspace.id + "/resources" })
+                                .success(function (data) {
+                                    allocatedRam = data.totalMemory;
+                                }));
 
-                                $scope.workspaces.push(workspaceDetails);
-                            });
+                        return $q.all(promises).then(function (results) {
+                            var workspaceDetails = {
+                                id: workspace.id,
+                                name: workspace.name,
+                                allocatedRam: allocatedRam,
+                                projects: projectsLength,
+                                projectsName: projectsName,
+                                developers: membersLength
+                            };
+
+                            $scope.workspaces.push(workspaceDetails);
                         });
                     });
-                })
-                .error(function (err) {
                 });
 
+            });
 
             // Display members details in members page for organizations
 

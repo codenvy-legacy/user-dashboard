@@ -591,7 +591,7 @@ angular.module('odeskApp')
                 $scope.currentUserId = account[0].userId;
             });
 
-            Workspace.all(true).then(function (resp) {
+            Workspace.all(true, false).then(function (resp) {
                 $scope.workspaces = Workspace.workspaces;
 
                 if (!$scope.workspaces.length) {

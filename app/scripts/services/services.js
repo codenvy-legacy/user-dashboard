@@ -22,7 +22,7 @@ angular.module('odeskApp')
         Workspace.workspaces = [];
         Workspace.currentWorkspace = null;
 
-        Workspace.all = function (showLoading) {
+        Workspace.all = function (showLoading, showTemp) {
             var deferred = $q.defer();
             var con = {
                 headers: {
@@ -34,10 +34,12 @@ angular.module('odeskApp')
             $http.get('/api/workspace/all', con)
                 .success(function (data) {
                     var workspaces = [];
-                    if(data !== null){
-                        workspaces = workspaces.concat(_.filter(data, function (workspace) {
-                            return !workspace.workspaceReference.temporary;
-                        }));
+                    if(data !== null) {
+                        if (!showTemp) {
+                            workspaces = workspaces.concat(_.filter(data, function (workspace) {
+                                return !workspace.workspaceReference.temporary;
+                            }));
+                        }
                         if(!angular.equals(Workspace.workspaces, workspaces)) {
                             Workspace.workspaces = workspaces;
                         }
