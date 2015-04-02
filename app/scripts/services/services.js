@@ -548,7 +548,7 @@ angular.module('odeskApp')
         return orgAddonData;
     });
 angular.module('odeskApp')
-    .factory('Project', ['$resource', '$http', '$q', function ($resource, $http, $q) {
+    .factory('Project', ['$resource', '$http', '$q', 'RunnerService', function ($resource, $http, $q, RunnerService) {
         var item = $resource('/api/project/:workspaceID', {}, {
             create: { method: 'POST', params: {}, isArray: false },
             query: { method: 'GET', params: {}, isArray: true },
@@ -606,12 +606,30 @@ angular.module('odeskApp')
 
         item.delete = function (project) {
             var deferred = $q.defer();
-            var url = project.url ? project.url : project. baseUrl;
-            $http.delete(url)
-                .success(function () {
-                    deferred.resolve();
-                })
-                .error(function (err) { deferred.reject(err); });
+            RunnerService.getProcesses(project.workspaceId, project.path, true)
+                .then(function (runningProcesses) {
+                    var isRunning = false;
+                    angular.forEach(runningProcesses, function (runnerProcess) {
+                        if ((runnerProcess.status == 'RUNNING' || runnerProcess.status == 'NEW') && (runnerProcess.project == project.path)) {
+                            isRunning = true;
+                        }
+                    });
+                    if(isRunning) {
+                        var dummy ={};
+                        dummy.message = "Can't delete a running project.";
+                        deferred.reject(dummy);
+                    } else {
+                        $http.delete(project.url ? project.url : project. baseUrl)
+                            .success(function () {
+                                deferred.resolve();
+                            })
+                            .error(function (err) {
+                                deferred.reject(err);
+                            });
+                    }
+                }, function (err) {
+                    deferred.reject(err);
+                });
             return deferred.promise;
         };
 
