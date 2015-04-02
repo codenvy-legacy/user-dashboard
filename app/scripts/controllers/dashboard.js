@@ -365,6 +365,10 @@ angular.module('odeskApp')
         };
 
         $scope.deleteProject = function () {
+            if(!$scope.isDeleteAllowed) {
+                $('#warning-project').modal('hide');
+                return;
+            }
             Project.delete($scope.selected).then(function () {
                 $('#warning-project-alert .alert-success').show();
                 ProjectFactory.fetchProjects($scope.workspaces);
