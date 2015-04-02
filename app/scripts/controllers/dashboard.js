@@ -39,6 +39,7 @@ angular.module('odeskApp')
       $scope.activeProjectVisibility = '';
       $scope.updateProjectError = '';
       $scope.deleteProjectError = '';
+      $scope.isDeleteAllowed = true;
 
       //private methods
       // for one user set the read write properties
@@ -89,11 +90,7 @@ angular.module('odeskApp')
       };
 
       var getAdmin = function (roles) {
-        if (roles.indexOf('workspace/admin') !== -1) {
-          return true;
-        } else {
-          return false;
-        }
+        return roles.indexOf('workspace/admin') !== -1;
       };
 
       var createMember = function (attributes, userId, read, write, roles) {
@@ -120,8 +117,8 @@ angular.module('odeskApp')
         return member;
       };
 
-       $scope.tempProject = {'name':'','description':''}; 
-       
+       $scope.tempProject = {'name':'','description':''};
+
       //public methods
       $scope.selectProject = function(project,modalNameType) {
 
@@ -159,7 +156,7 @@ angular.module('odeskApp')
             angular.forEach(projectPermissions, function (permission) {
               if (permission.principal.type === 'USER') {
                 usersPermissions.push(permission);
-              } 
+              }
               else if (permission.principal.type === 'GROUP') {
                 groupsPermissions.push(permission);
               }
@@ -203,14 +200,14 @@ angular.module('odeskApp')
         var renameSelectedProject = function (newName) {
             RunnerService.getProcesses($scope.selected.workspaceId, $scope.selected.path, true)
                 .then(function (runnerProcesses) {
-                    var isActive = false;
+                    var isRunning = false;
                     angular.forEach(runnerProcesses, function (runnerProcess) {
                         if (runnerProcess.project==$scope.selected.path && runnerProcess.status=='RUNNING' || runnerProcess.status=='NEW') {
-                            isActive = true;
+                            isRunning = true;
                             return;
                         }
                     });
-                    if (isActive) {
+                    if (isRunning) {
                         $scope.updateProjectError = 'We Cannot rename the running project';
                         $('#changeProjectDetailAlert .alert-danger').show();
                         $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
@@ -346,29 +343,49 @@ angular.module('odeskApp')
 	    $scope.deleteProjectConfirm = function() {
             $('#warning-project-alert .alert-success').hide();
             $('#warning-project-alert .alert-danger').hide();
-            $('#warning-project').modal('show');
-			  if($scope.isAdmin) {
-                  $('#warning-project-message').html("Removing a project can't be undone, are you sure you want to continue?");
-              } else {
-                  $('#warning-project-message').html("Deleting the project requires Administrator permissions to the project's workspace. Contact Workspace Administrator or Owner.")
-              }
-       };
+            RunnerService.getProcesses($scope.selected.workspaceId, $scope.selected.path, true)
+                .then(function (runningProcesses) {
+                    $scope.isDeleteAllowed = true;
+                    angular.forEach(runningProcesses, function (runnerProcess) {
+                        if ((runnerProcess.status === 'RUNNING' || runnerProcess.status === 'NEW')
+                            && (runnerProcess.project === $scope.selected.path)) {
+                            $scope.isDeleteAllowed = false;
+                        }
+                    });
+                    if($scope.isDeleteAllowed) {
+                        if($scope.isAdmin) {
+                            $('#warning-project-message').html("Removing a project can't be undone, are you sure you want to continue?");
+                        } else {
+                            $('#warning-project-message').html("Deleting the project requires Administrator permissions to the project's workspace. Contact Workspace Administrator or Owner.")
+                        }
+                    } else {
+                        $('#warning-project-message').html("You should stop all running processes associated with this project before deleting it.")
+                    }
+                    $('#warning-project').modal('show');
+                });
+        };
 
-      $scope.deleteProject = function () {
-          Project.delete($scope.selected).then(function () {
-              $('#warning-project-alert .alert-success').show();
-              ProjectFactory.fetchProjects($scope.workspaces);
-              $scope.isProjectDataFetched = true;
-              $timeout(function () {
-                  $('#warning-project').modal('hide');
-              }, 1500);
-          }, function (error) {
-              $('#warning-project-alert .alert-success').hide();
-              $scope.deleteProjectError = error.message ? error.message : "Delete failed.";
-              $('#warning-project-alert .alert-danger').show();
-              $('#warning-project-alert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
-          });
-      };
+        $scope.deleteProject = function () {
+            if(!$scope.isDeleteAllowed) {
+                $('#warning-project').modal('hide');
+                return;
+            }
+            Project.delete($scope.selected).then(function () {
+                $('#warning-project-alert .alert-success').show();
+                ProjectFactory.fetchProjects($scope.workspaces);
+                $scope.isProjectDataFetched = true;
+                $timeout(function () {
+                    $('#warning-project').modal('hide');
+                }, 1500);
+            }, function (error) {
+                $('#warning-project-alert .alert-success').hide();
+                $scope.deleteProjectError = error.message ? error.message : "Delete failed.";
+                $('#warning-project-alert .alert-danger').show();
+                $('#warning-project-alert .alert-danger').mouseout(function () {
+                    $(this).fadeOut('slow');
+                });
+            });
+        };
 
       // used to save permissions to server
       $scope.setReadWrite = function (member) {
@@ -390,7 +407,7 @@ angular.module('odeskApp')
       };
 
 	    $scope.selectMemberToBeDeleted = null;
-	    $scope.setMemberToBeDeleted = function(member) {		    
+	    $scope.setMemberToBeDeleted = function(member) {
             $scope.selectMemberToBeDeleted = member;
 	    };
 
@@ -436,7 +453,7 @@ angular.module('odeskApp')
               params: {'WS':$scope.activeProject.workspaceId, "EMAIL": email}
             };
             var res = $http.post('/api/analytics/log/user-invite', userInviteData);
-            
+
             Workspace.addMemberToWorkspace($scope.activeProject.workspaceId, user.id).then(function () {
               // refresh member list
                 ProfileService.getProfileByUserId(user.id).then(function (data) {
