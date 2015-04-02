@@ -39,6 +39,7 @@ angular.module('odeskApp')
         $scope.activeProjectVisibility = '';
         $scope.updateProjectError = '';
         $scope.deleteProjectError = '';
+        $scope.isDeleteAllowed = true;
 
       //private methods
       // for one user set the read write properties
@@ -198,14 +199,14 @@ angular.module('odeskApp')
         var renameSelectedProject = function (newName) {
             RunnerService.getProcesses($scope.selected.workspaceId, $scope.selected.path, true)
                 .then(function (runnerProcesses) {
-                    var isActive = false;
+                    var isRunning = false;
                     angular.forEach(runnerProcesses, function (runnerProcess) {
                         if (runnerProcess.project==$scope.selected.path && runnerProcess.status=='RUNNING' || runnerProcess.status=='NEW') {
-                            isActive = true;
+                            isRunning = true;
                             return;
                         }
                     });
-                    if (isActive) {
+                    if (isRunning) {
                         $scope.updateProjectError = 'We Cannot rename the running project';
                         $('#changeProjectDetailAlert .alert-danger').show();
                         $('#changeProjectDetailAlert .alert-danger').mouseout(function () {
@@ -341,12 +342,26 @@ angular.module('odeskApp')
         $scope.deleteProjectConfirm = function() {
             $('#warning-project-alert .alert-success').hide();
             $('#warning-project-alert .alert-danger').hide();
-            $('#warning-project').modal('show');
-            if($scope.isAdmin) {
-                $('#warning-project-message').html("Removing a project can't be undone, are you sure you want to continue?");
-            } else {
-                $('#warning-project-message').html("Deleting the project requires Administrator permissions to the project's workspace. Contact Workspace Administrator or Owner.")
-            }
+            RunnerService.getProcesses($scope.selected.workspaceId, $scope.selected.path, true)
+                .then(function (runningProcesses) {
+                    $scope.isDeleteAllowed = true;
+                    angular.forEach(runningProcesses, function (runnerProcess) {
+                        if ((runnerProcess.status === 'RUNNING' || runnerProcess.status === 'NEW')
+                            && (runnerProcess.project === $scope.selected.path)) {
+                            $scope.isDeleteAllowed = false;
+                        }
+                    });
+                    if($scope.isDeleteAllowed) {
+                        if($scope.isAdmin) {
+                            $('#warning-project-message').html("Removing a project can't be undone, are you sure you want to continue?");
+                        } else {
+                            $('#warning-project-message').html("Deleting the project requires Administrator permissions to the project's workspace. Contact Workspace Administrator or Owner.")
+                        }
+                    } else {
+                        $('#warning-project-message').html("You should stop all running processes associated with this project before deleting it.")
+                    }
+                    $('#warning-project').modal('show');
+                });
         };
 
         $scope.deleteProject = function () {
@@ -361,7 +376,9 @@ angular.module('odeskApp')
                 $('#warning-project-alert .alert-success').hide();
                 $scope.deleteProjectError = error.message ? error.message : "Delete failed.";
                 $('#warning-project-alert .alert-danger').show();
-                $('#warning-project-alert .alert-danger').mouseout(function () { $(this).fadeOut('slow'); });
+                $('#warning-project-alert .alert-danger').mouseout(function () {
+                    $(this).fadeOut('slow');
+                });
             });
         };
 
