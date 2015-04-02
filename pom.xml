@@ -23,17 +23,17 @@
     <parent>
         <artifactId>maven-depmgt-pom</artifactId>
         <groupId>com.codenvy</groupId>
-        <version>1.19.0</version>
+        <version>1.19.1-SNAPSHOT</version>
     </parent>
     <groupId>com.codenvy.dashboard</groupId>
     <artifactId>user-dashboard-war</artifactId>
-    <version>0.14.0</version>
+    <version>0.14.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>User Dashboard :: Web App</name>
     <scm>
         <connection>scm:git:git@github.com:codenvy/user-dashboard.git</connection>
         <developerConnection>scm:git:git@github.com:codenvy/user-dashboard.git</developerConnection>
-        <tag>0.14.0</tag>
+        <tag>HEAD</tag>
         <url>https://github.com/codenvy/user-dashboard</url>
     </scm>
     <properties>
