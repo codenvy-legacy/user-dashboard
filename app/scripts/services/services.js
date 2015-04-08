@@ -35,11 +35,13 @@ angular.module('odeskApp')
                 .success(function (data) {
                     var workspaces = [];
                     if(data !== null) {
-                        if (!showTemp) {
-                            workspaces = workspaces.concat(_.filter(data, function (workspace) {
+                        workspaces = workspaces.concat(_.filter(data, function (workspace) {
+                            if (showTemp) {
+                                return true;
+                            } else {
                                 return !workspace.workspaceReference.temporary;
-                            }));
-                        }
+                            }
+                        }));
                         if(!angular.equals(Workspace.workspaces, workspaces)) {
                             Workspace.workspaces = workspaces;
                         }

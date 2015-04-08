@@ -203,10 +203,11 @@ angular.module('odeskApp')
 
             Workspace.all(true, true).then(function (workspaces) {
                 angular.forEach(workspaces, function (workspace) {
-                    //  Get workspace's projects and developers using workspace id
-                    WorkspaceInfo.getDetail(workspace.id).then(function (response) {
 
+                    //  Get workspace's projects and developers using workspace id
+                    WorkspaceInfo.getDetail(workspace.workspaceReference.id).then(function (response) {
                         var projectsLength = 0;
+                        var workspace = response;
                         var projectsName;
                         var membersLength = 0;
                         var allocatedRam;
@@ -214,6 +215,7 @@ angular.module('odeskApp')
                         if (workspace.attributes['codenvy:role'] != 'extra') {
                             $scope.primaryWorkspace.name = workspace.name;
                         }
+
                         var getProjectsURL = _.find(response.links, function (obj) {
                             return obj.rel == "get projects"
                         });
@@ -247,7 +249,6 @@ angular.module('odeskApp')
                                 projectsName: projectsName,
                                 developers: membersLength
                             };
-
                             $scope.workspaces.push(workspaceDetails);
                         });
                     });
@@ -292,11 +293,89 @@ angular.module('odeskApp')
             });
         };
 
-        if (OrgAddon.accounts.length > 0) {
-            $scope.init();
-        } else {
-            return OrgAddon.getOrgAccounts().then(function () {
-                $scope.init();
+        $scope.getInfoForRAMAllocation = function() {
+            $("#allocationError").hide();
+            $scope.allowedRAM = 0;
+            $scope.infoForRAMAllocation = [];
+
+            angular.forEach($scope.workspaces, function(workspace) {
+                $scope.allowedRAM += parseInt(workspace.allocatedRam, 0);
+                $scope.infoForRAMAllocation.push({id: workspace.id, name: workspace.name, allocatedRam: workspace.allocatedRam});
+            });
+        };
+
+        $scope.workspaceNameValidity = function () {
+            $("#userAlreadyAdded").hide();
+            $("#emptyEmails").hide();
+            $("#wsAlreadyExist").hide();
+            $("#selectedMembers").parent().removeClass('has-error');
+
+            var wsName = $("#ws_name").val();
+            if (wsName.length > 0) {
+                if ((wsName.match(/^[0-9a-zA-Z-._]+$/) != null) && (wsName.length > 3) && (wsName.length < 20) && (wsName[0].match(/^[0-9a-zA-Z]+$/) != null)) {
+                    $("#ws_name").parent().removeClass('has-error');
+                    $("#emptyWs").hide();
+                    $("#wsUserAdd").removeAttr('disabled');
+                    return true;
+                } else {
+                    $("#ws_name").parent().addClass('has-error');
+                    $("#emptyWs").show();
+                    $("#emptyWs").html("Workspace characters should be between 3 to 20 characters and may have digit, letters and - . _ and may start with digits or letters");
+                }
+            } else {
+                $("#ws_name").parent().addClass('has-error');
+                $("#emptyWs").show();
+                $("#emptyWs").html("Define the name of the workspace");
+            }
+            $("#wsUserAdd").attr('disabled', 'disabled');
+            return false;
+        };
+
+        //Check Memory allocation and count left memory.
+        $scope.checkingMemoryField = function (id) {
+            var allocated_ram = $("#allocate_ram_" + id).val();
+            if (allocated_ram.match(/^(?:\d{0,10})$/) != null) {
+                if(allocated_ram.length > 0 && allocated_ram > unlimitedValue){
+                    $("#allocate_ram_" + id).val(unlimitedValue);
+                }
+                $("#allocationError").hide();
+                $scope.defineProperValue = true;
+                $("#allocate_ram_" + id).parent().removeClass('has-error');
+
+                $("#allocationError").hide();
+                return true;
+            } else {
+                $scope.defineProperValue = false;
+                $("#allocate_ram_" + id).parent().addClass('has-error');
+                $("#allocationError").show();
+                $("#allocationError").html("Input value is invalid. ");
+            }
+            return false;
+        };
+
+        //Redistribute resources:
+        $scope.redistributeResources = function () {
+            $("#allocationError").hide();
+            var resources = [];
+            angular.forEach($scope.infoForRAMAllocation, function (w) {
+                var allocatedRam = w.allocatedRam.length > 0 ? w.allocatedRam : unlimitedValue;
+                var updateResourcesDescriptor = {
+                    workspaceId: w.id,
+                    runnerRam: allocatedRam
+                };
+                resources.push(updateResourcesDescriptor);
+            });
+            AccountService.setAccountResources($scope.currentAccount.id, resources).then(function () {
+                $('#ramAllocation').modal('toggle');
+                angular.forEach($scope.workspaces, function (workspace) {
+                    //  Get workspace's projects and developers using workspace id
+                    RunnerService.getResources(workspace.id, true).then(function (data) {
+                        workspace.allocatedRam = data.totalMemory;
+                    });
+                });
+            }, function (err) {
+                $("#allocationError").show();
+                $("#allocationError").html(err.message);
             });
         }
 
@@ -350,21 +429,21 @@ angular.module('odeskApp')
                             else {
                                 $("#userAlreadyAdded").hide();
                                 ProfileService.getProfileByUserId(userId).then(function (data) {
-                                        email = data['attributes'].email;
+                                    email = data['attributes'].email;
 
-                                        var firstName = data['attributes'].firstName || "";
-                                        var lastName = data['attributes'].lastName || "";
-                                        name = (firstName && lastName) ? firstName + " " + lastName : firstName + lastName;
-                                        var memberDetails = {
-                                            id: userId,
-                                            role: role.split("/")[1],
-                                            email: email,
-                                            name: name
-                                        };
-                                        $scope.selectedWsMembers.push(memberDetails);
-                                        $("#createWs").removeAttr('disabled');
-                                        $scope.updateFreeEmails();
-                                    });
+                                    var firstName = data['attributes'].firstName || "";
+                                    var lastName = data['attributes'].lastName || "";
+                                    name = (firstName && lastName) ? firstName + " " + lastName : firstName + lastName;
+                                    var memberDetails = {
+                                        id: userId,
+                                        role: role.split("/")[1],
+                                        email: email,
+                                        name: name
+                                    };
+                                    $scope.selectedWsMembers.push(memberDetails);
+                                    $("#createWs").removeAttr('disabled');
+                                    $scope.updateFreeEmails();
+                                });
                             }
                         }
                         else {
@@ -400,33 +479,6 @@ angular.module('odeskApp')
                 }
                 $scope.updateFreeEmails();
             }
-        };
-
-        $scope.workspaceNameValidity = function () {
-            $("#userAlreadyAdded").hide();
-            $("#emptyEmails").hide();
-            $("#wsAlreadyExist").hide();
-            $("#selectedMembers").parent().removeClass('has-error');
-
-            var wsName = $("#ws_name").val();
-            if (wsName.length > 0) {
-                if ((wsName.match(/^[0-9a-zA-Z-._]+$/) != null) && (wsName.length > 3) && (wsName.length < 20) && (wsName[0].match(/^[0-9a-zA-Z]+$/) != null)) {
-                    $("#ws_name").parent().removeClass('has-error');
-                    $("#emptyWs").hide();
-                    $("#wsUserAdd").removeAttr('disabled');
-                    return true;
-                } else {
-                    $("#ws_name").parent().addClass('has-error');
-                    $("#emptyWs").show();
-                    $("#emptyWs").html("Workspace characters should be between 3 to 20 characters and may have digit, letters and - . _ and may start with digits or letters");
-                }
-            } else {
-                $("#ws_name").parent().addClass('has-error');
-                $("#emptyWs").show();
-                $("#emptyWs").html("Define the name of the workspace");
-            }
-            $("#wsUserAdd").attr('disabled', 'disabled');
-            return false;
         };
 
         // Create workspace related to account
@@ -520,28 +572,28 @@ angular.module('odeskApp')
         // Remove workspace related to account
         $scope.removeWorkspace = function (workspaceId) {
 
-          $('#removeWorkspaceAlert .alert-success').hide();
-          $('#removeWorkspaceAlert .alert-danger').hide();
-          Workspace.removeWorkspace(workspaceId).then(function (data) {
-            $scope.loadWorkspaceInfo();
-            $('#removeWorkspaceButton').attr('disabled', 'disabled');
-            $('#removeWorkspaceAlert .alert-success').show();
+            $('#removeWorkspaceAlert .alert-success').hide();
             $('#removeWorkspaceAlert .alert-danger').hide();
-            $timeout(function () {
-                $('#removeWorkspaceAlert .alert-success').hide();
-                $('#removeWorkspaceButton').removeAttr('disabled');
-                $('#removeWorkspaceConfirm').modal('hide');
-            }, 1500);
+            Workspace.removeWorkspace(workspaceId).then(function (data) {
+                $scope.loadWorkspaceInfo();
+                $('#removeWorkspaceButton').attr('disabled', 'disabled');
+                $('#removeWorkspaceAlert .alert-success').show();
+                $('#removeWorkspaceAlert .alert-danger').hide();
+                $timeout(function () {
+                    $('#removeWorkspaceAlert .alert-success').hide();
+                    $('#removeWorkspaceButton').removeAttr('disabled');
+                    $('#removeWorkspaceConfirm').modal('hide');
+                }, 1500);
 
-          }, function (error) {
-              $('#removeWorkspaceError').text(error.message);
-              $('#removeWorkspaceAlert .alert-success').hide();
-              $('#removeWorkspaceAlert .alert-danger').show();
-              $timeout(function () {
-                  $('#removeWorkspaceAlert .alert-danger').hide();
-              }, 4500);
-          });
-      };
+            }, function (error) {
+                $('#removeWorkspaceError').text(error.message);
+                $('#removeWorkspaceAlert .alert-success').hide();
+                $('#removeWorkspaceAlert .alert-danger').show();
+                $timeout(function () {
+                    $('#removeWorkspaceAlert .alert-danger').hide();
+                }, 4500);
+            });
+        };
 
 
         // Remove user from selected list
@@ -558,62 +610,11 @@ angular.module('odeskApp')
             }
         };
 
-        //Check Memory allocation and count left memory.
-        $scope.checkingMemoryField = function (id) {
-            var allocated_ram = $("#allocate_ram_" + id).val();
-            if (allocated_ram.match(/^(?:\d{0,10})$/) != null) {
-                if(allocated_ram.length > 0 && allocated_ram > unlimitedValue){
-                    $("#allocate_ram_" + id).val(unlimitedValue);
-                }
-                $("#allocationError").hide();
-                $scope.defineProperValue = true;
-                $("#allocate_ram_" + id).parent().removeClass('has-error');
-
-                $("#allocationError").hide();
-                return true;
-            } else {
-                $scope.defineProperValue = false;
-                $("#allocate_ram_" + id).parent().addClass('has-error');
-                $("#allocationError").show();
-                $("#allocationError").html("Input value is invalid. ");
-            }
-            return false;
-        };
-
-        $scope.getInfoForRAMAllocation = function() {
-            $("#allocationError").hide();
-            $scope.allowedRAM = 0;
-            $scope.infoForRAMAllocation = [];
-
-            angular.forEach($scope.workspaces, function(workspace) {
-                $scope.allowedRAM += parseInt(workspace.allocatedRam, 0);
-                $scope.infoForRAMAllocation.push({id: workspace.id, name: workspace.name, allocatedRam: workspace.allocatedRam});
-            });
-        };
-
-        //Redistribute resources:
-        $scope.redistributeResources = function () {
-            $("#allocationError").hide();
-            var resources = [];
-            angular.forEach($scope.infoForRAMAllocation, function (w) {
-                var allocatedRam = w.allocatedRam.length > 0 ? w.allocatedRam : unlimitedValue;
-                var updateResourcesDescriptor = {
-                    workspaceId: w.id,
-                    runnerRam: allocatedRam
-                };
-                resources.push(updateResourcesDescriptor);
-            });
-            AccountService.setAccountResources($scope.currentAccount.id, resources).then(function () {
-                    $('#ramAllocation').modal('toggle');
-                    angular.forEach($scope.workspaces, function (workspace) {
-                        //  Get workspace's projects and developers using workspace id
-                        RunnerService.getResources(workspace.id, true).then(function (data) {
-                            workspace.allocatedRam = data.totalMemory;
-                        });
-                    });
-                }, function (err) {
-                $("#allocationError").show();
-                $("#allocationError").html(err.message);
+        if (OrgAddon.accounts.length > 0) {
+            $scope.init();
+        } else {
+            return OrgAddon.getOrgAccounts().then(function () {
+                $scope.init();
             });
         }
     });
