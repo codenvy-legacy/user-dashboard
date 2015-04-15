@@ -313,6 +313,7 @@ angular.module('odeskApp')
             var wsName = $("#ws_name").val();
             if (wsName.length > 0) {
                 if ((wsName.match(/^[0-9a-zA-Z-._]+$/) != null) && (wsName.length > 3) && (wsName.length < 20) && (wsName[0].match(/^[0-9a-zA-Z]+$/) != null)) {
+                    $scope.workspaceNameIsValid = true;
                     $("#ws_name").parent().removeClass('has-error');
                     $("#emptyWs").hide();
                     $("#wsUserAdd").removeAttr('disabled');
@@ -327,6 +328,7 @@ angular.module('odeskApp')
                 $("#emptyWs").show();
                 $("#emptyWs").html("Define the name of the workspace");
             }
+            $scope.workspaceNameIsValid = false;
             $("#wsUserAdd").attr('disabled', 'disabled');
             return false;
         };
@@ -441,7 +443,6 @@ angular.module('odeskApp')
                                         name: name
                                     };
                                     $scope.selectedWsMembers.push(memberDetails);
-                                    $("#createWs").removeAttr('disabled');
                                     $scope.updateFreeEmails();
                                 });
                             }
@@ -474,9 +475,6 @@ angular.module('odeskApp')
             var index = $scope.selectedWsMembers.indexOf(removedMember)
             if (index != -1) {
                 $scope.selectedWsMembers.splice(index, 1);
-                if (index == 0) {
-                    $("#createWs").attr('disabled', 'disabled');
-                }
                 $scope.updateFreeEmails();
             }
         };
@@ -570,11 +568,26 @@ angular.module('odeskApp')
         };
 
         $scope.onCreateWorkspace = function() {
+            $("#ws_name").val("");
+            $scope.workspaceNameIsValid = false;
+            $scope.selectedWsMembers = [];
+            $("#userAlreadyAdded").hide();
+            $("#wsAlreadyExist").hide();
+
             $timeout(function () {
+                var owner = _.find($scope.members, function (member) {
+                    if (member.role == "owner") return member;
+                });
+                var memberDetails = {
+                    id: owner.id,
+                    role: "admin",
+                    email: owner.email,
+                    name: owner.name
+                };
+                $scope.selectedWsMembers.push(memberDetails);
                 $('#ws_name').focus();
-            }, 1500);
-
-
+                $scope.updateFreeEmails();
+            }, 1000);
         }
 
         // Remove workspace related to account
