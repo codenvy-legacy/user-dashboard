@@ -22,7 +22,7 @@ angular.module('odeskApp')
         Workspace.workspaces = [];
         Workspace.currentWorkspace = null;
 
-        Workspace.all = function (showLoading) {
+        Workspace.all = function (showLoading, showTemp) {
             var deferred = $q.defer();
             var con = {
                 headers: {
@@ -34,9 +34,13 @@ angular.module('odeskApp')
             $http.get('/api/workspace/all', con)
                 .success(function (data) {
                     var workspaces = [];
-                    if(data !== null){
+                    if(data !== null) {
                         workspaces = workspaces.concat(_.filter(data, function (workspace) {
-                            return !workspace.workspaceReference.temporary;
+                            if (showTemp) {
+                                return true;
+                            } else {
+                                return !workspace.workspaceReference.temporary;
+                            }
                         }));
                         if(!angular.equals(Workspace.workspaces, workspaces)) {
                             Workspace.workspaces = workspaces;
@@ -83,7 +87,7 @@ angular.module('odeskApp')
                     deferred.resolve(data); //resolve data
                 })
                 .error(function (err) {
-                    deferred.reject();
+                    deferred.reject(err);
                 });
             return deferred.promise;
         },
@@ -474,90 +478,8 @@ angular.module('odeskApp')
     });
 
 angular.module('odeskApp')
-	.factory('Profile', ['$http', '$q', function ($http, $q) {
-	    return {
-	        query: function () {
-	            var deferred = $q.defer();
-	            var con = {
-	                headers: {
-	                    'Accept': 'application/json',
-	                    'X-Requested-With': 'XMLHttpRequest'
-	                }
-	            };
-	            $http.get('/api/profile', con)
-                    .success(function (data) {
-                        deferred.resolve(data); //resolve data
-                    })
-                    .error(function (err) { deferred.reject(); });
-	            return deferred.promise;
-	        },
-
-	        getById: function (userId) {
-	            var deferred = $q.defer();
-	            var con = {
-	                headers: {
-	                    'Accept': 'application/json',
-	                    'X-Requested-With': 'XMLHttpRequest'
-	                }
-	            };
-	            $http.get('/api/profile/' + userId, con)
-                    .success(function (data) {
-                        deferred.resolve(data); //resolve data
-                    })
-                    .error(function (err) { deferred.reject(); });
-	            return deferred.promise;
-	        },
-
-	        update: function (appValue) {
-	            var deferred = $q.defer();
-	            var con = {
-	                headers: {
-	                    'Content-Type': 'application/json; charset=UTF-8',
-	                    'X-Requested-With': 'XMLHttpRequest'
-	                }
-	            };
-
-	            $http.post('/api/profile', appValue, con)
-                   .success(function (data) {
-                       $('#btn-preloader1').removeClass('preloader');
-                       $('#btn1').removeClass('btn-disabled');
-                       $('#upadateProfileAlert .alert-success').show();
-                       $('#upadateProfileAlert .alert-danger').hide();
-                       $('#upadateProfileAlert .alert').mouseout(function () { $(this).fadeOut('slow'); });
-                       deferred.resolve(data); //resolve data
-                   })
-                   .error(function (err) {
-                       $('#btn-preloader1').removeClass('preloader');
-                       $('#btn1').removeClass('btn-disabled');
-                       $('#upadateProfileAlert .alert-danger').show();
-                       $('#upadateProfileAlert .alert-success').hide();
-                       $('#upadateProfileAlert .alert').mouseout(function () { $(this).fadeOut('slow'); });
-                       deferred.reject();
-                   });
-	            return deferred.promise;
-	        }
-	    };
-	}]);
-
-angular.module('odeskApp')
 	.factory('Users', function ($http, $q) {
 	    return {
-	        query: function () {
-	            var deferred = $q.defer();
-	            var con = {
-	                headers: {
-	                    'Accept': 'application/json',
-	                    'X-Requested-With': 'XMLHttpRequest'
-	                }
-	            };
-	            $http.get('/api/account', con)
-                    .success(function (data) {
-                        deferred.resolve(data); //resolve data
-                    })
-                    .error(function (err) { deferred.reject(); });
-	            return deferred.promise;
-	        },
-
 	        getUserByEmail: function (email) {
 	            var deferred = $q.defer();
 	            var con = {
@@ -570,75 +492,19 @@ angular.module('odeskApp')
                     .success(function (data) {
                         deferred.resolve(data); //resolve data
                     })
-                    .error(function (err) { deferred.reject(); });
+                    .error(function (err) { deferred.reject(err); });
 	            return deferred.promise;
 	        }
 	    };
 	});
 
 angular.module('odeskApp')
-	.factory('Account', function ($http, $q) {
-	    return {
-	        query: function (orgId) {
-	            var deferred = $q.defer();
-	            var con = {
-	                headers: {
-	                    'Accept': 'application/json',
-	                    'X-Requested-With': 'XMLHttpRequest'
-	                }
-	            };
-	            $http.get('/api/account/' + orgId + '/subscriptions', con)
-                    .success(function (data) {
-                        deferred.resolve(data); //resolve data
-                    })
-                    .error(function (err) { deferred.reject(); });
-	            return deferred.promise;
-	        },
-
-          getAccounts: function (){
-            var deferred = $q.defer();
-            var con = {
-              headers: {
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-              }
-            };
-            $http.get('/api/account/', con)
-                .success(function (data) {
-                  deferred.resolve(data); //resolve data
-                })
-                .error(function (err) { deferred.reject(); });
-            return deferred.promise;
-          },
-
-          getSubscription: function (accountId){
-            var deferred = $q.defer();
-            var con = {
-              headers: {
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-              }
-            };
-            $http.get('/api/account/'+ accountId +'/subscriptions', con)
-                .success(function (data) {
-                  deferred.resolve(data); //resolve data
-                })
-                .error(function (err) { deferred.reject(); });
-            return deferred.promise;
-          }
-      };
-	});
-
-angular.module('odeskApp')
-    .factory('OrgAddon', function ($rootScope, Account, $q) {
-        var serviceIds = ["Saas", "OnPremises"];
-        var packages = ["Team", "Enterprise"];
+    .factory('OrgAddon', function ($rootScope, AccountService, $q) {
         var orgAddonData = {};
-        orgAddonData.isOrgAddOn = false;
+        orgAddonData.isOrgAddOn = true;
         orgAddonData.accounts = [];
 
         orgAddonData.update = function(accounts) {
-            orgAddonData.isOrgAddOn = accounts.length > 0;
             orgAddonData.accounts = accounts;
             orgAddonData.currentAccount = accounts.length > 0 ? accounts[0] : null;
             $rootScope.$broadcast('orgAddonDataUpdated');
@@ -655,8 +521,8 @@ angular.module('odeskApp')
             var deferred = $q.defer();
             var accounts = [];
 
-            Account.getAccounts().then(function (response) {
-                angular.forEach(response, function (membership) {
+            AccountService.getAccounts().then(function () {
+                angular.forEach(AccountService.accounts, function (membership) {
                     if (membership.roles.indexOf("account/owner") >= 0) {
                         accounts.push(membership.accountReference);
                     }
@@ -666,12 +532,8 @@ angular.module('odeskApp')
                 var orgAccounts = [];
                 angular.forEach(accounts, function (account) {
                     promises.push(
-                        Account.getSubscription(account.id).then(function (response) {
-                            var serviceId = _.pluck(response, 'serviceId')[0];
-                            var packageName = _.pluck(_.pluck(response, 'properties'), 'Package')[0];
-                            if (_.contains(serviceIds, serviceId) && _.contains(packages, packageName)) {
-                                orgAccounts.push(account);
-                            }
+                        AccountService.getSubscriptions(account.id).then(function () {
+                            orgAccounts.push(account);
                         }));
 
                 });
@@ -687,90 +549,6 @@ angular.module('odeskApp')
 
         return orgAddonData;
     });
-
-angular.module('odeskApp')
-	.factory('addSkill', function ($http, $q) {
-	    return {
-	        query: function (skillset) {
-	            var config = {
-	                method: 'POST',
-	                headers: { 'Content-Type': 'application/json; charset=UTF-8' },
-	                url: '/api/profile/prefs',
-	                data: skillset
-	            };
-	            $http(config).success(function (data) {
-	                $('#btn-preloader3').removeClass('preloader');
-	                $('#btn3').removeClass('btn-disabled');
-	                $('#addSkillsAlert .alert-success').show();
-	                $('#addSkillsAlert .alert-danger').hide();
-	            }).error(function (err) {
-	                $('#btn-preloader3').removeClass('preloader');
-	                $('#btn3').removeClass('btn-disabled');
-	                $('#addSkillsAlert .alert-danger').show();
-	                $('#addSkillsAlert .alert-success').hide();
-	            });
-	            setTimeout(function () { $('#addSkillsAlert .alert').fadeOut('slow'); }, 3000);
-	        }
-	    };
-	});
-
-angular.module('odeskApp').factory('removeSkills', function ($http) {
-    return {
-        update: function (skill) {
-            var config = {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json; charset=UTF-8' },
-                url: '/api/profile/prefs',
-                data: new Array(skill)
-            };
-            $http(config).success(function (data) {
-                $('#removeSkillsAlert .alert-success').show();
-                $('#removeSkillsAlert .alert-danger').hide();
-                setTimeout(function () { $('#removeSkillsAlert .alert').fadeOut('slow'); }, 3000);
-            }).error(function (err) {
-                $('#removeSkillsAlert .alert-danger').show();
-                $('#removeSkillsAlert .alert-success').hide();
-                setTimeout(function () { $('#removeSkillsAlert .alert').fadeOut('slow'); }, 3000);
-            });
-        }
-    };
-});
-
-
-angular.module('odeskApp')
-	.factory('addUsage', function ($http, $q) {
-	    return {
-	        update: function (appValue) {
-	            var deferred = $q.defer();
-	            var con = {
-	                headers: {
-	                    'Content-Type': 'application/json; charset=UTF-8',
-	                    'X-Requested-With': 'XMLHttpRequest'
-	                }
-	            };
-
-	            $http.post('/api/profile/prefs', appValue, con)
-                   .success(function (data) {
-                       $('#btn-preloader4').removeClass('preloader');
-                       $('#btn4').removeClass('btn-disabled');
-                       $('#usageAlert .alert-success').show();
-                       $('#usageAlert .alert-danger').hide();
-                       $('#usageAlert .alert').mouseout(function () { $(this).fadeOut('slow'); });
-                       deferred.resolve(data); //resolve data
-                   })
-                   .error(function (err) {
-                       $('#btn-preloader4').removeClass('preloader');
-                       $('#btn4').removeClass('btn-disabled');
-                       $('#usageAlert .alert-danger').show();
-                       $('#usageAlert .alert-success').hide();
-                       $('#usageAlert .alert').mouseout(function () { $(this).fadeOut('slow'); });
-                       deferred.reject();
-                   });
-	            return deferred.promise;
-	        }
-	    };
-	});
-
 angular.module('odeskApp')
     .factory('Project', ['$resource', '$http', '$q', function ($resource, $http, $q) {
         var item = $resource('/api/project/:workspaceID', {}, {

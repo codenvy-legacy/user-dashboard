@@ -17,8 +17,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('NavbarCtrl', function ($scope, $rootScope, $location, $http, $cookies, $window, Account, OrgAddon, Profile, $q) {
-
+    .controller('NavbarCtrl', function ($scope, $rootScope, $location, $http, $cookies, $window, OrgAddon, ProfileService, $q) {
         $scope.menu = [
             /*//{
             //    'title': 'Admin',
@@ -72,7 +71,7 @@ angular.module('odeskApp')
             $scope.fullUserName = fullUserName;
             });
 
-        Profile.query().then(function (profile, status) {
+        ProfileService.getProfile().then(function (profile) {
             var fullUserName;
             if (profile.attributes.firstName && profile.attributes.lastName) {
                 fullUserName = profile.attributes.firstName + ' ' + profile.attributes.lastName;

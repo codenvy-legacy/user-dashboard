@@ -1,13 +1,9 @@
 <ul class="breadcrumb boxnav" >
-  <li class="active" style="margin-top:4px;margin-bottom:8px;"><a href="#/account/profile">Profile</a></li>
-  <li style="margin-top:4px;margin-bottom:8px;"><a href="#/account/subscriptions">Subscriptions</a></li>
-  <li style="margin-top:4px;margin-bottom:8px;"><a href="#/account/configuration">Configuration</a></li>
-  <!--
-    <li><a href="#/account/configuration">Configuration</a></li>
-    <li><a href="#/account/preferences">Preferences</a></li>
-    <li><a href="#/account/billing">Billing</a></li>
--->
+    <li style="margin-top:4px;margin-bottom:8px;" class="active"><a href="#/account/profile">Profile</a></li>
+    <li style="margin-top:4px;margin-bottom:8px;"><a href="#/account/subscriptions">Subscriptions</a></li>
+    <li style="margin-top:4px;margin-bottom:8px;"><a href="#/account/billing">Usage and Billing</a></li>
 </ul>
+
 <div class="container mainDivContainer">
   <div class="col-md-6">
     <div class="panel panel-default panel-ce">
@@ -19,49 +15,46 @@
               <!--<legend class="text-center">Billing Information</legend>-->
               <div class="row">
                 <div class="col-md-6 form-group">
-                  <label for="workspaceid">First Name:</label>
+                  <label for="name">First Name:</label>
                   <input class="form-control" id="name" name="name" placeholder="Your First Name" ng-model="firstName" type="text" required autofocus />
                 </div>
                 <div class="col-md-6 form-group">
-                  <label for="workspaceid">Last Name:</label>
-                  <input class="form-control" id="email" name="email" placeholder="Your Last Name" ng-model="lastName" type="text" required autofocus/>
+                  <label for="lastName">Last Name:</label>
+                  <input class="form-control" id="lastName" name="lastName" placeholder="Your Last Name" ng-model="lastName" type="text" required autofocus/>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12 form-group">
-                  <label for="workspaceid">Email:</label>
-                  <input class="form-control" id="name" name="name" placeholder="Your Email Address" ng-model="email" type="email" required autofocus />
+                  <label for="email">Email:</label>
+                  <input class="form-control" id="email" name="email" placeholder="Your Email Address" ng-model="email" type="email" required autofocus />
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12 form-group">
-                  <label for="workspaceid">Phone:</label>
-                  <input class="form-control" id="phone" name="name" ng-model="phone" placeholder="Your Phone Number" type="tel" pattern="(^[0-9-+]+$)" maxlength=15 autofocus />
+                  <label for="phone">Phone:</label>
+                  <input class="form-control" id="phone" name="phone" ng-model="phone" placeholder="Your Phone Number" type="tel" pattern="(^[0-9-+]+$)" maxlength=15 autofocus />
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12 form-group">
-                  <label for="workspaceid">Country:</label>
-                  <select id="workspaceid" ng-model="country" class="form-control" required>
-                    <!--<option selected>USA</option>
-                                        <option>UK</option>
-                                        <option>India</option>-->
+                  <label for="country">Country:</label>
+                  <select id="country" ng-model="country" class="form-control" required>
                     <option value="">Select Your Country</option>
-                    <option ng-repeat="cntry in countries">{{cntry.name}}</option>
+                    <option ng-repeat="country in countries">{{country.name}}</option>
                   </select>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12 form-group">
-                  <label for="workspaceid">Company Name:</label>
-                  <input class="form-control" id="name" name="name" ng-model="companyName" placeholder="Your Company Name" type="text" autofocus />
+                  <label for="companyName">Company Name:</label>
+                  <input class="form-control" id="companyName" name="companyName" ng-model="companyName" placeholder="Your Company Name" type="text" autofocus />
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12 form-group">
-                  <label for="workspaceid">Job Title:</label>
+                  <label for="jobTitle">Job Title:</label>
                   <!--<input class="form-control" id="name" name="name" ng-model="jobTitle" placeholder="Product Manager" type="text" required autofocus />-->
-                  <select ng-model="jobTitle" class="form-control" autofocus>
+                  <select ng-model="jobTitle" id="jobTitle" class="form-control" ng-model="jobTitle" autofocus>
                     <option value="">Please select role...</option>
                     <option value="Developer">Developer</option>
                     <option value="Architect">Architect</option>
@@ -74,7 +67,7 @@
                 </div>
               </div>
               Can our sales teams contact you to discuss our offerings? &nbsp;&nbsp;&nbsp;&nbsp;
-              <input type="checkbox" style="margin-top: -1px;vertical-align: middle" name="remember" ng-model="check" value="1">
+              <input type="checkbox" style="margin-top: -1px;vertical-align: middle" name="sales" ng-model="sales" value="1">
               &nbsp;&nbsp;Yes
               <div class="row">
                 <div id="upadateProfileAlert" class="col-md-10">
@@ -107,13 +100,13 @@
             <form method="post" accept-charset="utf-8" class="form" role="form" ng-submit="updatePassword()">
               <div class="row">
                 <div class="col-md-12 form-group">
-                  <label for="workspaceid">New Password:</label>
+                  <label for="password1">New Password:</label>
                   <input class="form-control" id="password1" name="password1" placeholder="" type="password" ng-model="password" required autofocus />
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12 form-group">
-                  <label for="workspaceid">Repeat New Password:</label>
+                  <label for="password2">Repeat New Password:</label>
                   <input class="form-control" id="password2" name="password2" placeholder="" type="password" ng-model="password_verify" required autofocus />
                 </div>
               </div>
@@ -147,7 +140,7 @@
   <div class="col-md-6">
     <div class="panel panel-default panel-ce" ng-if="accountType=='PREMIUM'">
       <div class="panel-body">
-        <h4 class="text-center" ><img height="22" src="./images/user.png"/> You are a SAAS Premium user</h4>
+        <h4 class="text-center" ><img height="22" src="../images/user.png"/> You are a SAAS Premium user</h4>
         <h4 class="text-center" ng-if="accountType=='FREE'" >You are a SAAS Community user</h4>
       </div>
     </div>
@@ -191,8 +184,8 @@
                   <input class="form-control" id="skill-name" name="name" ng-model="addSkillModel" type="text" />
                 </div>
                 <div class="col-md-2">
-                  <button class="btn btn-primary btn-block signup-btn" id="btn3" ng-click="addSkill()">Add</button>
-                  <div id="btn-preloader3" style="display:none">
+                  <button class="btn btn-primary btn-block signup-btn" id="btn3" ng-click="addSkill()" ng-disabled="skillsPreloader">Add</button>
+                  <div id="btn-preloader3" ng-class="{'preloader': skillsPreloader}" style="display:none">
                     <div id="bowlG">
                       <div id="bowl_ringG">
                         <div class="ball_holderG">
@@ -295,4 +288,7 @@
       </div>
     </div>
   </div>
+</div>
+<div style="width:100%;text-align:center;margin-top:20px;margin-bottom:30px;">
+    <a href="mailto:cancellation@codenvy.com?subject=Account Deletion Request" class="btn btn-danger">Delete Account</a>
 </div>

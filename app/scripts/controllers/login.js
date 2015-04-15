@@ -16,7 +16,7 @@
 'use strict';
 
 angular.module('odeskApp')
-    .controller('LoginCtrl', function ($scope, $rootScope, $timeout, $http, $location, $cookies, $window, Profile) {
+    .controller('LoginCtrl', function ($scope, $rootScope, $timeout, $http, $location, $cookies, $window, ProfileService) {
       $scope.username = 'test';
       $scope.password = 'test';
         $scope.submit = function () {
@@ -25,7 +25,7 @@ angular.module('odeskApp')
                 method: "POST",
                 data: { "username": $scope.username, "password": $scope.password}
             }).then(function (response) { // success
-                Profile.query().then(function (profile, status) {
+                ProfileService.getProfile().then(function (profile, status) {
                     var fullUserName;
                     if (profile.attributes.firstName && profile.attributes.lastName) {
                         fullUserName = profile.attributes.firstName + ' ' + profile.attributes.lastName;

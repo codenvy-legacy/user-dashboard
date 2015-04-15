@@ -165,7 +165,7 @@ angular.module('odeskApp')
             $scope.currentWorkspace = Workspace.currentWorkspace;
             $scope.projects = ProjectFactory.projects;
             if (!$scope.workspaces.length) {
-                Workspace.all(true).then(function (workspaces) {
+                Workspace.all(true, false).then(function (workspaces) {
                     $scope.workspaces = $scope.workspaces.concat(_.filter(workspaces, function (workspace) {
                         return !workspace.workspaceReference.temporary;
                     }));
@@ -238,7 +238,7 @@ angular.module('odeskApp')
         };
 
         $scope.refresh = function (showLoading) {
-            Workspace.all(false).then(function (workspaces) {
+            Workspace.all(false, false).then(function (workspaces) {
                 Workspace.updateWorkspaceResources(showLoading).then(function (workspaces) {
                     if (!angular.equals($scope.workspaces, workspaces)) {
                         $scope.workspaces = workspaces;

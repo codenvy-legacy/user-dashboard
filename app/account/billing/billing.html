@@ -1,0 +1,115 @@
+<ul class="breadcrumb boxnav" >
+    <li style="margin-top:4px;margin-bottom:8px;"><a href="#/account/profile">Profile</a></li>
+    <li style="margin-top:4px;margin-bottom:8px;"><a href="#/account/subscriptions">Subscriptions</a></li>
+    <li style="margin-top:4px;margin-bottom:8px;" class="active"><a href="#/account/billing">Usage and Billing</a></li>
+</ul>
+<div>
+    <div class="container" style="margin-top: 20px; color: #8b8b8b;font-size: 13px;">
+        <div class="col-md-6">
+            <div class="panel panel-default panel-ce">
+                <div class="panel-body">
+                    <h4 class="text-center">Usage and balance</h4>
+
+                    <div class="row text-center" style="margin-top: 40px;">
+                        <div class="col-md-6">{{usedMemory}} GB Hours<div class="lockdown-label" ng-show="isLocked">Reached Limit</div></div>
+                        <div class="col-md-6">{{balance}} $</div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default panel-ce" ng-show="invoices && invoices.length > 0">
+                <div class="panel-body">
+                    <h4 class="text-center">Invoices</h4>
+
+                    <div ng-repeat="invoice in invoices" class="row">
+                        <div class="col-md-8">{{invoice.creationDate | date:'MMMM d, yyyy'}} (${{invoice.total}})</div>
+                        <div class="col-md-2"><a ng-href="{{invoice.viewLink}}" target="_blank">View</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel-default panel-ce" ng-class="{panel: (showNewCreditCardForm || (creditCards && creditCards.length > 0))}" id="creditCardPanel" tabindex="0">
+                <div class="panel-body" ng-show="showNewCreditCardForm">
+                    <h4 class="text-center">Add credit card</h4>
+                    <div class="cardWrapper"></div>
+                    <form id="creditCardForm" name="creditCardForm">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <label for="cardNumber"><span class="red">*</span>Card Number: </label>
+                                <input class="form-control" id="cardNumber" placeholder=" " ng-change="checkCardStyle()" ng-model="creditCard.number" type="text" pattern="[0-9,/ ]{16,}" autofocus/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6">
+                                <label for="cardHolder"><span class="red">*</span>Cardholder Name:</label>
+                                <input class="form-control" id="cardHolder" ng-maxlength="100" ng-model="creditCard.cardholderName" type="text" autofocus/>
+                            </div>
+                            <div class="col-xs-3">
+                                <label for="expiry"><span class="red">*</span>Expires:</label>
+                                <input class="form-control" id="expiry" ng-model="creditCard.expirationDate"  type="text" pattern="[0-9,//,/ ]{7,}" autofocus/>
+                            </div>
+                            <div class="col-xs-3">
+                                <label for="cvv"><span class="red">*</span>CVV:</label>
+                                <input class="form-control" id="cvv" ng-model="creditCard.cvv" type="text" pattern="[0-9]{3,}" autofocus/>
+                            </div>
+                         </div>
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6">
+                                <label for="street">Street Address:</label>
+                                <input class="form-control" id="street" ng-maxlength="100" type="text" ng-model="creditCard.streetAddress" autofocus/>
+                            </div>
+                            <div class="col-xs-6 col-md-6">
+                                <label for="city">City:</label>
+                                <input class="form-control" id="city" ng-maxlength="100" type="text" ng-model="creditCard.city" autofocus/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6">
+                                <label for="state">State:</label>
+                                <input class="form-control" id="state" ng-maxlength="100" type="text" ng-model="creditCard.state" autofocus/>
+                            </div>
+                            <div class="col-xs-6 col-md-6">
+                                <label for="postalCode">Postal Code:</label>
+                                <input class="form-control" id="postalCode" ng-maxlength="100" type="text" ng-model='creditCard.postalCode' autofocus/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <label for="country">Country:</label>
+                                <select id="country"  ng-model="creditCard.country" class="form-control" >
+                                    <option value="">Select Your Country</option>
+                                    <option ng-repeat="country in countries">{{country.name}}</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-3 col-md-3">
+                                <span class="red">* required fields</span>
+                            </div>
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <div id="warning-creditCard-alert" style="margin: 20px;">
+                                    <div class="alert alert-danger" style="display: none;">
+                                        <b>Failed!</b> {{addCreditCardError}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-md-2 col-md-offset-10">
+                                <button class="btn btn-primary btn-block signup-btn" ng-disabled="!creditCardForm.$valid" ng-click="addCreditCard();">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-body" ng-show="creditCards && creditCards.length > 0">
+                    <h4 class="text-center">CREDIT CARD INFORMATION</h4>
+                        <div class="row" ng-repeat="card in creditCards">
+                            <div class="col-md-8">
+                                <span style="text-transform: uppercase;">{{card.cardholder}}</span><br>
+                                {{card.type}} ...{{card.number.slice(-4)}} ({{card.expiration}})
+                            </div>
+                            <button type="button" class="btn btn-danger" ng-click="confirmCreditCardDeletion(card)"
+                                    style="float:right;margin-right:20px;">Remove</button>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        </div>
+    </div>
+</div>

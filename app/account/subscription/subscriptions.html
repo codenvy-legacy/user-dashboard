@@ -1,0 +1,40 @@
+<ul class="breadcrumb boxnav" >
+    <li style="margin-top:4px;margin-bottom:8px;"><a href="#/account/profile">Profile</a></li>
+    <li style="margin-top:4px;margin-bottom:8px;" class="active"><a href="#/account/subscriptions">Subscriptions</a></li>
+    <li style="margin-top:4px;margin-bottom:8px;"><a href="#/account/billing">Usage and Billing</a></li>
+</ul>
+<div class="col-md-12">
+    <div class="row">
+        <div class="breadcrumb projectnav">
+            <table class="table table-striped table-condensed- table-hover" style="background:#f9f9f9;">
+                <thead>
+                <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
+                    <th style="width:54px"></th>
+                    <th class="col-md-2"><h4>TYPE</h4></th>
+                    <th class="col-md-2 text-center"><h4>ACTIVATION DATE</h4></th>
+                    <th class="col-md-2 text-center"><h4>NEXT RENEWAL</h4></th>
+                    <th class="text-center" style="width:350px"><h4>ACTIONS</h4></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="subscription in subscriptions">
+                    <td>&nbsp;</td>
+                    <td class="blk_lnk">
+                        <b class="ng-binding">{{subscription.description}}</b>
+                    </td>
+                    <td  class="text-center">
+                        {{subscription.startDate ? subscription.startDate : "----"}}
+                    </td>
+                    <td class="text-center">
+                        {{subscription.endDate ? subscription.endDate : "----"}}
+                    </td>
+                    <td class="text-center">
+                        <a href="{{subscription.cancelLink}}" ng-if="!subscription.needToBuy" tooltip="{{subscription.cancelTooltip}}"><button class="btn btn-xs grid-button">Cancel</button></a>
+                        <button class="btn btn-primary btn-xs grid-button" ng-if="subscription.needToBuy" ng-click="buySubscription(subscription);" tooltip="{{subscription.buyTooltip}}">BUY</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

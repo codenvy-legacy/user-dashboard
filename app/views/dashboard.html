@@ -337,11 +337,6 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12 form-group">
-                            <label><b>Define your account's Password:</b></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 form-group">
                             <label>New Password:</label>
                             <input class="form-control" id="newPassword" placeholder="" type="password" required autofocus/>
                         </div>
@@ -493,12 +488,12 @@
                         <b>Successfully Done!</b> Delete process completed.
                     </div>
                     <div class="alert alert-danger" style="display: none;">
-                        <b>Failed!</b> Delete failed.
+                        <b>Failed!</b> {{deleteProjectError}}
                     </div>
                 </div>
             </div><!-- modal-body -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-if="isDeleteAllowed">Cancel</button>
                 <a  class="btn btn-danger" ng-click="deleteProject()" ng-if="isAdmin">OK</a>
             </div><!-- modal-footer -->
         </div><!-- modal-content -->

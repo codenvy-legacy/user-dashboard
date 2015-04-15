@@ -1,0 +1,14 @@
+<div id="remove-credit-card-modal">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$close()" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Remove Credit Card</h4>
+    </div>
+    <div class="modal-body">
+        Are you sure you want to remove this credit card from your account?<br>
+        You will only be able to use your free monthly gigabyte hours if you complete this action.
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="$close()">Cancel</button>
+        <button type="button" class="btn btn-primary" ng-click="deleteCreditCard(creditCardToRemove); $close()">Ok</button>
+    </div>
+</div>

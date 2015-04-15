@@ -1,10 +1,10 @@
 /*jslint
-    browser: true,
-    devel:true ,
-    node:true,
-    nomen: true,
-    es5:true
-*/
+ browser: true,
+ devel:true ,
+ node:true,
+ nomen: true,
+ es5:true
+ */
 
 /**
  * @auth Gaurav Meena
@@ -24,52 +24,53 @@ angular.module('odeskApp', [
     'ngSanitize',
     'ngRoute',
     'ngAnimate',
+    'braintree-angular',
     'ui.bootstrap',
     'chieffancypants.loadingBar',
     'ui.codemirror',
     'ui.select',
     'angularFileUpload',
     'ngClipboard'
-]).config(function(cfpLoadingBarProvider) {
+]).config(function (cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeBar = false;
 }).constant('udCodemirrorConfig', {
     codemirror: {
-      lineWrapping: true,
-      lineNumbers: true,
-      mode: 'application/json',
-      gutters: ['CodeMirror-lint-markers', 'CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
-      lint: true,
-      matchBrackets: true,
-      autoCloseBrackets: true,
-      foldGutter: true,
-      styleActiveLine: true,
-      theme: 'codenvy'
+        lineWrapping: true,
+        lineNumbers: true,
+        mode: 'application/json',
+        gutters: ['CodeMirror-lint-markers', 'CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+        lint: true,
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        foldGutter: true,
+        styleActiveLine: true,
+        theme: 'codenvy'
     }
-}).config(function() {
-  uiCodemirrorDirective.$inject = ["$timeout", "udCodemirrorConfig"];
+}).config(function () {
+    uiCodemirrorDirective.$inject = ["$timeout", "udCodemirrorConfig"];
 }).factory('AuthInterceptor', function ($window, $cookies, $q) {
-  return {
-    request: function(config) {
-      //remove prefix url
-      if (config.url.indexOf("https://codenvy.com/api") == 0) {
-         config.url = config.url.substring("https://codenvy.com".length);
-      }
+    return {
+        request: function (config) {
+            //remove prefix url
+            if (config.url.indexOf("http://dev.box.com/api") == 0) {
+                config.url = config.url.substring("http://dev.box.com".length);
+            }
 
-      //Do not add token on auth login
-      if (config.url.indexOf("/api/auth/login") == -1 && config.url.indexOf("api/") != -1 && $cookies.token) {
-          config.params = config.params || {};
-          angular.extend(config.params, {token: $cookies.token});
-      }
-      return config || $q.when(config);
-    },
-    response: function(response) {
-      if (response.status === 401 || response.status == 403) {
-          $log.info('Redirect to login page.')
-          $location.path('/login');
-      }
-      return response || $q.when(response);
-    }
-  };
+            //Do not add token on auth login
+            if (config.url.indexOf("/api/auth/login") == -1 && config.url.indexOf("api/") != -1 && $cookies.token) {
+                config.params = config.params || {};
+                angular.extend(config.params, {token: $cookies.token});
+            }
+            return config || $q.when(config);
+        },
+        response: function (response) {
+            if (response.status === 401 || response.status == 403) {
+                $log.info('Redirect to login page.')
+                $location.path('/login');
+            }
+            return response || $q.when(response);
+        }
+    };
 }).config(function ($routeProvider, $locationProvider, $httpProvider) {
     var DEFAULT;
     var BASE_URL;
@@ -86,99 +87,86 @@ angular.module('odeskApp', [
         $httpProvider.interceptors.push('AuthInterceptor');
     }
     $routeProvider
-      .when('/dashboard', {
+        .when('/dashboard', {
             templateUrl: BASE_URL + 'views/dashboard.html',
             controller: 'DashboardCtrl'
         })
-      .when('/factories', {
+        .when('/factories', {
             templateUrl: BASE_URL + 'views/factories.html',
             controller: 'FactoriesCtrl'
         })
-      .when('/factory/:id', {
-          templateUrl: BASE_URL + 'views/factorydetails.html',
-          controller: 'FactoryCtrl'
-      })
-      .when('/stats', {
+        .when('/factory/:id', {
+            templateUrl: BASE_URL + 'views/factorydetails.html',
+            controller: 'FactoryCtrl'
+        })
+        .when('/stats', {
             templateUrl: BASE_URL + 'views/stats.html',
             controller: 'StatsCtrl'
         })
-      .when('/runner', {
-          templateUrl: BASE_URL + 'views/runner.html',
-          controller: 'RunnerCtrl'
-      })
-      .when('/admin', {
-          templateUrl: BASE_URL + 'views/admin.html',
-          controller: 'AdminCtrl'
-      })
-     .when('/organizations', {
+        .when('/runner', {
+            templateUrl: BASE_URL + 'views/runner.html',
+            controller: 'RunnerCtrl'
+        })
+        .when('/admin', {
+            templateUrl: BASE_URL + 'views/admin.html',
+            controller: 'AdminCtrl'
+        })
+        .when('/organizations', {
             templateUrl: BASE_URL + 'views/organization/workspaces.html',
             controller: 'OrganizationsCtrl'
-      })
-      .when('/organizations/members', {
-          templateUrl: BASE_URL + 'views/organization/members.html',
-          controller: 'OrganizationsCtrl'
-      })
-      .when('/organizations/workspace/:id', {
-          templateUrl: BASE_URL + 'views/organization/workspace_info.html',
-          controller: 'workspaceInfoCtrl'
-      })
-      .when('/organizations/workspace/:id/members', {
-          templateUrl: BASE_URL + 'views/organization/workspace_members.html',
-          controller: 'workspaceInfoCtrl'
-      })
-      .when('/organizations/:name', {
+        })
+        .when('/organizations/members', {
+            templateUrl: BASE_URL + 'views/organization/members.html',
+            controller: 'OrganizationsCtrl'
+        })
+        .when('/organizations/workspace/:id', {
+            templateUrl: BASE_URL + 'views/organization/workspace_info.html',
+            controller: 'workspaceInfoCtrl'
+        })
+        .when('/organizations/workspace/:id/members', {
+            templateUrl: BASE_URL + 'views/organization/workspace_members.html',
+            controller: 'workspaceInfoCtrl'
+        })
+        .when('/organizations/:name', {
             templateUrl: BASE_URL + 'views/orgdetail.html',
             controller: 'OrgdetailCtrl'
-      })
-      .when('/account', {
-          templateUrl: BASE_URL + 'views/account/profile.html',
-          controller: 'AccountConfigCtrl'
-      })
-      .when('/account/configuration', {
-          templateUrl: BASE_URL + 'views/account/configuration.html',
-          controller: 'AccountConfigCtrl'
-      })
-      .when('/account/preferences', {
-          templateUrl: BASE_URL + 'views/account/preferences.html',
-          controller: 'AccountConfigCtrl'
-      })
-      .when('/account/profile', {
-          templateUrl: BASE_URL + 'views/account/profile.html',
-          controller: 'AccountConfigCtrl'
-      })
-      .when('/account/billing', {
-          templateUrl: BASE_URL + 'views/account/billing.html',
-          controller: 'DashboardCtrl'
-      })
-      .when('/login', {
-          templateUrl: BASE_URL + 'views/login.html',
-          controller: 'LoginCtrl'
-      })
-      .when('/account/subscriptions', {
-          templateUrl: BASE_URL + 'views/account/subscriptions.html',
-          controller: 'SubscriptionsCtrl'
-      })
-      .when('/account/subscriptions/:id', {
-          templateUrl: BASE_URL + 'views/account/subscriptiondetails.html',
-          controller: 'SubscriptionDetailsCtrl'
-      })
-      .otherwise({
-          redirectTo: DEFAULT
-      });
-
-	//while uncommenting line below fix # in navbar.js
+        })
+        .when('/account', {
+            templateUrl: BASE_URL + 'account/profile.html',
+            controller: 'ProfileCtrl'
+        })
+        .when('/account/subscriptions', {
+            templateUrl: BASE_URL + 'account/subscription/subscriptions.html',
+            controller: 'SubscriptionCtrl'
+        })
+        .when('/account/profile', {
+            templateUrl: BASE_URL + 'account/profile.html',
+            controller: 'ProfileCtrl'
+        })
+        .when('/account/billing', {
+            templateUrl: BASE_URL + 'account/billing/billing.html',
+            controller: 'BillingCtrl'
+        })
+        .when('/login', {
+            templateUrl: BASE_URL + 'views/login.html',
+            controller: 'LoginCtrl'
+        })
+        .otherwise({
+            redirectTo: DEFAULT
+        });
+    //while uncommenting line below fix # in navbar.js
     //$locationProvider.html5Mode(true);
-}).directive('numbersOnly', function(){
+}).directive('numbersOnly', function () {
     return {
         require: 'ngModel',
-        link: function(scope, element, attrs, modelCtrl) {
+        link: function (scope, element, attrs, modelCtrl) {
             modelCtrl.$parsers.push(function (inputValue) {
                 // this next if is necessary for when using ng-required on your input.
                 // In such cases, when a letter is typed first, this parser will be called
                 // again, and the 2nd time, the value will be undefined
                 if (!inputValue) return ''
                 var transformedInput = inputValue.replace(/[^0-9+.]/g, '');
-                if (transformedInput!=inputValue) {
+                if (transformedInput != inputValue) {
                     modelCtrl.$setViewValue(transformedInput);
                     modelCtrl.$render();
                 }
@@ -186,22 +174,12 @@ angular.module('odeskApp', [
             });
         }
     };
-}).run(['$rootScope', function($rootScope) {
-    if (DEV) {
-        $rootScope.$on('$routeChangeStart', function (event, next, current) {
-            console.log('$routeChangeStart', event, next, current);
-        });
-        $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
-            console.log('$routeChangeSuccess', event, current, previous);
-        });
-        $rootScope.$on('$routeChangeError', function (event, current, previous, rejection) {
-            console.log('$routeChangeError', event, current, previous, rejection);
-        });
-    }
+}).run(['$rootScope', function ($rootScope) {
+
 }]);
 
 angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
     .controller('CarouselController', ['$scope', '$timeout', '$transition', '$q', function ($scope, $timeout, $transition, $q) {
-    }]).directive('carousel', [function() {
+    }]).directive('carousel', [function () {
         return { }
     }]);

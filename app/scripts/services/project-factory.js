@@ -82,6 +82,9 @@ angular.module('odeskApp')
                 project: {
                     name: "getting-started-guided-tour",
                     visibility: "public",
+                    mixinTypes: [
+                        "GuidedTour"
+                    ],
                     builders: {
                         default: "maven"
                     },
@@ -92,9 +95,9 @@ angular.module('odeskApp')
                     attributes: {
                         language: ["java"],
                         codenvyGuidedTour: [
-                            "https://gist.githubusercontent.com/benoitf/3e0120e79167243eda19/raw/a56b177cd2a4057a6ba2e5cd1486b67bf8cc8976/gistfile1.json"
+                            "https://gist.githubusercontent.com/slemeur/064dfe5615cc770735cc/raw/325f388aede82932d0db9de2d440c9521c1c65ff/welcome-guided-tour.json"
                         ] },
-                    description: "Getting Started Guided Tour"
+                    description: "Get started with Codenvy by following guided tour on this sample Spring application"
                 },
                 source: {
                     project: {
