@@ -569,6 +569,14 @@ angular.module('odeskApp')
             $scope.selectedWsForRemove = workspace;
         };
 
+        $scope.onCreateWorkspace = function() {
+            $timeout(function () {
+                $('#ws_name').focus();
+            }, 1500);
+
+
+        }
+
         // Remove workspace related to account
         $scope.removeWorkspace = function (workspaceId) {
 
