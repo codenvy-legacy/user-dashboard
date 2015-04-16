@@ -321,7 +321,7 @@ angular.module('odeskApp')
                 } else {
                     $("#ws_name").parent().addClass('has-error');
                     $("#emptyWs").show();
-                    $("#emptyWs").html("Workspace characters should be between 3 to 20 characters and may have digit, letters and - . _ and may start with digits or letters");
+                    $("#emptyWs").html("Workspace characters should be between 3 to 20 characters and may have digit, letters and - . _ and may start with digits or letters, spaces are not allowed.");
                 }
             } else {
                 $("#ws_name").parent().addClass('has-error');
@@ -481,8 +481,10 @@ angular.module('odeskApp')
 
         // Create workspace related to account
         $scope.createWorkspace = function (selectedMembers) {
+                if (!$scope.workspaceNameValidity()) {
+                    return;
+                }
 
-            if ($scope.workspaceNameValidity()) {
                 var con = {
                     headers: {
                         'Content-Type': 'application/json'
@@ -552,14 +554,6 @@ angular.module('odeskApp')
                     })
 
                 });
-            }
-            else {
-                $("#ws_name").parent().addClass('has-error');
-                $("#emptyWs").show();
-                $("#emptyWs").html("Workspace characters should be between 3 to 20 characters and must have digit, letters and - . _ and must start with digits or letters");
-
-            }
-
         };
 
         // Add project lists while removing workspace
