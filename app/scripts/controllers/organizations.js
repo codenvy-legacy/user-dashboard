@@ -481,79 +481,79 @@ angular.module('odeskApp')
 
         // Create workspace related to account
         $scope.createWorkspace = function (selectedMembers) {
-                if (!$scope.workspaceNameValidity()) {
-                    return;
+            if (!$scope.workspaceNameValidity()) {
+                return;
+            }
+
+            var con = {
+                headers: {
+                    'Content-Type': 'application/json'
                 }
+            };
 
-                var con = {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                };
+            var data = {
+                "accountId": $scope.currentAccount.id,
+                "name": $("#ws_name").val() // needs to be array
+            };
 
-                var data = {
-                    "accountId": $scope.currentAccount.id,
-                    "name": $("#ws_name").val() // needs to be array
-                };
-
-                var workspaceId, workspaceName, allocatedRam;
+            var workspaceId, workspaceName, allocatedRam;
 
 
-                return $q.all([
-                    $http.post('/api/workspace', data, con)
-                        .success(function (data) {
-                            workspaceId = data.id;
-                            workspaceName = data.name;
-                        }).error(function (err) {
-                            $("#wsAlreadyExist").show();
-                            $("#wsAlreadyExist").html(err['message']);
-                        })
-
-                ]).then(function (results) {
-                    var i = 0;
-                    return $q.all([
-                        $http({method: 'GET', url: "/api/runner/" + workspaceId + "/resources" }).
-                            success(function (data) {
-                                allocatedRam = data.totalMemory;
-                            }),
-                        angular.forEach(selectedMembers, function (member) {
-                            var role = $("input[name=user_role_" + i + "]:checked").val();
-                            var roles = eval("(function(){return " + role + ";})()");
-
-                            var memberData = {
-                                "userId": member.id,
-                                "roles": roles // needs to be array
-                            };
-
-                            $http.post('/api/workspace/' + workspaceId + '/members', memberData, con)
-                                .success(function (data) {
-                                    $scope.selectedWsMembers = [];
-                                    $scope.updateFreeEmails();
-                                })
-                                .error(function (err, status) {
-                                    $("#addMemberErr").show();
-                                    $("#addMemberErr").html(err["message"]);
-                                });
-                            i++;
-                        })
-                    ]).then(function (result) {
-                        var workspaceDetails = {
-                            id: workspaceId,
-                            name: workspaceName,
-                            allocatedRam: allocatedRam,
-                            projects: 0,
-                            projectsName: [],
-                            developers: (selectedMembers.length)
-                        };
-                        $scope.workspaces.push(workspaceDetails);
-                        $('#addNewWorkspace').modal('toggle');
-                        $("#ws_name").val("")
-                        $scope.selectedMembers = [];
-                        $("#userAlreadyAdded").hide();
-                        $("#wsAlreadyExist").hide();
+            return $q.all([
+                $http.post('/api/workspace', data, con)
+                    .success(function (data) {
+                        workspaceId = data.id;
+                        workspaceName = data.name;
+                    }).error(function (err) {
+                        $("#wsAlreadyExist").show();
+                        $("#wsAlreadyExist").html(err['message']);
                     })
 
-                });
+            ]).then(function (results) {
+                var i = 0;
+                return $q.all([
+                    $http({method: 'GET', url: "/api/runner/" + workspaceId + "/resources" }).
+                        success(function (data) {
+                            allocatedRam = data.totalMemory;
+                        }),
+                    angular.forEach(selectedMembers, function (member) {
+                        var role = $("input[name=user_role_" + i + "]:checked").val();
+                        var roles = eval("(function(){return " + role + ";})()");
+
+                        var memberData = {
+                            "userId": member.id,
+                            "roles": roles // needs to be array
+                        };
+
+                        $http.post('/api/workspace/' + workspaceId + '/members', memberData, con)
+                            .success(function (data) {
+                                $scope.selectedWsMembers = [];
+                                $scope.updateFreeEmails();
+                            })
+                            .error(function (err, status) {
+                                $("#addMemberErr").show();
+                                $("#addMemberErr").html(err["message"]);
+                            });
+                        i++;
+                    })
+                ]).then(function (result) {
+                    var workspaceDetails = {
+                        id: workspaceId,
+                        name: workspaceName,
+                        allocatedRam: allocatedRam,
+                        projects: 0,
+                        projectsName: [],
+                        developers: (selectedMembers.length)
+                    };
+                    $scope.workspaces.push(workspaceDetails);
+                    $('#addNewWorkspace').modal('toggle');
+                    $("#ws_name").val("")
+                    $scope.selectedMembers = [];
+                    $("#userAlreadyAdded").hide();
+                    $("#wsAlreadyExist").hide();
+                })
+
+            });
         };
 
         // Add project lists while removing workspace
