@@ -53,8 +53,6 @@ angular.module('odeskApp')
             },
             project: {
               name: '',
-              description: '',
-              type: 'blank',
               visibility: 'public'
             }
           };
