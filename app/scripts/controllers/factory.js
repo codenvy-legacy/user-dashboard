@@ -7,7 +7,7 @@
 
 'use strict';
 angular.module('odeskApp')
-	.controller('FactoryCtrl', function ($scope, $http, $route, newFactory, $filter, $window, $modal, Users) {
+	.controller('FactoryCtrl', function ($scope, $http, $route, newFactory, $filter, $window, $modal, AccountService) {
 
 		$scope.resetMessages = function() {
 			$scope.factoryConfigurationError = null;
@@ -18,35 +18,27 @@ angular.module('odeskApp')
 
 		$scope.factoryId = $route.current.params.id;
 
-    $scope.userId = '';
+		$scope.userId = '';
 		$scope.accountId = '';
 		$scope.email = '';
 
-			$scope.loadAccount = function () {
-				Users.query().then(function(data){
-					for (var j = data.length - 1; j >= 0; j--) {
-						var ref = data[j].accountReference;
-						if(ref.id!=undefined)
-						{
-							//Get the account's susbcription only if user = accountOwner
-							var isAccountOwner= false;
+		$scope.loadAccount = function () {
+			// userId
+			$http.get('/api/user').success(function (data) {
+				$scope.userId = data.id;
+			});
 
-							for (var iAccount = data[j].roles.length - 1; iAccount >= 0; iAccount--) {
-								if (data[j].roles[iAccount] == "account/owner") {
-									  $scope.userId = data[j].userId;
-							    	$scope.accountId = ref.id;
-							}
-
-							};
-
-						}
-					};
+			// accountId
+			AccountService.getAccountsByRole("account/owner").then(function (accounts) {
+				angular.forEach(accounts, function (membership) {
+					$scope.accountId = membership.id;
 				});
+			});
 
-		  }
+		}
 
 
-	 $scope.loadAccount();
+		$scope.loadAccount();
 
 
 		$scope.loadDetails = function (factoryId, displayOK) {
