@@ -211,9 +211,18 @@ angular.module('odeskApp')
                         var projectsName;
                         var membersLength = 0;
                         var allocatedRam;
+                        var gbhCap;
                         var promises = [];
                         if (workspace.attributes['codenvy:role'] != 'extra') {
                             $scope.primaryWorkspace.name = workspace.name;
+                        }
+
+                        if (workspace.attributes['codenvy:resources_usage_limit']) {
+                            gbhCap = workspace.attributes['codenvy:resources_usage_limit'];
+                        }
+
+                        if (workspace.attributes['codenvy:runner_ram']) {
+                            allocatedRam = workspace.attributes['codenvy:runner_ram'];
                         }
 
                         var getProjectsURL = _.find(response.links, function (obj) {
@@ -234,11 +243,13 @@ angular.module('odeskApp')
                                     membersLength = data.length;
                                 }));
 
-                        promises.push(
-                            $http({method: 'GET', url: "/api/runner/" + workspace.id + "/resources" })
-                                .success(function (data) {
-                                    allocatedRam = data.totalMemory;
-                                }));
+                        if (!allocatedRam) {
+                            promises.push(
+                                $http({method: 'GET', url: "/api/runner/" + workspace.id + "/resources" })
+                                    .success(function (data) {
+                                        allocatedRam = data.totalMemory;
+                                    }));
+                        }
 
                         return $q.all(promises).then(function (results) {
                             var workspaceDetails = {
@@ -247,14 +258,29 @@ angular.module('odeskApp')
                                 allocatedRam: allocatedRam,
                                 projects: projectsLength,
                                 projectsName: projectsName,
+                                gbhCap : gbhCap,
                                 developers: membersLength
                             };
                             $scope.workspaces.push(workspaceDetails);
+                            if (workspaces.length == $scope.workspaces.length) {
+                                $scope.getWorkspaceUsedResources();
+                            }
                         });
                     });
                 });
-
             });
+
+            $scope.getWorkspaceUsedResources = function() {
+                AccountService.getAccountResources($scope.currentAccount.id).then(function() {
+                    angular.forEach($scope.workspaces, function(workspace) {
+                        angular.forEach(_.pluck(AccountService.resources, "used")[0], function(info) {
+                            if (info.workspaceId == workspace.id){
+                                workspace.gbhConsumed = info.memory;
+                            }
+                        });
+                    });
+                });
+            };
 
             // Display members details in members page for organizations
 
@@ -537,6 +563,7 @@ angular.module('odeskApp')
                         i++;
                     })
                 ]).then(function (result) {
+                    //TODO fix bug here if RAM allocation will fail
                     var workspaceDetails = {
                         id: workspaceId,
                         name: workspaceName,
@@ -546,6 +573,7 @@ angular.module('odeskApp')
                         developers: (selectedMembers.length)
                     };
                     $scope.workspaces.push(workspaceDetails);
+                    $scope.getWorkspaceUsedResources();
                     $('#addNewWorkspace').modal('toggle');
                     $("#ws_name").val("")
                     $scope.selectedMembers = [];
