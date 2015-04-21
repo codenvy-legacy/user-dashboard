@@ -249,7 +249,6 @@ angular.module('odeskApp')
             var data = {};
             data.accountId = accountId;
             data.planId = planId;
-            data.trialDuration = 0;
             data.usePaymentSystem = usePaymentSystem;
             var con = {
                 headers: {
