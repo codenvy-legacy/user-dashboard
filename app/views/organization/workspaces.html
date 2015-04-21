@@ -32,6 +32,13 @@
         </li>
         <li class="ws-button pad0 pull-right mrg-rht5">
               <div>
+                  <a href="" class="new_btn" data-toggle="modal" data-target="#workspacesCap" ng-click="getInfoForWorkspacesCaps();">
+                      Workspaces Caps
+                  </a>
+              </div>
+          </li>
+        <li class="ws-button pad0 pull-right mrg-rht5">
+              <div>
                   <a href="" class="new_btn" data-toggle="modal" data-target="#ramAllocation" ng-click="getInfoForRAMAllocation();">
                       RAM Allocation
                   </a>
@@ -67,7 +74,7 @@
               <td><a ng-href="#/organizations/workspace/{{workspace.id}}/members" class="ws-name">{{workspace.name}}</a></td>
               <td class="text-center">{{workspace.allocatedRam}}</td>
               <td class="text-center">{{workspace.gbhConsumed.toFixed(2)}}</td>
-              <td class="text-center">{{workspace.gbhCap ? workspace.gbhCap : "no limit"}}</td>
+              <td class="text-center">{{workspace.gbhCap ? workspace.gbhCap : "no cap"}}</td>
               <td class="text-center">{{workspace.developers}}</td>
               <td class="text-center">{{workspace.projects}}</td>
               <td></td>
@@ -276,3 +283,40 @@
     </div>
 </div>
 <!-- RAM Allocation Modal end -->
+<!-- Workspaces Cap Modal Start -->
+<div class="modal-col">
+    <div class="modal fade" id="workspacesCap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog" width="350px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Workspace Gigabyte Hour (GBH) Caps</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="projectnav table-responsive">
+                        <table class="table table-hover" style="background:#f9f9f9;">
+                            <thead>
+                            <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
+                                <th><h4>NAME</h4></th>
+                                <th class="text-center"><h4>GBH Cap</h4></th>
+                            </tr>
+                            </thead>
+                            <tr ng-repeat="workspace in infoForWorkspacesCaps| filter: filter | orderBy:'name'" class="v-center">
+                                <td>{{workspace.name}}</td>
+                                <td class="text-center" width="120px"><input ng-trim="false" type="text" required="false" placeholder="no cap" ng-model="workspace.gbhCap" style="text-align: center;" class="form-control" id="workspace_cap_{{$index}}" ng-change="checkWorkspaceCap($index)"/></td>
+                            </tr>
+                        </table>
+                        <alert id="workspaceCapError" style="display: none" type="danger"></alert>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="('#workspaceCapError').hide();">Cancel</button>
+                    <button type="button" ng-disabled="!allowSetWorkspacesCaps" class="btn btn-primary" ng-click="setWorkspacesCaps();">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Workspaces Cap Modal end -->

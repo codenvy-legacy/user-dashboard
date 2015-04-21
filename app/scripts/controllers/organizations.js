@@ -236,20 +236,13 @@ angular.module('odeskApp')
                                         projectsLength = data.length;
                                     }));
                         }
-
                         promises.push(
                             $http({method: 'GET', url: "/api/workspace/" + workspace.id + "/members" })
                                 .success(function (data) {
                                     membersLength = data.length;
                                 }));
 
-                        if (!allocatedRam) {
-                            promises.push(
-                                $http({method: 'GET', url: "/api/runner/" + workspace.id + "/resources" })
-                                    .success(function (data) {
-                                        allocatedRam = data.totalMemory;
-                                    }));
-                        }
+
 
                         return $q.all(promises).then(function (results) {
                             var workspaceDetails = {
@@ -264,6 +257,13 @@ angular.module('odeskApp')
                             $scope.workspaces.push(workspaceDetails);
                             if (workspaces.length == $scope.workspaces.length) {
                                 $scope.getWorkspaceUsedResources();
+                            }
+
+                            if (!allocatedRam) {
+                                $http({method: 'GET', url: "/api/runner/" + workspace.id + "/resources"})
+                                    .success(function (data) {
+                                        workspaceDetails.allocatedRam = data.totalMemory;
+                                    });
                             }
                         });
                     });
@@ -330,6 +330,16 @@ angular.module('odeskApp')
             });
         };
 
+        $scope.getInfoForWorkspacesCaps = function() {
+            $("#workspaceCapError").hide();
+            $scope.allowSetWorkspacesCaps = false;
+            $scope.infoForWorkspacesCaps = [];
+
+            angular.forEach($scope.workspaces, function(workspace) {
+                $scope.infoForWorkspacesCaps.push({id: workspace.id, name: workspace.name, gbhCap: workspace.gbhCap});
+            });
+        };
+
         $scope.workspaceNameValidity = function () {
             $("#userAlreadyAdded").hide();
             $("#emptyEmails").hide();
@@ -380,6 +390,41 @@ angular.module('odeskApp')
             }
             return false;
         };
+
+        //Check value of the workspace cap.
+        $scope.checkWorkspaceCap = function (id) {
+            var workspaceCap = $("#workspace_cap_" + id).val();
+            if (workspaceCap == "" || workspaceCap.match(/^(\d+\.?\d{0,4}|\.\d{1,4})$/) != null) {
+                $("#workspaceCapError").hide();
+                $scope.allowSetWorkspacesCaps = true;
+                $("#workspace_cap_" + id).parent().removeClass('has-error');
+            } else {
+                $scope.allowSetWorkspacesCaps = false;
+                $("#workspace_cap_" + id).parent().addClass('has-error');
+                $("#workspaceCapError").html("Input value is invalid. ");
+                $("#workspaceCapError").show();
+            }
+        };
+
+        //Redistribute resources:
+        $scope.setWorkspacesCaps = function () {
+            var resources = [];
+            angular.forEach($scope.infoForWorkspacesCaps, function (w) {
+                var gbhCap = w.gbhCap || -1;
+                var updateResourcesDescriptor = {
+                    workspaceId: w.id,
+                    resourcesUsageLimit: gbhCap
+                };
+                resources.push(updateResourcesDescriptor);
+            });
+            AccountService.setAccountResources($scope.currentAccount.id, resources).then(function () {
+                $('#workspacesCap').modal('toggle');
+                $scope.loadWorkspaceInfo();
+            }, function (err) {
+                $("#workspaceCapError").html(err.message);
+                $("#workspaceCapError").show();
+            });
+        }
 
         //Redistribute resources:
         $scope.redistributeResources = function () {
