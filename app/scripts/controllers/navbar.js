@@ -64,7 +64,7 @@ angular.module('odeskApp')
             }
             ];
         $scope.organizationLink = {
-            'title': 'Organization',
+            'title': 'Workspaces',
             'link': '#/organizations'
         };
         $rootScope.$on('update_fullUserName', function(event, fullUserName){
