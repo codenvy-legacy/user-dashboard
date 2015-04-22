@@ -200,12 +200,10 @@ angular.module('odeskApp')
 
             $scope.defineProperValue = false;
             $scope.primaryWorkspace = {'name': ''};
-
-            Workspace.all(true, true).then(function (workspaces) {
+            Workspace.getAccountWorkspaces($scope.currentAccount.id).then(function (workspaces) {
                 angular.forEach(workspaces, function (workspace) {
-
                     //  Get workspace's projects and developers using workspace id
-                    WorkspaceInfo.getDetail(workspace.workspaceReference.id).then(function (response) {
+                    WorkspaceInfo.getDetail(workspace.id).then(function (response) {
                         var projectsLength = 0;
                         var workspace = response;
                         var projectsName;
