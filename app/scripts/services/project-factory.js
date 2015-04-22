@@ -95,7 +95,7 @@ angular.module('odeskApp')
                     attributes: {
                         language: ["java"],
                         codenvyGuidedTour: [
-                            "https://gist.githubusercontent.com/slemeur/064dfe5615cc770735cc/raw/325f388aede82932d0db9de2d440c9521c1c65ff/welcome-guided-tour.json"
+                            "https://gist.githubusercontent.com/benoitf/f8d23ff31c4b830f31a2/raw/ab333019880cfc75e68a4aba66e1834e0aef8104/guidedtour.json"
                         ] },
                     description: "Get started with Codenvy by following guided tour on this sample Spring application"
                 },
