@@ -223,6 +223,9 @@ angular.module('odeskApp')
                             allocatedRam = workspace.attributes['codenvy:runner_ram'];
                         }
 
+                        var isLocked = !!(workspace.attributes[AccountService.RESOURCES_LOCKED_PROPERTY]
+                            && workspace.attributes[AccountService.RESOURCES_LOCKED_PROPERTY] === 'true');
+
                         var getProjectsURL = _.find(response.links, function (obj) {
                             return obj.rel == "get projects"
                         });
@@ -250,14 +253,15 @@ angular.module('odeskApp')
                                 projects: projectsLength,
                                 projectsName: projectsName,
                                 gbhCap : gbhCap,
-                                developers: membersLength
+                                developers: membersLength,
+                                isLocked: isLocked
                             };
                             $scope.workspaces.push(workspaceDetails);
                             if (workspaces.length == $scope.workspaces.length) {
                                 $scope.getWorkspaceUsedResources();
                             }
 
-                            if (!allocatedRam) {
+                            if (!allocatedRam && !isLocked) {
                                 $http({method: 'GET', url: "/api/runner/" + workspace.id + "/resources"})
                                     .success(function (data) {
                                         workspaceDetails.allocatedRam = data.totalMemory;

@@ -60,8 +60,8 @@
               <th class=""></th>
               <th class="text-center"><h4>NAME</h4></th>
               <th class="text-center"><h4>RAM CAP</h4></th>
-              <th class="text-center"><h4>GBH CONSUMED</h4></th>
               <th class="text-center"><h4>GBH CAP</h4></th>
+              <th class="text-center"><h4>GBH CONSUMED</h4></th>
               <th class="text-center"><h4>DEVELOPERS</h4></th>
               <th class="text-center"><h4>PROJECTS</h4></th>
               <th></th>
@@ -72,9 +72,9 @@
             <tr ng-repeat="workspace in workspaces| filter:search | orderBy:'name'" valign="middle">
               <td style="width: 1%;"><!--<i class="glyphicon glyphicon-lock"></i>--></td>
               <td><a ng-href="#/organizations/workspace/{{workspace.id}}/members" class="ws-name">{{workspace.name}}</a></td>
-              <td class="text-center">{{workspace.allocatedRam}}</td>
-              <td class="text-center">{{workspace.gbhConsumed.toFixed(2)}}</td>
+              <td class="text-center"><span ng-show="!workspace.isLocked">{{workspace.allocatedRam}}</span> <div class="lockdown-label" ng-show="workspace.isLocked">GBH cap reached</div></td>
               <td class="text-center">{{workspace.gbhCap ? workspace.gbhCap : "no cap"}}</td>
+              <td class="text-center">{{workspace.gbhConsumed.toFixed(2)}}</td>
               <td class="text-center">{{workspace.developers}}</td>
               <td class="text-center">{{workspace.projects}}</td>
               <td></td>
