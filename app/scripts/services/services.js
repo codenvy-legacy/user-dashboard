@@ -84,6 +84,7 @@ angular.module('odeskApp')
                         deferred.resolve(Workspace.workspaces); //resolve data
                     }
                 }, function (err) {
+                    workspace.isLocked = true;
                     workspaceCount++;
                     deferred.reject(err);
                 });
