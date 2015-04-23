@@ -272,7 +272,7 @@
                             </thead>
                             <tr ng-repeat="workspace in infoForRAMAllocation| filter: filter | orderBy:'name'" class="v-center">
                                 <td>{{workspace.name}}</td>
-                                <td class="text-center" width="120px"><input type="text" placeholder="unlimited" ng-model="workspace.allocatedRam" style="text-align: center;" class="form-control" id="allocate_ram_{{$index}}" ng-change="checkingMemoryField($index)"/></td>
+                                <td class="text-center" width="120px"><input type="text" placeholder="{{workspace.isLocked ? 'locked' : 'unlimited'}}" ng-disabled="workspace.isLocked" ng-model="workspace.allocatedRam" style="text-align: center;" class="form-control" id="allocate_ram_{{$index}}" ng-change="checkingMemoryField($index)"/></td>
                             </tr>
                         </table>
                         <alert id="allocationError" style="display: none" type="danger"></alert>

@@ -328,7 +328,8 @@ angular.module('odeskApp')
 
             angular.forEach($scope.workspaces, function(workspace) {
                 $scope.allowedRAM += parseInt(workspace.allocatedRam, 0);
-                $scope.infoForRAMAllocation.push({id: workspace.id, name: workspace.name, allocatedRam: workspace.allocatedRam});
+                $scope.infoForRAMAllocation.push({id: workspace.id, name: workspace.name,
+                    allocatedRam: workspace.allocatedRam, isLocked: workspace.isLocked});
             });
         };
 
@@ -433,12 +434,14 @@ angular.module('odeskApp')
             $("#allocationError").hide();
             var resources = [];
             angular.forEach($scope.infoForRAMAllocation, function (w) {
-                var allocatedRam = w.allocatedRam.length > 0 ? w.allocatedRam : unlimitedValue;
-                var updateResourcesDescriptor = {
-                    workspaceId: w.id,
-                    runnerRam: allocatedRam
-                };
-                resources.push(updateResourcesDescriptor);
+                if (! w.isLocked) {
+                    var allocatedRam = w.allocatedRam.length > 0 ? w.allocatedRam : unlimitedValue;
+                    var updateResourcesDescriptor = {
+                        workspaceId: w.id,
+                        runnerRam: allocatedRam
+                    };
+                    resources.push(updateResourcesDescriptor);
+                }
             });
             AccountService.setAccountResources($scope.currentAccount.id, resources).then(function () {
                 $('#ramAllocation').modal('toggle');
