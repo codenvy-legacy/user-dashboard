@@ -35,13 +35,13 @@ import DemoComponentsCtrl from './demo-components/demo-components.controller';
 // import login
 import LoginCtrl from './main/login.controller';
 
-// import navabr
-import NavbarCtrl from './navbar/navbar.controller';
-
 var instanceRegister = Register.getInstance();
 
+// import navbar
+import NavbarConfig from './navbar/navbar-config';
+new NavbarConfig(instanceRegister);
 
-// import projects
+// import factories
 import FactoryConfig from './factories/factories-config';
 new FactoryConfig(instanceRegister);
 
@@ -53,7 +53,6 @@ new ProjectsConfig(instanceRegister);
 
 // and setup controllers
 module.controller('DashboardCtrl', DashboardCtrl)
-  .controller('NavbarCtrl', NavbarCtrl)
   .controller('LoginCtrl', LoginCtrl)
   .controller('DemoComponentsCtrl', DemoComponentsCtrl);
 
@@ -280,6 +279,9 @@ module.config(function($mdThemingProvider, jsonColors) {
 
 });
 
+module.constant('userDashboardConfig', {
+  developmentMode: DEV
+});
 
 module.config(function ($routeProvider, $locationProvider, $httpProvider) {
 

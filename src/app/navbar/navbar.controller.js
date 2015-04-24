@@ -9,18 +9,34 @@
  *   Codenvy, S.A. - initial API and implementation
  */
 'use strict';
-/*jshint esnext: true */
 
-class NavbarCtrl {
+class NavBarCtrl {
 
   /**
    * Default constructor
    * @ngInject for Dependency injection
    */
-  constructor ($mdSidenav) {
+  constructor($mdSidenav, userDashboardConfig, codenvyAPI) {
     this.mdSidenav = $mdSidenav;
+    this.codenvyAPI = codenvyAPI;
+    this.links =[{href:'#/projects', name:'List Projects'}
+    ];
+
+    this.displayLoginItem = userDashboardConfig.developmentMode;
+    this.profile = codenvyAPI.getProfile().getProfile();
+    this.fullName = '';
+    this.email = '';
   }
 
+  /**
+   * Update current full name and email
+   */
+  updateData() {
+    this.fullName = this.codenvyAPI.getProfile().getFullName();
+    if(this.profile.attributes) {
+      this.email = this.profile.attributes.email;
+    }
+  }
 
   /**
    * Toggle the left menu
@@ -29,6 +45,8 @@ class NavbarCtrl {
     this.mdSidenav('left').toggle();
   }
 
+
+
 }
 
-export default NavbarCtrl;
+export default NavBarCtrl;

@@ -9,8 +9,7 @@
     Contributors:
       Codenvy, S.A. - initial API and implementation
 
--->
-<md-toolbar flex>
+--><md-toolbar flex>
   <section class="md-toolbar-tools" layout="column" layout-align="center center">
     <img class="codenvy-logo" src="https://codenvy.com/images/logo@3x.png" alt="logo">
   </section>
@@ -18,7 +17,7 @@
 
 
   <section layout="column" layout-align="center center">
-    <md-button ng-href="#/create-project" class="md-accent md-raised md-hue-2">Create project</md-button>
+    <cdvy-button-dropdown cdvy-button-dropdown-href="#/create-project" cdvy-button-dropdown-label="Create Project" cdvy-button-dropdown-controller="navbarCtrl"></cdvy-button-dropdown>
   </section>
   <section layout="column" layout-align="center center">&nbsp;</section>
   <md-divider md-theme="factory-theme"></md-divider>
@@ -26,6 +25,12 @@
   <section layout="column" layout-align="center center">
     <md-list layout="column">
       <md-item>
+        <md-item-content ng-show="navbarCtrl.displayLoginItem">
+          <div class="md-tile-content">
+            <md-button flex ng-href="#/login" layout-align="left"><i class="fa fa-user fa-lg icon">&nbsp;</i>Login</md-button>
+          </div>
+        </md-item-content>
+
         <md-item-content>
           <div class="md-tile-content">
             <md-button flex ng-href="#/" layout-align="left"><i class="fa fa-th-large fa-lg icon">&nbsp;</i>Dashboard</md-button>
@@ -46,8 +51,29 @@
   </section>
   <section layout="column" layout-align="center center">&nbsp;</section>
   <md-divider md-theme="factory-theme"></md-divider>
-
-
+  <div class="navbar-menu" ng-if="navbarCtrl.profile.$resolved" ng-init="navbarCtrl.updateData(); isExpand=true">
+    <div>
+      <img class="developers-face" gravatar-src="navbarCtrl.email">
+      <span>{{navbarCtrl.fullName}}</span>
+      <i class="material-design icon-ic_expand_more_24px md-tab-themed" ng-click='isExpand=!isExpand'>&nbsp;</i>
+    </div>
+    <section class="animation" layout="column" layout-align="center center" ng-if="isExpand" >
+      <md-list layout="column">
+        <md-item>
+          <md-item-content>
+            <md-button ng-href="#/account" layout-align="left">Account</md-button>
+          </md-item-content>
+          <md-item-content>
+            <md-button ng-href="#/subscriptions" layout-align="left">Subscriptions</md-button>
+          </md-item-content>
+          <md-item-content>
+            <md-button ng-href="#/billing" layout-align="left">Billing and Invoices</md-button>
+          </md-item-content>
+        </md-item>
+      </md-list>
+    </section>
+    <md-divider md-theme="factory-theme"></md-divider>
+  </div>
 </md-toolbar>
 
 
