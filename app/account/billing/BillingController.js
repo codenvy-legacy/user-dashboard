@@ -114,6 +114,7 @@ angular.module('odeskApp')
         $scope.deleteCreditCard = function (creditCard) {
             PaymentService.deleteCreditCard(creditCard.accountId, creditCard.number).then(function () {
                 $scope.loadCreditCards();
+                $scope.getAccountAttributes($scope.accounts[0]);
             });
         };
 
@@ -140,6 +141,7 @@ angular.module('odeskApp')
                 $scope.showNewCreditCardForm = false;
                 $scope.isNewCreditCardAdded = true;
                 $scope.loadCreditCards();
+                $scope.getAccountAttributes($scope.accounts[0]);
 
                 //Clear credit card widget and set default values
                 var cardContainer = $('.cardWrapper .card-container  div.card')[0];
