@@ -35,15 +35,13 @@ import DemoComponentsCtrl from './demo-components/demo-components.controller';
 // import login
 import LoginCtrl from './main/login.controller';
 
-// import navabr
-import NavBarCtrl from './navbar/navbar.controller';
-import NavBar from './navbar/navbar.directive.js';
-
 var instanceRegister = Register.getInstance();
-instanceRegister.directive('cdvyNavBar', NavBar);
-instanceRegister.controller('NavbarCtrl', NavBarCtrl);
 
-// import projects
+// import navbar
+import NavbarConfig from './navbar/navbar-config';
+new NavbarConfig(instanceRegister);
+
+// import factories
 import FactoryConfig from './factories/factories-config';
 new FactoryConfig(instanceRegister);
 
