@@ -24,7 +24,8 @@ angular.module('odeskApp')
       scope: {
         workspaces: '=',
         workspaceSelected: '=',
-        newProjectData: '='
+        newProjectData: '=',
+        projectGroups: '='
       },
       templateUrl: 'partials/widgets/importGitRepository.html'
     }

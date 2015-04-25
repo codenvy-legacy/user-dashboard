@@ -26,6 +26,7 @@ angular.module('odeskApp')
         'type',
         'Project',
         'ProjectFactory',
+        'ProjectGroups',
         function(
             $scope,
             $timeout,
@@ -35,10 +36,12 @@ angular.module('odeskApp')
             workspaces,
             type,
             Project,
-            ProjectFactory) {
+            ProjectFactory,
+            ProjectGroups) {
 
           this.workspaces = workspaces;
           this.workspaceSelected = workspaces[0];
+          this.projectGroups = ProjectGroups.all();
           this.currentUserId = currentUserId;
           this.tabActivated = {};
           this.tabActivated[type] = true;
@@ -53,6 +56,8 @@ angular.module('odeskApp')
             },
             project: {
               name: '',
+              description: '',
+              type: 'blank',
               visibility: 'public'
             }
           };
@@ -79,12 +84,16 @@ angular.module('odeskApp')
             switch (type) {
               case 'GitHub':
               case 'Git':
+                this.newProjectData.project.type = 'null';
                 this.newProjectData.source.project.type = 'git';
                 break;
               case 'Zip':
+                this.newProjectData.project.type = 'null';
                 this.newProjectData.source.project.type = 'zip';
                 break;
               default:
+                this.newProjectData.project.type = 'blank';
+                this.newProjectData.source.project.type = '';
                 break;
             }
           };

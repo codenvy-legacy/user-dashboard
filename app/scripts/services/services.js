@@ -423,6 +423,48 @@ angular.module('odeskApp')
         };
     });
 
+// Get project groups
+angular.module('odeskApp')
+    .factory('ProjectGroups', function () {
+        return {
+            all: function () {
+                return  [
+                    {group: 'BLANK', projectTypes:[
+                        {name: 'Blank', type: 'blank'}
+                    ]},
+                    {group: 'CPP', projectTypes:[
+                        {name: 'C/C++ Project', type: 'cpp'}
+                    ]},
+                    {group: 'GO', projectTypes:[
+                        {name: 'Go Project', type: 'go'}
+                    ]},
+                    {group: 'JAVASCRIPT', projectTypes:[
+                        {name: 'AngularJS Project', type: 'AngularJS'},
+                        {name: 'Basic Project', type: 'BasicJS'},
+                        {name: 'Grunt JS Project', type: 'GruntJS'},
+                        {name: 'Gulp JS Project', type: 'GulpJS'}
+                    ]},
+                    {group: 'JAVA', projectTypes:[
+                        {name: 'Ant Project', type: 'ant'},
+                        {name: 'Google App Engine Project', type: 'GAEJava'},
+                        {name: 'Maven Project', type: 'maven'}
+                    ]},
+                    {group: 'PHP', projectTypes:[
+                        {name: 'PHP App Engine Project', type: 'GAEPhp'},
+                        {name: 'PHP Project', type: 'php'}
+                    ]},
+                    {group: 'PYTHON', projectTypes:[
+                        {name: 'Python App Engine Project', type: 'GAEPython'},
+                        {name: 'Python Project', type: 'python'}
+                    ]},
+                    {group: 'RUBY', projectTypes:[
+                        {name: 'Ruby Project', type: 'ruby'}
+                    ]}
+                ];
+            }
+        };
+    });
+
 // Get workspace details based on workspace id
 angular.module('odeskApp')
     .factory('WorkspaceInfo', function ($http, $q) {

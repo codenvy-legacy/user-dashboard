@@ -33,7 +33,8 @@ angular.module('odeskApp')
             workspaces: '=',
             workspaceSelected: '=',
             newProjectData: '=',
-            importType: '='
+            importType: '=',
+            projectGroups: '='
           },
           link: {
             pre: function($scope, element, attrs, formCtrl) {

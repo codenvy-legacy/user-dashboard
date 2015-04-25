@@ -20,6 +20,19 @@
            required />
 </div>
 <div class="form-group">
+    <label for="projectType" class="control-label">Project type</label>
+    <select id="projectType"
+            name="projectType"
+            class="form-control"
+            ng-class="{'disable-color': newProjectData.project.type === 'null'}"
+            ng-model="newProjectData.project.type">
+        <option value='null' disabled selected style='display:none;'>The type of your new project</option>
+        <optgroup ng-repeat="projectGroup in projectGroups" label={{projectGroup.group}} style='padding-left:5px;color:#3C3C3C;'>
+            <option  ng-repeat="projectType in projectGroup.projectTypes" value={{projectType.type}}>{{projectType.name}}</option>
+        </optgroup>
+    </select>
+</div>
+<div class="form-group">
     <label for="projectDescription" class="control-label">Project description</label>
     <textarea id="projectDescription"
               name="projectDescription"
