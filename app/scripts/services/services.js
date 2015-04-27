@@ -425,42 +425,69 @@ angular.module('odeskApp')
 
 // Get project groups
 angular.module('odeskApp')
-    .factory('ProjectGroups', function () {
+    .factory('ProjectGroups', function ($http, $q) {
         return {
             all: function () {
-                return  [
-                    {group: 'BLANK', projectTypes:[
-                        {name: 'Blank', type: 'blank'}
-                    ]},
-                    {group: 'CPP', projectTypes:[
-                        {name: 'C/C++ Project', type: 'cpp'}
-                    ]},
-                    {group: 'GO', projectTypes:[
-                        {name: 'Go Project', type: 'go'}
-                    ]},
-                    {group: 'JAVASCRIPT', projectTypes:[
-                        {name: 'AngularJS Project', type: 'AngularJS'},
-                        {name: 'Basic Project', type: 'BasicJS'},
-                        {name: 'Grunt JS Project', type: 'GruntJS'},
-                        {name: 'Gulp JS Project', type: 'GulpJS'}
-                    ]},
-                    {group: 'JAVA', projectTypes:[
-                        {name: 'Ant Project', type: 'ant'},
-                        {name: 'Google App Engine Project', type: 'GAEJava'},
-                        {name: 'Maven Project', type: 'maven'}
-                    ]},
-                    {group: 'PHP', projectTypes:[
-                        {name: 'PHP App Engine Project', type: 'GAEPhp'},
-                        {name: 'PHP Project', type: 'php'}
-                    ]},
-                    {group: 'PYTHON', projectTypes:[
-                        {name: 'Python App Engine Project', type: 'GAEPython'},
-                        {name: 'Python Project', type: 'python'}
-                    ]},
-                    {group: 'RUBY', projectTypes:[
-                        {name: 'Ruby Project', type: 'ruby'}
-                    ]}
-                ];
+                var deferred = $q.defer();
+                var con = {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                };
+                $http.get('/api/project-type', con)
+                    .success(function (projectTypes) {
+                        var projectGroups =[];
+                        angular.forEach(projectTypes, function (projectType) {
+                            var group = '';
+                            var isExist = false;
+                            var name = projectType.displayName;
+                            var type = projectType.id;
+
+                            angular.forEach(projectType.attributeDescriptors, function (attributeDescriptor) {
+                                if(attributeDescriptor.name && attributeDescriptor.name === 'language') {
+                                    if(attributeDescriptor.values && attributeDescriptor.values.length > 0){
+                                        group = attributeDescriptor.values[0].toUpperCase();
+                                    }
+                                }
+                            });
+                            if(group === ''){
+                                group = type.toUpperCase();
+                            }
+                            angular.forEach(projectGroups, function (projectGroup) {
+                                if(projectGroup.group === group){
+                                    isExist = true;
+                                    projectGroup.projectTypes.push({name: name, type: type});
+                                    projectGroup.projectTypes.sort(function (a, b) {
+                                        if (a.name > b.name) {
+                                            return 1;
+                                        }
+                                        if (a.name < b.name) {
+                                            return -1;
+                                        }
+                                        return 0;
+                                    });
+                                }
+                            });
+                            if(!isExist) {
+                                projectGroups.push({group: group, projectTypes:[{name: name, type: type}]});
+                            }
+                        });
+                        projectGroups.sort(function (a, b) {
+                            if (a.group > b.group) {
+                                return 1;
+                            }
+                            if (a.group < b.group) {
+                                return -1;
+                            }
+                            return 0;
+                        });
+                        deferred.resolve(projectGroups);
+                    })
+                    .error(function (err) {
+                        deferred.reject(err);
+                    });
+                return deferred.promise;
             }
         };
     });

@@ -41,7 +41,7 @@ angular.module('odeskApp')
 
           this.workspaces = workspaces;
           this.workspaceSelected = workspaces[0];
-          this.projectGroups = ProjectGroups.all();
+          this.projectGroups = [];
           this.currentUserId = currentUserId;
           this.tabActivated = {};
           this.tabActivated[type] = true;
@@ -126,5 +126,16 @@ angular.module('odeskApp')
               }
             );
           };
+
+          this.getProjectGroups = function() {
+              var that = this;
+              ProjectGroups.all().then(function (groups) {
+                  that.projectGroups = groups;
+              },
+              function(error) {
+                  that.alerts.push({type: 'danger', msg: 'Failed! Get project types failed: ' + error});
+              });
+          };
+          this.getProjectGroups();
         }
     ]);
