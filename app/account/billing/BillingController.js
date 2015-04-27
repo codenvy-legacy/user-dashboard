@@ -119,22 +119,7 @@ angular.module('odeskApp')
         };
 
         $scope.addCreditCard = function () {
-            if(!$scope.creditCard.number){
-                $('#cardNumber').attr("required", "required");
-                return;
-            }
-            if(!$scope.creditCard.cardholderName){
-                $('#cardHolder').attr("required", "required");
-                return;
-            }
-            if(!$scope.creditCard.expirationDate){
-                $('#expiry').attr("required", "required");
-                return;
-            }
-            if(!$scope.creditCard.cvv){
-                $('#cvv').attr("required", "required");
-                return;
-            }
+
             PaymentService.addCreditCard($scope.accounts[0].id, $scope.creditCard).then(function () {
                 $('#warning-creditCard-alert .alert-danger').hide();
                 $scope.initCreditCard();

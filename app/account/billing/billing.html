@@ -92,7 +92,9 @@
                                 </div>
                             </div>
                             <div class="col-xs-2 col-md-2 col-md-offset-10">
-                                <button class="btn btn-primary btn-block signup-btn" ng-disabled="!creditCardForm.$valid" ng-click="addCreditCard();">Add</button>
+                                <button class="btn btn-primary btn-block signup-btn"
+                                        ng-disabled="!creditCardForm.$valid || !creditCard.number || !creditCard.cardholderName || !creditCard.expirationDate || !creditCard.expirationDate || !creditCard.cvv"
+                                        ng-click="addCreditCard()">Add</button>
                             </div>
                         </div>
                     </form>
