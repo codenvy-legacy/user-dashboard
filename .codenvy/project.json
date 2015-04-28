@@ -1,1 +1,1 @@
-{"type":"AngularJS","attributes":{},"runners":{"default":"system:/javascript/web/grunt","configs":{}},"builders":{}}
+{"mixinTypes":["contribution"],"builders":{"configs":{}},"runners":{"configs":{},"default":"system:/javascript/web/grunt"},"type":"AngularJS","attributes":{"language":["javascript"],"framework":["AngularJS"],"contribute_branch":["master"],"contribute_mode":["contribute"]}}
