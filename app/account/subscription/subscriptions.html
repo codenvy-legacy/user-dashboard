@@ -30,7 +30,7 @@
                     </td>
                     <td class="text-center">
                         <a href="{{subscription.cancelLink}}" ng-if="!subscription.needToBuy" tooltip="{{subscription.cancelTooltip}}"><button class="btn btn-xs grid-button">Cancel</button></a>
-                        <button class="btn btn-primary btn-xs grid-button" ng-if="subscription.needToBuy" ng-click="buySubscription(subscription);" tooltip="{{subscription.buyTooltip}}">Add Credit Card</button>
+                        <button class="btn btn-primary btn-xs grid-button" ng-if="subscription.needToBuy" ng-click="buySubscription(subscription);" tooltip="{{subscription.buyTooltip}}">{{subscription.serviceId == "Saas" ? 'Add Credit Card' : 'Buy'}}</button>
                     </td>
                 </tr>
                 </tbody>
