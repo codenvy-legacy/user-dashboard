@@ -229,7 +229,7 @@ angular.module('odeskApp')
         };
 
         AccountService.getSAASProposalSubscription = function() {
-            return {description : "SaaS Pay-as-you-Go Subscription", buyTooltip: "Add a credit card to use Codenvy without limits.", needToBuy: true, serviceId: AccountService.SAAS_SERVICE_ID};
+            return {description : "SaaS Pay-as-you-Go Account", buyTooltip: "Add a credit card to use Codenvy without limits.", needToBuy: true, serviceId: AccountService.SAAS_SERVICE_ID};
         };
 
         //Remove subscription by it's ID:
