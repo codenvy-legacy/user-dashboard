@@ -24,6 +24,8 @@ angular.module('odeskApp')
         $scope.showNewCreditCardForm = false;
         $scope.addCreditCardError = '';
         $scope.usedMemory = 0;
+        $scope.prepaidGbH = 0;
+        $scope.freeGbH = 0;
         $scope.profile = {};
         $scope.invoices = [];
         $scope.isNewCreditCardAdded = false;
@@ -35,6 +37,12 @@ angular.module('odeskApp')
             name: 'Full Name',
             expiry: '&bull;&bull;/&bull;&bull;',
             cvc: '&bull;&bull;&bull;'
+        };
+
+        var getSubscriptionResources = function() {
+            $scope.prepaidGbH = AccountService.getPrepaidGbH(AccountService.subscriptions);
+            //TODO realise method to get free GbH from server part
+            $scope.freeGbH = 10;
         };
 
         AccountService.getAccountsByRole("account/owner").then(function (accounts) {
@@ -63,6 +71,7 @@ angular.module('odeskApp')
         $scope.getAccountResources = function(account) {
             AccountService.getAccountResources(account.id).then(function() {
                 $scope.usedMemory = AccountService.getUsedMemory(AccountService.resources);
+                getSubscriptionResources();
             });
         };
 
@@ -115,6 +124,11 @@ angular.module('odeskApp')
             PaymentService.deleteCreditCard(creditCard.accountId, creditCard.number).then(function () {
                 $scope.loadCreditCards();
                 $scope.getAccountAttributes($scope.accounts[0]);
+                $timeout(function () {
+                    AccountService.getAllSubscriptions($scope.accounts).then(function () {
+                        getSubscriptionResources();
+                    });
+                }, 5000);
             });
         };
 
@@ -150,6 +164,11 @@ angular.module('odeskApp')
                 $('.cardWrapper .card-container  div.number')[0].innerHTML = defaultCardValues.number;
                 $('.cardWrapper .card-container  div.name')[0].innerHTML = defaultCardValues.name;
                 $('.cardWrapper .card-container  div.expiry')[0].innerHTML = defaultCardValues.expiry;
+                $timeout(function () {
+                    AccountService.getAllSubscriptions($scope.accounts).then(function () {
+                        getSubscriptionResources();
+                    });
+                }, 5000);
             }, function (error) {
                 $scope.addCreditCardError = error.message ? error.message : "Add credit card failed.";
                 $('#warning-creditCard-alert .alert-danger').show();
