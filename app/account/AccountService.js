@@ -135,6 +135,16 @@ angular.module('odeskApp')
             return (usedMb).toFixed(2);
         };
 
+        AccountService.getPrepaidGbH = function (subscriptions) {
+            var saasSubscription = _.find(subscriptions, function (subscription) {
+                return subscription.serviceId == AccountService.SAAS_SERVICE_ID;
+            });
+            if(saasSubscription.properties.PrepaidGbH){
+                return saasSubscription.properties.PrepaidGbH;
+            }
+            return 0;
+        };
+
         //Get list of subscriptions for pointed accounts:
         AccountService.getAllSubscriptions = function (accounts) {
             var subscriptions = [];

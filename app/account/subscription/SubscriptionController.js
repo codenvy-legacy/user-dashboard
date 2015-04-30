@@ -25,6 +25,7 @@ angular.module('odeskApp')
 
         $scope.accounts = [];
         $scope.subscriptions = [];
+        $scope.SAAS_SERVICE_ID = AccountService.SAAS_SERVICE_ID;
 
         AccountService.getAccountsByRole("account/owner").then(function (accounts) {
             $scope.accounts = accounts;
@@ -37,7 +38,7 @@ angular.module('odeskApp')
             AccountService.getAllSubscriptions(accounts).then(function () {
                 $scope.subscriptions = AccountService.subscriptions;
                 angular.forEach($scope.subscriptions, function(subscription) {
-                    if (subscription.serviceId === AccountService.SAAS_SERVICE_ID) {
+                    if (subscription.serviceId === $scope.SAAS_SERVICE_ID) {
                         var prepaidGbH = subscription.properties.PrepaidGbH;
                         subscription.cancelTooltip = prepaidGbH && parseInt(prepaidGbH) > 0 ? cancelPrePaidTooltip : cancelPayAsYouGoTooltip;
                         subscription.cancelLink = prepaidGbH && parseInt(prepaidGbH) > 0 ? cancelPrePaidLink : cancelPayAsYouGoLink;
@@ -55,7 +56,7 @@ angular.module('odeskApp')
             var hasOnPremises = services.indexOf("OnPremises") >= 0;
 
             var saasSubscription = _.find($scope.subscriptions, function (subscription) {
-                return subscription.serviceId == "Saas";
+                return subscription.serviceId == $scope.SAAS_SERVICE_ID;
             });
 
             if (saasSubscription) {
@@ -73,7 +74,7 @@ angular.module('odeskApp')
         };
 
         $scope.buySubscription = function(subscription) {
-            if (subscription.serviceId === AccountService.SAAS_SERVICE_ID) {
+            if (subscription.serviceId === $scope.SAAS_SERVICE_ID) {
                 $location.path("/account/billing");
             } else if (subscription.serviceId === AccountService.ONPREMISES_SERVICE_ID) {
                 $modal.open({
