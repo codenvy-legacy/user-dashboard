@@ -18,7 +18,7 @@ angular.module('odeskApp')
     .factory('AccountService', ['$http', '$q', '$window', '$location', function AccountService($http, $q, $window, $location) {
         AccountService.BUY_SUBSCRIPTIONS_LINK = "http://codenvy.com/products/developer-environment-cloud-saas/";
         AccountService.SAAS_SERVICE_ID = "Saas";
-        AccountService.SAAS_PLAN_ID = "saas";
+        AccountService.SAAS_PLAN_ID = "pay-as-you-go";
         AccountService.ONPREMISES_SERVICE_ID = "OnPremises";
         AccountService.RESOURCES_LOCKED_PROPERTY = "codenvy:resources_locked";
         AccountService.subscriptions = [];
