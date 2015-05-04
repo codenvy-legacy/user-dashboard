@@ -21,6 +21,8 @@ angular.module('odeskApp')
         var cancelPrePaidLink = "mailto:sales@codenvy.com?subject=" + escape("Cancellation of Pre-Paid Subscription");
         var cancelOnPromisesLink = "mailto:sales@codenvy.com?subject=" + escape("Cancellation of On-Prem Subscription");
 
+        var payAsYouGoDescription="Pay as you go without pre-paid";
+        var prePaidDescription="SaaS Pre-Paid Subscription";
 
 
         $scope.accounts = [];
@@ -39,9 +41,19 @@ angular.module('odeskApp')
                 $scope.subscriptions = AccountService.subscriptions;
                 angular.forEach($scope.subscriptions, function(subscription) {
                     if (subscription.serviceId === $scope.SAAS_SERVICE_ID) {
-                        var prepaidGbH = subscription.properties.PrepaidGbH;
-                        subscription.cancelTooltip = prepaidGbH && parseInt(prepaidGbH) > 0 ? cancelPrePaidTooltip : cancelPayAsYouGoTooltip;
-                        subscription.cancelLink = prepaidGbH && parseInt(prepaidGbH) > 0 ? cancelPrePaidLink : cancelPayAsYouGoLink;
+                        var prepaidGbH = 0;
+                        if(subscription.properties.PrepaidGbH) {
+                            prepaidGbH = parseInt(subscription.properties.PrepaidGbH);
+                        }
+                        if(prepaidGbH > 0) {
+                            subscription.cancelTooltip = cancelPrePaidTooltip;
+                            subscription.cancelLink = cancelPrePaidLink;
+                            subscription.description = prePaidDescription + " (" + prepaidGbH + "GB Hrs / Month)";
+                        } else {
+                            subscription.cancelTooltip = cancelPayAsYouGoTooltip;
+                            subscription.cancelLink = cancelPayAsYouGoLink;
+                            subscription.description = payAsYouGoDescription;
+                        }
                     } else if (subscription.serviceId === AccountService.ONPREMISES_SERVICE_ID) {
                         subscription.cancelTooltip = cancelOnPromisesTooltip;
                         subscription.cancelLink = cancelOnPromisesLink;
@@ -53,7 +65,7 @@ angular.module('odeskApp')
 
         $scope.addSubscriptionProposals = function () {
             var services = _.pluck($scope.subscriptions, "serviceId");
-            var hasOnPremises = services.indexOf("OnPremises") >= 0;
+            var hasOnPremises = services.indexOf(AccountService.ONPREMISES_SERVICE_ID) >= 0;
 
             var saasSubscription = _.find($scope.subscriptions, function (subscription) {
                 return subscription.serviceId == $scope.SAAS_SERVICE_ID;
