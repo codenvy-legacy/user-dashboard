@@ -53,7 +53,7 @@ angular.module('odeskApp')
 
         $scope.addSubscriptionProposals = function () {
             var services = _.pluck($scope.subscriptions, "serviceId");
-            var hasOnPremises = services.indexOf("OnPremises") >= 0;
+            var hasOnPremises = services.indexOf(AccountService.ONPREMISES_SERVICE_ID) >= 0;
 
             var saasSubscription = _.find($scope.subscriptions, function (subscription) {
                 return subscription.serviceId == $scope.SAAS_SERVICE_ID;
@@ -63,6 +63,13 @@ angular.module('odeskApp')
                 if (saasSubscription.properties && saasSubscription.properties["Package"] && saasSubscription.properties["Package"] == "Community"){
                     $scope.subscriptions.splice($scope.subscriptions.indexOf(saasSubscription), 1);
                     $scope.subscriptions.push(AccountService.getSAASProposalSubscription());
+                } else {
+                    var prepaidGbH = 0;
+                    if(saasSubscription.properties.PrepaidGbH) {
+                        prepaidGbH = saasSubscription.properties.PrepaidGbH;
+                    }
+                    $scope.subscriptions.splice($scope.subscriptions.indexOf(saasSubscription), 1);
+                    $scope.subscriptions.push(AccountService.getPrepaidProposalSubscription(prepaidGbH));
                 }
             } else {
                 $scope.subscriptions.push(AccountService.getSAASProposalSubscription());

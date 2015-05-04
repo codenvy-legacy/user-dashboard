@@ -19,6 +19,7 @@ angular.module('odeskApp')
         AccountService.BUY_SUBSCRIPTIONS_LINK = "http://codenvy.com/products/developer-environment-cloud-saas/";
         AccountService.SAAS_SERVICE_ID = "Saas";
         AccountService.SAAS_PLAN_ID = "pay-as-you-go";
+        AccountService.SAAS_PREPAID_PLAN_ID = "prepaid";
         AccountService.ONPREMISES_SERVICE_ID = "OnPremises";
         AccountService.RESOURCES_LOCKED_PROPERTY = "codenvy:resources_locked";
         AccountService.subscriptions = [];
@@ -240,6 +241,15 @@ angular.module('odeskApp')
 
         AccountService.getSAASProposalSubscription = function() {
             return {description : "SaaS Pay-as-you-Go Account", buyTooltip: "Add a credit card to use Codenvy without limits.", needToBuy: true, serviceId: AccountService.SAAS_SERVICE_ID};
+        };
+
+        AccountService.getPrepaidProposalSubscription = function(prepaidGbH) {
+            return {
+                description : "SaaS Pre-Paid Subscription (" + prepaidGbH + "GB Hrs / Month)",
+                cancelTooltip: "Cancel your pre-paid subscription.",
+                needToBuy: false,
+                serviceId: AccountService.SAAS_SERVICE_ID,
+                cancelLink: "mailto:sales@codenvy.com?subject=Cancellation of Pre-Paid Subscription"};
         };
 
         //Remove subscription by it's ID:
