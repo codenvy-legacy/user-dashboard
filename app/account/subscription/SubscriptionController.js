@@ -39,9 +39,18 @@ angular.module('odeskApp')
                 $scope.subscriptions = AccountService.subscriptions;
                 angular.forEach($scope.subscriptions, function(subscription) {
                     if (subscription.serviceId === $scope.SAAS_SERVICE_ID) {
-                        var prepaidGbH = subscription.properties.PrepaidGbH;
-                        subscription.cancelTooltip = prepaidGbH && parseInt(prepaidGbH) > 0 ? cancelPrePaidTooltip : cancelPayAsYouGoTooltip;
-                        subscription.cancelLink = prepaidGbH && parseInt(prepaidGbH) > 0 ? cancelPrePaidLink : cancelPayAsYouGoLink;
+                        var prepaidGbH = 0;
+                        if(subscription.properties.PrepaidGbH) {
+                            prepaidGbH = parseInt(subscription.properties.PrepaidGbH);
+                        }
+                        if(prepaidGbH > 0) {
+                            subscription.cancelTooltip = cancelPrePaidTooltip;
+                            subscription.cancelLink = cancelPrePaidLink;
+                            subscription.description = "SaaS Pre-Paid Subscription (" + prepaidGbH + "GB Hrs / Month)";
+                        } else {
+                            subscription.cancelTooltip = cancelPayAsYouGoTooltip;
+                            subscription.cancelLink = cancelPayAsYouGoLink;
+                        }
                     } else if (subscription.serviceId === AccountService.ONPREMISES_SERVICE_ID) {
                         subscription.cancelTooltip = cancelOnPromisesTooltip;
                         subscription.cancelLink = cancelOnPromisesLink;
@@ -63,13 +72,6 @@ angular.module('odeskApp')
                 if (saasSubscription.properties && saasSubscription.properties["Package"] && saasSubscription.properties["Package"] == "Community"){
                     $scope.subscriptions.splice($scope.subscriptions.indexOf(saasSubscription), 1);
                     $scope.subscriptions.push(AccountService.getSAASProposalSubscription());
-                } else {
-                    var prepaidGbH = 0;
-                    if(saasSubscription.properties.PrepaidGbH) {
-                        prepaidGbH = saasSubscription.properties.PrepaidGbH;
-                    }
-                    $scope.subscriptions.splice($scope.subscriptions.indexOf(saasSubscription), 1);
-                    $scope.subscriptions.push(AccountService.getPrepaidSubscription(prepaidGbH));
                 }
             } else {
                 $scope.subscriptions.push(AccountService.getSAASProposalSubscription());

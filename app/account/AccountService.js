@@ -243,15 +243,6 @@ angular.module('odeskApp')
             return {description : "SaaS Pay-as-you-Go Account", buyTooltip: "Add a credit card to use Codenvy without limits.", needToBuy: true, serviceId: AccountService.SAAS_SERVICE_ID};
         };
 
-        AccountService.getPrepaidSubscription = function(prepaidGbH) {
-            return {
-                description : "SaaS Pre-Paid Subscription (" + prepaidGbH + "GB Hrs / Month)",
-                cancelTooltip: "Cancel your pre-paid subscription.",
-                needToBuy: false,
-                serviceId: AccountService.SAAS_SERVICE_ID,
-                cancelLink: "mailto:sales@codenvy.com?subject=Cancellation of Pre-Paid Subscription"};
-        };
-
         //Remove subscription by it's ID:
         AccountService.removeSubscription = function (subscriptionId) {
             var deferred = $q.defer();
