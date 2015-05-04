@@ -19,6 +19,7 @@ angular.module('odeskApp')
         AccountService.BUY_SUBSCRIPTIONS_LINK = "http://codenvy.com/products/developer-environment-cloud-saas/";
         AccountService.SAAS_SERVICE_ID = "Saas";
         AccountService.SAAS_PLAN_ID = "pay-as-you-go";
+        AccountService.SAAS_PREPAID_PLAN_ID = "prepaid";
         AccountService.ONPREMISES_SERVICE_ID = "OnPremises";
         AccountService.RESOURCES_LOCKED_PROPERTY = "codenvy:resources_locked";
         AccountService.subscriptions = [];
