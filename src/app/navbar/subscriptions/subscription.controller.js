@@ -10,6 +10,8 @@
  */
 'use strict';
 
+import {subscriptionOffers, subscriptionDetails} from '../subscriptions/subscriptions';
+
 class SubscriptionCtrl {
   /**
    * Default constructor that is using resource injection
@@ -84,33 +86,46 @@ class SubscriptionCtrl {
 
   fillPayAsYouGoDetails(saasSubscription) {
     var ctrl = this;
-    saasSubscription.title = 'Pay-As-You-Go Account';
-    saasSubscription.description = '$0.15 / GB Hour';
-    saasSubscription.icon = 'assets/images/icon-saas.png';
-    saasSubscription.buttonTitle = 'Remove Credit Card';
+
+    let details = _.find(subscriptionDetails, function (detail) {
+      return detail.type === 'pay-as-you-go';
+    });
+
+    saasSubscription.title = details.title;
+    saasSubscription.description = details.description;
+    saasSubscription.icon = details.icon;
+    saasSubscription.buttonTitle = details.buttonTitle;
     saasSubscription.cancel = function() {
       ctrl.cancelPayAsYouGo(ctrl.$location);
     };
   }
 
-  fillPrePaidDetails(saasSubscription) {
+  fillPrePaidDetails(prepaidSubscription) {
     var ctrl = this;
-    let prepaid = saasSubscription.properties.PrepaidGbH;
-    saasSubscription.title = 'SaaS Pre-Paid Subscription';
-    saasSubscription.description = prepaid + ' GB Hrs / Month';
-    saasSubscription.icon = 'assets/images/icon-saas.png';
-    saasSubscription.buttonTitle = 'Cancel';
-    saasSubscription.cancel = function() {
+    let details = _.find(subscriptionDetails, function (detail) {
+      return detail.type === 'prepaid';
+    });
+
+    let prepaid = prepaidSubscription.properties.PrepaidGbH;
+    prepaidSubscription.title = details.title;
+    prepaidSubscription.description = prepaid + details.description;
+    prepaidSubscription.icon = details.icon;
+    prepaidSubscription.buttonTitle = details.buttonTitle;
+    prepaidSubscription.cancel = function() {
       ctrl.cancelPrePaid(ctrl.$window);
     };
   }
 
   fillOnPremDetails(onPremSubscription) {
     var ctrl = this;
-    onPremSubscription.title = 'On-Prem Account';
-    onPremSubscription.description = '$300 / user / year';
-    onPremSubscription.icon = 'assets/images/icon-on-prem.png';
-    onPremSubscription.buttonTitle = 'Cancel';
+    let details = _.find(subscriptionDetails, function (detail) {
+      return detail.type === 'on-prem';
+    });
+
+    onPremSubscription.title = details.title;
+    onPremSubscription.description = details.description;
+    onPremSubscription.icon = details.icon;
+    onPremSubscription.buttonTitle = details.buttonTitle;
     onPremSubscription.cancel = function() {
       ctrl.cancelOnPrem(ctrl.$window);
     };
@@ -118,22 +133,15 @@ class SubscriptionCtrl {
 
   getPayAsYouGoProposal() {
     var ctrl = this;
-    return {
-      title : 'SAAS Pay-As-You-Go',
-      description : 'Our crazy fast cloud IDE and magical one-click automation hosted in our cloud.',
-      buttonTitle : 'Add Credit Card',
-      icon : 'assets/images/icon-saas.png',
-      content : [
-        'Machines up to 200GB RAM',
-        'Always-on machines',
-        '10 GB hours free per month',
-        'Billing starts after free monthly hours',
-        'Email support'
-      ],
-      buy: function() {
+    let payAsYouGoOffer = _.find(subscriptionOffers, function (offer) {
+      return offer.type === 'pay-as-you-go';
+    });
+
+    payAsYouGoOffer.buy = function() {
         ctrl.onPayAsYouGoChoosen(ctrl.$location);
       }
     };
+    return payAsYouGoOffer;
   }
 
   onPayAsYouGoChoosen($location) {
@@ -159,20 +167,13 @@ class SubscriptionCtrl {
 
   getOnPremProposal() {
     var ctrl = this;
-    return {
-      title : 'On-Prem',
-      description : 'All the power of Codenvy\'s Cloud behind your firewall, connected to your systems and processes.',
-      buttonTitle : 'Buy',
-      icon : 'assets/images/icon-on-prem.png',
-      content : [
-        'Unlimited nodes',
-        'Updater service',
-        'Email support'
-      ],
-      buy: function() {
-        ctrl.onPremChoosen(ctrl.$window);
-      }
+    let onPremOffer = _.find(subscriptionOffers, function (offer) {
+      return offer.type === 'on-prem';
+    });
+    onPremOffer.buy = function() {
+      ctrl.onPremChoosen(ctrl.$window);
     };
+    return onPremOffer;
   }
 }
 
