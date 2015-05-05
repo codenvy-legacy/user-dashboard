@@ -21,7 +21,7 @@ angular.module('odeskApp')
         var cancelPrePaidLink = "mailto:sales@codenvy.com?subject=" + escape("Cancellation of Pre-Paid Subscription");
         var cancelOnPromisesLink = "mailto:sales@codenvy.com?subject=" + escape("Cancellation of On-Prem Subscription");
 
-        var payAsYouGoDescription="Pay as you go without pre-paid";
+        var payAsYouGoDescription="SaaS Pay-as-you-Go Account";
         var prePaidDescription="SaaS Pre-Paid Subscription";
 
 
