@@ -140,10 +140,10 @@ angular.module('odeskApp')
             var saasSubscription = _.find(subscriptions, function (subscription) {
                 return subscription.serviceId == AccountService.SAAS_SERVICE_ID;
             });
-            if(saasSubscription.properties.PrepaidGbH){
-                return saasSubscription.properties.PrepaidGbH;
+            if(!saasSubscription.properties || !saasSubscription.properties.PrepaidGbH){
+                return 0;
             }
-            return 0;
+            return saasSubscription.properties.PrepaidGbH;
         };
 
         //Get list of subscriptions for pointed accounts:
