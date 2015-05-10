@@ -48,7 +48,7 @@
     </md-list>
   </section>
   <md-divider md-theme="factory-theme"></md-divider>
-  <div class="navbar-menu" ng-if="navbarCtrl.profile.$resolved" ng-init="navbarCtrl.updateData(); isExpand=true">
+  <div class="navbar-menu" ng-if="navbarCtrl.profile.attributes" ng-init="isExpand=true">
     <div>
       <img class="developers-face" gravatar-src="navbarCtrl.email">
       <span>{{navbarCtrl.fullName}}</span>
