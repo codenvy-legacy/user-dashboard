@@ -452,8 +452,12 @@ angular.module('odeskApp')
                     });
                 });
             }, function (err) {
+                var errMessage = err.message;
+                angular.forEach($scope.workspaces, function (workspace) {
+                    errMessage = errMessage.replace(workspace.id, '<b>' + workspace.name  + '</b>');
+                });
                 $("#allocationError").show();
-                $("#allocationError").html(err.message);
+                $("#allocationError").html(errMessage);
             });
         }
 
