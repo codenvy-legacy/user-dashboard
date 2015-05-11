@@ -103,9 +103,9 @@ class CodenvySelect {
 
         $scope.value = newVal;
 
-        for (var pos = 0; pos < selectElements.length; pos++) {
-          selectElements[pos].className = newVal === '' ? 'disabled' : '';
-        }
+        angular.forEach(selectElements, function(selectElement) {
+          selectElement.className = newVal === '' ? 'disabled' : '';
+        });
       });
 
       // search the select field
@@ -119,9 +119,9 @@ class CodenvySelect {
       // Append the value elements in the select element
       selectElements.append(content);
 
-      for (var pos = 0; pos < selectElements.length; pos++) {
-        selectElements[pos].value = $scope.value;
-      }
+      angular.forEach(selectElements, function(selectElement) {
+        selectElement.value = $scope.value;
+      });
 
     });
 

@@ -32,9 +32,9 @@ class AccountProfileCtrl {
 
     var that = this;
     if (fromJsonCountries.all) {
-      for (var pos = 0; pos < fromJsonCountries.all.length; pos++) {
-        that.countries.push({name: fromJsonCountries.all[pos].name});
-      }
+      angular.forEach(fromJsonCountries.all, function(fromJsonCountry) {
+        that.countries.push({name: fromJsonCountry.name});
+      });
     }
   }
 

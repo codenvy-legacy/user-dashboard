@@ -5,7 +5,6 @@ $default-dark-color = $codenvy-navy-color
 $default-color = $codenvy-medium-blue-color
 $secondary-color = $codenvy-orange-color
 $secondary-light = $codenvy-purple-color
-$disabled-color = $codenvy-disabled-color
 $menu-bg-color = $dark-menu-color
 $label-primary-color = $night-foggy-sky-color
 $label-secondary-color = $dark-menacing-sky-color
@@ -13,12 +12,18 @@ $label-info-color = $clear-foggy-sky-color
 $error-color = $red-lipstick-color
 $list-separator-color = $cat-gray-color
 $form-element-border-color = $mouse-gray-color
-$default-border-color = $border-color
 $white-color = $codenvy-white-color
 
 
 // change alpha on existing colors
 $hover-on-list-color = rgba($default-color, 0.13)
+
+// disabled widget color
+$disabled-color = rgba(0, 0, 0, 0.26)
+
+$background-color = rgba($white-color, 1)
+
+$default-border-color = rgba($list-separator-color, 1)
 
 // box shadows
 box-shadow-simple()
@@ -27,9 +32,9 @@ box-shadow-simple()
   -moz-box-shadow 0 2px 5px 0 rgba(0, 0, 0, 0.26)
 
 box-shadow-bigger()
-  box-shadow 0px 2px 6px 0 rgba(0, 0, 0, 0.40)
-  -webkit-box-shadow 0px 2px 6px 0 rgba(0, 0, 0, 0.40)
-  -moz-box-shadow 0px 2px 6px 0 rgba(0, 0, 0, 0.40)
+  box-shadow 0 2px 6px 0 rgba(0, 0, 0, 0.40)
+  -webkit-box-shadow 0 2px 6px 0 rgba(0, 0, 0, 0.40)
+  -moz-box-shadow 0 2px 6px 0 rgba(0, 0, 0, 0.40)
 
 
 codenvy-border-radius(n)
