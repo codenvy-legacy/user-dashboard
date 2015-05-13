@@ -351,11 +351,7 @@ angular.module('odeskApp')
                         }
                     });
                     if($scope.isDeleteAllowed) {
-                        if($scope.isAdmin) {
-                            $('#warning-project-message').html("Removing a project can't be undone, are you sure you want to continue?");
-                        } else {
-                            $('#warning-project-message').html("Deleting the project requires Administrator permissions to the project's workspace. Contact Workspace Administrator or Owner.")
-                        }
+                        $('#warning-project-message').html("Removing a project can't be undone, are you sure you want to continue?");
                     } else {
                         $('#warning-project-message').html("You should stop all running processes associated with this project before deleting it.")
                     }
