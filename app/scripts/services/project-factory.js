@@ -101,10 +101,10 @@ angular.module('odeskApp')
                 },
                 source: {
                     project: {
-                        location: "https://github.com/spring-projects/spring-petclinic.git",
+                        location: "https://github.com/codenvy-demos/spring-petclinic.git",
                         type: "git",
                         parameters: {
-                            branch: "master"
+                            branch: "getting-started"
                         }
                     }
                 },
