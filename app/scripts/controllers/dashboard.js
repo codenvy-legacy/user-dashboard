@@ -604,7 +604,9 @@ angular.module('odeskApp')
 
             $http({ method: 'GET', url: '/api/account' }).success(function (account, status) {
                 $scope.ownerWorkspace = _.pluck(_.pluck(account, 'accountReference'), 'name');
-                $scope.currentUserId = account[0].userId;
+                if (account[0]) {
+                    $scope.currentUserId = account[0].userId;
+                }
             });
 
             Workspace.all(true, false).then(function (resp) {
