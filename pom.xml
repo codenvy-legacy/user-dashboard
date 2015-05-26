@@ -28,7 +28,6 @@
     <groupId>com.codenvy.dashboard</groupId>
     <artifactId>user-dashboard-war</artifactId>
     <version>0.16.0-SNAPSHOT</version>
-    <packaging>war</packaging>
     <name>User Dashboard :: Web App</name>
     <scm>
         <connection>scm:git:git@github.com:codenvy/user-dashboard.git</connection>
@@ -56,7 +55,6 @@
         </pluginRepository>
     </pluginRepositories>
     <build>
-        <finalName>user-dashboard-war</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
@@ -97,9 +95,21 @@
                                     <replacetoken><![CDATA[var DEV = true;]]></replacetoken>
                                     <replacevalue><![CDATA[var DEV = false;]]></replacevalue>
                                 </replace>
+                                <replace file="${basedir}/app/scripts/app.js">
+                                    <replacetoken><![CDATA[var ONPREM = true;]]></replacetoken>
+                                    <replacevalue><![CDATA[var ONPREM = false;]]></replacevalue>
+                                </replace>
                                 <!-- Build the application -->
                                 <exec dir="${basedir}/target" executable="grunt" failonerror="true">
                                     <arg value="build" />
+                                </exec>
+                                <!-- Build onprem -->
+                                <replace file="${basedir}/app/scripts/app.js">
+                                    <replacetoken><![CDATA[var ONPREM = false;]]></replacetoken>
+                                    <replacevalue><![CDATA[var ONPREM = true;]]></replacevalue>
+                                </replace>
+                                <exec dir="${basedir}/target" executable="grunt" failonerror="true">
+                                    <arg value="onprem" />
                                 </exec>
                                 <!-- Change base HREF of the application that will be hosted on /dashboard -->
                                 <replace file="${basedir}/target/user-dashboard-war/index.html">
@@ -111,17 +121,46 @@
                                     <replacetoken><![CDATA[var DEV = false;]]></replacetoken>
                                     <replacevalue><![CDATA[var DEV = true;]]></replacevalue>
                                 </replace>
+                                <!-- Disable back onprem -->
+                                <replace file="${basedir}/app/scripts/app.js">
+                                    <replacetoken><![CDATA[var ONPREM = true;]]></replacetoken>
+                                    <replacevalue><![CDATA[var ONPREM = false;]]></replacevalue>
+                                </replace>
                             </target>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>saas</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>${project.artifactId}</finalName>
+                            <descriptors>
+                                <descriptor>${basedir}/assembly/assembly-saas.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>onprem</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>${project.artifactId}</finalName>
+                            <descriptors>
+                                <descriptor>${basedir}/assembly/assembly-onprem.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
