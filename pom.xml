@@ -23,11 +23,11 @@
     <parent>
         <artifactId>maven-depmgt-pom</artifactId>
         <groupId>org.eclipse.che.depmgt</groupId>
-        <version>1.21.0-SNAPSHOT</version>
+        <version>1.21.1-SNAPSHOT</version>
     </parent>
     <groupId>com.codenvy.dashboard</groupId>
     <artifactId>user-dashboard-war</artifactId>
-    <version>0.16.0-SNAPSHOT</version>
+    <version>0.16.1-SNAPSHOT</version>
     <name>User Dashboard :: Web App</name>
     <scm>
         <connection>scm:git:git@github.com:codenvy/user-dashboard.git</connection>

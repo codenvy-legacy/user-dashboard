@@ -42,7 +42,7 @@ angular.module('odeskApp')
         var getSubscriptionResources = function() {
             $scope.prepaidGbH = AccountService.getPrepaidGbH(AccountService.subscriptions);
             //TODO realise method to get free GbH from server part
-            $scope.freeGbH = 10;
+            $scope.freeGbH = 20;
         };
 
         AccountService.getAccountsByRole("account/owner").then(function (accounts) {
