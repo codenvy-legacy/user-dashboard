@@ -116,6 +116,11 @@
                                     <replacetoken><![CDATA[<base href="/">]]></replacetoken>
                                     <replacevalue><![CDATA[<base href="/dashboard/">]]></replacevalue>
                                 </replace>
+                                <!-- Change base HREF of the application that will be hosted on /dashboard -->
+                                <replace file="${basedir}/target/user-dashboard-onprem-war/index.html">
+                                    <replacetoken><![CDATA[<base href="/">]]></replacetoken>
+                                    <replacevalue><![CDATA[<base href="/dashboard/">]]></replacevalue>
+                                </replace>
                                 <!-- Enable back development mode -->
                                 <replace file="${basedir}/app/scripts/app.js">
                                     <replacetoken><![CDATA[var DEV = false;]]></replacetoken>
