@@ -16,6 +16,7 @@
 
 'use strict';
 var DEV = true;
+var ONPREM = false;
 
 angular.module('odeskApp', [
     'angular-lodash',
@@ -52,8 +53,8 @@ angular.module('odeskApp', [
     return {
         request: function (config) {
             //remove prefix url
-            if (config.url.indexOf("http://dev.box.com/api") == 0) {
-                config.url = config.url.substring("http://dev.box.com".length);
+            if (config.url.indexOf("http://nightly.codenvy-stg.com/api") == 0) {
+                config.url = config.url.substring("http://nightly.codenvy-stg.com".length);
             }
 
             //Do not add token on auth login
@@ -135,17 +136,9 @@ angular.module('odeskApp', [
             templateUrl: BASE_URL + 'account/profile.html',
             controller: 'ProfileCtrl'
         })
-        .when('/account/subscriptions', {
-            templateUrl: BASE_URL + 'account/subscription/subscriptions.html',
-            controller: 'SubscriptionCtrl'
-        })
         .when('/account/profile', {
             templateUrl: BASE_URL + 'account/profile.html',
             controller: 'ProfileCtrl'
-        })
-        .when('/account/billing', {
-            templateUrl: BASE_URL + 'account/billing/billing.html',
-            controller: 'BillingCtrl'
         })
         .when('/login', {
             templateUrl: BASE_URL + 'views/login.html',
@@ -154,6 +147,18 @@ angular.module('odeskApp', [
         .otherwise({
             redirectTo: DEFAULT
         });
+    if (!ONPREM) {
+        $routeProvider
+        .when('/account/subscriptions', {
+                templateUrl: BASE_URL + 'account/subscription/subscriptions.html',
+                controller: 'SubscriptionCtrl'
+            })
+        .when('/account/billing', {
+                templateUrl: BASE_URL + 'account/billing/billing.html',
+                controller: 'BillingCtrl'
+        });
+    }
+
     //while uncommenting line below fix # in navbar.js
     //$locationProvider.html5Mode(true);
 }).directive('numbersOnly', function () {
@@ -175,7 +180,7 @@ angular.module('odeskApp', [
         }
     };
 }).run(['$rootScope', function ($rootScope) {
-
+    $rootScope.ONPREM = ONPREM;
 }]);
 
 angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])

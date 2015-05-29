@@ -67,7 +67,7 @@
 
 <div class="project-box clearfix">
 
-    <div class="new-project col-md-2 col-sm-4 col-lg-2 col-xs-12">
+    <div class="new-project col-md-2 col-sm-4 col-lg-2 col-xs-12" ng-show="workspaces.length > 0">
 
         <div class="box box-two " ng-if="workspaces.length == 1">
             <a class="clearfix" href="/ws/{{workspaces[0].workspaceReference.name}}?action=newProject" target="_blank">
@@ -96,6 +96,12 @@
             </button>
         </div><!-- Box -->
     </div><!-- New Project -->
+
+    <div class="panel panel-default" ng-show="workspaces.length == 0">
+        <div class="panel-body text-center">
+            <h4>You do not have membership in any workspace.</h4>
+        </div>
+    </div>
 
     <!-- start help-->
     <div ng-show="isNeedToShowHelp()" class="box-example">

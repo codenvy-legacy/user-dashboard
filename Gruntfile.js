@@ -344,6 +344,53 @@ module.exports = function (grunt) {
         }
         ]
       },
+      onprem: {
+        files: [{
+                expand: true,
+                dot: true,
+                cwd: '<%= yeoman.app %>',
+                dest: '<%= yeoman.dist %>',
+                src: [
+                    '*.{ico,png,txt}',
+                    '.htaccess',
+                    '*.html',
+                    'partials/**/*',
+                    'views/{,*/}*.html',
+                    'account/{,*/}*.html',
+                    'images/*',
+                    'fonts/*',
+                    '!**/account/billing/**',
+                    '!**/account/subscription/**'
+                ]
+            }, {
+                expand: true,
+                cwd: '.tmp/images',
+                dest: '<%= yeoman.dist %>/images',
+                src: ['generated/*']
+            },
+                {
+                    expand: true,
+                    flatten: true,
+                    cwd: '<%= yeoman.app %>/bower_components/font-awesome',
+                    src: ['fonts/*.*'],
+                    dest: '<%= yeoman.dist %>/fonts'
+                },
+                {
+                    expand: true,
+                    flatten: true,
+                    cwd: '<%= yeoman.app %>/bower_components/bootstrap/dist',
+                    src: ['fonts/*.*'],
+                    dest: '<%= yeoman.dist %>/fonts'
+                },
+                {
+                    expand: true,
+                    flatten: true,
+                    cwd: '<%= yeoman.app %>/bower_components/octicons',
+                    src: ['octicons/octicons*.*'],
+                    dest: '<%= yeoman.dist %>/styles/'
+                }
+        ]
+        },
       styles: {
         expand: true,
         cwd: '<%= yeoman.app %>/styles',
@@ -434,6 +481,11 @@ module.exports = function (grunt) {
     grunt.task.run(['serve']);
   });
 
+  grunt.registerTask('setonprem', function () {
+    grunt.config.set('yeoman', {dist: 'target/user-dashboard-onprem-war',
+                                app: require('./bower.json').appPath || 'app'} );
+  });
+
   grunt.registerTask('test', [
     'clean:server',
     'concurrent:test',
@@ -451,6 +503,23 @@ module.exports = function (grunt) {
     'concat',
     'ngmin',
     'copy:dist',
+    'cdnify',
+    'cssmin',
+    'uglify',
+    'rev',
+    'usemin',
+    'htmlmin'
+  ]);
+
+  grunt.registerTask('onprem', [
+    'setonprem',
+    'clean:dist',
+    'useminPrepare',
+    'concurrent:dist',
+    'autoprefixer',
+    'concat',
+    'ngmin',
+    'copy:onprem',
     'cdnify',
     'cssmin',
     'uglify',

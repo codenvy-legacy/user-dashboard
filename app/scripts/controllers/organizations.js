@@ -38,6 +38,10 @@ angular.module('odeskApp')
                 $scope.isOrgAddOn = OrgAddon.isOrgAddOn;
                 $scope.accounts = OrgAddon.accounts;
                 $scope.currentAccount = OrgAddon.currentAccount;
+                if (!$scope.currentAccount) {
+                    return;
+                }
+
                 $scope.loadWorkspaceInfo();
 
                 // For search

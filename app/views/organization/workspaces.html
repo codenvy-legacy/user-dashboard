@@ -1,4 +1,9 @@
-<div ng-if="isOrgAddOn">
+<div class="panel panel-default" ng-show="!currentAccount">
+    <div class="panel-body text-center">
+        <h4>Codenvy requires to have account, please <a href="/?account=new">create one.</a></h4>
+    </div>
+</div>
+<div ng-if="currentAccount">
   <ul class="breadcrumb boxnav">
     <li class="active"><a href="#/organizations"> WORKSPACES <span class="badge">{{workspaces.length}}</span></a></li>
     <li><a href="#/organizations/members"> ORG MEMBERS <span class="badge">{{members.length}}</span> </a></li>
@@ -30,14 +35,14 @@
             <input type="text" ng-model="search.name" class="searchfield " placeholder="Search for Workspaces"/>
           </div>
         </li>
-        <li class="ws-button pad0 pull-right mrg-rht5">
+        <li class="ws-button pad0 pull-right mrg-rht5" ng-show="workspaces.length > 0">
               <div>
                   <a href="" class="new_btn" data-toggle="modal" data-target="#workspacesCap" ng-click="getInfoForWorkspacesCaps();">
                       Workspaces Caps
                   </a>
               </div>
           </li>
-        <li class="ws-button pad0 pull-right mrg-rht5">
+        <li class="ws-button pad0 pull-right mrg-rht5" ng-show="workspaces.length > 0">
               <div>
                   <a href="" class="new_btn" data-toggle="modal" data-target="#ramAllocation" ng-click="getInfoForRAMAllocation();">
                       RAM Allocation
@@ -52,8 +57,7 @@
           </div>
         </li>
       </ul>
-
-      <div class="projectnav table-responsive">
+      <div class="projectnav table-responsive" ng-show="workspaces.length > 0">
         <table class="table table-hover centerText" style="background:#f9f9f9;">
           <thead>
             <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
