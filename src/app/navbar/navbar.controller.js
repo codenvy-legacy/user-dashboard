@@ -31,7 +31,7 @@ class NavBarCtrl {
       this.updateAdminRole();
     });
 
-    $scope.$watch('navbarCtrl.profile', (newVal) => {
+    $scope.$watch(() => this.profile, (newVal) => {
       if(!newVal) {
         return;
       }
