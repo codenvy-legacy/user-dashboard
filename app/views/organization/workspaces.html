@@ -35,7 +35,7 @@
             <input type="text" ng-model="search.name" class="searchfield " placeholder="Search for Workspaces"/>
           </div>
         </li>
-        <li class="ws-button pad0 pull-right mrg-rht5" ng-show="workspaces.length > 0">
+        <li class="ws-button pad0 pull-right mrg-rht5" ng-show="workspaces.length > 0" ng-if="!ONPREM">
               <div>
                   <a href="" class="new_btn" data-toggle="modal" data-target="#workspacesCap" ng-click="getInfoForWorkspacesCaps();">
                       Workspaces Caps
@@ -64,8 +64,8 @@
               <th class=""></th>
               <th class="text-center"><h4>NAME</h4></th>
               <th class="text-center"><h4>RAM CAP</h4></th>
-              <th class="text-center"><h4>GBH CAP</h4></th>
-              <th class="text-center"><h4>GBH CONSUMED</h4></th>
+              <th class="text-center" ng-if="!ONPREM"><h4>GBH CAP</h4></th>
+              <th class="text-center" ng-if="!ONPREM"><h4>GBH CONSUMED</h4></th>
               <th class="text-center"><h4>DEVELOPERS</h4></th>
               <th class="text-center"><h4>PROJECTS</h4></th>
               <th></th>
@@ -81,8 +81,8 @@
                       resources locked due <br> to GBH cap reached
                   </div>
               </td>
-              <td class="text-center">{{workspace.gbhCap ? workspace.gbhCap : "no cap"}}</td>
-              <td class="text-center">{{workspace.gbhConsumed.toFixed(2)}}</td>
+              <td class="text-center" ng-if="!ONPREM">{{workspace.gbhCap ? workspace.gbhCap : "no cap"}}</td>
+              <td class="text-center" ng-if="!ONPREM">{{workspace.gbhConsumed.toFixed(2)}}</td>
               <td class="text-center">{{workspace.developers}}</td>
               <td class="text-center">{{workspace.projects}}</td>
               <td></td>
