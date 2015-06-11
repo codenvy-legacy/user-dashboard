@@ -182,7 +182,7 @@ angular.module('odeskApp')
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             };
-            $http.get('/api/subscription/account/' + accountId , con)
+            $http.get('/api/subscription/find/account/' + accountId , con)
                 .success(function (data) {
                     AccountService.subscriptions = data;
                     deferred.resolve(data);
