@@ -24,7 +24,7 @@ angular.module('odeskApp')
         $scope.showNewCreditCardForm = false;
         $scope.addCreditCardError = '';
         $scope.usedMemory = 0;
-        $scope.prepaidGbH = 0;
+        $scope.providedResources = {};
         $scope.freeGbH = 0;
         $scope.profile = {};
         $scope.invoices = [];
@@ -39,10 +39,10 @@ angular.module('odeskApp')
             cvc: '&bull;&bull;&bull;'
         };
 
-        var getSubscriptionResources = function() {
-            $scope.prepaidGbH = AccountService.getPrepaidGbH(AccountService.subscriptions);
-            //TODO realise method to get free GbH from server part
-            $scope.freeGbH = 20;
+        $scope.getProvidedResources = function(account) {
+            AccountService.getProvidedResources(account.id).then(function() {
+                $scope.providedResources = AccountService.providedResources;
+            });
         };
 
         AccountService.getAccountsByRole("account/owner").then(function (accounts) {
@@ -50,7 +50,8 @@ angular.module('odeskApp')
             if (accounts && accounts.length > 0) {
                 $scope.loadCreditCards(accounts);
                 $scope.loadInvoices(accounts[0]);
-                $scope.getAccountResources(accounts[0]);
+                $scope.getUsedResources(accounts[0]);
+                $scope.getProvidedResources(accounts[0]);
                 $scope.getAccountAttributes(accounts[0]);
             }
         });
@@ -68,10 +69,9 @@ angular.module('odeskApp')
             $scope.creditCard.country = $scope.profile.attributes.country || Countries.default();
         }
 
-        $scope.getAccountResources = function(account) {
-            AccountService.getAccountResources(account.id).then(function() {
-                $scope.usedMemory = AccountService.getUsedMemory(AccountService.resources);
-                getSubscriptionResources();
+        $scope.getUsedResources = function(account) {
+            AccountService.getUsedResources(account.id).then(function() {
+                $scope.usedMemory = AccountService.getUsedMemory(AccountService.usedResources);
             });
         };
 
@@ -125,9 +125,7 @@ angular.module('odeskApp')
                 $scope.loadCreditCards();
                 $scope.getAccountAttributes($scope.accounts[0]);
                 $timeout(function () {
-                    AccountService.getAllSubscriptions($scope.accounts).then(function () {
-                        getSubscriptionResources();
-                    });
+                    $scope.getProvidedResources($scope.accounts[0]);
                 }, 5000);
             });
         };
@@ -150,9 +148,7 @@ angular.module('odeskApp')
                 $('.cardWrapper .card-container  div.name')[0].innerHTML = defaultCardValues.name;
                 $('.cardWrapper .card-container  div.expiry')[0].innerHTML = defaultCardValues.expiry;
                 $timeout(function () {
-                    AccountService.getAllSubscriptions($scope.accounts).then(function () {
-                        getSubscriptionResources();
-                    });
+                    $scope.getProvidedResources($scope.accounts[0]);
                 }, 5000);
             }, function (error) {
                 $scope.addCreditCardError = error.message ? error.message : "Add credit card failed.";

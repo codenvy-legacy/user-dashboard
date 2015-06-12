@@ -27,7 +27,6 @@ angular.module('odeskApp')
 
         $scope.accounts = [];
         $scope.subscriptions = [];
-        $scope.SAAS_SERVICE_ID = AccountService.SAAS_SERVICE_ID;
 
         AccountService.getAccountsByRole("account/owner").then(function (accounts) {
             $scope.accounts = accounts;
@@ -40,7 +39,7 @@ angular.module('odeskApp')
             AccountService.getAllSubscriptions(accounts).then(function () {
                 $scope.subscriptions = AccountService.subscriptions;
                 angular.forEach($scope.subscriptions, function(subscription) {
-                    if (subscription.serviceId === $scope.SAAS_SERVICE_ID) {
+                    if (subscription.serviceId === AccountService.SAAS_SERVICE_ID) {
                         var prepaidGbH = 0;
                         if(subscription.properties.PrepaidGbH) {
                             prepaidGbH = parseInt(subscription.properties.PrepaidGbH);
@@ -66,17 +65,9 @@ angular.module('odeskApp')
         $scope.addSubscriptionProposals = function () {
             var services = _.pluck($scope.subscriptions, "serviceId");
             var hasOnPremises = services.indexOf(AccountService.ONPREMISES_SERVICE_ID) >= 0;
+            var hasSaas = services.indexOf(AccountService.SAAS_SERVICE_ID) >= 0;
 
-            var saasSubscription = _.find($scope.subscriptions, function (subscription) {
-                return subscription.serviceId == $scope.SAAS_SERVICE_ID;
-            });
-
-            if (saasSubscription) {
-                if (saasSubscription.properties && saasSubscription.properties["Package"] && saasSubscription.properties["Package"] == "Community"){
-                    $scope.subscriptions.splice($scope.subscriptions.indexOf(saasSubscription), 1);
-                    $scope.subscriptions.push(AccountService.getSAASProposalSubscription());
-                }
-            } else {
+            if (!hasSaas) {
                 $scope.subscriptions.push(AccountService.getSAASProposalSubscription());
             }
 
@@ -86,7 +77,7 @@ angular.module('odeskApp')
         };
 
         $scope.buySubscription = function(subscription) {
-            if (subscription.serviceId === $scope.SAAS_SERVICE_ID) {
+            if (subscription.serviceId === AccountService.SAAS_SERVICE_ID) {
                 $location.path("/account/billing");
             } else if (subscription.serviceId === AccountService.ONPREMISES_SERVICE_ID) {
                 $modal.open({

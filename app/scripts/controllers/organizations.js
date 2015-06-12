@@ -277,9 +277,9 @@ angular.module('odeskApp')
             });
 
             $scope.getWorkspaceUsedResources = function() {
-                AccountService.getAccountResources($scope.currentAccount.id).then(function() {
+                AccountService.getUsedResources($scope.currentAccount.id).then(function() {
                     angular.forEach($scope.workspaces, function(workspace) {
-                        angular.forEach(_.pluck(AccountService.resources, "used")[0], function(info) {
+                        angular.forEach(AccountService.usedResources, function(info) {
                             if (info.workspaceId == workspace.id){
                                 workspace.gbhConsumed = info.memory;
                             }
