@@ -31,7 +31,8 @@ angular.module('odeskApp', [
     'ui.codemirror',
     'ui.select',
     'angularFileUpload',
-    'ngClipboard'
+    'ngClipboard',
+    'config'
 ]).config(function (cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeBar = false;
 }).constant('udCodemirrorConfig', {

@@ -22,7 +22,7 @@
 //  * it gives a global model (not limited to the the controller),
 //  * it gives the ability to refresh it from anywhere by calling directly the factory.
 angular.module('odeskApp')
-    .factory('ProjectFactory', ['$http', '$q', 'RunnerService', function ($http, $q) {
+    .factory('ProjectFactory', ['$http', '$q', 'RunnerService', function ($http, $q, sampleProject) {
         var ProjectFactory = {};
 
         ProjectFactory.isProjectDataFetched = false;
@@ -78,55 +78,7 @@ angular.module('odeskApp')
         };
 
         ProjectFactory.getSampleProject = function () {
-            return {
-                project: {
-                    name: "getting-started-guided-tour",
-                    visibility: "public",
-                    mixinTypes: [
-                        "GuidedTour"
-                    ],
-                    builders: {
-                        default: "maven"
-                    },
-                    runners: {
-                        default: "system:/java/web/tomcat7"
-                    },
-                    type: "maven",
-                    attributes: {
-                        language: ["java"],
-                        codenvyGuidedTour: [
-                            "https://gist.githubusercontent.com/slemeur/064dfe5615cc770735cc/raw/9cf9acc60ee615f4e96c0d75cf3e1a00ef353a8d/welcome-guided-tour.json"
-                        ] },
-                    description: "Get started with Codenvy by following guided tour on this sample Spring application"
-                },
-                source: {
-                    project: {
-                        location: "https://github.com/codenvy-demos/spring-petclinic.git",
-                        type: "git",
-                        parameters: {
-                            branch: "getting-started"
-                        }
-                    }
-                },
-                actions: {
-                    welcome: {
-                        authenticated: {
-                            title: "Discover",
-                            contenturl: "https://dl.dropboxusercontent.com/u/2187905/Codenvy/PetClinic-Onboarding-Steps/welcome.html"
-                        },
-                        nonauthenticated: {
-                            title: "Discover",
-                            contenturl: "https://dl.dropboxusercontent.com/u/2187905/Codenvy/PetClinic-Onboarding-Steps/welcome.html"
-                        }
-                    }
-                },
-                creator: {
-                    name: "Florent Benoit",
-                    email: "florent.benoit@serli.com",
-                    accountId: "accountya9vidwqbifhqd9p"
-                },
-                v: "2.0"
-            }
+            return sampleProject;
         }
 
         return ProjectFactory;

@@ -24,6 +24,19 @@ module.exports = function (grunt) {
       dist: 'target/user-dashboard-war'
     },
 
+    ngconstant: {
+          options: {
+              name: 'config',
+              dest: '<%= yeoman.app %>/scripts/config.js',
+              constants: {
+                  sampleProject: grunt.file.readJSON('conf/sample_project.json')
+              }
+
+          },
+          build: {
+          }
+      },
+
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       js: {
@@ -453,6 +466,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-connect-proxy');
   grunt.loadNpmTasks('grunt-bower-install');
+  grunt.loadNpmTasks('grunt-ng-constant');
 
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
@@ -496,6 +510,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'ngconstant',
     /*'bower-install',*/
     'useminPrepare',
     'concurrent:dist',

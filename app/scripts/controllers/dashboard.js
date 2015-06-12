@@ -19,7 +19,7 @@
 
 angular.module('odeskApp')
     .controller('DashboardCtrl', function ($scope, $rootScope, $cookieStore, $http, $window, $interval, $timeout, $location,
-                                           DocBoxService, Workspace, Project, Users, ProfileService, Password, ProjectFactory, RunnerService, newProject) {
+                                           DocBoxService, Workspace, Project, Users, ProfileService, Password, ProjectFactory, RunnerService, newProject, sampleProject) {
         var refreshLocation = "/dashboard";
         var old_description = '';
         var old_projectName = '';
@@ -575,7 +575,7 @@ angular.module('odeskApp')
                     workspaceID: workspaceId,
                     path: projectName
                 },
-                ProjectFactory.getSampleProject(),
+                sampleProject,
                 function() {
                     ProjectFactory.fetchProjects($scope.workspaces, true);
                     ProfileService.updatePreferences({"sampleProjectCreated": 'true'});
