@@ -499,8 +499,8 @@
                 </div>
             </div><!-- modal-body -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <a  class="btn btn-danger" ng-click="deleteProject()" ng-if="activeProject.isDeleteAllowed">OK</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-if="activeProject.isDeleteAllowed">Cancel</button>
+                <a  class="btn" ng-class="activeProject.isDeleteAllowed ? 'btn-danger' : 'btn-default'" ng-click="deleteProject()">OK</a>
             </div><!-- modal-footer -->
         </div><!-- modal-content -->
     </div><!-- modal-dialog -->
