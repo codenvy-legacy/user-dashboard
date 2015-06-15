@@ -16,55 +16,75 @@
               cdvy-button-href="#/create-project"></cdvy-toolbar>
 
 <md-toolbar class="md-toolbar-tools" md-theme="toolbar-theme">
-  <cdvy-search flex hide show-gt-lg style="width: 800px" cdvy-placeholder="Search for projects" ng-model="listProjectsCtrl.projectFilter.name"></cdvy-search>
+  <cdvy-search flex hide show-gt-lg style="width: 800px" cdvy-placeholder="Search for projects"
+               ng-model="listProjectsCtrl.projectFilter.name"></cdvy-search>
   <span flex></span>
+
   <div class="md-toolbar-item md-tools" layout="row">
-    <i class="projects-list-projects-cog fa fa-cog" dropdown-menu="listProjectsCtrl.dropDownOptionsList" dropdown-model="listProjectsCtrl.dropDownValue" dropdown-onchange="listProjectsCtrl.dropDownSelected(selected)" dropdown-item-label='name'></i>
+    <i class="projects-list-projects-cog fa fa-cog" dropdown-menu="listProjectsCtrl.dropDownOptionsList"
+       dropdown-model="listProjectsCtrl.dropDownValue" dropdown-onchange="listProjectsCtrl.dropDownSelected(selected)"
+       dropdown-item-label='name'></i>
   </div>
 </md-toolbar>
-<md-content md-scroll-y flex layout="column" layout-align="center" class="projects-list-projects" md-theme="maincontent-theme" >
-  <md-progress-linear md-mode="indeterminate" class="projects-list-projects-progress" ng-show="listProjectsCtrl.state == 'loading'" ></md-progress-linear>
-  <div ng-show="listProjectsCtrl.displayWorkspaceFilter" class="projects-list-projects-filter-panel" layout="row" layout-align="start center">
+<md-content md-scroll-y flex layout="column" layout-align="center" class="projects-list-projects" md-theme="maincontent-theme">
+  <md-progress-linear md-mode="indeterminate" class="projects-list-projects-progress"
+                      ng-show="listProjectsCtrl.state == 'loading'"></md-progress-linear>
+  <div ng-show="listProjectsCtrl.displayWorkspaceFilter" class="projects-list-projects-filter-panel" layout="row"
+       layout-align="start center">
     <div class="projects-list-projects-filter-workspace-label">Filter workspaces:</div>
     <div flex="60" layout="row" layout-align="start center" layout-wrap>
       <div class="projects-list-projects-select-workspace" ng-repeat="workspace in listProjectsCtrl.workspaces">
-        <md-checkbox ng-model="listProjectsCtrl.filtersWorkspaceSelected[workspace.workspaceReference.id]">{{workspace.workspaceReference.name}}</md-checkbox>
+        <md-checkbox ng-model="listProjectsCtrl.filtersWorkspaceSelected[workspace.workspaceReference.id]">
+          {{workspace.workspaceReference.name}}
+        </md-checkbox>
       </div>
     </div>
-    <div flex layout="row" layout-wrap layout-align="end center"><span class="projects-list-projects-filter-action" ng-click="listProjectsCtrl.resetWorkspaceFilter()">Clear</span><i ng-click="listProjectsCtrl.hideWorkspaceFilter()" class="projects-list-projects-filter-action-icon material-design icon-ic_close_24px"></i></div>
+    <div flex layout="row" layout-wrap layout-align="end center"><span class="projects-list-projects-filter-action"
+                                                                       ng-click="listProjectsCtrl.resetWorkspaceFilter()">Clear</span><i
+      ng-click="listProjectsCtrl.hideWorkspaceFilter()"
+      class="projects-list-projects-filter-action-icon material-design icon-ic_close_24px"></i></div>
 
   </div>
   <md-content flex>
 
 
-    <div ng-repeat="(workspaceId, projects) in listProjectsCtrl.projectsPerWorkspace | listProjectWorkspaceFilter:listProjectsCtrl.filtersWorkspaceSelected">
+    <div
+      ng-repeat="(workspaceId, projects) in listProjectsCtrl.projectsPerWorkspace | listProjectWorkspaceFilter:listProjectsCtrl.filtersWorkspaceSelected">
       <cdvy-list-title cdvy-icon="fa fa-folder">
         {{listProjectsCtrl.getWorkspaceName(workspaceId)}}
         <span ng-show="projects.length == 0" class="project-list-empty">- No project</span>
       </cdvy-list-title>
       <cdvy-list ng-show="projects.length > 0">
-        <cdvy-list-item ng-repeat="project in projects | filter:listProjectsCtrl.projectFilter" flex-gt-sm="100" flex="33" ng-mouseover="hover=true" ng-mouseout="hover=false">
+        <cdvy-list-item ng-repeat="project in projects | filter:listProjectsCtrl.projectFilter" flex-gt-sm="100" flex="33"
+                        ng-mouseover="hover=true" ng-mouseout="hover=false">
           <div layout-gt-sm="row" flex="100" layout-align="start center" class="project-list-row">
             <div class="project-list-static-icon">
-              <cdvy-list-item-checked cdvy-icon="cdvyfont cdvyico-type-{{project.type}} cdvyico-type-blank" class="project-type-icon"></cdvy-list-item-checked>
+              <cdvy-list-item-checked cdvy-icon="cdvyfont cdvyico-type-{{project.type}} cdvyico-type-blank"
+                                      class="project-type-icon"></cdvy-list-item-checked>
             </div>
             <div flex-gt-sm="45" layout="column">
               <div class="project-name"><a ng-href="#/project/{{workspaceId}}/{{project.name}}">{{project.name}}</a>
               </div>
               <div class="project-details">{{project.description}}</div>
             </div>
-            <span flex-gt-sm="15" class="project-details" show-sm am-time-ago="project.modificationDate"></span>
-
+            <div flex-gt-sm="15" class="project-details" show-sm>
+              <cdvy-tooltip
+                cdvy-title="Last modified: {{listProjectsCtrl.getProjectModificationDate(project) | amDateFormat:'dddd, MMMM Do, YYYY'}}">
+                <span am-time-ago="listProjectsCtrl.getProjectModificationDate(project)"></span>
+              </cdvy-tooltip>
+            </div>
             <div flex-gt-sm="15">
-              <md-icon ng-show="project.visibility == 'public'"
-                       md-font-icon="material-design icon-ic_lock_open_24px"></md-icon>
-              <md-icon ng-show="project.visibility == 'private'"
-                       md-font-icon="material-design icon-ic_lock_24px"></md-icon>
+              <cdvy-tooltip cdvy-title="{{project.visibility=='public'?'Public':'Private'}}">
+                <md-icon md-font-icon="material-design {{project.visibility=='public'?'icon-ic_lock_open_24px':'icon-ic_lock_24px'}}">
+                </md-icon>
+              </cdvy-tooltip>
             </div>
             <p flex-gt-sm="15" ng-show="hover" layout="row" layout-align="end center">
-              <a ng-href="{{project.ideUrl}}" target="_blank">
-                <md-icon md-font-icon="material-design icon-ic_forward_24px"></md-icon>
-              </a>
+              <cdvy-tooltip cdvy-title="Open">
+                <a ng-href="{{project.ideUrl}}" target="_blank">
+                  <md-icon md-font-icon="material-design icon-ic_forward_24px"></md-icon>
+                </a>
+              </cdvy-tooltip>
             </p>
           </div>
         </cdvy-list-item>

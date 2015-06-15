@@ -8,7 +8,7 @@
 
 .copy-clipboard span
   position absolute
-  top 24px
+  top -40px
   left 50%
 
 .copy-clipboard span span
@@ -19,24 +19,25 @@
   left -50%
   top 4px
   padding 7px 15px 7px 15px
-  font-size 12px
+  font-size 13px
   border-radius 3px
   white-space nowrap
-  background $tooltip-background-color
-  border: solid 1px $tooltip-border-color;
+  background $tooltip-border-color
+  border solid 1px $tooltip-border-color
 
 .copy-clipboard span span:after
   position absolute
   content ""
   width 0
   height 0
-  top -11px
+  top 31px
   border 6px solid
   left calc(50% - 6px)
+  transform rotate(180deg)
   border-color transparent transparent $tooltip-border-color transparent
 
 .copy-clipboard div:hover span span,
 .copy-clipboard div:hover span:after,
 .copy-clipboard .zeroclipboard-is-hover + span span,
 .copy-clipboard .zeroclipboard-is-hover + span:after
-  display inline
+  display inline-block

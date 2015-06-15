@@ -22,7 +22,7 @@ class CodenvyTab {
    * Default constructor that is using resource
    * @ngInject for Dependency injection
    */
-    constructor () {
+  constructor() {
     this.restrict = 'E';
     this.replace = true;
     this.transclude = true;
@@ -30,9 +30,8 @@ class CodenvyTab {
 
     // scope values
     this.scope = {
-      title:'@cdvyTitle',
-      icon:'@cdvyIcon',
-      separator:'@cdvySeparator'
+      title: '@cdvyTitle',
+      icon: '@cdvyIcon'
     };
 
   }
@@ -71,7 +70,7 @@ class CodenvyTab {
     });
   }
 
-    /**
+  /**
    * Performs a manual transclude of the element
    * @param transclude the transcluded element
    */
@@ -85,9 +84,9 @@ class CodenvyTab {
     var mdTabId = mdTabItem.getAttribute('id');
 
     // now search the md tab content
-    var mdTabContent = angular.element(mdTabsElement[0].querySelectorAll('div[id*=content_'+ mdTabId+ ']'));
+    var mdTabContent = angular.element(mdTabsElement[0].querySelectorAll('div[id*=content_' + mdTabId + ']'));
 
-      // Append the transcluded element in the tab content element
+    // Append the transcluded element in the tab content element
     transclude((clone) => {
       mdTabContent.append(clone);
     });
