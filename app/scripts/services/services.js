@@ -550,11 +550,7 @@ angular.module('odeskApp')
                 var promises = [];
                 var orgAccounts = [];
                 angular.forEach(accounts, function (account) {
-                    promises.push(
-                        AccountService.getSubscriptions(account.id).then(function () {
-                            orgAccounts.push(account);
-                        }));
-
+                    orgAccounts.push(account);
                 });
                 $q.all(promises).then(function () {
                     orgAddonData.update(orgAccounts);
