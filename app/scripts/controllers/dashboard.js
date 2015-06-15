@@ -360,7 +360,11 @@ angular.module('odeskApp')
                     if(isActiveProcess) {
                         $('#warning-project-message').html("You should stop all running processes associated with this project before deleting it.")
                     } else {
-                        $('#warning-project-message').html("Removing a project can't be undone, are you sure you want to continue?");
+                        if($scope.activeProject.isDeleteAllowed) {
+                            $('#warning-project-message').html("Removing a project can't be undone, are you sure you want to continue?");
+                        } else {
+                            $('#warning-project-message').html("You have no rights to delete the project <b>"+$scope.activeProject.name+"</b>.");
+                        }
                     }
                     $('#warning-project').modal('show');
 
