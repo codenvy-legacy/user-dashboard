@@ -38,6 +38,10 @@ angular.module('odeskApp')
                 $scope.isOrgAddOn = OrgAddon.isOrgAddOn;
                 $scope.accounts = OrgAddon.accounts;
                 $scope.currentAccount = OrgAddon.currentAccount;
+                if (!$scope.currentAccount) {
+                    return;
+                }
+
                 $scope.loadWorkspaceInfo();
 
                 // For search
@@ -200,21 +204,31 @@ angular.module('odeskApp')
 
             $scope.defineProperValue = false;
             $scope.primaryWorkspace = {'name': ''};
-
-            Workspace.all(true, true).then(function (workspaces) {
+            Workspace.getAccountWorkspaces($scope.currentAccount.id).then(function (workspaces) {
                 angular.forEach(workspaces, function (workspace) {
-
                     //  Get workspace's projects and developers using workspace id
-                    WorkspaceInfo.getDetail(workspace.workspaceReference.id).then(function (response) {
+                    WorkspaceInfo.getDetail(workspace.id).then(function (response) {
                         var projectsLength = 0;
                         var workspace = response;
                         var projectsName;
                         var membersLength = 0;
                         var allocatedRam;
+                        var gbhCap;
                         var promises = [];
                         if (workspace.attributes['codenvy:role'] != 'extra') {
                             $scope.primaryWorkspace.name = workspace.name;
                         }
+
+                        if (workspace.attributes['codenvy:resources_usage_limit']) {
+                            gbhCap = workspace.attributes['codenvy:resources_usage_limit'];
+                        }
+
+                        if (workspace.attributes['codenvy:runner_ram']) {
+                            allocatedRam = workspace.attributes['codenvy:runner_ram'];
+                        }
+
+                        var isLocked = !!(workspace.attributes[AccountService.RESOURCES_LOCKED_PROPERTY]
+                            && workspace.attributes[AccountService.RESOURCES_LOCKED_PROPERTY] === 'true');
 
                         var getProjectsURL = _.find(response.links, function (obj) {
                             return obj.rel == "get projects"
@@ -227,18 +241,13 @@ angular.module('odeskApp')
                                         projectsLength = data.length;
                                     }));
                         }
-
                         promises.push(
                             $http({method: 'GET', url: "/api/workspace/" + workspace.id + "/members" })
                                 .success(function (data) {
                                     membersLength = data.length;
                                 }));
 
-                        promises.push(
-                            $http({method: 'GET', url: "/api/runner/" + workspace.id + "/resources" })
-                                .success(function (data) {
-                                    allocatedRam = data.totalMemory;
-                                }));
+
 
                         return $q.all(promises).then(function (results) {
                             var workspaceDetails = {
@@ -247,14 +256,37 @@ angular.module('odeskApp')
                                 allocatedRam: allocatedRam,
                                 projects: projectsLength,
                                 projectsName: projectsName,
-                                developers: membersLength
+                                gbhCap : gbhCap,
+                                developers: membersLength,
+                                isLocked: isLocked
                             };
                             $scope.workspaces.push(workspaceDetails);
+                            if (workspaces.length == $scope.workspaces.length) {
+                                $scope.getWorkspaceUsedResources();
+                            }
+
+                            if (!allocatedRam && !isLocked) {
+                                $http({method: 'GET', url: "/api/runner/" + workspace.id + "/resources"})
+                                    .success(function (data) {
+                                        workspaceDetails.allocatedRam = data.totalMemory;
+                                    });
+                            }
                         });
                     });
                 });
-
             });
+
+            $scope.getWorkspaceUsedResources = function() {
+                AccountService.getUsedResources($scope.currentAccount.id).then(function() {
+                    angular.forEach($scope.workspaces, function(workspace) {
+                        angular.forEach(AccountService.usedResources, function(info) {
+                            if (info.workspaceId == workspace.id){
+                                workspace.gbhConsumed = info.memory;
+                            }
+                        });
+                    });
+                });
+            };
 
             // Display members details in members page for organizations
 
@@ -300,7 +332,18 @@ angular.module('odeskApp')
 
             angular.forEach($scope.workspaces, function(workspace) {
                 $scope.allowedRAM += parseInt(workspace.allocatedRam, 0);
-                $scope.infoForRAMAllocation.push({id: workspace.id, name: workspace.name, allocatedRam: workspace.allocatedRam});
+                $scope.infoForRAMAllocation.push({id: workspace.id, name: workspace.name,
+                    allocatedRam: workspace.allocatedRam, isLocked: workspace.isLocked});
+            });
+        };
+
+        $scope.getInfoForWorkspacesCaps = function() {
+            $("#workspaceCapError").hide();
+            $scope.allowSetWorkspacesCaps = false;
+            $scope.infoForWorkspacesCaps = [];
+
+            angular.forEach($scope.workspaces, function(workspace) {
+                $scope.infoForWorkspacesCaps.push({id: workspace.id, name: workspace.name, gbhCap: workspace.gbhCap});
             });
         };
 
@@ -355,17 +398,54 @@ angular.module('odeskApp')
             return false;
         };
 
+        //Check value of the workspace cap.
+        $scope.checkWorkspaceCap = function (id) {
+            var workspaceCap = $("#workspace_cap_" + id).val();
+            if (workspaceCap == "" || workspaceCap.match(/^(\d+\.?\d{0,4}|\.\d{1,4})$/) != null) {
+                $("#workspaceCapError").hide();
+                $scope.allowSetWorkspacesCaps = true;
+                $("#workspace_cap_" + id).parent().removeClass('has-error');
+            } else {
+                $scope.allowSetWorkspacesCaps = false;
+                $("#workspace_cap_" + id).parent().addClass('has-error');
+                $("#workspaceCapError").html("Input value is invalid. ");
+                $("#workspaceCapError").show();
+            }
+        };
+
+        //Redistribute resources:
+        $scope.setWorkspacesCaps = function () {
+            var resources = [];
+            angular.forEach($scope.infoForWorkspacesCaps, function (w) {
+                var gbhCap = w.gbhCap || -1;
+                var updateResourcesDescriptor = {
+                    workspaceId: w.id,
+                    resourcesUsageLimit: gbhCap
+                };
+                resources.push(updateResourcesDescriptor);
+            });
+            AccountService.setAccountResources($scope.currentAccount.id, resources).then(function () {
+                $('#workspacesCap').modal('toggle');
+                $scope.loadWorkspaceInfo();
+            }, function (err) {
+                $("#workspaceCapError").html(err.message);
+                $("#workspaceCapError").show();
+            });
+        }
+
         //Redistribute resources:
         $scope.redistributeResources = function () {
             $("#allocationError").hide();
             var resources = [];
             angular.forEach($scope.infoForRAMAllocation, function (w) {
-                var allocatedRam = w.allocatedRam.length > 0 ? w.allocatedRam : unlimitedValue;
-                var updateResourcesDescriptor = {
-                    workspaceId: w.id,
-                    runnerRam: allocatedRam
-                };
-                resources.push(updateResourcesDescriptor);
+                if (! w.isLocked) {
+                    var allocatedRam = w.allocatedRam.length > 0 ? w.allocatedRam : unlimitedValue;
+                    var updateResourcesDescriptor = {
+                        workspaceId: w.id,
+                        runnerRam: allocatedRam
+                    };
+                    resources.push(updateResourcesDescriptor);
+                }
             });
             AccountService.setAccountResources($scope.currentAccount.id, resources).then(function () {
                 $('#ramAllocation').modal('toggle');
@@ -376,8 +456,12 @@ angular.module('odeskApp')
                     });
                 });
             }, function (err) {
+                var errMessage = err.message;
+                angular.forEach($scope.workspaces, function (workspace) {
+                    errMessage = errMessage.replace(workspace.id, '<b>' + workspace.name  + '</b>');
+                });
                 $("#allocationError").show();
-                $("#allocationError").html(err.message);
+                $("#allocationError").html(errMessage);
             });
         }
 
@@ -537,6 +621,7 @@ angular.module('odeskApp')
                         i++;
                     })
                 ]).then(function (result) {
+                    //TODO fix bug here if RAM allocation will fail
                     var workspaceDetails = {
                         id: workspaceId,
                         name: workspaceName,
@@ -546,6 +631,7 @@ angular.module('odeskApp')
                         developers: (selectedMembers.length)
                     };
                     $scope.workspaces.push(workspaceDetails);
+                    $scope.getWorkspaceUsedResources();
                     $('#addNewWorkspace').modal('toggle');
                     $("#ws_name").val("")
                     $scope.selectedMembers = [];

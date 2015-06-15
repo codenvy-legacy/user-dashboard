@@ -137,6 +137,7 @@
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="scripts/app.js"></script>
+<script src="scripts/config.js"></script>
 <script src="scripts/services/statsservice.js"></script>
 <script src="scripts/controllers/login.js"></script>
 <script src="scripts/controllers/navbar.js"></script>
@@ -146,19 +147,14 @@
 <script src="scripts/controllers/factories.js"></script>
 <script src="scripts/controllers/stats.js"></script>
 <script src="account/AccountService.js"></script>
-<script src="account/subscription/SubscriptionController.js"></script>
 <script src="account/ProfileController.js"></script>
 <script src="account/ProfileService.js"></script>
 <script src="scripts/controllers/organizations.js"></script>
 <script src="scripts/controllers/workspace_info.js"></script>
 <script src="scripts/controllers/orgdetail.js"></script>
 <script src="scripts/controllers/admin.js"></script>
-<script src="account/billing/BillingController.js"></script>
-<script src="account/billing/InvoiceService.js"></script>
-<script src="account/billing/PaymentService.js"></script>
+
 <script src="scripts/services/services.js"></script>
-<!--<script src="scripts/controllers/subscriptions.js"></script>
-<script src="scripts/controllers/subscriptiondetail.js"></script>-->
 <script src="scripts/services/new-project.js"></script>
 <script src="scripts/services/new-factory.js"></script>
 <script src="scripts/controllers/newProject.js"></script>
@@ -172,6 +168,14 @@
 <script src="scripts/services/git-hub-rest-service.js"></script>
 <script src="scripts/services/runnerService.js"></script>
 <script src="scripts/services/project-factory.js"></script>
+<script>
+    if (!ONPREM) {
+        document.write('<script type="text/javascript" src="account/subscription/SubscriptionController.js"><\/script>');
+        document.write('<script type="text/javascript" src="account/billing/BillingController.js"><\/script>');
+        document.write('<script type="text/javascript" src="account/billing/InvoiceService.js"><\/script>');
+        document.write('<script type="text/javascript" src="account/billing/PaymentService.js"><\/script>');
+    }
+</script>
 <!-- endbuild -->
 </body>
 </html>

@@ -54,6 +54,24 @@ angular.module('odeskApp')
             return deferred.promise;
         },
 
+            Workspace.getAccountWorkspaces = function (accountId) {
+                var deferred = $q.defer();
+                var con = {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                };
+                $http.get('/api/workspace/find/account?id=' + accountId, con)
+                    .success(function (data) {
+                        deferred.resolve(data); //resolve data
+                    })
+                    .error(function (err) {
+                        deferred.reject(err);
+                    });
+                return deferred.promise;
+            },
+
         Workspace.updateWorkspaceResources = function (showLoading) {
            var deferred = $q.defer();
            var workspaceCount = 0;
@@ -66,6 +84,7 @@ angular.module('odeskApp')
                         deferred.resolve(Workspace.workspaces); //resolve data
                     }
                 }, function (err) {
+                    workspace.isLocked = true;
                     workspaceCount++;
                     deferred.reject(err);
                 });

@@ -15,7 +15,7 @@ angular.module('odeskApp')
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             };
-            $http.get('/api/invoice/' + accountId, con)
+            $http.get('/api/invoice/find?accountId=' + accountId, con)
                 .success(function (data) {
                     InvoiceService.invoices = data;
                     deferred.resolve(data); //resolve data

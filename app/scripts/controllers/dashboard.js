@@ -19,7 +19,7 @@
 
 angular.module('odeskApp')
     .controller('DashboardCtrl', function ($scope, $rootScope, $cookieStore, $http, $window, $interval, $timeout, $location,
-                                           DocBoxService, Workspace, Project, Users, ProfileService, Password, ProjectFactory, RunnerService, newProject) {
+                                           DocBoxService, Workspace, Project, Users, ProfileService, Password, ProjectFactory, RunnerService, newProject, sampleProject) {
         var refreshLocation = "/dashboard";
         var old_description = '';
         var old_projectName = '';
@@ -39,7 +39,6 @@ angular.module('odeskApp')
         $scope.activeProjectVisibility = '';
         $scope.updateProjectError = '';
         $scope.deleteProjectError = '';
-        $scope.isDeleteAllowed = true;
 
       //private methods
       // for one user set the read write properties
@@ -136,6 +135,8 @@ angular.module('odeskApp')
             $scope.isAdmin = getAdmin($scope.currentWorkspace.roles);
             $scope.activeMembers = angular.copy($scope.currentWorkspace.members);
 
+            $scope.activeProject = project; // used in setRead setWrite
+
             if($scope.isAdmin) {
 
                 if (modalNameType=='privacysetting'){
@@ -147,6 +148,8 @@ angular.module('odeskApp')
                 else if(modalNameType=='projectsetting'){
                     $('#projectDetailModal').modal('toggle');
                 }
+
+                $scope.activeProject.isDeleteAllowed = false;
 
                 Project.getPermissions(project.workspaceId, project.name).then(function (data) { // get the permissions for the current selected project
                     var projectPermissions = data;
@@ -165,6 +168,10 @@ angular.module('odeskApp')
                     angular.forEach($scope.activeMembers, function (member) {
                         setPermissions(groupsPermissions, member);
                         setPermissions(usersPermissions, member);
+
+                        if($scope.currentUserId == member.userId && member.write) {
+                            $scope.activeProject.isDeleteAllowed = true;
+                        }
                     });
                 });
             } else {
@@ -188,9 +195,9 @@ angular.module('odeskApp')
                         write: true
                     };
                 });
-            }
 
-            $scope.activeProject = project; // used in setRead setWrite
+                $scope.activeProject.isDeleteAllowed = true;
+            }
             $scope.selected = project;
             old_description = project.description;
             old_projectName = project.name;
@@ -343,28 +350,28 @@ angular.module('odeskApp')
             $('#warning-project-alert .alert-danger').hide();
             RunnerService.getProcesses($scope.selected.workspaceId, $scope.selected.path, true)
                 .then(function (runningProcesses) {
-                    $scope.isDeleteAllowed = true;
+                    var isActiveProcess = false;
                     angular.forEach(runningProcesses, function (runnerProcess) {
                         if ((runnerProcess.status === 'RUNNING' || runnerProcess.status === 'NEW')
                             && (runnerProcess.project === $scope.selected.path)) {
-                            $scope.isDeleteAllowed = false;
+                            isActiveProcess = true;
                         }
                     });
-                    if($scope.isDeleteAllowed) {
-                        if($scope.isAdmin) {
-                            $('#warning-project-message').html("Removing a project can't be undone, are you sure you want to continue?");
-                        } else {
-                            $('#warning-project-message').html("Deleting the project requires Administrator permissions to the project's workspace. Contact Workspace Administrator or Owner.")
-                        }
-                    } else {
+                    if(isActiveProcess) {
                         $('#warning-project-message').html("You should stop all running processes associated with this project before deleting it.")
+                    } else {
+                        $('#warning-project-message').html("Removing a project can't be undone, are you sure you want to continue?");
                     }
                     $('#warning-project').modal('show');
+
+                    if($scope.activeProject.isDeleteAllowed && isActiveProcess) {
+                        $scope.activeProject.isDeleteAllowed = false;
+                    }
                 });
         };
 
         $scope.deleteProject = function () {
-            if(!$scope.isDeleteAllowed) {
+            if(!$scope.activeProject.isDeleteAllowed) {
                 $('#warning-project').modal('hide');
                 return;
             }
@@ -568,7 +575,7 @@ angular.module('odeskApp')
                     workspaceID: workspaceId,
                     path: projectName
                 },
-                ProjectFactory.getSampleProject(),
+                sampleProject,
                 function() {
                     ProjectFactory.fetchProjects($scope.workspaces, true);
                     ProfileService.updatePreferences({"sampleProjectCreated": 'true'});
@@ -608,7 +615,9 @@ angular.module('odeskApp')
 
             $http({ method: 'GET', url: '/api/account' }).success(function (account, status) {
                 $scope.ownerWorkspace = _.pluck(_.pluck(account, 'accountReference'), 'name');
-                $scope.currentUserId = account[0].userId;
+                if (account[0]) {
+                    $scope.currentUserId = account[0].userId;
+                }
             });
 
             Workspace.all(true, false).then(function (resp) {

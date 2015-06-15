@@ -105,7 +105,7 @@ angular.module('odeskApp')
 
         $scope.refreshWorkspaceInfo = function () {
             $scope.workspaceId = $route.current.params.id;
-            $scope.workspace = {};
+            $scope.workspace = {members : []};
             $scope.account_members = [];
             $scope.selectedMembers = [];
 
@@ -116,6 +116,7 @@ angular.module('odeskApp')
 
                 // Get all members of the current workspace
                 Workspace.getMembersForWorkspace($scope.workspaceId).then(function (data) {
+
                     angular.forEach(data, function (member) {
                         var email, name;
                         var role = $scope.userRolesToStr(member['roles']);

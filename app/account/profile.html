@@ -1,7 +1,7 @@
 <ul class="breadcrumb boxnav" >
     <li style="margin-top:4px;margin-bottom:8px;" class="active"><a href="#/account/profile">Profile</a></li>
-    <li style="margin-top:4px;margin-bottom:8px;"><a href="#/account/subscriptions">Subscriptions</a></li>
-    <li style="margin-top:4px;margin-bottom:8px;"><a href="#/account/billing">Usage and Billing</a></li>
+    <li style="margin-top:4px;margin-bottom:8px;"><a href="#/account/subscriptions" ng-hide="ONPREM">Subscriptions</a></li>
+    <li style="margin-top:4px;margin-bottom:8px;"><a href="#/account/billing" ng-hide="ONPREM">Usage and Billing</a></li>
 </ul>
 
 <div class="container mainDivContainer">
@@ -12,7 +12,6 @@
         <div class="row">
           <div class="col-md-12">
             <form method="post" accept-charset="utf-8" class="form" role="form" ng-submit="updateProfile()">
-              <!--<legend class="text-center">Billing Information</legend>-->
               <div class="row">
                 <div class="col-md-6 form-group">
                   <label for="name">First Name:</label>

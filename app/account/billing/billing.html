@@ -11,8 +11,24 @@
                     <h4 class="text-center">Usage and balance</h4>
 
                     <div class="row text-center" style="margin-top: 40px;">
-                        <div class="col-md-6">{{usedMemory}} GB Hours<div class="lockdown-label" ng-show="isLocked">Reached Limit</div></div>
-                        <div class="col-md-6">{{balance}} $</div>
+                        <div class="col-md-6">
+                            <p>Consumed This Month:<p>
+                            {{usedMemory}} GB Hours<div class="lockdown-label" ng-show="isLocked">Reached Limit</div>
+                        </div>
+                        <div class="col-md-6">
+                            <p>Balance Due:<p>
+                            ${{balance}}
+                        </div>
+                    </div>
+                    <div class="row text-center" style="margin-top: 40px;">
+                        <div class="col-md-6">
+                            <p>Monthly Free:<p>
+                            {{providedResources.freeAmount}} GB Hours
+                        </div>
+                        <div class="col-md-6">
+                            <p>Monthly Prepaid:<p>
+                            {{providedResources.prepaidAmount}} GB Hours
+                        </div>
                     </div>
                 </div>
             </div>
@@ -92,7 +108,9 @@
                                 </div>
                             </div>
                             <div class="col-xs-2 col-md-2 col-md-offset-10">
-                                <button class="btn btn-primary btn-block signup-btn" ng-disabled="!creditCardForm.$valid" ng-click="addCreditCard();">Add</button>
+                                <button class="btn btn-primary btn-block signup-btn"
+                                        ng-disabled="!creditCardForm.$valid || !creditCard.number || !creditCard.cardholderName || !creditCard.expirationDate || !creditCard.expirationDate || !creditCard.cvv"
+                                        ng-click="addCreditCard()">Add</button>
                             </div>
                         </div>
                     </form>
@@ -110,6 +128,18 @@
                     </div>
                 </div>
         </div>
+        <div class="col-md-6"></div>
+      	<div class="col-md-6">
+                <div class="panel panel-default panel-body">
+                  <div class="row">
+                          	 <div class="col-xs-9">
+                                <label>Contact our sales team for volume discounts and custom support packages.</label>
+                            </div>
+                          	 <div class="col-xs-3">
+                                <a class="btn btn-primary btn-block" ng-href="http://pages.codenvy.com/contact.html" target="_blank">Contact</a>
+                            </div>
+                  </div>
+                </div>
+              </div>
         </div>
     </div>
-</div>

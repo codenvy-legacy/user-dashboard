@@ -18,12 +18,15 @@ angular.module('odeskApp')
     .factory('AccountService', ['$http', '$q', '$window', '$location', function AccountService($http, $q, $window, $location) {
         AccountService.BUY_SUBSCRIPTIONS_LINK = "http://codenvy.com/products/developer-environment-cloud-saas/";
         AccountService.SAAS_SERVICE_ID = "Saas";
-        AccountService.SAAS_PLAN_ID = "saas";
+        AccountService.SAAS_PLAN_ID = "pay-as-you-go";
+        AccountService.SAAS_PREPAID_PLAN_ID = "prepaid";
         AccountService.ONPREMISES_SERVICE_ID = "OnPremises";
         AccountService.RESOURCES_LOCKED_PROPERTY = "codenvy:resources_locked";
+        AccountService.PAYMENT_LOCKED_PROPERTY = "codenvy:payment_locked";
         AccountService.subscriptions = [];
         AccountService.accounts = [];
-        AccountService.resources = {};
+        AccountService.usedResources = {};
+        AccountService.providedResources = {};
         AccountService.accountDetails = {};
 
         //Get all accounts, where the current user has membership:
@@ -58,27 +61,6 @@ angular.module('odeskApp')
                 });
                 deferred.resolve(accounts);
             });
-            return deferred.promise;
-        };
-
-        //Get all accounts, where the current user has pointed role:
-        AccountService.getAccountResources = function (accountId) {
-            var deferred = $q.defer();
-            var con = {
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            };
-            $http.get('/api/account/' + accountId + "/resources", con)
-                .success(function (data) {
-                    AccountService.resources = data;
-                    deferred.resolve(data); //resolve data
-                })
-                .error(function (err) {
-                    deferred.reject();
-                });
-
             return deferred.promise;
         };
 
@@ -122,17 +104,54 @@ angular.module('odeskApp')
             return deferred.promise;
         };
 
+        //Get all accounts, where the current user has pointed role:
+        AccountService.getUsedResources = function (accountId) {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+            $http.get('/api/saas/resources/' + accountId + "/used", con)
+                .success(function (data) {
+                    AccountService.usedResources = data;
+                    deferred.resolve(data); //resolve data
+                })
+                .error(function (err) {
+                    deferred.reject();
+                });
+
+            return deferred.promise;
+        };
+
         AccountService.getUsedMemory = function (resources) {
-            var saasSubscription = _.find(resources, function (subscription) {
-                return subscription.subscriptionReference.serviceId == AccountService.SAAS_SERVICE_ID;
-            });
-            var used = _.pluck(saasSubscription.used, "memory");
+            var used = _.pluck(resources, "memory");
             var usedMb = used.reduce(function(sum, use) {
                 sum += use;
                 return sum;
             });
-            //return (usedMb / 1024 / 60).toFixed(2);
             return (usedMb).toFixed(2);
+        };
+
+        AccountService.getProvidedResources = function (accountId) {
+            var deferred = $q.defer();
+            var con = {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            };
+            $http.get('/api/saas/resources/' + accountId + "/provided", con)
+                .success(function (data) {
+                    AccountService.providedResources = data;
+                    deferred.resolve(data); //resolve data
+                })
+                .error(function (err) {
+                    deferred.reject();
+                });
+
+            return deferred.promise;
         };
 
         //Get list of subscriptions for pointed accounts:
@@ -163,7 +182,7 @@ angular.module('odeskApp')
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             };
-            $http.get('/api/account/' + accountId + '/subscriptions', con)
+            $http.get('/api/subscription/find/account/' + accountId , con)
                 .success(function (data) {
                     AccountService.subscriptions = data;
                     deferred.resolve(data);
@@ -229,13 +248,13 @@ angular.module('odeskApp')
         };
 
         AccountService.getSAASProposalSubscription = function() {
-            return {description : "SaaS Pay-as-you-Go Subscription", buyTooltip: "Add a credit card to use Codenvy without limits.", needToBuy: true, serviceId: AccountService.SAAS_SERVICE_ID};
+            return {description : "SaaS Pay-as-you-Go Account", buyTooltip: "Add a credit card to use Codenvy without limits.", needToBuy: true, serviceId: AccountService.SAAS_SERVICE_ID};
         };
 
         //Remove subscription by it's ID:
         AccountService.removeSubscription = function (subscriptionId) {
             var deferred = $q.defer();
-            $http.delete('/api/account/subscriptions/' + subscriptionId)
+            $http.delete('/api/subscription/' + subscriptionId)
                 .success(function (data) {
                     deferred.resolve(data); //resolve data
                 })
@@ -249,7 +268,6 @@ angular.module('odeskApp')
             var data = {};
             data.accountId = accountId;
             data.planId = planId;
-            data.trialDuration = 0;
             data.usePaymentSystem = usePaymentSystem;
             var con = {
                 headers: {
@@ -258,7 +276,7 @@ angular.module('odeskApp')
             };
 
             var deferred = $q.defer();
-            $http.post('/api/account/subscriptions/', data, con)
+            $http.post('/api/subscription/', data, con)
                 .success(function (data) {
                     deferred.resolve(data); //resolve data
                 })

@@ -1,4 +1,9 @@
-<div ng-if="isOrgAddOn">
+<div class="panel panel-default" ng-show="!currentAccount">
+    <div class="panel-body text-center">
+        <h4>Codenvy requires to have account, please <a href="/?account=new">create one.</a></h4>
+    </div>
+</div>
+<div ng-if="currentAccount">
   <ul class="breadcrumb boxnav">
     <li class="active"><a href="#/organizations"> WORKSPACES <span class="badge">{{workspaces.length}}</span></a></li>
     <li><a href="#/organizations/members"> ORG MEMBERS <span class="badge">{{members.length}}</span> </a></li>
@@ -30,7 +35,14 @@
             <input type="text" ng-model="search.name" class="searchfield " placeholder="Search for Workspaces"/>
           </div>
         </li>
-        <li class="ws-button pad0 pull-right mrg-rht5">
+        <li class="ws-button pad0 pull-right mrg-rht5" ng-show="workspaces.length > 0" ng-if="!ONPREM">
+              <div>
+                  <a href="" class="new_btn" data-toggle="modal" data-target="#workspacesCap" ng-click="getInfoForWorkspacesCaps();">
+                      Workspaces Caps
+                  </a>
+              </div>
+          </li>
+        <li class="ws-button pad0 pull-right mrg-rht5" ng-show="workspaces.length > 0">
               <div>
                   <a href="" class="new_btn" data-toggle="modal" data-target="#ramAllocation" ng-click="getInfoForRAMAllocation();">
                       RAM Allocation
@@ -45,14 +57,15 @@
           </div>
         </li>
       </ul>
-
-      <div class="projectnav table-responsive">
+      <div class="projectnav table-responsive" ng-show="workspaces.length > 0">
         <table class="table table-hover centerText" style="background:#f9f9f9;">
           <thead>
             <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
               <th class=""></th>
               <th class="text-center"><h4>NAME</h4></th>
-              <th class="text-center"><h4>ALLOCATED RAM</h4></th>
+              <th class="text-center"><h4>RAM CAP</h4></th>
+              <th class="text-center" ng-if="!ONPREM"><h4>GBH CAP</h4></th>
+              <th class="text-center" ng-if="!ONPREM"><h4>GBH CONSUMED</h4></th>
               <th class="text-center"><h4>DEVELOPERS</h4></th>
               <th class="text-center"><h4>PROJECTS</h4></th>
               <th></th>
@@ -63,7 +76,13 @@
             <tr ng-repeat="workspace in workspaces| filter:search | orderBy:'name'" valign="middle">
               <td style="width: 1%;"><!--<i class="glyphicon glyphicon-lock"></i>--></td>
               <td><a ng-href="#/organizations/workspace/{{workspace.id}}/members" class="ws-name">{{workspace.name}}</a></td>
-              <td class="text-center">{{workspace.allocatedRam}}</td>
+              <td class="text-center"><span ng-show="!workspace.isLocked">{{workspace.allocatedRam}}</span>
+                  <div class="lockdown-label" style="display: inline-block;" ng-show="workspace.isLocked">
+                      resources locked due <br> to GBH cap reached
+                  </div>
+              </td>
+              <td class="text-center" ng-if="!ONPREM">{{workspace.gbhCap ? workspace.gbhCap : "no cap"}}</td>
+              <td class="text-center" ng-if="!ONPREM">{{workspace.gbhConsumed.toFixed(2)}}</td>
               <td class="text-center">{{workspace.developers}}</td>
               <td class="text-center">{{workspace.projects}}</td>
               <td></td>
@@ -257,7 +276,7 @@
                             </thead>
                             <tr ng-repeat="workspace in infoForRAMAllocation| filter: filter | orderBy:'name'" class="v-center">
                                 <td>{{workspace.name}}</td>
-                                <td class="text-center" width="120px"><input type="text" placeholder="unlimited" ng-model="workspace.allocatedRam" style="text-align: center;" class="form-control" id="allocate_ram_{{$index}}" ng-change="checkingMemoryField($index)"/></td>
+                                <td class="text-center" width="120px"><input type="text" placeholder="{{workspace.isLocked ? 'locked' : 'unlimited'}}" ng-disabled="workspace.isLocked" ng-model="workspace.allocatedRam" style="text-align: center;" class="form-control" id="allocate_ram_{{$index}}" ng-change="checkingMemoryField($index)"/></td>
                             </tr>
                         </table>
                         <alert id="allocationError" style="display: none" type="danger"></alert>
@@ -272,3 +291,40 @@
     </div>
 </div>
 <!-- RAM Allocation Modal end -->
+<!-- Workspaces Cap Modal Start -->
+<div class="modal-col">
+    <div class="modal fade" id="workspacesCap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog" width="350px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">Workspace Gigabyte Hour (GBH) Caps</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="projectnav table-responsive">
+                        <table class="table table-hover" style="background:#f9f9f9;">
+                            <thead>
+                            <tr style="background:#dbdbdb;border-top:1px solid #bebebe;">
+                                <th><h4>NAME</h4></th>
+                                <th class="text-center"><h4>GBH Cap</h4></th>
+                            </tr>
+                            </thead>
+                            <tr ng-repeat="workspace in infoForWorkspacesCaps| filter: filter | orderBy:'name'" class="v-center">
+                                <td>{{workspace.name}}</td>
+                                <td class="text-center" width="120px"><input ng-trim="false" type="text" required="false" placeholder="no cap" ng-model="workspace.gbhCap" style="text-align: center;" class="form-control" id="workspace_cap_{{$index}}" ng-change="checkWorkspaceCap($index)"/></td>
+                            </tr>
+                        </table>
+                        <alert id="workspaceCapError" style="display: none" type="danger"></alert>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="('#workspaceCapError').hide();">Cancel</button>
+                    <button type="button" ng-disabled="!allowSetWorkspacesCaps" class="btn btn-primary" ng-click="setWorkspacesCaps();">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Workspaces Cap Modal end -->

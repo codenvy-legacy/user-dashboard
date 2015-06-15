@@ -19,10 +19,6 @@
 angular.module('odeskApp')
     .controller('NavbarCtrl', function ($scope, $rootScope, $location, $http, $cookies, $window, OrgAddon, ProfileService, $q) {
         $scope.menu = [
-            /*//{
-            //    'title': 'Admin',
-            //    'link': '#/admin'
-            //},*/
             {
                 'title': 'Projects',
                 'link': '#/dashboard'
@@ -35,10 +31,10 @@ angular.module('odeskApp')
                 'title': 'Factories',
                 'link': '#/factories'
             },
-            /*{
-                'title': 'Stats',
-                'link': '#/stats'
-            },*/
+            {
+                'title': 'Workspaces',
+                'link': '#/organizations'
+            },
             {
                 'title': 'Account',
                 'link': '#/account'
@@ -63,10 +59,7 @@ angular.module('odeskApp')
                 'link': 'https://codenvy.uservoice.com/'
             }
             ];
-        $scope.organizationLink = {
-            'title': 'Workspaces',
-            'link': '#/organizations'
-        };
+
         $rootScope.$on('update_fullUserName', function(event, fullUserName){
             $scope.fullUserName = fullUserName;
             });
@@ -111,18 +104,6 @@ angular.module('odeskApp')
             $(".navbar-collapse").toggle();
         });
 
-        $scope.$on('orgAddonDataUpdated', function() {
-            var index = $scope.menu.indexOf($scope.organizationLink);
-            if (OrgAddon.isOrgAddOn){
-                if (index == -1) {
-                    $scope.menu.push($scope.organizationLink);
-                }
-            } else {
-                if(index != -1) {
-                    $scope.menu.splice(index, 1);
-                }
-            }
-        });
-		OrgAddon.getOrgAccounts();  
+		OrgAddon.getOrgAccounts();
 });
 

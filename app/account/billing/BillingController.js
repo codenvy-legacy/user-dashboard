@@ -24,6 +24,8 @@ angular.module('odeskApp')
         $scope.showNewCreditCardForm = false;
         $scope.addCreditCardError = '';
         $scope.usedMemory = 0;
+        $scope.providedResources = {};
+        $scope.freeGbH = 0;
         $scope.profile = {};
         $scope.invoices = [];
         $scope.isNewCreditCardAdded = false;
@@ -37,12 +39,19 @@ angular.module('odeskApp')
             cvc: '&bull;&bull;&bull;'
         };
 
+        $scope.getProvidedResources = function(account) {
+            AccountService.getProvidedResources(account.id).then(function() {
+                $scope.providedResources = AccountService.providedResources;
+            });
+        };
+
         AccountService.getAccountsByRole("account/owner").then(function (accounts) {
             $scope.accounts = accounts;
             if (accounts && accounts.length > 0) {
                 $scope.loadCreditCards(accounts);
                 $scope.loadInvoices(accounts[0]);
-                $scope.getAccountResources(accounts[0]);
+                $scope.getUsedResources(accounts[0]);
+                $scope.getProvidedResources(accounts[0]);
                 $scope.getAccountAttributes(accounts[0]);
             }
         });
@@ -60,9 +69,9 @@ angular.module('odeskApp')
             $scope.creditCard.country = $scope.profile.attributes.country || Countries.default();
         }
 
-        $scope.getAccountResources = function(account) {
-            AccountService.getAccountResources(account.id).then(function() {
-                $scope.usedMemory = AccountService.getUsedMemory(AccountService.resources);
+        $scope.getUsedResources = function(account) {
+            AccountService.getUsedResources(account.id).then(function() {
+                $scope.usedMemory = AccountService.getUsedMemory(AccountService.usedResources);
             });
         };
 
@@ -114,32 +123,22 @@ angular.module('odeskApp')
         $scope.deleteCreditCard = function (creditCard) {
             PaymentService.deleteCreditCard(creditCard.accountId, creditCard.number).then(function () {
                 $scope.loadCreditCards();
+                $scope.getAccountAttributes($scope.accounts[0]);
+                $timeout(function () {
+                    $scope.getProvidedResources($scope.accounts[0]);
+                }, 5000);
             });
         };
 
         $scope.addCreditCard = function () {
-            if(!$scope.creditCard.number){
-                $('#cardNumber').attr("required", "required");
-                return;
-            }
-            if(!$scope.creditCard.cardholderName){
-                $('#cardHolder').attr("required", "required");
-                return;
-            }
-            if(!$scope.creditCard.expirationDate){
-                $('#expiry').attr("required", "required");
-                return;
-            }
-            if(!$scope.creditCard.cvv){
-                $('#cvv').attr("required", "required");
-                return;
-            }
+
             PaymentService.addCreditCard($scope.accounts[0].id, $scope.creditCard).then(function () {
                 $('#warning-creditCard-alert .alert-danger').hide();
                 $scope.initCreditCard();
                 $scope.showNewCreditCardForm = false;
                 $scope.isNewCreditCardAdded = true;
                 $scope.loadCreditCards();
+                $scope.getAccountAttributes($scope.accounts[0]);
 
                 //Clear credit card widget and set default values
                 var cardContainer = $('.cardWrapper .card-container  div.card')[0];
@@ -148,6 +147,9 @@ angular.module('odeskApp')
                 $('.cardWrapper .card-container  div.number')[0].innerHTML = defaultCardValues.number;
                 $('.cardWrapper .card-container  div.name')[0].innerHTML = defaultCardValues.name;
                 $('.cardWrapper .card-container  div.expiry')[0].innerHTML = defaultCardValues.expiry;
+                $timeout(function () {
+                    $scope.getProvidedResources($scope.accounts[0]);
+                }, 5000);
             }, function (error) {
                 $scope.addCreditCardError = error.message ? error.message : "Add credit card failed.";
                 $('#warning-creditCard-alert .alert-danger').show();
