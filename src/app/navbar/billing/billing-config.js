@@ -11,12 +11,13 @@
 'use strict';
 
 import BillingCtrl from '../billing/billing.controller';
+import BalanceSimple from '../billing/balance-simple.directive';
 
 class BillingConfig {
 
   constructor(register) {
     register.controller('BillingCtrl', BillingCtrl);
-
+    register.directive('balanceSimple', BalanceSimple);
 
     // config routes
     register.app.config(function ($routeProvider) {

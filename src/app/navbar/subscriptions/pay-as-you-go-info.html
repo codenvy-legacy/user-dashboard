@@ -12,45 +12,29 @@
 -->
 
 <cdvy-panel cdvy-title="{{subscription.title}}">
-  <div class="pay-as-you-go-description">{{subscription.description}}</div>
   <div layout-gt-md="row" layout-md="row" flex="100" layout="column">
     <div flex="40">
       <table class="pay-as-you-go-grid">
-        <tr>
-          <td>Billing Rate</td>
-          <td>$0.15/GBH</td>
-        </tr>
-        <tr>
-          <td>Free GBH</td>
-          <td>20GBH</td>
-        </tr>
-        <tr>
-          <td>Activation Date</td>
-          <td>{{subscription.startDate}}</td>
-        </tr>
-        <tr>
-          <td>Next Renewal</td>
-          <td>{{subscription.endDate}}</td>
+        <tr ng-repeat="attribute in subscription.attributes">
+          <td>{{attribute.title}}</td>
+          <td>{{attribute.value}}</td>
         </tr>
       </table>
     </div>
 
 
-    <div flex="60" layout="column">
-      <div layout="row" layout-sm="column" layout-md="column" class="pay-as-you-go-item-space">
-        <div flex="60" class="pay-as-you-go-item">Contact our sales team for volume discounts and custom support packages</div>
-        <div flex="40" layout="column">
-          <a ng-href="https://codenvy.com/products/pricing" class="pay-as-you-go-button-space" target="_blank" href="https://codenvy.com/products/pricing">
-            <cdvy-button-default cdvy-button-title="See Pricing"></cdvy-button-default>
-          </a>
-          <a ng-href="http://pages.codenvy.com/contact.html" target="_blank" href="http://pages.codenvy.com/contact.html">
-            <cdvy-button-default cdvy-button-title="Contact Sales" >
-            </cdvy-button-default>
-          </a>
+    <div layout="row">
+      <div layout="column" class="pay-as-you-go-item-space" layout-align="center center">
+        <div class="pay-as-you-go-item">Contact our sales team for volume discounts and custom support
+          packages
         </div>
+        <a ng-href="http://pages.codenvy.com/contact.html" target="_blank" href="http://pages.codenvy.com/contact.html">
+          <cdvy-button-default cdvy-button-title="Contact Sales">
+          </cdvy-button-default>
+        </a>
       </div>
-      <div layout="row" layout-sm="column" layout-md="column">
-        <div class="pay-as-you-go-item" flex="60">Edit you billing information or cancel your subscription by removing your credit card</div>
+      <div layout="column" layout-align="center center">
+        <div class="pay-as-you-go-item">Edit you billing information or cancel your subscription by removing your credit card</div>
         <cdvy-button-warning flex="40" cdvy-button-title="Edit Credit Card" ng-click="subscription.cancel();"></cdvy-button-warning>
       </div>
     </div>

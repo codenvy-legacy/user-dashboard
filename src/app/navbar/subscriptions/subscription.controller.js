@@ -92,12 +92,17 @@ class SubscriptionCtrl {
     });
 
     saasSubscription.title = details.title;
-    saasSubscription.description = details.description;
     saasSubscription.icon = details.icon;
     saasSubscription.buttonTitle = details.buttonTitle;
     saasSubscription.cancel = function() {
       ctrl.cancelPayAsYouGo(ctrl.$location);
     };
+
+    saasSubscription.attributes = [];
+    saasSubscription.attributes.push({title : "Free GBH", value : 0 });
+    saasSubscription.attributes.push({title : "Billing Rate", value : 0 });
+    saasSubscription.attributes.push({title : "Activation Date", value : subscription.startDate });
+    saasSubscription.attributes.push({title : "Next Renewal", value : subscription.endDate });
   }
 
   fillPrePaidDetails(prepaidSubscription) {
@@ -108,7 +113,6 @@ class SubscriptionCtrl {
 
     let prepaid = prepaidSubscription.properties.PrepaidGbH;
     prepaidSubscription.title = details.title;
-    prepaidSubscription.description = prepaid + details.description;
     prepaidSubscription.icon = details.icon;
     prepaidSubscription.buttonTitle = details.buttonTitle;
     prepaidSubscription.cancel = function() {
@@ -123,7 +127,6 @@ class SubscriptionCtrl {
     });
 
     onPremSubscription.title = details.title;
-    onPremSubscription.description = details.description;
     onPremSubscription.icon = details.icon;
     onPremSubscription.buttonTitle = details.buttonTitle;
     onPremSubscription.cancel = function() {

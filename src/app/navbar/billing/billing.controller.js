@@ -21,21 +21,35 @@ class BillingCtrl {
     this.codenvyNotificationService = codenvyNotificationService;
     this.lodash = lodash;
     this.providedResources = {};
+    this.isFreeAccount = true;
 
     this.invoices = [];
 
     if (this.codenvyAPI.getAccount().getAccounts().length > 0) {
       this.fetchInvoices();
-      this.detectUsage();
+      this.fetchSubscriptions();
     } else {
       this.codenvyAPI.getAccount().fetchAccounts().then(() => {
         this.fetchInvoices();
-        this.detectUsage();
+        this.fetchSubscriptions();
       });
     }
 
    this.detectCurrentMonthPeriod();
 
+  }
+
+  fetchSubscriptions() {
+    let currentAccount = this.codenvyAPI.getAccount().getCurrentAccount();
+    this.codenvyAPI.getAccount().fetchSubscriptions(currentAccount.id).then(() => {
+      this.isFreeAccount = this.codenvyAPI.getAccount().getSubscriptions(currentAccount.id).length === 0;
+      this.detectUsage();
+    }, (error) => {
+      if (error.status === 304) {
+        this.isFreeAccount = this.codenvyAPI.getAccount().getSubscriptions(currentAccount.id).length === 0;
+        this.detectUsage();
+      }
+    });
   }
 
   fetchInvoices() {
@@ -89,7 +103,6 @@ class BillingCtrl {
 
   setUpChart(used, provided) {
     let available = provided - used;
-
     let usedPercents = (used * 100 / provided).toFixed(0);
     let availablePercents = 100 - usedPercents;
 
