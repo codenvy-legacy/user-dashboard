@@ -101,8 +101,8 @@ class SubscriptionCtrl {
     saasSubscription.attributes = [];
     saasSubscription.attributes.push({title : "Free GBH", value : 0 });
     saasSubscription.attributes.push({title : "Billing Rate", value : 0 });
-    saasSubscription.attributes.push({title : "Activation Date", value : subscription.startDate });
-    saasSubscription.attributes.push({title : "Next Renewal", value : subscription.endDate });
+    saasSubscription.attributes.push({title : "Activation Date", value : saasSubscription.startDate });
+    saasSubscription.attributes.push({title : "Next Renewal", value : saasSubscription.endDate });
   }
 
   fillPrePaidDetails(prepaidSubscription) {
@@ -118,6 +118,13 @@ class SubscriptionCtrl {
     prepaidSubscription.cancel = function() {
       ctrl.cancelPrePaid(ctrl.$window);
     };
+
+    prepaidSubscription.attributes = [];
+    prepaidSubscription.attributes.push({title : "Prepaid GBH", value : 0 });
+    prepaidSubscription.attributes.push({title : "Free GBH", value : 0 });
+    prepaidSubscription.attributes.push({title : "Overage GBH rate", value : 0 });
+    prepaidSubscription.attributes.push({title : "Activation Date", value : prepaidSubscription.startDate });
+    prepaidSubscription.attributes.push({title : "Next Renewal", value : prepaidSubscription.endDate });
   }
 
   fillOnPremDetails(onPremSubscription) {

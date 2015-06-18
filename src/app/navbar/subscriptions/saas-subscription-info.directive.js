@@ -22,7 +22,7 @@ class PayAsYouGoInfo {
    */
   constructor () {
     this.restrict='E';
-    this.templateUrl = 'app/navbar/subscriptions/pay-as-you-go-info.html';
+    this.templateUrl = 'app/navbar/subscriptions/saas-subscription-info.html';
     this.transclude= true;
 
     // scope values
