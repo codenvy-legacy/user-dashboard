@@ -13,9 +13,7 @@
 export var  subscriptionDetails = [
   {
     'type' : 'on-prem',
-    'title' : 'On-Prem Account',
-    'buttonTitle' : 'Cancel',
-    'icon' : 'assets/images/icon-on-prem.png'
+    'title' : 'On-Prem',
   },
   {
     'type' : 'pay-as-you-go',
@@ -50,13 +48,9 @@ export var subscriptionOffers = [
       'type' : 'on-prem',
       'title' : 'On-Prem',
       'description' : 'All the power of Codenvy\'s Cloud behind your firewall, connected to your systems and processes.',
-      'buttonTitle' : 'Buy',
-      'icon' : 'assets/images/icon-on-prem.png',
-      'content' : [
-        'Unlimited nodes',
-        'Updater service',
-        'Email support'
-      ]
+      'buttonTitle' : 'Learn More',
+      'additionalButtonTitle' : 'Contact Sales',
+      'icon' : 'assets/images/icon-on-prem.png'
     }
   ];
 

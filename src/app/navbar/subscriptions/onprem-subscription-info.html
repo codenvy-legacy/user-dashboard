@@ -1,0 +1,37 @@
+<!--
+
+    Copyright (c) 2015 Codenvy, S.A.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+
+    Contributors:
+      Codenvy, S.A. - initial API and implementation
+
+-->
+
+<cdvy-panel cdvy-title="{{subscription.title}}">
+  <div layout="row" layout-align="center start">
+    <div flex="40">
+      <div class="onprem-subscription-title-item">Your account has OnPrem Paid subscription:</div>
+      <table class="onprem-subscription-grid">
+        <tr ng-repeat="attribute in subscription.attributes">
+          <td>{{attribute.title}}</td>
+          <td>{{attribute.value}}</td>
+        </tr>
+      </table>
+    </div>
+    <div flex="60" layout="column" layout-align="start center">
+      <div class="onprem-subscription-title-item">Install via Image</div>
+      <div class="onprem-subscription-command-line">bash <(curl -L -s https://start.codenvy.com/install-single)</div>
+      <div>CentOS 7 x 8 GB RAM + 100 GB Disk</div>
+      <div layout="row">
+      </div>
+      <div>
+        Read more: Sizing Guide | TroubleShooting | Administration
+      </div>
+    </div>
+  </div>
+</cdvy-panel>
+

@@ -14,7 +14,7 @@
  * Defines a directive for displaying Pay-as-You-Go subscription information.
  * @author Ann Shumilova
  */
-class PayAsYouGoInfo {
+class SaasSubscriptionInfo {
 
   /**
    * Default constructor that is using resource
@@ -33,5 +33,5 @@ class PayAsYouGoInfo {
 
 }
 
-export default PayAsYouGoInfo;
+export default SaasSubscriptionInfo;
 

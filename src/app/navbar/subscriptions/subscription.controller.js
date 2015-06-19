@@ -23,7 +23,6 @@ class SubscriptionCtrl {
       this.$window = $window;
       this.lodash = lodash;
       this.proposals = [];
-      this.subscriptions = [];
 
       if (this.codenvyAPI.getAccount().getAccounts().length > 0) {
         this.fetchSubscriptions();
@@ -50,35 +49,35 @@ class SubscriptionCtrl {
    * if not adds new proposals. There two types of subscriptions : on-premises and saas(pay-as-you-go).
   */
   processSubscriptions(subscriptions) {
-    this.payAsYouGoSubscription = null;
+    this.saasSubscription = null;
+    this.onPremSubscription = null;
+
     let services = this.lodash.pluck(subscriptions, 'serviceId');
     let hasOnPremises = services.indexOf(this.codenvyAPI.getAccount().getOnPremServiceId()) >= 0;
     let saasServiceId = this.codenvyAPI.getAccount().getSaasServiceId();
     let onPremServiceId = this.codenvyAPI.getAccount().getOnPremServiceId();
 
-    let saasSubscription = this.lodash.find(subscriptions, function (subscription) {
+    this.saasSubscription = this.lodash.find(subscriptions, function (subscription) {
       return subscription.serviceId === saasServiceId;
     });
 
-    let onPremSubscription = this.lodash.find(subscriptions, function (subscription) {
+    this.onPremSubscription = this.lodash.find(subscriptions, function (subscription) {
       return subscription.serviceId === onPremServiceId;
     });
 
-    if (saasSubscription) {
-      if (saasSubscription.planId === this.codenvyAPI.getAccount().getPayAsYouGoPlanId()) {
-        this.fillPayAsYouGoDetails(saasSubscription);
-        this.payAsYouGoSubscription = saasSubscription;
-      } else if (saasSubscription.planId === this.codenvyAPI.getAccount().getPrepaidPlanId()) {
-        this.fillPrePaidDetails(saasSubscription);
-        this.subscriptions.push(saasSubscription);
+    if (this.saasSubscription) {
+      if (this.saasSubscription.planId === this.codenvyAPI.getAccount().getPayAsYouGoPlanId()) {
+        this.fillPayAsYouGoDetails(this.saasSubscription);
+      } else if (this.saasSubscription.planId === this.codenvyAPI.getAccount().getPrepaidPlanId()) {
+        this.fillPrePaidDetails(this.saasSubscription);
       }
     } else {
       this.proposals.push(this.getPayAsYouGoProposal());
     }
 
     if (hasOnPremises) {
-      this.fillOnPremDetails(onPremSubscription);
-      this.subscriptions.push(onPremSubscription);
+      this.fillOnPremDetails(this.onPremSubscription);
+
     } else {
       this.proposals.push(this.getOnPremProposal());
     }
@@ -92,7 +91,6 @@ class SubscriptionCtrl {
     });
 
     saasSubscription.title = details.title;
-    saasSubscription.icon = details.icon;
     saasSubscription.buttonTitle = details.buttonTitle;
     saasSubscription.cancel = function() {
       ctrl.cancelPayAsYouGo(ctrl.$location);
@@ -113,7 +111,6 @@ class SubscriptionCtrl {
 
     let prepaid = prepaidSubscription.properties.PrepaidGbH;
     prepaidSubscription.title = details.title;
-    prepaidSubscription.icon = details.icon;
     prepaidSubscription.buttonTitle = details.buttonTitle;
     prepaidSubscription.cancel = function() {
       ctrl.cancelPrePaid(ctrl.$window);
@@ -134,11 +131,12 @@ class SubscriptionCtrl {
     });
 
     onPremSubscription.title = details.title;
-    onPremSubscription.icon = details.icon;
-    onPremSubscription.buttonTitle = details.buttonTitle;
     onPremSubscription.cancel = function() {
       ctrl.cancelOnPrem(ctrl.$window);
     };
+
+    onPremSubscription.attributes = [];
+    onPremSubscription.attributes.push({title : "Expiring Date", value : onPremSubscription.endDate });
   }
 
   getPayAsYouGoProposal() {
@@ -159,6 +157,10 @@ class SubscriptionCtrl {
 
   onPremChoosen($window) {
     $window.open('https://codenvy.com/products/onprem', '_blank');
+  }
+
+  onLearnMore($window) {
+    $window.open('http://pages.codenvy.com/contact.html', '_blank');
   }
 
   cancelPayAsYouGo(location) {
@@ -182,6 +184,10 @@ class SubscriptionCtrl {
     onPremOffer.buy = function() {
       ctrl.onPremChoosen(ctrl.$window);
     };
+
+    onPremOffer.additionalButtonClick = function() {
+      ctrl.onLearnMore(ctrl.$window);
+    }
     return onPremOffer;
   }
 }

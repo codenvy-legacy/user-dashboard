@@ -11,10 +11,10 @@
 'use strict';
 
 /**
- * Defines a directive for displaying subscription information.
+ * Defines a directive for displaying on-prem subscription information.
  * @author Ann Shumilova
  */
-class SubscriptionInfo {
+class OnpremSubscriptionInfo {
 
   /**
    * Default constructor that is using resource
@@ -22,7 +22,7 @@ class SubscriptionInfo {
    */
   constructor () {
     this.restrict='E';
-    this.templateUrl = 'app/navbar/subscriptions/subscription-info.html';
+    this.templateUrl = 'app/navbar/subscriptions/onprem-subscription-info.html';
     this.transclude= true;
 
     // scope values
@@ -33,5 +33,5 @@ class SubscriptionInfo {
 
 }
 
-export default SubscriptionInfo;
+export default OnpremSubscriptionInfo;
 
