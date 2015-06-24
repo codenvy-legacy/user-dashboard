@@ -93,7 +93,7 @@ angular.module('odeskApp')
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             };
-            $http.post('/api/account/' + accountId + "/resources",  resources, con)
+            $http.post('/api/resources/' + accountId,  resources, con)
                 .success(function () {
                     deferred.resolve();
                 })
@@ -113,7 +113,7 @@ angular.module('odeskApp')
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             };
-            $http.get('/api/saas/resources/' + accountId + "/used", con)
+            $http.get('/api/resources/' + accountId + "/used", con)
                 .success(function (data) {
                     AccountService.usedResources = data;
                     deferred.resolve(data); //resolve data
