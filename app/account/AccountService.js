@@ -93,7 +93,7 @@ angular.module('odeskApp')
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             };
-            $http.post('/api/resources/' + accountId,  resources, con)
+            $http.post('/api/account/' + accountId + "/resources",  resources, con)
                 .success(function () {
                     deferred.resolve();
                 })
