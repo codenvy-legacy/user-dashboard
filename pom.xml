@@ -27,12 +27,12 @@
     </parent>
     <groupId>com.codenvy.dashboard</groupId>
     <artifactId>user-dashboard-war</artifactId>
-    <version>3.11.5</version>
+    <version>3.11.6-SNAPSHOT</version>
     <name>User Dashboard :: Web App</name>
     <scm>
         <connection>scm:git:git@github.com:codenvy/user-dashboard.git</connection>
         <developerConnection>scm:git:git@github.com:codenvy/user-dashboard.git</developerConnection>
-        <tag>3.11.5</tag>
+        <tag>HEAD</tag>
         <url>https://github.com/codenvy/user-dashboard</url>
     </scm>
     <properties>
