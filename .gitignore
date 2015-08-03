@@ -63,3 +63,6 @@ Thumbs.db
 ######################
 node_modules/
 app/bower_components/
+
+# generated file
+app/scripts/config.js
