@@ -159,7 +159,8 @@ angular.module('odeskApp')
               workspaces: '=',
               workspaceSelected: '=',
               currentUserId: '=',
-              newProjectData: '='
+              newProjectData: '=',
+              projectGroups: '='
             },
             link: function($scope, element, attrs, ctrl) {
               $scope.authenticateWithGitHub = function() {
@@ -266,7 +267,7 @@ angular.module('odeskApp')
               $scope.checkTokenValidity().then(function() {
                 $scope.loadRepositories();
               });
-              
+
               $scope.$watch('newProjectData.source.project.location', function(newValue, oldValue) {
                 var matchRepository = $filter('filter')($scope.gitHubRepositories, function(repository, index) {
                   return repository.clone_url == newValue;

@@ -25,7 +25,18 @@ angular.module('odeskApp')
         scope: {
           workspaces: '=',
           workspaceSelected: '=',
-          newProjectData: '='
+          newProjectData: '=',
+          projectGroups: '='
+        },
+        link: function($scope) {
+            $scope.$watch('newProjectData.project.type', function(newValue) {
+                if (newValue === 'null') {
+                    $("textarea[name*='projectDescription']").attr('disabled', 'disabled');
+                    $scope.newProjectData.project.description = "";
+                } else {
+                    $("textarea[name*='projectDescription']").removeAttr('disabled');
+                }
+            });
         },
         templateUrl: 'partials/widgets/newProjectDetails.html'
       }

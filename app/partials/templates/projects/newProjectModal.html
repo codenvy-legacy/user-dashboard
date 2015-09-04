@@ -12,7 +12,8 @@
                 <ud-import-github workspaces="newProjectCtrl.workspaces"
                                   workspace-selected="newProjectCtrl.workspaceSelected"
                                   current-user-id="newProjectCtrl.currentUserId"
-                                  new-project-data="newProjectCtrl.newProjectData">
+                                  new-project-data="newProjectCtrl.newProjectData"
+                                  project-groups="newProjectCtrl.projectGroups">
                 </ud-import-github>
                 <alert ng-repeat="alert in newProjectCtrl.alerts" type="{{alert.type}}" close="newProjectCtrl.closeAlert($index)">
                     {{alert.msg}}
@@ -24,7 +25,8 @@
                 </tab-heading>
                 <ud-import-git-repository workspaces="newProjectCtrl.workspaces"
                                           workspace-selected="newProjectCtrl.workspaceSelected"
-                                          new-project-data="newProjectCtrl.newProjectData">
+                                          new-project-data="newProjectCtrl.newProjectData"
+                                          project-groups="newProjectCtrl.projectGroups">
                 </ud-import-git-repository>
                 <alert ng-repeat="alert in newProjectCtrl.alerts" type="{{alert.type}}" close="newProjectCtrl.closeAlert($index)">
                     {{alert.msg}}
@@ -36,7 +38,8 @@
                 </tab-heading>
                 <ud-import-zip workspaces="newProjectCtrl.workspaces"
                                workspace-selected="newProjectCtrl.workspaceSelected"
-                               new-project-data="newProjectCtrl.newProjectData">
+                               new-project-data="newProjectCtrl.newProjectData"
+                               project-groups="newProjectCtrl.projectGroups">
                 </ud-import-zip>
                 <alert ng-repeat="alert in newProjectCtrl.alerts" type="{{alert.type}}" close="newProjectCtrl.closeAlert($index)">
                     {{alert.msg}}
@@ -49,7 +52,8 @@
                 <ud-import-factory workspaces="newProjectCtrl.workspaces"
                                    workspace-selected="newProjectCtrl.workspaceSelected"
                                    new-project-data="newProjectCtrl.newProjectData"
-                                   import-type="importType">
+                                   import-type="importType"
+                                   project-groups="newProjectCtrl.projectGroups">
                 </ud-import-factory>
             </tab>
         </tabset>

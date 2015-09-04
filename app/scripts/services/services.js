@@ -423,6 +423,75 @@ angular.module('odeskApp')
         };
     });
 
+// Get project groups
+angular.module('odeskApp')
+    .factory('ProjectGroups', function ($http, $q) {
+        return {
+            all: function () {
+                var deferred = $q.defer();
+                var con = {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                };
+                $http.get('/api/project-type', con)
+                    .success(function (projectTypes) {
+                        var projectGroups =[];
+                        angular.forEach(projectTypes, function (projectType) {
+                            var group = '';
+                            var isExist = false;
+                            var name = projectType.displayName;
+                            var type = projectType.id;
+
+                            angular.forEach(projectType.attributeDescriptors, function (attributeDescriptor) {
+                                if(attributeDescriptor.name && attributeDescriptor.name === 'language') {
+                                    if(attributeDescriptor.values && attributeDescriptor.values.length > 0){
+                                        group = attributeDescriptor.values[0].toUpperCase();
+                                    }
+                                }
+                            });
+                            if(group === ''){
+                                group = type.toUpperCase();
+                            }
+                            angular.forEach(projectGroups, function (projectGroup) {
+                                if(projectGroup.group === group){
+                                    isExist = true;
+                                    projectGroup.projectTypes.push({name: name, type: type});
+                                    projectGroup.projectTypes.sort(function (a, b) {
+                                        if (a.name > b.name) {
+                                            return 1;
+                                        }
+                                        if (a.name < b.name) {
+                                            return -1;
+                                        }
+                                        return 0;
+                                    });
+                                }
+                            });
+                            if(!isExist) {
+                                projectGroups.push({group: group, projectTypes:[{name: name, type: type}]});
+                            }
+                        });
+                        projectGroups.sort(function (a, b) {
+                            if (a.group > b.group) {
+                                return 1;
+                            }
+                            if (a.group < b.group) {
+                                return -1;
+                            }
+                            return 0;
+                        });
+                        deferred.resolve(projectGroups);
+                    })
+                    .error(function (err) {
+                        deferred.reject(err);
+                    });
+                return deferred.promise;
+            }
+        };
+    });
+
 // Get workspace details based on workspace id
 angular.module('odeskApp')
     .factory('WorkspaceInfo', function ($http, $q) {

@@ -1689,6 +1689,10 @@ html[dir="rtl"] .select2-search input {
     float: none;
 }
 
+.disable-color {
+    color: #CECECE;
+}
+
 .CodeMirror {
     z-index: 1060;
     border: solid 1px #e5e5e5;
